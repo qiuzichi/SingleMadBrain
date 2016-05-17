@@ -1,0 +1,60 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_1"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_one" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_2"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_two" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_3"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_three" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_4"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_four" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_5"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_five" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_6"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_six" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_7"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_seven" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_8"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_eight" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_9"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_nine" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_0"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/number_zero" />
+
+    <ImageButton
+        android:id="@+id/listen_keyboard_delete"
+        style="@style/ListenNumberBtn"
+        android:background="@drawable/key_delete" />
+
+</merge>

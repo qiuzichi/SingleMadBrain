@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
+    <color name="main_lf_bg">#323232</color>
+    <color name="transparent">#00000000</color>
+    <color name="main_lf_user_info_bg">#0854ba</color>
+    <color name="right_frg">#F4F4F4</color>
+    <color name="bg_one">#deae6e</color>
+    <color name="bg_two">#fedfb6</color>
+    <color name="bg_three">#1e5401</color>
+    <color name="stroke_color">#ACACAC</color>
+    <color name="line">#b5bdc4</color>
+    <color name="txt_ash">#141414</color>
+    <color name="text_gray">#A4A4A4</color>
+    <color name="main">#2faff8</color>
+    <color name="competition">#e9edf2</color>
+    <color name="competition_txt">#646464</color>
+    <color name="main_1">#0854ba</color>
+    <color name="main_2">#323232</color>
+    <color name="competition_bg1">#deae6e</color>
+    <color name="competition_bg2">#fedfb6</color>
+    <color name="competition_bg3">#1e5401</color>
+    <color name="bijiaohei">#A4A4A4</color>
+    <color name="personal_item_selected">#105CBD</color>
+    <color name="personal_authentication_text_step">#4A4A4A</color>
+    <color name="personal_setting_text">#4A4A4A</color>
+    <color name="bottom_bt_bg">#2FAFF8</color>
+    <color name="edit_text_hint">#A5A5A5</color>
+    <color name="record_city">#0A58BC</color>
+    <color name="record_china">#2FAFF8</color>
+    <color name="hv_container_bg">#D1E9E9</color>
+    <color name="hv_broken_line">#488577</color>
+    <color name="histogram_view_grid_line">#CFDFF2</color>
+    <color name="paint_pivot">#1C64C1</color>
+</resources>
