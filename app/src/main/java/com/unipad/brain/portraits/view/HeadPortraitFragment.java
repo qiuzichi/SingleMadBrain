@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -15,7 +13,7 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
-import com.unipad.common.BasicFragment;
+import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
@@ -29,29 +27,24 @@ import java.util.List;
 /**
  * Created by gongkan on 2016/4/11.
  */
-public class HeadPortraitFragment extends BasicFragment{
+public class HeadPortraitFragment extends BasicCommonFragment {
     private HeadAdapter adapter;
     private GridView mListView;
     private HeadService service;
-    private View paraent;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.portrait_fragment, container, false);
-
-        mListView = (GridView) v.findViewById(R.id.gridview);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mListView = (GridView) mViewParent.findViewById(R.id.gridview);
 
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
-        adapter = new HeadAdapter((Context) getActivity(), service.data, R.layout.list_portrait);
-        paraent = v.findViewById(R.id.portraits_fragment);
+        adapter = new HeadAdapter(mActivity, service.data, R.layout.list_portrait);
         mListView.setAdapter(adapter);
-
-        return v;
     }
 
     @Override
-    public void changeBg(int color) {
-        paraent.setBackgroundColor(color);
+    public int getLayoutId() {
+        return R.layout.portrait_fragment;
     }
 
     @Override
@@ -82,20 +75,16 @@ public class HeadPortraitFragment extends BasicFragment{
     }
 
     private class HeadAdapter extends CommonAdapter<Person> {
-
-
         public HeadAdapter(Context context, List<Person> datas, int layoutId) {
             super(context, datas, layoutId);
             Log.e("", "size=" + mDatas.size());
         }
-
 
         /**
          * @param holder
          * @param person
          */
         @Override
-
         public void convert(ViewHolder holder, final Person person) {
             ImageView headView = (ImageView) holder.getView(R.id.icon_head);
 
@@ -113,7 +102,6 @@ public class HeadPortraitFragment extends BasicFragment{
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                     }
-
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -149,4 +137,5 @@ public class HeadPortraitFragment extends BasicFragment{
             }
         }
     }
+
 }

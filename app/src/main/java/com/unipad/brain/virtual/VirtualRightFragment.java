@@ -1,45 +1,23 @@
 package com.unipad.brain.virtual;
 
-import android.app.Fragment;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.unipad.brain.R;
 import com.unipad.brain.virtual.bean.DividerGridItemDecoration;
 import com.unipad.brain.virtual.bean.VirtualEntity;
-import com.unipad.common.BasicFragment;
-import com.unipad.common.CommonActivity;
-import com.unipad.common.CommonFragment;
-import com.unipad.common.ViewHolder;
-import com.unipad.common.adapter.CommonAdapter;
-import com.unipad.common.adapter.ListGridAdapter;
+import com.unipad.common.BasicCommonFragment;
 import com.unipad.utils.ToastUtil;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,94 +27,64 @@ import java.util.Random;
 /**
  * yzj----项目:虚拟事件
  */
-public class VirtualRightFragment extends BasicFragment{
+public class VirtualRightFragment extends BasicCommonFragment {
     private static final String TAG = VirtualRightFragment.class.getSimpleName();
-    List<EditText> editList=new ArrayList<EditText>();
+    List<EditText> editList=new ArrayList<>();
     /**
      * 最大年份
      */
     private int maxYear=2099;
-
     /**
      * 最小年份
      */
     private int minYear=1000;
-
     /**
      * 存储记忆界面的数据
      */
     Map<Integer,VirtualEntity> memoryMap=new HashMap<>();
-
     /**
      * 存储回忆界面的数据
      */
     Map<Integer,VirtualEntity> memoriesMap=new HashMap<>(memoryMap.size());
-
-
-    List<VirtualEntity> virtualList=new ArrayList<VirtualEntity>();
-
-    /**
-     * Fragment界面父布局
-     */
-    private RelativeLayout mParentLayout;
-
-
+    List<VirtualEntity> virtualList=new ArrayList<>();
     private VirtualMemoryAdapter memoryAdapter;
-
     private VirtualMemoriesAdapter memoriesAapter;
-
     /**
      * 记忆界面
      */
     private RecyclerView memoryRv;
-
     /**
      * 回忆界面
      */
     private RecyclerView memoriesRv;
-
     /**
      * 回忆界面底部按钮
      */
-    private ImageButton numButton_0,numButton_1,numButton_2,numButton_3,numButton_4,numButton_5,numButton_6,numButton_7,numButton_8,numButton_9,numButton_clear;
+    private ImageButton numButton_0,numButton_1,numButton_2,numButton_3,numButton_4,numButton_5,
+            numButton_6,numButton_7,numButton_8,numButton_9,numButton_clear;
 
     /**
      * 回忆界面下方的数字布局
      */
     private LinearLayout jianpan_linlayout;
-    /**
-     * 屏幕宽度
-     */
-    private int width;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mParentLayout = (RelativeLayout) inflater.inflate(R.layout.virtual_frg_right, container,
-                false);
-        return mParentLayout;
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // 屏幕宽度（像素）
-        width=mActivity.getResources().getDisplayMetrics().widthPixels;
-        getdata();
-        jianpan_linlayout= (LinearLayout) mParentLayout.findViewById(R.id.jianpan_linlayout);
+        jianpan_linlayout= (LinearLayout) mViewParent.findViewById(R.id.jianpan_linlayout);
         jianpan_linlayout.setVisibility(View.GONE);
 
-        numButton_1= (ImageButton) mParentLayout.findViewById(R.id.numButton_1);
-        numButton_2= (ImageButton) mParentLayout.findViewById(R.id.numButton_2);
-        numButton_3= (ImageButton) mParentLayout.findViewById(R.id.numButton_3);
-        numButton_4= (ImageButton) mParentLayout.findViewById(R.id.numButton_4);
-        numButton_5= (ImageButton) mParentLayout.findViewById(R.id.numButton_5);
-        numButton_6= (ImageButton) mParentLayout.findViewById(R.id.numButton_6);
-        numButton_7= (ImageButton) mParentLayout.findViewById(R.id.numButton_7);
-        numButton_8= (ImageButton) mParentLayout.findViewById(R.id.numButton_8);
-        numButton_9= (ImageButton) mParentLayout.findViewById(R.id.numButton_9);
-        numButton_0= (ImageButton) mParentLayout.findViewById(R.id.numButton_0);
-        numButton_clear= (ImageButton) mParentLayout.findViewById(R.id.numButton_clear);
+        numButton_1= (ImageButton) mViewParent.findViewById(R.id.numButton_1);
+        numButton_2= (ImageButton) mViewParent.findViewById(R.id.numButton_2);
+        numButton_3= (ImageButton) mViewParent.findViewById(R.id.numButton_3);
+        numButton_4= (ImageButton) mViewParent.findViewById(R.id.numButton_4);
+        numButton_5= (ImageButton) mViewParent.findViewById(R.id.numButton_5);
+        numButton_6= (ImageButton) mViewParent.findViewById(R.id.numButton_6);
+        numButton_7= (ImageButton) mViewParent.findViewById(R.id.numButton_7);
+        numButton_8= (ImageButton) mViewParent.findViewById(R.id.numButton_8);
+        numButton_9= (ImageButton) mViewParent.findViewById(R.id.numButton_9);
+        numButton_0= (ImageButton) mViewParent.findViewById(R.id.numButton_0);
+        numButton_clear= (ImageButton) mViewParent.findViewById(R.id.numButton_clear);
 
         numButton_1.setOnClickListener(this);
         numButton_2.setOnClickListener(this);
@@ -150,24 +98,25 @@ public class VirtualRightFragment extends BasicFragment{
         numButton_0.setOnClickListener(this);
         numButton_clear.setOnClickListener(this);
 
-        memoryRv = (RecyclerView) mParentLayout.findViewById(R.id.memoryRv);
+        memoryRv = (RecyclerView) mViewParent.findViewById(R.id.memoryRv);
         memoryRv.setLayoutManager(new LinearLayoutManager(mActivity));
         memoryRv.setAdapter(memoryAdapter = new VirtualMemoryAdapter());
         memoryRv.setLayoutManager(new GridLayoutManager(mActivity, 2));
         //添加分割线
         memoryRv.addItemDecoration(new DividerGridItemDecoration(mActivity));
 
-        memoriesRv = (RecyclerView) mParentLayout.findViewById(R.id.memoriesRv);
+        memoriesRv = (RecyclerView) mViewParent.findViewById(R.id.memoriesRv);
         memoriesRv.setLayoutManager(new LinearLayoutManager(mActivity));
         memoriesRv.setAdapter(memoriesAapter = new VirtualMemoriesAdapter());
         memoriesRv.setLayoutManager(new GridLayoutManager(mActivity, 2));
 
         memoriesRv.setVisibility(View.GONE);
+
+        this.getdata();
     }
 
     /**
      * 记忆的adapter
-     *
      */
     class VirtualMemoryAdapter extends RecyclerView.Adapter<VirtualMemoryAdapter.MyViewHolder> {
 
@@ -202,7 +151,6 @@ public class VirtualRightFragment extends BasicFragment{
             }
         }
     }
-
 
     /**
      * 回忆的adapter
@@ -281,38 +229,11 @@ public class VirtualRightFragment extends BasicFragment{
      * 开始答题
      */
     public void inAnswerMode() {
-
         ToastUtil.showToast("开始");
         memoryRv.setVisibility(View.GONE);
 
         jianpan_linlayout.setVisibility(View.VISIBLE);
         memoriesRv.setVisibility(View.VISIBLE);
-        /*mParentLayout.removeView(mMemoryLayout);// 先移除记忆界面
-        mStubShade.setVisibility(View.GONE);// 隐藏遮罩层*/
-
-        /*if (BinaryActivity.CompeteItem == R.id.main_lf_message) {
-            mRememoryLayout.removeView(mRememoryLayout.findViewById(R.id.bottom_layout));
-        } else {
-            mRememoryLayout.findViewById(R.id.ibtn_binary_0).setOnClickListener(this);
-            mRememoryLayout.findViewById(R.id.ibtn_binary_1).setOnClickListener(this);
-        }
-
-        mRememoryLayout.setVisibility(View.VISIBLE);
-        mScrollAnswerView = (ScrollView) mRememoryLayout
-                .findViewById(R.id.scroll_rememory_layout);
-        mNumberRememoryLayout = new NumberRememoryLayout(mActivity, BinaryActivity.CompeteItem);
-        FrameLayout frameLayout = (FrameLayout) mRememoryLayout.findViewById(R.id.binary_rememory_layout);
-        frameLayout.addView(mNumberRememoryLayout);*/
-
-    }
-
-
-    private void setListViewPos(int pos) {
-        if (android.os.Build.VERSION.SDK_INT >= 8) {
-            memoriesRv.smoothScrollToPosition(pos);
-        } else {
-           //memoriesRv.sele.setSelection(pos);
-        }
     }
 
     /**
@@ -322,74 +243,19 @@ public class VirtualRightFragment extends BasicFragment{
      */
     public void endAnswerMode(int takeTime) {
         double totalScore = 0;// 总得分，总分需要四舍五入
-        int error=0;
-        //SparseArray<List<String>> arrayQuestion = BinaryNumberEntity.lineNumbers;
-        //SparseArray<List<String>> arrayAnswer = mNumberRememoryLayout.getAnswer();
-
-            // 计算答题成绩————end
-
-            //this.showAnswerResult(takeTime, totalScore);
         for(int i=0;i<memoryMap.size();i++){
             if(memoriesMap.get(i)!=null){//判断是否有空白
                 if(memoryMap.get(i).getDate().equals(memoriesMap.get(i).getDate())){//答对加1分
                     totalScore=totalScore+1;
                 }else{
                     totalScore=totalScore-0.5;//打错扣0.5分
-                    error++;
                 }
             }
         }
 
         if(totalScore<0){
-            totalScore=0;
         }
-
-        ToastUtil.showToast("总分:" + totalScore+"空白个数"+(memoryMap.size()-memoriesMap.size())+"错误个数"+error);
-
-            //this.showAnswerError();
-
     }
-
-    /**
-     * 显示错误信息
-     */
-    private void showAnswerError() {
-//		DialogConfirm dialogConfirm = new DialogConfirm(mActivity,
-//				mActivity.getString(R.string.binary_scroe_exception),
-//				mActivity.getString(R.string.confirm), "");
-//		dialogConfirm.setOnClickDialog(new OnClickDialog() {
-//
-//			@Override
-//			public void clickConfirmBtn() {
-//				mActivity.finish();
-//			}
-//
-//			@Override
-//			public void clickCancelBtn() {
-//			}
-//		});
-    }
-
-    /**
-     * 显示答题成绩
-     */
-    /*private void showAnswerResult(int takeTime, int scores) {
-        mStubShade.setVisibility(View.GONE);// 隐藏遮罩层*/
-
-//		DialogConfirm dialogConfirm = new DialogConfirm(mActivity,
-//				mActivity.getString(R.string.game_over, takeTime, scores),
-//				mActivity.getString(R.string.confirm), "");
-//		dialogConfirm.setOnClickDialog(new OnClickDialog() {
-//
-//			@Override
-//			public void clickConfirmBtn() {
-//				mActivity.finish();
-//			}
-//			@Override
-//			public void clickCancelBtn() {
-//			}
-//		});
-   // }
 
     /**
      * 输入的索引
@@ -468,28 +334,9 @@ public class VirtualRightFragment extends BasicFragment{
         }
     }
 
-    TextWatcher mTextWatcher=new TextWatcher() {
-        CharSequence texts;
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            editList.get(index).setText("1234");
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            index++;
-        }
-    };
-
-
     @Override
-    public void changeBg(int color) {
-        mParentLayout.setBackgroundColor(color);
+    public int getLayoutId() {
+        return R.layout.virtual_frg_right;
     }
 
     @Override

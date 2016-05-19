@@ -9,14 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.HomeBean;
 import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.competitionpj.view.HomePresenter;
-import com.unipad.common.BasicFragment;
+import com.unipad.common.BasicCommonFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
 /**
  * yzj----项目:虚拟事件
  */
-public class HomeDetailFragment extends BasicFragment {
+public class HomeDetailFragment extends BasicCommonFragment {
     private static final String TAG = HomeDetailFragment.class.getSimpleName();
     private ListView lv_project;
     private FrameLayout fl_project;
@@ -33,37 +32,25 @@ public class HomeDetailFragment extends BasicFragment {
     private TextView txt_memory_content;
     private TextView txt_recall_content;
     private TextView txt_function_content;
-    /**
-     * Fragment界面父布局
-     */
-    private RelativeLayout mParentLayout;
     private HomePresenter homePresenter;
     private List<HomeBean> homeBeans;
     private String next="";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mParentLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_home_layout, container,
-                false);
-        return mParentLayout;
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData();
-        lv_project= (ListView) mParentLayout.findViewById(R.id.lv_project);
-        fl_project= (FrameLayout) mParentLayout.findViewById(R.id.fl_project);
-        txt_title= (TextView) mParentLayout.findViewById(R.id.txt_title);
-        txt_attention_content= (TextView) mParentLayout.findViewById(R.id.txt_attention_content);
-        txt_memory_content= (TextView) mParentLayout.findViewById(R.id.txt_memory_content);
-        txt_recall_content= (TextView) mParentLayout.findViewById(R.id.txt_recall_content);
-        txt_function_content= (TextView) mParentLayout.findViewById(R.id.txt_function_content);
-       // mParentLayout.findViewById(R.id.img_close).setOnClickListener(this);
+        lv_project= (ListView) mViewParent.findViewById(R.id.lv_project);
+        fl_project= (FrameLayout) mViewParent.findViewById(R.id.fl_project);
+        txt_title= (TextView) mViewParent.findViewById(R.id.txt_title);
+        txt_attention_content= (TextView) mViewParent.findViewById(R.id.txt_attention_content);
+        txt_memory_content= (TextView) mViewParent.findViewById(R.id.txt_memory_content);
+        txt_recall_content= (TextView) mViewParent.findViewById(R.id.txt_recall_content);
+        txt_function_content= (TextView) mViewParent.findViewById(R.id.txt_function_content);
+        mViewParent.findViewById(R.id.img_close).setOnClickListener(this);
+
+        this.initData();
 
         lv_project.setAdapter(new nvvervi());
-
         lv_project.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -74,8 +61,8 @@ public class HomeDetailFragment extends BasicFragment {
     }
 
     @Override
-    public void changeBg(int color) {
-        mParentLayout.setBackgroundColor(color);
+    public int getLayoutId() {
+        return R.layout.fragment_home_layout;
     }
 
     @Override
@@ -139,10 +126,7 @@ public class HomeDetailFragment extends BasicFragment {
         homeBeans.add(sjcyBean);
         homeBeans.add(thnumBean);
         homeBeans.add(kspkBean);
-
-
     }
-
 
     class nvvervi extends BaseAdapter{
 

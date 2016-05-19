@@ -46,8 +46,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
         mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data);
         mActivity.findViewById(R.id.record_text_search).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_delete).setOnClickListener(this);
-
-
     }
 
     @Override
