@@ -1,7 +1,6 @@
 package com.unipad.common;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
@@ -21,7 +20,7 @@ import com.unipad.utils.CountDownTime;
  */
 public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener {
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
-    private Context mContext;
+    private CommonActivity mActivity;
     private RelativeLayout mParentLayout;
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
     private Button mBtnCompeteMode;
@@ -51,7 +50,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mContext = getActivity();
+        mActivity = (CommonActivity) getActivity();
 
         mTextName = (TextView) mParentLayout.findViewById(R.id.user_name);
         mTextAgeAds = (TextView) mParentLayout.findViewById(R.id.user_age_ads);
@@ -69,7 +68,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mCountDownTime.setTimeListener(this);
         mTextTime.setText(mCountDownTime.getTimeString());
 
-        if (CommonActivity.CompeteItem == R.id.main_lf_home) {
+        if (mActivity.getCompeteItem().equals(getString(R.string.project_9))) {
             mTextCompeteProcess.setText(R.string.playing_voice);
         }
     }
@@ -81,7 +80,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         ImageView viewImg;
         for (int i = 0; i < COLORS.length; i++) {
             viewImg = (ImageView) view.findViewById(R.id.text_change_layout_img_bg1 + i);
-            viewImg.setBackgroundColor(mContext.getResources().getColor(COLORS[i]));
+            viewImg.setBackgroundColor(mActivity.getResources().getColor(COLORS[i]));
             viewImg.setOnClickListener(this);
 
             mColorArray.put(R.id.text_change_layout_img_bg1 + i, COLORS[i]);
@@ -146,7 +145,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             case R.id.text_change_layout_img_bg2:
             case R.id.text_change_layout_img_bg3:
                 if (mICommunicate != null) {
-                    mICommunicate.changeBg(mContext.getResources().getColor((Integer) mColorArray.get(v.getId())));
+                    mICommunicate.changeBg(mActivity.getResources().getColor((Integer) mColorArray.get(v.getId())));
                 }
                 break;
             case R.id.text_exit:

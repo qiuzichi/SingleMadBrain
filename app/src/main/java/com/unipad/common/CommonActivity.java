@@ -2,7 +2,6 @@ package com.unipad.common;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,12 +18,11 @@ import com.unipad.brain.words.WordRightFragment;
  */
 public class CommonActivity extends BasicActivity {
     public static final String COMPETE_TYPE = "CompeteType";
-    public static final int COMPETE_TYPE_DEFAULT = -1;
     private CommonFragment mCommonFragment = new CommonFragment();
     /**
      * 比赛项目
      */
-    public static int CompeteItem = COMPETE_TYPE_DEFAULT;
+    private String mCompeteItem = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,23 +33,20 @@ public class CommonActivity extends BasicActivity {
     @Override
     public void initData() {
         Intent intent = getIntent();
-        CompeteItem = intent.getIntExtra(COMPETE_TYPE, COMPETE_TYPE_DEFAULT);
-        if (CompeteItem == COMPETE_TYPE_DEFAULT) {
-            return;
-        }
-
+        mCompeteItem = intent.getStringExtra(COMPETE_TYPE);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.common_lfg_container, mCommonFragment);
-        if (CompeteItem == 1 || CompeteItem == 2 || CompeteItem == 4 || CompeteItem == 8) {
+        if (mCompeteItem.equals(getString(R.string.project_2)) || mCompeteItem.equals(getString(R.string.project_3))
+                || mCompeteItem.equals(getString(R.string.project_5)) || mCompeteItem.equals(getString(R.string.project_9))) {
             fragmentTransaction.replace(R.id.common_rfg_container, new NumberRightFragment());
-        } else if (CompeteItem == 5) {
+        } else if (mCompeteItem.equals(getString(R.string.project_6))) {
             fragmentTransaction.replace(R.id.common_rfg_container, new VirtualRightFragment());
-        } else if (CompeteItem == 7) {
+        } else if (mCompeteItem.equals(getString(R.string.project_8))) {
             fragmentTransaction.replace(R.id.common_rfg_container, new WordRightFragment());
-        } else if (CompeteItem == 0 ) {
+        } else if (mCompeteItem.equals(getString(R.string.project_1))) {
             fragmentTransaction.replace(R.id.common_rfg_container, new HeadPortraitFragment());
-        } else if (CompeteItem == 3) {
+        } else if (mCompeteItem.equals(getString(R.string.project_4))) {
             fragmentTransaction.replace(R.id.common_rfg_container, new AbsFigureFragment());
         }
         fragmentTransaction.commit();
@@ -61,6 +56,10 @@ public class CommonActivity extends BasicActivity {
 
     public CommonFragment getCommonFragment() {
         return mCommonFragment;
+    }
+
+    public String getCompeteItem() {
+        return mCompeteItem;
     }
 
 }

@@ -44,7 +44,7 @@ public class NumberRememoryLayout extends LinearLayout implements
     /**
      * 比赛项目：二进制数字、快速随机数字、马拉松数字
      */
-    private int mCompeteType;
+    private String mCompeteType;
     /**
      * 已经加载了多少行
      */
@@ -71,7 +71,7 @@ public class NumberRememoryLayout extends LinearLayout implements
         super(context);
     }
 
-    public NumberRememoryLayout(Context context, int competeType) {
+    public NumberRememoryLayout(Context context, String competeType) {
         super(context);
         mContext = context;
         mCompeteType = competeType;
@@ -83,7 +83,8 @@ public class NumberRememoryLayout extends LinearLayout implements
         mInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (mCompeteType == 2 || mCompeteType == 4) {
+        if (mCompeteType.equals(mContext.getString(R.string.project_3))
+                || mCompeteType.equals(mContext.getString(R.string.project_5))) {
             mRows = RandomNumberEntity.rows;
             mLines = RandomNumberEntity.lines;
             mTotalNumbers = mLines * mRows;
@@ -135,7 +136,7 @@ public class NumberRememoryLayout extends LinearLayout implements
             textNum.setGravity(Gravity.CENTER);
             textNum.setBackground(mContext.getResources().getDrawable(
                     R.drawable.number_text_bg));
-            if (mCompeteType == R.id.main_lf_location) {
+            if (mCompeteType.equals(mContext.getString(R.string.project_2))) {
                 textNum.setOnClickListener(this);
             }
             parent.addView(textNum, i);
@@ -172,7 +173,8 @@ public class NumberRememoryLayout extends LinearLayout implements
                     mHandler.removeMessages(BinaryNumberEntity.MSG_REFRESH_UI);
 
                     //快速随机、马拉松数字项目的回忆界面需要显示光标
-                    if (mCompeteType == 2 || mCompeteType == 4) {
+                    if (mCompeteType.equals(mContext.getString(R.string.project_3))
+                            || mCompeteType.equals(mContext.getString(R.string.project_5))) {
                         ViewGroup viewGroup = (ViewGroup) getChildAt(0);// 获取行号
                         viewGroup = (ViewGroup) viewGroup.getChildAt(0);
                         TextView textNumber = (TextView) viewGroup

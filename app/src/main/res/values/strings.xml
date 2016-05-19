@@ -10,8 +10,6 @@
     <string name="change_bg">更换背景颜色</string>
     <string name="time_end">时间到！</string>
     <string name="fillout_gird_end">您已填满所有空白！</string>
-    <string name="item_binary">二进制数字</string>
-    <string name="item_quick_random">快速随机数字</string>
     <string name="keyboard_vibrate">键盘震动</string>
     <string name="delete">删除</string>
     <string name="goto_top">返回顶部</string>
@@ -124,7 +122,7 @@
     <string name="my_apply">我要报名</string>
     <string name="project_1">人名头像记忆</string>
     <string name="project_2">二进制数字</string>
-    <string name="project_3">马拉松数字项目</string>
+    <string name="project_3">马拉松数字</string>
     <string name="project_4">抽象图形</string>
     <string name="project_5">快速随机数字</string>
     <string name="project_6">虚拟事件和日期</string>
@@ -169,11 +167,4 @@
     <string name="wei_pay">\t微信支付</string>
     <string name="str_ex_apply">不想报名</string>
     <string name="str_pay_confirm">支付费用</string>
-
-    <string name="set_username">Lisa 丽莎</string>
-    <string name="set_usertext">昵称:</string>
-    <string name="set_addresstext">地址:</string>
-
-    <string name="set_phone">手机:</string>
-    <string name="set_schooltext">学校:</string>
 </resources>

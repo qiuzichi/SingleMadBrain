@@ -22,7 +22,6 @@ import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
-import com.unipad.common.CommonActivity;
 import com.unipad.utils.ToastUtil;
 
 public class NumberRightFragment extends BasicCommonFragment implements KeyboardDialog.KeyboardClickListener {
@@ -63,11 +62,13 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     private int mTotalNumbers = mLines * mRows;
     private SparseArray<String> mNumberArray = new SparseArray<>();
     private KeyboardDialog mKeyboardDialog;
+    private String mCompeteItem = "";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (CommonActivity.CompeteItem == R.id.main_lf_home) {
+        mCompeteItem = mActivity.getCompeteItem();
+        if (mCompeteItem.equals(getString(R.string.project_9))) {
             ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.view_stub_listen_frg_right_memory);
             mMemoryLayout = viewStub.inflate();
             AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
@@ -76,7 +77,7 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
             ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.view_stub_complex_item_scroll_layout);
             mMemoryLayout = viewStub.inflate();
             FrameLayout layout = (FrameLayout) mMemoryLayout.findViewById(R.id.memory_container);
-            layout.addView(new NumberMemoryLayout(mActivity, CommonActivity.CompeteItem));
+            layout.addView(new NumberMemoryLayout(mActivity, mCompeteItem));
         }
 
         mRememoryLayout = (RelativeLayout) mViewParent.findViewById(R.id.answer_layout);
@@ -100,11 +101,12 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
         mRememoryLayout.setVisibility(View.VISIBLE);
         mScrollAnswerView = (ScrollView) mRememoryLayout
                 .findViewById(R.id.scroll_rememory_layout);
-        mNumberRememoryLayout = new NumberRememoryLayout(mActivity, CommonActivity.CompeteItem);
+        mNumberRememoryLayout = new NumberRememoryLayout(mActivity, mCompeteItem);
         FrameLayout frameLayout = (FrameLayout) mRememoryLayout.findViewById(R.id.binary_rememory_layout);
         frameLayout.addView(mNumberRememoryLayout);
 
-        if (CommonActivity.CompeteItem == 2 || CommonActivity.CompeteItem == 4) {
+        if (mCompeteItem.equals(getString(R.string.project_3))
+                || mCompeteItem.equals(getString(R.string.project_5))) {
             mKeyboardDialog = new KeyboardDialog(mActivity);
             mKeyboardDialog.show();
             mKeyboardDialog.setKeyboardClickListener(this);
@@ -112,14 +114,14 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
             mRows = RandomNumberEntity.rows;
             mLines = RandomNumberEntity.lines;
             mTotalNumbers = mLines * mRows;
-        } else if (CommonActivity.CompeteItem == 1) {
+        } else if (mCompeteItem.equals(getString(R.string.project_2))) {
             View.inflate(mActivity, R.layout.binary_v_bottom, mLayoutBottom);
             mLayoutBottom.findViewById(R.id.ibtn_binary_0).setOnClickListener(this);
             mLayoutBottom.findViewById(R.id.ibtn_binary_1).setOnClickListener(this);
             mLayoutBottom.findViewById(R.id.btn_vibrate).setOnClickListener(this);
             mLayoutBottom.findViewById(R.id.btn_delete).setOnClickListener(this);
             mLayoutBottom.findViewById(R.id.btn_go_top).setOnClickListener(this);
-        } else if (CommonActivity.CompeteItem == 8) {
+        } else if (mCompeteItem.equals(getString(R.string.project_9))) {
             View.inflate(mActivity, R.layout.listen_v_bottom, mLayoutBottom);
             mLayoutBottom.findViewById(R.id.listen_keyboard_0).setOnClickListener(this);
             mLayoutBottom.findViewById(R.id.listen_keyboard_delete).setOnClickListener(this);
@@ -196,7 +198,8 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
         }
 
         //快速随机、马拉松数字项目的回忆界面需要显示光标
-        if (CommonActivity.CompeteItem == R.id.main_lf_message) {
+        if (mCompeteItem.equals(getString(R.string.project_3))
+                || mCompeteItem.equals(getString(R.string.project_5))) {
             mNumberRememoryLayout.setCursorPosition(mCursorPosition);
         }
 
@@ -214,7 +217,8 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
         mNumberRememoryLayout.setGridText(mCursorPosition, "");
 
         //快速随机、马拉松数字项目的回忆界面需要显示光标
-        if (CommonActivity.CompeteItem == R.id.main_lf_message) {
+        if (mCompeteItem.equals(getString(R.string.project_3))
+                || mCompeteItem.equals(getString(R.string.project_5))) {
             mNumberRememoryLayout.setCursorPosition(mCursorPosition);
         }
     }

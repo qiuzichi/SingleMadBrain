@@ -16,7 +16,6 @@ import com.unipad.brain.App;
 import com.unipad.brain.R;
 import com.unipad.brain.number.bean.BinaryNumberEntity;
 import com.unipad.brain.number.bean.RandomNumberEntity;
-import com.unipad.common.CommonActivity;
 import com.unipad.utils.StringUtil;
 
 /**
@@ -32,7 +31,7 @@ public class NumberMemoryLayout extends LinearLayout implements App.HandlerCallb
     /**
      * 比赛项目：二进制数字、快速随机数字、马拉松数字
      */
-    private int mCompeteType;
+    private String mCompeteType;
     /**
      * 已经加载了多少行
      */
@@ -42,7 +41,7 @@ public class NumberMemoryLayout extends LinearLayout implements App.HandlerCallb
         super(context);
     }
 
-    public NumberMemoryLayout(Context context, int competeType) {
+    public NumberMemoryLayout(Context context, String competeType) {
         super(context);
         mCompeteType = competeType;
 
@@ -66,7 +65,8 @@ public class NumberMemoryLayout extends LinearLayout implements App.HandlerCallb
      */
     private void makeBinaryNumber() {
         BinaryNumberEntity.lineNumbers.clear();
-        if (mCompeteType == 2 || mCompeteType == 4) {
+        if (mCompeteType.equals(mContext.getString(R.string.project_3))
+                || mCompeteType.equals(mContext.getString(R.string.project_5))) {
             mMaxNumber = 10;
             mRows = RandomNumberEntity.rows;
             mLines = RandomNumberEntity.lines;
