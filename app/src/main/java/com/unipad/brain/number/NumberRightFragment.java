@@ -22,6 +22,7 @@ import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
+import com.unipad.common.bean.CompeteItemEntity;
 import com.unipad.utils.ToastUtil;
 
 public class NumberRightFragment extends BasicCommonFragment implements KeyboardDialog.KeyboardClickListener {
@@ -67,7 +68,7 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCompeteItem = mActivity.getCompeteItem();
+        mCompeteItem = CompeteItemEntity.getInstance().getCompeteItem();
         if (mCompeteItem.equals(getString(R.string.project_9))) {
             ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.view_stub_listen_frg_right_memory);
             mMemoryLayout = viewStub.inflate();

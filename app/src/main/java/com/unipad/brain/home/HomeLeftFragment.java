@@ -21,8 +21,7 @@ import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.competitionpj.view.HomePresenter;
 import com.unipad.brain.main.MainActivity;;
 import com.unipad.common.CommonActivity;
-import com.unipad.common.CommonFragment;
-import com.unipad.utils.ToastUtil;
+import com.unipad.common.bean.CompeteItemEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,19 +117,22 @@ public class HomeLeftFragment extends Fragment implements View.OnClickListener {
                 if (position == 6 || position == 9) {
                     return;
                 }
-                HomeLeftFragment.this.openCommonActivity(homeBeans.get(position).projectBean.getName());
+
+                CompeteItemEntity.getInstance().setCompeteItem(homeBeans.get(position).projectBean.getName());
+                CompeteItemEntity.getInstance().setCompeteType("城市赛");
+                CompeteItemEntity.getInstance().setMemoryTime(++TmpSeconds);
+                CompeteItemEntity.getInstance().setRememoryTime(++TmpSeconds);
+                HomeLeftFragment.this.openCommonActivity();
             }
         });
     }
 
+    public static int TmpSeconds = 10;
     /**
      * 打开比赛Activity
-     *
-     * @param competeItem 比赛项目
      */
-    private void openCommonActivity(String competeItem) {
+    private void openCommonActivity() {
         Intent intent = new Intent(mActivity, CommonActivity.class);
-        intent.putExtra(CommonActivity.COMPETE_TYPE, competeItem);
         startActivity(intent);
     }
 

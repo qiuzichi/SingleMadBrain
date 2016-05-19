@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.unipad.brain.R;
+import com.unipad.common.bean.CompeteItemEntity;
 import com.unipad.utils.CountDownTime;
 
 /**
@@ -25,14 +26,6 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
     private Button mBtnCompeteMode;
     private CountDownTime mCountDownTime;
-    /**
-     * 回忆时间，单位：秒
-     */
-    private int mMemoryTime = 15;
-    /**
-     * 记忆时间，单位：秒
-     */
-    private int mRememoryTime = 15;
     /**
      * 是否处于回忆模式，只有两种模式且先记忆再回忆；默认为false，即处于记忆模式；
      */
@@ -64,11 +57,11 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextName.setSelected(true);
         this.getBgColorArray(mParentLayout);
 
-        mCountDownTime = new CountDownTime(mMemoryTime, true);
+        mCountDownTime = new CountDownTime(CompeteItemEntity.getInstance().getMemoryTime(), true);
         mCountDownTime.setTimeListener(this);
         mTextTime.setText(mCountDownTime.getTimeString());
 
-        if (mActivity.getCompeteItem().equals(getString(R.string.project_9))) {
+        if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
             mTextCompeteProcess.setText(R.string.playing_voice);
         }
     }
@@ -113,7 +106,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         if (!isRememoryStatus) {//切换到回忆模式
             isRememoryStatus = true;
             mTextCompeteProcess.setText(R.string.rememorying);
-            mTextTime.setText(mCountDownTime.setNewSeconds(mRememoryTime));
+            mTextTime.setText(mCountDownTime.setNewSeconds(CompeteItemEntity.getInstance().getRememoryTime()));
             mBtnCompeteMode.setText(R.string.commit_answer);
 
             if (mICommunicate != null) {

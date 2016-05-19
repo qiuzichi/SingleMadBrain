@@ -169,7 +169,7 @@ public class CompetitionPersenter {
 //			iCompetition.getContext().startActivity(new Intent(iCompetition.getContext(),RapidRandomNumberActivity.class));
 				iCompetition.showToast("4");
 			} else if (projectBean.getName().trim().equals(ConstSettings.getProjectValues(iCompetition.getContext()).get(5).trim())) {//虚拟事件和日期
-				openCommonActivity(iCompetition.getContext(), 5);
+				//openCommonActivity(iCompetition.getContext(), 5);
 			} else if (ConstSettings.getProjectValues(iCompetition.getContext()).get(6).equals(projectBean.getName())) {//马拉松扑克记忆
 				iCompetition.showToast("6");
 			} else if (ConstSettings.getProjectValues(iCompetition.getContext()).get(7).equals(projectBean.getName())) {//随机词语记忆
@@ -183,9 +183,8 @@ public class CompetitionPersenter {
 	}
 
 
-	private void openCommonActivity(Context context, int competeType) {
+	private void openCommonActivity(Context context) {
 		Intent intent = new Intent(context, CommonActivity.class);
-		intent.putExtra(CommonActivity.COMPETE_TYPE, competeType);
 		context.startActivity(intent);
 	}
 }
