@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
+import com.unipad.brain.absPic.view.AbsFigureFragment;
 import com.unipad.brain.number.NumberRightFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
@@ -48,8 +49,10 @@ public class CommonActivity extends BasicActivity {
             fragmentTransaction.replace(R.id.common_rfg_container, new VirtualRightFragment());
         } else if (CompeteItem == 7) {
             fragmentTransaction.replace(R.id.common_rfg_container, new WordRightFragment());
-        } else if (CompeteItem == 0 || CompeteItem == 3) {
+        } else if (CompeteItem == 0 ) {
             fragmentTransaction.replace(R.id.common_rfg_container, new HeadPortraitFragment());
+        } else if (CompeteItem == 3) {
+            fragmentTransaction.replace(R.id.common_rfg_container, new AbsFigureFragment());
         }
         fragmentTransaction.commit();
         fragmentManager.executePendingTransactions();

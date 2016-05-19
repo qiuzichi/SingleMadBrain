@@ -10,6 +10,8 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import com.unipad.brain.absPic.dao.FigureService;
+import com.unipad.brain.absPic.view.AbsFigureFragment;
 import com.unipad.brain.portraits.control.HeadService;
 import com.unipad.common.Constant;
 
@@ -104,19 +106,22 @@ public class AppContext {
     }
 
     public ICoreService getService(String key) {
+        ICoreService service = null;
         if (!TextUtils.isEmpty(key)) {
-            ICoreService service = serviceList.get(key);
+            service = serviceList.get(key);
             if (service != null) {
-                return service;
-            } else if (key.equals(Constant.HEADSERVICE)) {
-                ICoreService headService = new HeadService();
-                headService.init();
-                serviceList.put(key, headService);
-                return headService;
-            }
 
+            } else if (key.equals(Constant.HEADSERVICE)) {
+                service = new HeadService();
+                service.init();
+                serviceList.put(key, service);
+            } else if (key.equals(Constant.ABS_FIGURE)) {
+                service = new FigureService();
+                service.init();
+                serviceList.put(key, service);
+            }
         }
-        return null;
+        return service;
     }
 
 

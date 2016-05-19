@@ -5,4 +5,5 @@ package com.unipad.common;
  */
 public class Constant {
     public static final  String HEADSERVICE = "headService";
+    public static final String ABS_FIGURE ="absFigure" ;
 }
