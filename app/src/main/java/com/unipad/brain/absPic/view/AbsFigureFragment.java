@@ -1,16 +1,10 @@
 package com.unipad.brain.absPic.view;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,27 +13,19 @@ import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.absPic.bean.Figure;
 import com.unipad.brain.absPic.dao.FigureService;
-import com.unipad.brain.portraits.bean.Person;
-import com.unipad.brain.portraits.control.HeadService;
-import com.unipad.common.BasicFragment;
-import com.unipad.common.CommonFragment;
+import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
 
 import org.xutils.x;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by gongkan on 2016/4/15.
  */
-public class AbsFigureFragment extends BasicFragment {
-
+public class AbsFigureFragment extends BasicCommonFragment {
     private GridView gridView;
     private FigureService service;
     private FigureAdapter adapter;
@@ -47,22 +33,19 @@ public class AbsFigureFragment extends BasicFragment {
     private int current;
     private int preAnswer;
     private View buttonArea;
-    private View allArea;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_abs_figure, container, false);
-    Log.e("","absFigure");
-        gridView = (GridView) v.findViewById(R.id.abs_figure_gridview);
-        buttonArea = v.findViewById(R.id.button_area);
-        allArea = v.findViewById(R.id.abs_figure_fragment);
-        v.findViewById(R.id.answer_1).setOnClickListener(this);
-        v.findViewById(R.id.answer_2).setOnClickListener(this);
-        v.findViewById(R.id.answer_3).setOnClickListener(this);
-        v.findViewById(R.id.answer_4).setOnClickListener(this);
-        v.findViewById(R.id.answer_5).setOnClickListener(this);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        gridView = (GridView) mViewParent.findViewById(R.id.abs_figure_gridview);
+        buttonArea = mViewParent.findViewById(R.id.button_area);
+        mViewParent.findViewById(R.id.answer_1).setOnClickListener(this);
+        mViewParent.findViewById(R.id.answer_2).setOnClickListener(this);
+        mViewParent.findViewById(R.id.answer_3).setOnClickListener(this);
+        mViewParent.findViewById(R.id.answer_4).setOnClickListener(this);
+        mViewParent.findViewById(R.id.answer_5).setOnClickListener(this);
         service = (FigureService) (AppContext.instance().getService(Constant.ABS_FIGURE));
-        adapter = new FigureAdapter(getActivity(), service.allFigures, R.layout.list_item_abs_figure);
+        adapter = new FigureAdapter(mActivity, service.allFigures, R.layout.list_item_abs_figure);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -79,14 +62,9 @@ public class AbsFigureFragment extends BasicFragment {
             }
         });
         gridView.setAdapter(adapter);
-        //adapter = new HeadAdapter((Context) getActivity(), service.data, R.layout.list_portrait);
-
-        // paraent = v.findViewById(R.id.portraits_fragment);
         current = gridView.getFirstVisiblePosition();
         setButtonArea();
-        return v;
     }
-
 
     private void setButtonArea() {
         if (service.mode == 1) {
@@ -94,11 +72,6 @@ public class AbsFigureFragment extends BasicFragment {
         } else {
             buttonArea.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void changeBg(int color) {
-        allArea.setBackgroundColor(color);
     }
 
     @Override
@@ -117,9 +90,14 @@ public class AbsFigureFragment extends BasicFragment {
     }
 
     @Override
-    public void exitActivity() {
+    public void onDestroy() {
+        super.onDestroy();
         AppContext.instance().clear(Constant.ABS_FIGURE);
-        getActivity().finish();
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_abs_figure;
     }
 
     @Override
@@ -161,8 +139,6 @@ public class AbsFigureFragment extends BasicFragment {
     }
 
     private class FigureAdapter extends CommonAdapter<Figure> {
-
-
         public FigureAdapter(Context context, List<Figure> datas, int layoutId) {
             super(context, datas, layoutId);
         }
@@ -178,7 +154,7 @@ public class AbsFigureFragment extends BasicFragment {
             ImageView headView = (ImageView) holder.getView(R.id.icon_absfigure);
 
             x.image().bind(headView, figure.getPath());
-            Log.e("","path:"+figure.getPath());
+            Log.e("", "path:" + figure.getPath());
             //Log.e("---", "path = " + person.getHeadPortraitPath() + ",name=" + person.getFirstName() + person.getLastName());
             final TextView orginNum = (TextView) holder.getView(R.id.orgin_num);
             final TextView answerNum = (TextView) holder.getView(R.id.answer_num);
@@ -194,7 +170,7 @@ public class AbsFigureFragment extends BasicFragment {
             } else if (service.mode == 2) {
                 orginNum.setVisibility(View.VISIBLE);
                 answerNum.setVisibility(View.VISIBLE);
-                orginNum.setText(""+figure.getRawId());
+                orginNum.setText("" + figure.getRawId());
                 if (figure.getRawId() == figure.getAnswerId()) {
                     answerNum.setTextColor(getResources().getColor(R.color.black));
                 } else {
