@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -60,7 +61,8 @@ public class HeadPortraitFragment extends BasicCommonFragment {
 
     @Override
     public void rememoryTimeToEnd() {
-
+        service.mode = 2;
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -85,7 +87,7 @@ public class HeadPortraitFragment extends BasicCommonFragment {
          * @param person
          */
         @Override
-        public void convert(ViewHolder holder, final Person person) {
+        public void convert(final ViewHolder holder, final Person person) {
             ImageView headView = (ImageView) holder.getView(R.id.icon_head);
 
             x.image().bind(headView, person.getHeadPortraitPath());
@@ -110,32 +112,40 @@ public class HeadPortraitFragment extends BasicCommonFragment {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        person.setAnswerLastName(firstName.getText().toString().trim());
+                        person.setAnswerFirstName(firstName.getText().toString().trim());
                     }
                 });
-                lastName.addTextChangedListener(new TextWatcher() {
+                lastName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         person.setAnswerLastName(lastName.getText().toString().trim());
+                        int visiblePosition = mListView.getFirstVisiblePosition();
+                        View Preview = mListView.getChildAt(holder.getPosition() + 1 - visiblePosition);
+                        if (null != Preview) {
+                            EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
+                            firstName.requestFocus();
+                        }
+                        return false;
                     }
                 });
+
             } else if (service.mode == 0) {
                 firstName.setVisibility(View.GONE);
                 lastName.setVisibility(View.GONE);
                 holeName.setVisibility(View.VISIBLE);
                 holeName.setText(person.getFirstName() + "·" + person.getLastName());
+            } else if (service.mode == 2) {
+                lastName.setVisibility(View.GONE);
+                firstName.setVisibility(View.GONE);
+                holeName.setVisibility(View.VISIBLE);
+                TextView answerHoleName = (TextView) holder.getView(R.id.answer_name_text);
+                if (!person.isAnswerRight()) {
+                    answerHoleName.setTextColor(mContext.getResources().getColor(R.color.red));
+                }
+                holeName.setText(person.getFirstName() + "·" + person.getLastName());
+                answerHoleName.setVisibility(View.VISIBLE);
+                answerHoleName.setText(person.getAnswerFirstName() + "·" + person.getAnswerLastName());
             }
         }
     }
-
 }

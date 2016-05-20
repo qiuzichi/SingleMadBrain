@@ -101,4 +101,22 @@ public class Person {
     public void setHeadPortraitPath(String headPortraitPath) {
         this.headPortraitPath = headPortraitPath;
     }
+
+    public boolean isAnswerRight() {
+        if (lastName.equals(answerLastName) && firstName.equals(answerFirstName)){
+            return true;
+        }
+        return false;
+    }
+
+    public float getScore() {
+        float score = 0;
+        if (lastName.equals(answerLastName)){
+            score += 1;
+        }
+        if (firstName.equals(answerFirstName)){
+            score += 1;
+        }
+        return score;
+    }
 }
