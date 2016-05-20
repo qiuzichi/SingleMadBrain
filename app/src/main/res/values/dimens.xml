@@ -27,4 +27,7 @@
     <dimen name="setting_text_18sp">18sp</dimen>
     <dimen name="set_login_pwd_pic_h">40dp</dimen>
     <dimen name="hv_container_height">220dp</dimen>
+    <dimen name="abs_figure_answer_height">70dp</dimen>
+    <dimen name="abs_figure_item_width">100dp</dimen>
+    <dimen name="abs_figure_item_text_height">30dp</dimen>
 </resources>

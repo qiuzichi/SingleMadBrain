@@ -39,8 +39,8 @@ public class FigureService implements ICoreService {
             ArrayList<String> randomFileNames = new ArrayList<>(Arrays.asList(fileNames));
             Collections.shuffle(randomFileNames);
             ArrayList<Figure> list = null;
-            for (int i = 1; i <= randomFileNames.size(); i++) {
-                allFigures.add(new Figure(headResourse + randomFileNames.get(i - 1), i % 5));
+            for (int i = 0; i < randomFileNames.size(); i++) {
+                allFigures.add(new Figure(headResourse + randomFileNames.get(i), i % 5 +1));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,17 +54,22 @@ public class FigureService implements ICoreService {
     public void shuffle() {
         ArrayList<Figure> temp = new ArrayList<>(allFigures);
         allFigures.clear();
-        for (int i = 0; i < temp.size(); i++) {
-            int min = i/VOLUM;
-            int max = min + 4;
+        int j = 4;
+        int size = temp.size();
+        for (int i = 0; i < size; i++) {
+            int min = 0;
+            if (j < 0) {
+                j = 4;
+            }
+            if (temp.size() < j) {
+                j = temp.size();
+            }
+            int max = min + j;
             int index = (int) (min+Math.random()*(max-min+1));
             Figure figure = temp.get(index);
-            while (figure == null) {
-                index = (int) (min+Math.random()*(max-min+1));
-                figure = temp.get(index);
-            }
-            temp.set(index,null);
+            temp.remove(index);
             allFigures.add(figure);
+            j--;
         }
     }
 

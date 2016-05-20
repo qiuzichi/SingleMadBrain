@@ -46,21 +46,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
         mViewParent.findViewById(R.id.answer_5).setOnClickListener(this);
         service = (FigureService) (AppContext.instance().getService(Constant.ABS_FIGURE));
         adapter = new FigureAdapter(mActivity, service.allFigures, R.layout.list_item_abs_figure);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int visiblePosition = parent.getFirstVisiblePosition();
-                View Preview = parent.getChildAt(current - visiblePosition);
-                if (null != Preview) {
-                    TextView tv = (TextView) Preview.findViewById(R.id.answer_num);
-                    tv.setBackgroundColor(getResources().getColor(R.color.white));
-                }
-                TextView currTv = (TextView) view.findViewById(R.id.answer_num);
-                currTv.setBackgroundColor(getResources().getColor(R.color.blue));
-                preAnswer = current;
-                current = position;
-            }
-        });
         gridView.setAdapter(adapter);
         current = gridView.getFirstVisiblePosition();
         setButtonArea();
@@ -74,9 +59,15 @@ public class AbsFigureFragment extends BasicCommonFragment {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void memoryTimeToEnd() {
+
+
         service.mode = 1;
+        current = 0;
         service.shuffle();
         setButtonArea();
         adapter.notifyDataSetChanged();
@@ -134,8 +125,10 @@ public class AbsFigureFragment extends BasicCommonFragment {
         preAnswer = current;
         current++;
         View curr = gridView.getChildAt(current - visiblePosition);
-        TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
-        currTv.setBackgroundColor(getResources().getColor(R.color.blue));
+        if (curr != null) {
+            TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
+            currTv.setBackgroundColor(getResources().getColor(R.color.blue));
+        }
     }
 
     private class FigureAdapter extends CommonAdapter<Figure> {
@@ -150,7 +143,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
          */
         @Override
 
-        public void convert(ViewHolder holder, final Figure figure) {
+        public void convert(final ViewHolder holder, final Figure figure) {
             ImageView headView = (ImageView) holder.getView(R.id.icon_absfigure);
 
             x.image().bind(headView, figure.getPath());
@@ -162,6 +155,22 @@ public class AbsFigureFragment extends BasicCommonFragment {
                 orginNum.setVisibility(View.GONE);
                 answerNum.setVisibility(View.GONE);
             } else if (service.mode == 1) {
+                holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        int visiblePosition = gridView.getFirstVisiblePosition();
+                        View Preview = gridView.getChildAt(current - visiblePosition);
+                        if (null != Preview) {
+                            TextView tv = (TextView) Preview.findViewById(R.id.answer_num);
+                            tv.setBackgroundColor(getResources().getColor(R.color.white));
+                        }
+                       answerNum.setBackgroundColor(getResources().getColor(R.color.blue));
+                        preAnswer = current;
+                        current = holder.getPosition();
+
+                    }
+                });
                 orginNum.setVisibility(View.GONE);
                 answerNum.setVisibility(View.VISIBLE);
                 if (holder.getPosition() == current) {
@@ -171,6 +180,8 @@ public class AbsFigureFragment extends BasicCommonFragment {
                 orginNum.setVisibility(View.VISIBLE);
                 answerNum.setVisibility(View.VISIBLE);
                 orginNum.setText("" + figure.getRawId());
+                holder.getConvertView().setOnClickListener(null);
+                answerNum.setBackgroundColor(getResources().getColor(R.color.white));
                 if (figure.getRawId() == figure.getAnswerId()) {
                     answerNum.setTextColor(getResources().getColor(R.color.black));
                 } else {
