@@ -21,7 +21,6 @@ import java.util.Random;
 public class FigureService implements ICoreService {
 
     public ArrayList<Figure> allFigures = new ArrayList<>();
-    private HashMap<Integer, ArrayList<Figure>> map = new HashMap<Integer, ArrayList<Figure>>();
     private String headResourse = "assets://absFigure/";
     private String path = "absFigure";
     private static final int VOLUM = 5;//每行抽象图形的个数
@@ -38,7 +37,6 @@ public class FigureService implements ICoreService {
             String[] fileNames = context.getAssets().list(path);
             ArrayList<String> randomFileNames = new ArrayList<>(Arrays.asList(fileNames));
             Collections.shuffle(randomFileNames);
-            ArrayList<Figure> list = null;
             for (int i = 0; i < randomFileNames.size(); i++) {
                 allFigures.add(new Figure(headResourse + randomFileNames.get(i), i % 5 +1));
             }
@@ -47,9 +45,6 @@ public class FigureService implements ICoreService {
         }
     }
 
-    public HashMap<Integer, ArrayList<Figure>> getMap() {
-        return map;
-    }
 
     public void shuffle() {
         ArrayList<Figure> temp = new ArrayList<>(allFigures);
