@@ -1,6 +1,5 @@
 package com.unipad.brain.home;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import com.unipad.brain.R;
 import com.unipad.brain.home.bean.HomeBean;
 import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.competitionpj.view.HomePresenter;
-import com.unipad.brain.main.MainActivity;;
 import com.unipad.common.CommonActivity;
 import com.unipad.common.bean.CompeteItemEntity;
 
@@ -29,8 +27,7 @@ import java.util.List;
 /**
  * yzj----项目:虚拟事件
  */
-public class MainCompeteFragment extends Fragment implements View.OnClickListener {
-    private MainActivity mActivity;
+public class MainCompeteFragment extends MainBasicFragment {
     private RelativeLayout relatlayout;
     private ListView lv_project;
     private FrameLayout fl_project;
@@ -52,7 +49,7 @@ public class MainCompeteFragment extends Fragment implements View.OnClickListene
     /**
      * Fragment界面父布局
      */
-    private RelativeLayout mParentLayout;
+    //private RelativeLayout mParentLayout;
     //索引
     private int projectindex = -1;
     private HomePresenter homePresenter;
@@ -61,37 +58,28 @@ public class MainCompeteFragment extends Fragment implements View.OnClickListene
     HomeListAdapter homeListAdapter = new HomeListAdapter();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mParentLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_home_layout, container,
-                false);
-        return mParentLayout;
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mActivity = (MainActivity) getActivity();
         initData();
 
         this.setSidebar();
-        lv_project = (ListView) mParentLayout.findViewById(R.id.lv_project);
-        fl_project = (FrameLayout) mParentLayout.findViewById(R.id.fl_project);
-        txt_title = (TextView) mParentLayout.findViewById(R.id.txt_title);
-        txt_attention_content = (TextView) mParentLayout.findViewById(R.id.txt_attention_content);
-        txt_memory_content = (TextView) mParentLayout.findViewById(R.id.txt_memory_content);
-        txt_recall_content = (TextView) mParentLayout.findViewById(R.id.txt_recall_content);
-        txt_function_content = (TextView) mParentLayout.findViewById(R.id.txt_function_content);
-        txt_pname = (TextView) mParentLayout.findViewById(R.id.txt_pname);
-        txt_city_memory = (TextView) mParentLayout.findViewById(R.id.txt_city_memory);
-        txt_city_recall = (TextView) mParentLayout.findViewById(R.id.txt_city_recall);
-        txt_china_memory = (TextView) mParentLayout.findViewById(R.id.txt_china_memory);
-        txt_china_recall = (TextView) mParentLayout.findViewById(R.id.txt_china_recall);
-        txt_world_memory = (TextView) mParentLayout.findViewById(R.id.txt_world_memory);
-        txt_world_recall = (TextView) mParentLayout.findViewById(R.id.txt_world_recall);
-        img_phelp = (ImageView) mParentLayout.findViewById(R.id.img_phelp);
-        relatlayout = (RelativeLayout) mParentLayout.findViewById(R.id.relatlayout);
-        mParentLayout.findViewById(R.id.btn_apple).setOnClickListener(this);//比赛报名
+        lv_project = (ListView) mActivity.findViewById(R.id.lv_project);
+        fl_project = (FrameLayout) mActivity.findViewById(R.id.fl_project);
+        txt_title = (TextView) mActivity.findViewById(R.id.txt_title);
+        txt_attention_content = (TextView) mActivity.findViewById(R.id.txt_attention_content);
+        txt_memory_content = (TextView) mActivity.findViewById(R.id.txt_memory_content);
+        txt_recall_content = (TextView) mActivity.findViewById(R.id.txt_recall_content);
+        txt_function_content = (TextView) mActivity.findViewById(R.id.txt_function_content);
+        txt_pname = (TextView) mActivity.findViewById(R.id.txt_pname);
+        txt_city_memory = (TextView) mActivity.findViewById(R.id.txt_city_memory);
+        txt_city_recall = (TextView) mActivity.findViewById(R.id.txt_city_recall);
+        txt_china_memory = (TextView) mActivity.findViewById(R.id.txt_china_memory);
+        txt_china_recall = (TextView) mActivity.findViewById(R.id.txt_china_recall);
+        txt_world_memory = (TextView) mActivity.findViewById(R.id.txt_world_memory);
+        txt_world_recall = (TextView) mActivity.findViewById(R.id.txt_world_recall);
+        img_phelp = (ImageView) mActivity.findViewById(R.id.img_phelp);
+        relatlayout = (RelativeLayout) mActivity.findViewById(R.id.relatlayout);
+        mActivity.findViewById(R.id.btn_apple).setOnClickListener(this);//比赛报名
         img_phelp.setOnClickListener(this);
 
         relatlayout.setVisibility(View.GONE);
@@ -127,7 +115,13 @@ public class MainCompeteFragment extends Fragment implements View.OnClickListene
         });
     }
 
+    @Override
+    public int getLayoutId() {
+        return R.layout.main_compete_fragment;
+    }
+
     public static int TmpSeconds = 10;
+
     /**
      * 打开比赛Activity
      */

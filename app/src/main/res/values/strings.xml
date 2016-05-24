@@ -166,4 +166,5 @@
     <string name="wei_pay">\t微信支付</string>
     <string name="str_ex_apply">不想报名</string>
     <string name="str_pay_confirm">支付费用</string>
+    <string name="search_country">搜索你的国家</string>
 </resources>
