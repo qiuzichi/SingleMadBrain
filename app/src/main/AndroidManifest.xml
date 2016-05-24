@@ -53,7 +53,8 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".location.LocationActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>
