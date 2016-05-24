@@ -59,7 +59,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
         view.setOnClickListener(this);
         view.setSelected(true);
         mTextSelectedRole = view;
-        mLayoutStep1.findViewById(R.id.radio_parent).setOnClickListener(this);
         mLayoutStep1.findViewById(R.id.radio_coach).setOnClickListener(this);
         mLayoutStep1.findViewById(R.id.radio_judge).setOnClickListener(this);
 
@@ -95,7 +94,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
                 mTextSelectedSex = v;
                 break;
             case R.id.radio_player:
-            case R.id.radio_parent:
             case R.id.radio_coach:
             case R.id.radio_judge:
                 if (mTextSelectedRole != null) {
@@ -212,8 +210,8 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
     private void buildLayoutStep4(RelativeLayout layout) {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mLayoutStep1.getLayoutParams();
         layoutParams.addRule(RelativeLayout.LEFT_OF, R.id.divide_line_frg);
-        int margin = mActivity.getResources().getDimensionPixelOffset(R.dimen.common_lf_margin);
-        layoutParams.setMargins(margin, 0, 0, margin);
+        layoutParams.setMargins(mActivity.getResources().getDimensionPixelOffset(R.dimen.binary_line_layout_padding),
+                0, 0, mActivity.getResources().getDimensionPixelOffset(R.dimen.common_lf_margin));
         layout.addView(mLayoutStep1);
 
         layoutParams = (RelativeLayout.LayoutParams) mLayoutStep2.getLayoutParams();

@@ -175,6 +175,7 @@
         <item name="android:layout_marginRight">@dimen/main_lf_image_wh</item>
         <item name="android:textSize">@dimen/person_text_age_s</item>
         <item name="android:textColor">@color/personal_authentication_text_step</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="PersonalFrgSettingText" parent="PersonalFrgInfoText">

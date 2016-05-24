@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.unipad.brain.BasicActivity;
 
 import com.unipad.brain.R;
-import com.unipad.brain.home.HomeLeftFragment;
+import com.unipad.brain.home.MainCompeteFragment;
 import com.unipad.brain.personal.PersonalActivity;
 
 /**
@@ -23,7 +23,7 @@ public class MainActivity extends BasicActivity {
     private TextView mTextLocation;
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
-    private HomeLeftFragment mHomeFragment = new HomeLeftFragment();
+    private MainCompeteFragment mCompeteFragment = new MainCompeteFragment();
     private Fragment mCurrentFrg;
 
     @Override
@@ -36,17 +36,16 @@ public class MainActivity extends BasicActivity {
     public void initData() {
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.add(R.id.c_rfg_container, mHomeFragment);
+        mFragmentTransaction.add(R.id.c_rfg_container, mCompeteFragment);
         mFragmentTransaction.commit();
         mFragmentManager.executePendingTransactions();
-        mCurrentFrg = mHomeFragment;
+        mCurrentFrg = mCompeteFragment;
 
         mTextLocation = (TextView) findViewById(R.id.main_lf_text_locating);
         findViewById(R.id.main_lf_home).setOnClickListener(this);
         findViewById(R.id.main_lf_user).setOnClickListener(this);
+        findViewById(R.id.main_lf_compete).setOnClickListener(this);
         findViewById(R.id.main_lf_location).setOnClickListener(this);
-        findViewById(R.id.main_lf_message).setOnClickListener(this);
-        findViewById(R.id.main_lf_setting).setOnClickListener(this);
 
         mHandler.sendEmptyMessageDelayed(MSG_LOCATION, 5000);
     }
@@ -55,14 +54,18 @@ public class MainActivity extends BasicActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_lf_home:
-                if (mCurrentFrg != mHomeFragment) {
+                if (mCurrentFrg != mCompeteFragment) {
                     mFragmentTransaction = mFragmentManager.beginTransaction();
-                    mFragmentTransaction.hide(mCurrentFrg).show(mHomeFragment);
-                    mCurrentFrg = mHomeFragment;
+                    mFragmentTransaction.hide(mCurrentFrg).show(mCompeteFragment);
+                    mCurrentFrg = mCompeteFragment;
                 }
+                break;
+            case R.id.main_lf_compete:
                 break;
             case R.id.main_lf_user:
                 this.openPersonalActivity();
+                break;
+            case R.id.main_lf_location:
                 break;
             default:
                 break;

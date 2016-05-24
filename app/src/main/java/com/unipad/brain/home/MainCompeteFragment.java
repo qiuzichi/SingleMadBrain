@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * yzj----项目:虚拟事件
  */
-public class HomeLeftFragment extends Fragment implements View.OnClickListener {
+public class MainCompeteFragment extends Fragment implements View.OnClickListener {
     private MainActivity mActivity;
     private RelativeLayout relatlayout;
     private ListView lv_project;
@@ -122,7 +122,7 @@ public class HomeLeftFragment extends Fragment implements View.OnClickListener {
                 CompeteItemEntity.getInstance().setCompeteType("城市赛");
                 CompeteItemEntity.getInstance().setMemoryTime(++TmpSeconds);
                 CompeteItemEntity.getInstance().setRememoryTime(++TmpSeconds);
-                HomeLeftFragment.this.openCommonActivity();
+                MainCompeteFragment.this.openCommonActivity();
             }
         });
     }
