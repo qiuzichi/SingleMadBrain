@@ -66,9 +66,7 @@ public class DbUtils {
         DbManager db = x.getDb(AppContext.instance().getDaoConfig());
         try {
             List<Person> data = db.selector(Person.class).findAll();
-            for ( Person person:data) {
-                Log.e("",person.getFirstName());
-            }
+
             return data;
         } catch (DbException e) {
             e.printStackTrace();
