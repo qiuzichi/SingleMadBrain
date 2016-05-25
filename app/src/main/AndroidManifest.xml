@@ -34,8 +34,8 @@
 
         <activity
             android:name="com.unipad.common.CommonActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".login.RegisterActivity"
@@ -51,6 +51,10 @@
         <activity
             android:name=".personal.PersonalActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".location.LocationActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

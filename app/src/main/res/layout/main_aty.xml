@@ -16,9 +16,17 @@
             android:contentDescription="@string/app_name" />
 
         <ImageButton
-            android:id="@+id/main_lf_user"
+            android:id="@+id/main_lf_compete"
             style="@style/MainLfIBtn"
             android:layout_below="@id/main_lf_home"
+            android:layout_marginTop="@dimen/main_lf_margin"
+            android:background="@drawable/main_compete_btn_bg"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/main_lf_user"
+            style="@style/MainLfIBtn"
+            android:layout_below="@id/main_lf_compete"
             android:layout_marginTop="@dimen/main_lf_margin"
             android:background="@drawable/main_user_btn_bg"
             android:contentDescription="@string/app_name" />
@@ -27,9 +35,9 @@
             android:id="@+id/location_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/main_lf_message"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/main_lf_margin"
+            android:layout_alignParentBottom="true"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -58,21 +66,6 @@
                 android:contentDescription="@string/app_name" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/main_lf_message"
-            style="@style/MainLfIBtn"
-            android:layout_above="@+id/main_lf_setting"
-            android:layout_marginBottom="@dimen/main_lf_margin"
-            android:background="@drawable/main_message_btn_bg"
-            android:contentDescription="@string/app_name" />
-
-        <ImageButton
-            android:id="@+id/main_lf_setting"
-            style="@style/MainLfIBtn"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/main_lf_margin"
-            android:background="@drawable/main_setting_btn_bg"
-            android:contentDescription="@string/app_name" />
     </RelativeLayout>
 
     <FrameLayout

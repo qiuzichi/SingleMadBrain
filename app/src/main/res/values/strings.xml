@@ -64,7 +64,6 @@
     <string name="men">男</string>
     <string name="women">女</string>
     <string name="player">选手</string>
-    <string name="parent">家长</string>
     <string name="coach">教练</string>
     <string name="judge">裁判</string>
     <string name="select_sex">选择性别:</string>
@@ -167,4 +166,5 @@
     <string name="wei_pay">\t微信支付</string>
     <string name="str_ex_apply">不想报名</string>
     <string name="str_pay_confirm">支付费用</string>
+    <string name="search_country">搜索你的国家</string>
 </resources>

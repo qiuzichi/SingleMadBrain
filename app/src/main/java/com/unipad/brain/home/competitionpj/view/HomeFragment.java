@@ -2,16 +2,12 @@ package com.unipad.brain.home.competitionpj.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -67,7 +63,7 @@ public class HomeFragment extends BaseFragment implements IHome {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View homeView = inflater.inflate(R.layout.fragment_home_layout, container, false);
+        View homeView = inflater.inflate(R.layout.main_compete_fragment, container, false);
         ViewUtils.inject(this, homeView);
         initView(homeView);
         return homeView;
