@@ -1,6 +1,7 @@
 package com.unipad.brain.personal.view;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -21,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.ImageView.ScaleType;
 
 import com.unipad.brain.R;
-import com.unipad.brain.personal.bean.HistogramEntity;
 
 /**
  * 折线图
@@ -98,7 +98,7 @@ public class BrokenLineView extends LinearLayout {
     private ImageView mIVShowGridPoti;
     private LinearLayout mHorizontalLayout;
     private RelativeLayout histogramScrollContainer;
-    private ArrayList<HistogramEntity> mHistogramEntityList;
+    private ArrayList<String> mHistogramEntityList;
 
     private Paint mPaintPivotLine, mPaintGridLine;
     private Paint mPaintRect, mPaintBrokenLine;
@@ -108,7 +108,7 @@ public class BrokenLineView extends LinearLayout {
      * @param context             上下文对象
      * @param histogramEntityList 柱体属性实体的集合
      */
-    public BrokenLineView(Context context, ArrayList<HistogramEntity> histogramEntityList) {
+    public BrokenLineView(Context context, ArrayList<String> histogramEntityList) {
         super(context);
         initView(context);
         mHistogramEntityList = histogramEntityList;
@@ -287,11 +287,12 @@ public class BrokenLineView extends LinearLayout {
             // 绘制柱体;(mYPivotHeight / mYPivotMaxScale)为单位刻度值占有多少的高度
             float startX = i * mGridWidth;
             float startY = (mYPivotHeight - mYPivotHeight / mYPivotMaxScale
-                    * mHistogramEntityList.get(i).getHistogramValue()) - 1;// 减1是因为(①Ⅰ)处减了1
+                    * new Random().nextInt(101)) - 1;// 减1是因为(①Ⅰ)处减了1
 
             // 绘制纵向网格线，不包括最左边的Y轴刻度线
             histogramCanvas.drawLine(startX, mYPivotHeight, startX, 0, mPaintGridLine);
 
+            /*
             // 绘制折线上的转折点(小正方形)
             histogramCanvas.drawRect(startX - 5, startY - 5, startX + 5, startY + 5,
                     mPaintRect);
@@ -304,31 +305,23 @@ public class BrokenLineView extends LinearLayout {
             }
 
             // 绘制柱体上的数值文字
-            String histogramValue = String.valueOf(mHistogramEntityList.get(i).getHistogramValue());
+            String histogramValue = String.valueOf(mHistogramEntityList.get(i));
             histogramCanvas.drawText(histogramValue, startX + 2, startY, mPaintTextCity);
-
+*/
             // 绘制柱体名称
-            String histogramName = mHistogramEntityList.get(i).getHistogramName();
+            String histogramName = mHistogramEntityList.get(i);
             if (!TextUtils.isEmpty(histogramName)) {
                 float textWidth = mPaintTextPivot.measureText(histogramName);
                 float y = startX - textWidth / 2;
                 if (i == 0) {
-                    y += 11;
+                    y += 16;
                 }
-                //histogramCanvas.drawText(histogramName, y, mYPivotHeight + 20, mPaintTextPivot);
                 // 沿着路径画字
-                Path path2 = new Path();
-                path2.moveTo(y-20, mYPivotHeight + 4);
-                path2.lineTo(y-40, mYPivotHeight + 60);
-                //path2.lineTo(y, mYPivotHeight + 20);
-                Rect bounds = new Rect();
-                String paintTextPath = histogramName;
-                mPaintTextPivot.getTextBounds(paintTextPath, 0, paintTextPath.length(), bounds);
-//                int textWidth = bounds.width();
-                int textHeiht = bounds.height();
-//                LogUtil.i(TAG, "textWidth = " + textWidth);
-//                LogUtil.i(TAG, "textHeiht = " + textHeiht);
-                histogramCanvas.drawTextOnPath(paintTextPath, path2, 0, 0, mPaintTextPivot);
+                Path textPath = new Path();
+                textPath.moveTo(y + 24, mYPivotHeight + 70);
+                textPath.lineTo(y + textWidth, mYPivotHeight + 10);
+                mPaintTextPivot.getTextBounds(histogramName, 0, histogramName.length(), new Rect());
+                histogramCanvas.drawTextOnPath(histogramName, textPath, 0, 0, mPaintTextPivot);
             }
         }
 

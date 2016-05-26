@@ -2,13 +2,12 @@ package com.unipad.brain.personal;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.unipad.brain.R;
-import com.unipad.brain.personal.bean.HistogramEntity;
+import com.unipad.brain.personal.bean.BrokenLineData;
 import com.unipad.brain.personal.view.BrokenLineView;
 import com.unipad.utils.ToastUtil;
 
@@ -17,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -123,8 +123,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
                 mEditSearchBeginDate.setTextColor(mBlackColor);
             }
 
-            ArrayList<HistogramEntity> histogramEntityList = new ArrayList<>();
-            final Random ran = new Random();
+            ArrayList<String> histogramNameList = new ArrayList<>();
 
             Calendar calendar = Calendar.getInstance();
             final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
@@ -132,17 +131,17 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
             calendar.setTime(date);
 
             //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
-            histogramEntityList.add(new HistogramEntity(sdf.format(calendar.getTime()), ran.nextInt(101)));
+            histogramNameList.add(sdf.format(calendar.getTime()));
 
             final int intervalDays = (int) ((endTimeSeconds - beginTimeSeconds) / (24 * 60 * 60));
             //Log.i(TAG, "intervalDays-->" + intervalDays);
             for (int i = 0; i < intervalDays; ++i) {
                 calendar.add(Calendar.DATE, 1);
-                histogramEntityList.add(new HistogramEntity(sdf.format(calendar.getTime()), ran.nextInt(101)));
+                histogramNameList.add(sdf.format(calendar.getTime()));
                 //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
             }
 
-            mViewBrokenLine = new BrokenLineView(mActivity, histogramEntityList);
+            mViewBrokenLine = new BrokenLineView(mActivity, histogramNameList);
             ViewGroup viewGroup = (ViewGroup) mActivity.findViewById(R.id.record_histogram_container);
             viewGroup.addView(mViewBrokenLine);
         } catch (ParseException e) {
@@ -150,6 +149,15 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
         }
 
         return true;
+    }
+
+    private List<BrokenLineData> getTestData(int total) {
+        List<BrokenLineData> dataList = new ArrayList<>();
+        for (int i = 0; i < total; i++) {
+            dataList.add(new BrokenLineData("", 0, 98));
+        }
+
+        return dataList;
     }
 
     /**
