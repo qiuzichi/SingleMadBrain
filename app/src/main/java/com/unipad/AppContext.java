@@ -1,9 +1,7 @@
 package com.unipad;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
@@ -11,7 +9,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.unipad.brain.absPic.dao.FigureService;
-import com.unipad.brain.absPic.view.AbsFigureFragment;
 import com.unipad.brain.portraits.control.HeadService;
 import com.unipad.common.Constant;
 

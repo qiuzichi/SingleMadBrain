@@ -6,9 +6,9 @@ import org.xutils.db.annotation.Table;
 /**
  * Created by gongkan on 2016/4/11.人名肖像的实体类
  */
-@Table(name = "person")
+@Table(name = "un_person")
 public class Person {
-    @Column(name = "id", isId = true)
+    @Column(name = "_id", isId = true)
     private int id;
     /**
      * 人物的姓
@@ -45,13 +45,9 @@ public class Person {
      */
     private String answerLastName = "";
 
+    public Person(){
 
-    public Person(String firstName, String lastName, String headPortraitPath) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.headPortraitPath = headPortraitPath;
     }
-
     public Person(int id, String firstName, String lastName, String headPortraitPath) {
         this.firstName = firstName;
         this.lastName = lastName;
