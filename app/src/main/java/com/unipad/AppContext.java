@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 
 import com.unipad.brain.absPic.dao.FigureService;
 import com.unipad.brain.portraits.control.HeadService;
+import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.Constant;
 
 import org.xutils.DbManager;
@@ -114,6 +115,10 @@ public class AppContext {
                 serviceList.put(key, service);
             } else if (key.equals(Constant.ABS_FIGURE)) {
                 service = new FigureService();
+                service.init();
+                serviceList.put(key, service);
+            } else if (key.equals(Constant.WORDS_SERVICE)) {
+                service = new WordsService();
                 service.init();
                 serviceList.put(key, service);
             }

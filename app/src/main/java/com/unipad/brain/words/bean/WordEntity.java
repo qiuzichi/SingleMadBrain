@@ -15,7 +15,10 @@ public class WordEntity {
     /**
      * 词语
      */
-    private String Word;
+    private String word;
+
+
+    private String answer;
 
     public int getNumber() {
         return number;
@@ -26,17 +29,25 @@ public class WordEntity {
     }
 
     public String getWord() {
-        return Word;
+        return word;
     }
 
     public void setWord(String word) {
-        Word = word;
+        word = word;
     }
 
 
     public WordEntity(int number, String word) {
         this.number = number;
-        Word = word;
+        word = word;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
 }

@@ -10,7 +10,7 @@ import com.unipad.brain.absPic.view.AbsFigureFragment;
 import com.unipad.brain.number.NumberRightFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
-import com.unipad.brain.words.WordRightFragment;
+import com.unipad.brain.words.view.WordRightFragment;
 import com.unipad.common.bean.CompeteItemEntity;
 
 /**

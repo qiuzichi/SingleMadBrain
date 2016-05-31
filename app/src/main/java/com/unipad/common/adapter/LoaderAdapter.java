@@ -29,7 +29,7 @@ public class LoaderAdapter<T> extends BaseAdapter {
     }
 //delete all the Imagework unsed code.
 
-/* DTS2014121901077   qiuhongwei/00227094 20141219 end */
+    /* DTS2014121901077   qiuhongwei/00227094 20141219 end */
     public Context getContext() {
         return mContext;
     }
@@ -60,18 +60,19 @@ public class LoaderAdapter<T> extends BaseAdapter {
     public ArrayList<T> getDatas() {
         return mDatas;
     }
-    
+
     public void setData(List<T> infos) {
-
-
-
-        mDatas = new ArrayList<T>();
-        if(null != infos){
+        if (null != infos) {
             mDatas.addAll(infos);
+            if (mDatas == null) {
+                mDatas = new ArrayList<T>();
+            } else {
+                mDatas.clear();
+            }
+            notifyDataSetChanged();
         } else {
-            Log.e("","list is null");
+            Log.e("", "list is null");
         }
-        notifyDataSetChanged();
     }
 
     public void clear() {
@@ -79,25 +80,25 @@ public class LoaderAdapter<T> extends BaseAdapter {
             mDatas.clear();
         }
     }
-    
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null) {
-            convertView = mLayInflater.inflate(mItemLayout, parent,false);
+        if (convertView == null) {
+            convertView = mLayInflater.inflate(mItemLayout, parent, false);
         }
-        
+
         T info = getItem(position);
-  
-        bindView(convertView,info,position);
-        
+
+        bindView(convertView, info, position);
+
         return convertView;
     }
 
-    public void setOnItemClickListener(OnClickListener listener){
+    public void setOnItemClickListener(OnClickListener listener) {
         mItemClickListener = listener;
     }
-    
-    public void bindView(View convertView, T info,int position) {
+
+    public void bindView(View convertView, T info, int position) {
 
     }
 

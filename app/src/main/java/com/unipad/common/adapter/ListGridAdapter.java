@@ -12,7 +12,7 @@ public class ListGridAdapter<T> extends LoaderAdapter<T>{
     public int mLineCount = 5;
 
     public ListGridAdapter(Context context,int resId) {
-        this(context,resId,3);
+        this(context,resId,5);
     }
     
     public ListGridAdapter(Context context,int resId,int lineCount) {
