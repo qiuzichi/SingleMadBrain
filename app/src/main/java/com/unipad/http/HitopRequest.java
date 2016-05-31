@@ -1,6 +1,8 @@
 package com.unipad.http;
 
 
+import android.util.Log;
+
 import java.util.Locale;
 
 import org.xutils.common.Callback;
@@ -12,7 +14,7 @@ public abstract class HitopRequest<T>{
     public static final String TAG = "HitopRequest";
 
 
-    protected String url = "http://221.5.109.34/crazybrain-mng/";
+    protected String url = "http://221.5.109.34/crazybrain-mng";
 
     protected RequestParams mParams = null;
 
@@ -25,9 +27,11 @@ public abstract class HitopRequest<T>{
     public abstract T handleJsonData(String json);
 
     public abstract void buildRequestParams();
-
+    public HitopRequest(String path){
+        url = url+path;
+        mParams = new RequestParams(url);
+    }
     public T get(){
-        mParams = new RequestParams(buildRequestURL());
         buildRequestParams();
         x.http().get(mParams, new Callback.CommonCallback<String>() {
             @Override
@@ -55,12 +59,16 @@ public abstract class HitopRequest<T>{
 
     public T post(){
 
-        mParams = new RequestParams();
+        if (null == mParams) {
+            mParams = new RequestParams(buildRequestURL());
+        }
 
         x.http().post(mParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+
                 mResult = result;
+                Log.e("",result);
             }
 
             @Override
@@ -94,7 +102,10 @@ public abstract class HitopRequest<T>{
     private static final String VERSION_CODE = "versionCode";
 
 
+    public void buildRequestParams(String key,String value){
 
+        mParams.addQueryStringParameter(key, value);
+    }
 
     protected String getHost() {
 

@@ -24,6 +24,7 @@ public class App extends Application {
         super.onCreate();
         mContext = (App) getApplicationContext();
         x.Ext.init(this);
+        x.Ext.setDebug(true);
         // 获取屏幕的宽和高
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         screenWidth = displayMetrics.widthPixels;

@@ -4,27 +4,32 @@ import android.util.Log;
 
 import com.unipad.UserDetailEntity;
 
+import org.xutils.http.RequestParams;
+
 import java.util.List;
 
 /**
  * Created by gongkan on 2016/5/30.
  */
-public class HitopRegist extends HitopRequest<List<UserDetailEntity>>{
+public class HitopRegist extends HitopRequest<Object>{
 
+    public HitopRegist(String path) {
+        super(path);
+    }
+    public HitopRegist() {
+        super(HttpConstant.Regist);
+    }
     @Override
     public String buildRequestURL() {
-        path = HttpConstant.Regist;
-        return getHost()+path;
+        return getHost();
     }
 
     @Override
-    public List<UserDetailEntity> handleJsonData(String json) {
+    public Object handleJsonData(String json) {
         Log.e("", ""+json);
         return null;
     }
-    public void buildRequestParams(String key,String value){
-        mParams.addQueryStringParameter(key, value);
-    }
+
     @Override
     public void buildRequestParams() {
 

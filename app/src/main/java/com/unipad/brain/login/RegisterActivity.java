@@ -11,6 +11,7 @@ import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
 import com.unipad.brain.main.MainActivity;
 import com.unipad.http.HitopRegist;
+import com.unipad.http.HttpConstant;
 
 public class RegisterActivity extends BasicActivity implements View.OnClickListener {
 

@@ -29,6 +29,7 @@ public class AppContext {
 
     private static volatile AppContext instance = null;
 
+    public UserDetailEntity loginUser;
     /**
      * 所有service的集合
      */
