@@ -5,5 +5,5 @@ package com.unipad.io;
  */
 public interface IWrite {
     boolean write(byte[] data);
-    boolean write(byte[] data, int length);
+
 }

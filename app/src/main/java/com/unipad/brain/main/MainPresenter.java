@@ -62,7 +62,6 @@ public class MainPresenter {
 	public MainPresenter(MainActivityView activityView) {
 		super();
 		this.activityView = activityView;
-		//fragmentManager = ((MainActivity)activityView.getContext()).getSupportFragmentManager();
 		/*userInfoFragment = UserInfoFragment.getUserInfoFragment();
 		positionFragment = PositionFragment.getPositionFragment();
 		messageFragment = MessageFragment.getHomeFragment();
