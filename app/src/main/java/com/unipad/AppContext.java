@@ -9,9 +9,13 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.unipad.brain.absPic.dao.FigureService;
+import com.unipad.brain.login.PersonCenterService;
+import com.unipad.brain.number.dao.BinaryNumService;
 import com.unipad.brain.portraits.control.HeadService;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.Constant;
+import com.unipad.observer.GlobleHandle;
+import com.unipad.observer.GlobleObserService;
 
 import org.xutils.DbManager;
 
@@ -37,11 +41,7 @@ public class AppContext {
     public HashMap<String, ICoreService> serviceList = new HashMap<String, ICoreService>();
 
 
-
-    /**
-     * 升级地址的 URL
-     */
-    public String updateUrl = "hid/HID.apk";
+    public GlobleHandle globleHandle;
 
     /**
      * 当前升级包的版本
@@ -65,6 +65,7 @@ public class AppContext {
     }
 
     private void init() {
+        globleHandle = new GlobleHandle();
         daoConfig = new DbManager.DaoConfig()
                 .setDbName("unistrong_db")//创建数据库的名称
                 .setDbVersion(0)//数据库版本号
@@ -122,11 +123,19 @@ public class AppContext {
                 service = new WordsService();
                 service.init();
                 serviceList.put(key, service);
+            } else if (key.equals(Constant.BINARYNUMSERVICE)) {
+                service = new BinaryNumService();
+                service.init();
+                serviceList.put(key, service);
+            }
+            else if (key.equals(Constant.PERSONCENTER)) {
+                service = new PersonCenterService();
+                service.init();
+                serviceList.put(key, service);
             }
         }
         return service;
     }
-
 
 
     /**

@@ -1,7 +1,13 @@
 package com.unipad.http;
 
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+
+import com.unipad.brain.App;
+import com.unipad.utils.NetWorkUtil;
+import com.unipad.utils.ToastUtil;
 
 import java.util.Locale;
 
@@ -14,11 +20,12 @@ public abstract class HitopRequest<T>{
     public static final String TAG = "HitopRequest";
 
 
+
     protected String url = "http://221.5.109.34/crazybrain-mng";
 
     protected RequestParams mParams = null;
 
-    private String mResult = "";
+    private T mResult = null;
 
     protected String path;
 
@@ -31,34 +38,30 @@ public abstract class HitopRequest<T>{
         url = url+path;
         mParams = new RequestParams(url);
     }
-    public T get(){
+    public void get(){
+        if(!NetWorkUtil.isNetworkAvailable(App.getContext())) {
+            ToastUtil.showToast("请检查网络");
+            return ;
+        }
         buildRequestParams();
-        x.http().get(mParams, new Callback.CommonCallback<String>() {
+        x.http().get(mParams, new ResultCallBack<String>(){
             @Override
             public void onSuccess(String result) {
-                mResult = result;
-            }
-
-            @Override
-            public void onError(Throwable throwable, boolean b) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException e) {
-
-            }
-
-            @Override
-            public void onFinished() {
+                super.onSuccess(result);
+                handleJsonData(result);
 
             }
         });
-        return handleJsonData(mResult);
     }
 
-    public T post(){
+    public void notifyData(T result) {
 
+    }
+    public T post(){
+        if(!NetWorkUtil.isNetworkAvailable(App.getContext())) {
+            ToastUtil.showToast("请检查网络");
+            return null;
+        }
         if (null == mParams) {
             mParams = new RequestParams(buildRequestURL());
         }
@@ -67,12 +70,14 @@ public abstract class HitopRequest<T>{
             @Override
             public void onSuccess(String result) {
 
-                mResult = result;
+                mResult = handleJsonData(result);
+
                 Log.e("",result);
             }
 
             @Override
             public void onError(Throwable throwable, boolean b) {
+
 
             }
 
@@ -86,7 +91,7 @@ public abstract class HitopRequest<T>{
 
             }
         });
-        return handleJsonData(mResult);
+        return mResult;
     }
 
 

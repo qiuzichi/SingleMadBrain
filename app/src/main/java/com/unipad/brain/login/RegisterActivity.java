@@ -12,6 +12,7 @@ import com.unipad.brain.R;
 import com.unipad.brain.main.MainActivity;
 import com.unipad.http.HitopRegist;
 import com.unipad.http.HttpConstant;
+import com.unipad.utils.MD5Utils;
 
 public class RegisterActivity extends BasicActivity implements View.OnClickListener {
 
@@ -87,7 +88,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         httpRegist.buildRequestParams("user_sex",sex);
         httpRegist.buildRequestParams("user_contact",tel);
         httpRegist.buildRequestParams("user_born",birthday);
-        httpRegist.buildRequestParams("user_password",pwd);
+        httpRegist.buildRequestParams("user_password", MD5Utils.MD5_two(pwd));
         httpRegist.post();
 
     }

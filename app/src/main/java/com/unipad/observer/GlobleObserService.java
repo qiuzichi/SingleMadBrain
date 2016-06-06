@@ -1,5 +1,9 @@
 package com.unipad.observer;
 
+import android.os.Message;
+
+import com.unipad.AppContext;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,7 +13,7 @@ import java.util.Map;
 /**
  * Created by gongkan on 2016/6/2.
  */
-public abstract class AbsObserService {
+public  abstract class GlobleObserService {
 
     protected HashMap<Integer,List<IDataObserver>> observerMap = new HashMap<>();
 
@@ -73,6 +77,32 @@ public abstract class AbsObserService {
             }
         }
     }
-
+    /**
+     * 处理数据变化了，通知界面数据进行更新
+     * @param key
+     */
+    public void noticeDataChange(Integer key, Object obj)
+    {
+        List<IDataObserver> observerList = observerMap.get(key);
+        if (observerList == null)
+        {
+            return;
+        }
+        BeenObser msgData;
+        GlobleHandle msgHandler = AppContext.instance().globleHandle;
+        Message msg;
+        for (IDataObserver uiView : observerList)
+        {
+            // 判断View是否显示出来
+            if (null == uiView)
+            {
+                continue;
+            }
+            msgData = new BeenObser(obj,key,uiView);
+            msg = Message.obtain();
+            msg.obj = msgData;
+            msgHandler.sendMessage(msg);
+        }
+    }
 
 }

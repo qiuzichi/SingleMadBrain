@@ -12,6 +12,7 @@ public class UserDetailEntity {
 
     private String tel;
 
+    private String userId;
     public String getBirthday() {
         return birthday;
     }
@@ -54,4 +55,11 @@ public class UserDetailEntity {
 
     private String birthday;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

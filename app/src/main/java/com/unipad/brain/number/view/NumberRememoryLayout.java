@@ -295,4 +295,21 @@ public class NumberRememoryLayout extends LinearLayout implements
         return null;
     }
 
+    public void showAnswer() {
+        for (int i = 0; i < mLines; i++) {
+            List<String> orgin = BinaryNumberEntity.lineNumbers.get(i);
+
+            ViewGroup viewGroup = (ViewGroup) getChildAt(i);
+            viewGroup = (ViewGroup) viewGroup.getChildAt(0);
+
+            for (int j = 0; j < mRows; j++) {
+                TextView textNumber = (TextView) viewGroup.getChildAt(j);
+                String userAnswer  = textNumber.getText().toString();
+                if (!orgin.get(j).equals(userAnswer)) {
+                    textNumber.setTextColor(getResources().getColor(R.color.red));
+                    textNumber.setText(userAnswer+"/"+orgin.get(i));
+                }
+            }
+        }
+    }
 }

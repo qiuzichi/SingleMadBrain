@@ -1,4 +1,4 @@
-package com.unipad.brain.number;
+package com.unipad.brain.number.view;
 
 import android.app.Service;
 import android.graphics.drawable.AnimationDrawable;
@@ -25,8 +25,8 @@ import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.bean.CompeteItemEntity;
 import com.unipad.utils.ToastUtil;
 
-public class NumberRightFragment extends BasicCommonFragment implements KeyboardDialog.KeyboardClickListener {
-    private static final String TAG = NumberRightFragment.class.getSimpleName();
+public class AbsNumFragment extends BasicCommonFragment implements KeyboardDialog.KeyboardClickListener {
+    private static final String TAG = AbsNumFragment.class.getSimpleName();
     /**
      * 记忆界面父布局
      */
@@ -232,7 +232,6 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     @Override
     public void rememoryTimeToEnd() {
         //mStubShade.setVisibility(View.VISIBLE);
-        mNumberRememoryLayout.showAnswer();
     }
 
     @Override
@@ -297,7 +296,6 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BinaryNumberEntity.lineNumbers.clear();
         if (mKeyboardDialog != null) {
             if (mKeyboardDialog.isShowing()) {
                 mKeyboardDialog.dismiss();

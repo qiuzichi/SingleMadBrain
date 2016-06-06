@@ -7,4 +7,6 @@ public class Constant {
     public static final  String HEADSERVICE = "headService";
     public static final String ABS_FIGURE ="absFigure" ;
     public static final String WORDS_SERVICE = "words_service";
+    public static final String BINARYNUMSERVICE = "binarynumservice";
+    public static final String PERSONCENTER = "personcenterservice";
 }
