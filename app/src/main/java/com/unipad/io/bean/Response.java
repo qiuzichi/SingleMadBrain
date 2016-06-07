@@ -1,10 +1,13 @@
 package com.unipad.io.bean;
 
+import android.util.Log;
+
 import com.unipad.io.IPack;
 import com.unipad.io.IWrite;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
@@ -40,13 +43,11 @@ public class Response implements IPack {
 
     @Override
     public void parsePack(byte[] data) {
-        buffer = new byte[data.length - HEAD_LENGTH];
-        System.arraycopy(buffer, 0, data, HEAD_LENGTH - 1, buffer.length);
-
-        if (isNeedResponse) {
+        try {
+            readXMLString(data);
+        } catch (Exception e) {
 
         }
-
     }
 
     private void readXMLString(byte[] xmlData) throws Exception {
@@ -55,19 +56,19 @@ public class Response implements IPack {
         InputStream inputStream = new ByteArrayInputStream(xmlData);
         Document doc = builder.parse(inputStream); //
         // 下面开始读取
-        Element root = doc.getDocumentElement(); // 获取根元素
-        NodeList all = root.getElementsByTagName("TRX");
+        Element root = doc.getDocumentElement();
+        NodeList head = root.getChildNodes();
+        Log.e("","length:"+head.getLength());
         datas = new HashMap<String, String>();
-        for (int i = 0; i < all.getLength(); i++) {
-            Element headAndBody = (Element) all.item(i);
-            NodeList part = root.getChildNodes();
+        for (int i = 0; i < head.getLength(); i++) {
+            Node headAndBody = (Node) head.item(i);
+            NodeList part = headAndBody.getChildNodes();
             for (int j = 0; j < part.getLength(); j++) {
-                Element e = (Element)part.item(j);
-                datas.put(e.getTagName(),e.getNodeValue());
+                Node e = (Node)part.item(j);
+                datas.put(e.getNodeName(),e.getTextContent());
 
             }
         }
-        Element head = (Element) all.item(0);
 
 
 
@@ -91,5 +92,9 @@ public class Response implements IPack {
 
     public byte readByte(int index) {
         return buffer[index];
+    }
+
+    public Map<String, String> getDatas() {
+        return datas;
     }
 }

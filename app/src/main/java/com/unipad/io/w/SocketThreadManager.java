@@ -3,10 +3,13 @@ package com.unipad.io.w;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import com.unipad.io.IDataHandler;
+import com.unipad.io.IPack;
+import com.unipad.io.IWrite;
 import com.unipad.io.bean.Request;
 
 
-public class SocketThreadManager
+public class SocketThreadManager implements IDataHandler
 {
 	
 	private static SocketThreadManager s_SocketManager = null;
@@ -34,6 +37,7 @@ public class SocketThreadManager
 	{
 		mHeartThread = new SocketHeartThread();
 		mInputThread = new SocketInputThread();
+		mInputThread.setHandler(this);
 		mOutThread = new SocketOutputThread();
 	}
 	
@@ -79,5 +83,10 @@ public class SocketThreadManager
 	{
 
 		mOutThread.addMsgToSendList(request);
+	}
+
+	@Override
+	public void processPack(IPack pack, IWrite writer) {
+
 	}
 }

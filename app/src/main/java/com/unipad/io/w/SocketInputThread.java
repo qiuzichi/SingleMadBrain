@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.unipad.io.IDataHandler;
 import com.unipad.io.IPack;
 import com.unipad.io.bean.Request;
 import com.unipad.io.bean.Response;
@@ -33,7 +34,11 @@ public class SocketInputThread extends Thread {
 
     public SocketInputThread() {
     }
+    private IDataHandler handler;
 
+    public void setHandler(IDataHandler handler) {
+        this.handler = handler;
+    }
     public void setStart(boolean isStart) {
         this.isStart = isStart;
     }
@@ -66,6 +71,9 @@ public class SocketInputThread extends Thread {
         }
     }
 
+    /**
+     *
+     */
     public void readSocket() {
         Selector selector = TCPClient.instance().getSelector();
         if (selector == null) {
@@ -86,7 +94,8 @@ public class SocketInputThread extends Thread {
                                 if (length == 1 && buffer.array()[0] == 0x12){
 
                                 } else {
-                                    new DataHandleThread(buffer.array(), length).start();
+
+                                    new Thread(new DataHandleThread(buffer.array(),length,handler)).start();
                                 }
                             }
 

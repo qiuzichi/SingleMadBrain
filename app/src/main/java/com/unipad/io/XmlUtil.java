@@ -1,8 +1,11 @@
 package com.unipad.io;
 
+import android.text.format.DateFormat;
 import android.text.format.Time;
+import android.util.Log;
 import android.util.SparseArray;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -16,20 +19,14 @@ public class XmlUtil {
     {
         StringBuilder build = new StringBuilder("<?xml version=\'1.0\' encoding=\'GBK\'?><TRX> <HEAD>");
         if (headType != null) {
-            Time time = new Time("GMT+8");
-            time.setToNow();
-            int year = time.year;
-            int month = time.month+1;
-            int day = time.monthDay;
-            int minute = time.minute;
-            int hour = time.hour;
-            int sec = time.second;
+            Calendar calendar = Calendar.getInstance();
+            String date = DateFormat.format("yyyyMMdd kkmmss",
+                    calendar.getTime()).toString();
 
-            String date = year+format(month)+format(day);
-            String texTime = format(hour)+format(minute)+format(sec);
+            Log.e("",date);
 
             build.append("<TRXCODE>").append(headType).append("</TRXCODE>").append("<TRXDATE>")
-                    .append(date).append("</TRXDATE>").append("<TRXTIME>").append(texTime).append("</TRXTIME>");
+                    .append(date.replace(" ", "</TRXDATE><TRXTIME>")).append("</TRXTIME>");
             //for (Map.Entry<String, String> entry : head.entrySet()) {
              //   build.append("<"+entry.getKey()+">").append(entry.getValue()).append("</"+entry.getKey()+">");
             //}

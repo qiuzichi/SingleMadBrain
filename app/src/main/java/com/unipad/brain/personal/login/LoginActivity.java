@@ -59,6 +59,12 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        service.unRegisterObserve(HttpConstant.LOGIN_UPDATE_UI,this);
+    }
+
     private void login() {
         service.loginIn(userName.getText().toString().trim(), userPwd.getText().toString().trim());
     }

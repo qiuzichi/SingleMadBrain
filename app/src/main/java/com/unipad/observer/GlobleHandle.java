@@ -8,16 +8,9 @@ public class GlobleHandle extends Handler {
     @Override
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
-        switch (msg.what) {
-            case 0:
-
-            break;
-            default:
-                if (msg.obj instanceof BeenObser) {
-                    BeenObser beenObser = (BeenObser) msg.obj;
-                    beenObser.getObser().update(beenObser.getKey(), beenObser.getO());
-                }
-                break;
+        if (msg.obj instanceof BeenObser) {
+            BeenObser beenObser = (BeenObser) msg.obj;
+            beenObser.getObser().update(beenObser.getKey(), beenObser.getO());
         }
     }
 }
