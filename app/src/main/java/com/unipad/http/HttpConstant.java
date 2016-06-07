@@ -6,7 +6,7 @@ package com.unipad.http;
 public class HttpConstant {
     public static final String LOGIN = "/api/user/login";
     public static String Regist = "/api/user/regist";
-
+    public static String UPLOAD = "/api/file/upload";
 
     public static int LOGIN_UPDATE_UI = 0x10000;
 }

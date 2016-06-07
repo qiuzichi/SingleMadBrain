@@ -1,4 +1,4 @@
-package com.unipad.brain.login;
+package com.unipad.brain.personal.login;
 
 import android.content.Intent;
 import android.os.Bundle;

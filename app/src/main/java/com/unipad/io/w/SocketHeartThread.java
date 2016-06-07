@@ -61,14 +61,18 @@ class SocketHeartThread extends Thread
 				if(canConnectToServer == false){
 					reConnect();
 				}
+
 				try
 				{
+					TCPClient.instance().sendMsg(new byte[]{0x11});
 					Thread.sleep(Const.SOCKET_HEART_SECOND * 1000);
 					
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			}
+		}
 	}
 }

@@ -83,8 +83,11 @@ public class SocketInputThread extends Thread {
                         try {
                             int length = sc.read(buffer);
                             if (length>0) {
+                                if (length == 1 && buffer.array()[0] == 0x12){
 
-                                new DataHandleThread(buffer.array(),length).start();
+                                } else {
+                                    new DataHandleThread(buffer.array(), length).start();
+                                }
                             }
 
                             buffer.flip();

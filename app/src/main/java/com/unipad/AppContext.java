@@ -9,13 +9,12 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.unipad.brain.absPic.dao.FigureService;
-import com.unipad.brain.login.PersonCenterService;
+import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.number.dao.BinaryNumService;
 import com.unipad.brain.portraits.control.HeadService;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.Constant;
 import com.unipad.observer.GlobleHandle;
-import com.unipad.observer.GlobleObserService;
 
 import org.xutils.DbManager;
 

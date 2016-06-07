@@ -53,14 +53,10 @@ public abstract class HitopRequest<T>{
             }
         });
     }
-
-    public void notifyData(T result) {
-
-    }
-    public T post(){
+    public void post(){
         if(!NetWorkUtil.isNetworkAvailable(App.getContext())) {
             ToastUtil.showToast("请检查网络");
-            return null;
+            return ;
         }
         if (null == mParams) {
             mParams = new RequestParams(buildRequestURL());
@@ -69,10 +65,10 @@ public abstract class HitopRequest<T>{
         x.http().post(mParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-
-                mResult = handleJsonData(result);
-
                 Log.e("",result);
+                handleJsonData(result);
+
+
             }
 
             @Override
@@ -91,7 +87,6 @@ public abstract class HitopRequest<T>{
 
             }
         });
-        return mResult;
     }
 
 
