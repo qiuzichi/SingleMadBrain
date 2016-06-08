@@ -13,8 +13,10 @@ import com.unipad.brain.R;
 import com.unipad.brain.main.MainActivity;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.ToastUtil;
 
 /**
  * Created by LiuPeng on 2016/4/14.
@@ -69,6 +71,17 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     }
 
     private void login() {
+        String name = userName.getText().toString().trim();
+        String pwd = userPwd.getText().toString().trim();
+        if ("".equals(name)) {
+            ToastUtil.showToast("用户名不能为空");
+            return;
+        }
+        if ("".equals(pwd)) {
+            ToastUtil.showToast("密码不能为空");
+            return;
+        }
+        ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
         service.loginIn(userName.getText().toString().trim(), userPwd.getText().toString().trim());
     }
 
@@ -89,6 +102,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         Log.e("", "Login update UI");
         switch (key) {
             case HttpConstant.LOGIN_UPDATE_UI:
+                HIDDialog.dismissAll();
                 AppContext.instance().loginUser = (UserDetailEntity)o;
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
