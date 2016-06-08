@@ -52,6 +52,7 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
                         user.setBirthday(dataJson.getString("born"));
                         user.setTel(dataJson.getString("phone"));
                         user.setCountry(dataJson.getString("country"));
+                        user.setAuth(dataJson.getInt("auth"));
                         user.setSex(dataJson.getInt("sex") == 0 ? "男" : "女");
                         if (sevice != null) {
                             sevice.noticeDataChange(HttpConstant.LOGIN_UPDATE_UI, user);
