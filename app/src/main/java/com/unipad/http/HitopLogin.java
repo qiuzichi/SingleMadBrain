@@ -44,19 +44,30 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
             jsObj = new JSONObject(response);
             if (jsObj != null && jsObj.toString().length() != 0) {
                 if (jsObj.getInt("ret_code")==0) {
-
-                    if (sevice != null) {
-                        sevice.noticeDataChange(HttpConstant.LOGIN_WRONG_MSG, jsObj.getString("ret_msg"));
-
+                    JSONObject dataJson = new JSONObject(jsObj.getString("data"));
+                    if (dataJson != null) {
+                        user = new UserDetailEntity();
+                        user.setUserName(dataJson.getString("name"));
+                        user.setUserId(dataJson.getString("id"));
+                        user.setBirthday(dataJson.getString("born"));
+                        user.setTel(dataJson.getString("phone"));
+                        user.setCountry(dataJson.getString("country"));
+                        user.setSex(dataJson.getInt("sex") == 0 ? "男" : "女");
+                        if (sevice != null) {
+                            sevice.noticeDataChange(HttpConstant.LOGIN_UPDATE_UI, user);
+                        }
                     }
+
                 }
-                user = new UserDetailEntity();
-                user.setUserId(jsObj.getString("user_id"));
                 if (sevice != null) {
-                    sevice.noticeDataChange(HttpConstant.LOGIN_UPDATE_UI, user);
+                    sevice.noticeDataChange(HttpConstant.LOGIN_WRONG_MSG, jsObj.getString("ret_msg"));
                 }
+
             }
         } catch (Exception e) {
+            if (sevice != null) {
+                sevice.noticeDataChange(HttpConstant.LOGIN_WRONG_MSG, "Json 数据格式部队不对");
+            }
             e.printStackTrace();
         }
 

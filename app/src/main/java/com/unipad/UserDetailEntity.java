@@ -13,6 +13,7 @@ public class UserDetailEntity {
     private String tel;
 
     private String userId;
+    
     public String getBirthday() {
         return birthday;
     }

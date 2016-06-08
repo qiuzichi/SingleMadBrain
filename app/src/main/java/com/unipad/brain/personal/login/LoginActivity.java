@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.unipad.AppContext;
+import com.unipad.UserDetailEntity;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
 import com.unipad.brain.main.MainActivity;
@@ -40,6 +41,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         userPwd = (EditText) findViewById(R.id.edit_login_pwd);
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         service.registerObserver(HttpConstant.LOGIN_UPDATE_UI,this);
+        service.registerObserver(HttpConstant.LOGIN_WRONG_MSG,this);
     }
 
     @Override
@@ -62,7 +64,8 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        service.unRegisterObserve(HttpConstant.LOGIN_UPDATE_UI,this);
+        service.unRegisterObserve(HttpConstant.LOGIN_UPDATE_UI, this);
+        service.unRegisterObserve(HttpConstant.LOGIN_WRONG_MSG,this);
     }
 
     private void login() {
@@ -83,12 +86,21 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
     @Override
     public void update(int key, Object o) {
+        Log.e("", "Login update UI");
         switch (key) {
-
+            case HttpConstant.LOGIN_UPDATE_UI:
+                AppContext.instance().loginUser = (UserDetailEntity)o;
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case HttpConstant.LOGIN_WRONG_MSG:
+                userName.setText((String)o);
+                break;
+            default:
+                break;
         }
-        Log.e("","Login update UI");
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+
+
     }
 }
