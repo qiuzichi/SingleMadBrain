@@ -3,9 +3,9 @@ package com.unipad.io.w;
 public class Const
 {
 	
-   public final static String SOCKET_SERVER = "192.168.10.208";
+   public final static String SOCKET_SERVER = "221.5.109.34";
 
-	public final static int SOCKET_PORT = 8012;
+	public final static int SOCKET_PORT = 7003;
 	
 	// 默认timeout 时间 60s
 	public final static int SOCKET_TIMOUT = 60 * 1000;

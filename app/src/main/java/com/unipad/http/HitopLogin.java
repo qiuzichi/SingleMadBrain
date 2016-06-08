@@ -30,6 +30,10 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
         return null;
     }
 
+    /**
+     * @param json
+     * @return
+     */
     @Override
     public UserDetailEntity handleJsonData(String json) {
         UserDetailEntity user = null;
@@ -39,7 +43,13 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
             response = new String(json.getBytes(), "utf-8");
             jsObj = new JSONObject(response);
             if (jsObj != null && jsObj.toString().length() != 0) {
-                Log.e("", "ret code:" + jsObj.getInt("ret_code"));
+                if (jsObj.getInt("ret_code")==0) {
+
+                    if (sevice != null) {
+                        sevice.noticeDataChange(HttpConstant.LOGIN_WRONG_MSG, jsObj.getString("ret_msg"));
+
+                    }
+                }
                 user = new UserDetailEntity();
                 user.setUserId(jsObj.getString("user_id"));
                 if (sevice != null) {
@@ -62,4 +72,5 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
     public void setSevice(GlobleObserService sevice) {
         this.sevice = sevice;
     }
+
 }
