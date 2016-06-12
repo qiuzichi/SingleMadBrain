@@ -1,4 +1,4 @@
-package com.unipad.brain.personal;
+﻿package com.unipad.brain.personal;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -272,6 +272,9 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
             case R.id.grade_certificate_pic1:
                 mImageIdentityPositive.setBackground(null);
                 mImageIdentityPositive.setBackground(drawable);
+//akhghh
+//-----------------
+//r
                 break;
             case R.id.grade_certificate_pic2:
                 mImageIdentityNegative.setBackground(null);
