@@ -1,4 +1,4 @@
-﻿package com.unipad.brain.personal;
+package com.unipad.brain.personal;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -6,17 +6,27 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.App;
 import com.unipad.brain.R;
+import com.unipad.brain.home.util.MyTools;
+import com.unipad.AuthEntity;
+import com.unipad.brain.personal.dao.PersonCenterService;
+import com.unipad.common.Constant;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
 
 import java.io.File;
@@ -25,7 +35,7 @@ import java.io.File;
  * 个人中心之实名认证
  * Created by Wbj on 2016/4/26.
  */
-public class PersonalAuthenticationFragment extends PersonalCommonFragment {
+public class PersonalAuthenticationFragment extends PersonalCommonFragment implements IDataObserver {
     private static final String PHOTO_POSTFIX = ".jpg".trim();
     private static final int MAX_STEP = 4;
     private View mTextSelectedSex;
@@ -37,17 +47,30 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
     private ImageView mImageCertificate1, mImageCertificate2;
     private TextView mLayoutStep3UpTitle, mLayoutStep3DownTitle;
     private Button mBtnNextStep;
+
+    // 将用户所填信息 封装到AuthBean 中。
+    private AuthEntity authBean;
     /**
      * 当前处于第几步，共四步，默认从第一步开始
      */
     private int mCurrentStep = 1;
     private SparseArray<String> mPhotoFileList = new SparseArray<>();
+    private PersonCenterService service;
+
+    private EditText ed_name;
+
+    private EditText ed_id;
+
+    private EditText ed_data;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTitleBarRightText = mActivity.getString(R.string.next_step);
         mLayoutStep123Parent = (RelativeLayout) mActivity.findViewById(R.id.layout_step123_parent);
+        // 这一部分  获取后台交互服务（个人中心）
+        service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
+        service.registerObserver(HttpConstant.USER_AUTH,this);
 
         mLayoutStep1 = (ViewGroup) mLayoutStep123Parent.findViewById(R.id.layout_step1);
         View view = mLayoutStep1.findViewById(R.id.radio_men);
@@ -81,6 +104,9 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
         return mTitleBarRightText;
     }
 
+    private int intSex; // 性别
+
+    private String intType="00001"; // 类别
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -89,9 +115,13 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
                 if (mTextSelectedSex != null) {
                     mTextSelectedSex.setSelected(false);
                 }
-
                 v.setSelected(true);
                 mTextSelectedSex = v;
+                if(v.getId() == R.id.radio_men){
+                    intSex = 0;
+                } else {
+                    intSex = 1;
+                }
                 break;
             case R.id.radio_player:
             case R.id.radio_coach:
@@ -99,9 +129,15 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
                 if (mTextSelectedRole != null) {
                     mTextSelectedRole.setSelected(false);
                 }
-
                 v.setSelected(true);
                 mTextSelectedRole = v;
+                if(v.getId() == R.id.radio_player){
+                    intType = "00001";
+                } else if(v.getId()==R.id.radio_coach){
+                    intType = "00003";
+                }else{
+                    intType = "00004";
+                }
                 break;
             case R.id.next_step:
                 this.setNextStep();
@@ -124,13 +160,74 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
                 startActivityForResult(intent, v.getId());
                 break;
             case R.id.authentication_confirm_sure_btn:
-                this.saveInfoToServer();
+                // 确认提交
+                this.getLayout4Date();
+                this.submit();
                 break;
             default:
                 break;
         }
     }
 
+    /*
+      提交信息
+     */
+   private void  submit(){
+       if(this.isNotNull()){
+           //  提交 实名认证信息
+           service.userAuth(authBean);
+       } else
+           MyTools.showToast(getContext(),"请将信息填写完整然后提交");
+
+   };
+
+    /*
+     判断用户所填是否为空！！
+     */
+    private boolean isNotNull(){
+        if(authBean == null)
+            return false;
+        if(TextUtils.isEmpty(authBean.getSex())){
+            return false;
+        }
+
+        if(TextUtils.isEmpty(authBean.getType())){
+            return false;
+        }
+
+        if(TextUtils.isEmpty(authBean.getName())){
+            return false;
+        }
+
+        if(TextUtils.isEmpty(authBean.getIdentity())){
+            return false;
+        }
+
+        if(TextUtils.isEmpty(authBean.getBirthDate())){
+            return  false;
+        }
+
+//        if(TextUtils.isEmpty(authBean.getIdFrontUrl())){
+//            return  false;
+//        }
+//
+//        if (TextUtils.isEmpty(authBean.getIdReverseUrl())){
+//            return false;
+//        }
+//
+//        if(TextUtils.isEmpty(authBean.getRating_certificate2())){
+//            return false;
+//        }
+//
+//        if(TextUtils.isEmpty(authBean.getRating_certificate2())){
+//            return  false;
+//        }
+        return true;
+    }
+
+    /*
+    下一步操作
+     */
     private void setNextStep() {
         if ((++mCurrentStep) > MAX_STEP) {
             mCurrentStep = MAX_STEP;
@@ -142,7 +239,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
         switch (mCurrentStep) {
             case 2:
                 mLayoutStep123Parent.removeView(mLayoutStep1);
-
                 textCurrent = (TextView) mActivity.findViewById(R.id.text_step2);
                 textCurrent.setSelected(true);
                 textCurrent.setTextColor(Color.parseColor("#853EC6"));
@@ -150,6 +246,9 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
 
                 mViewStub = (ViewStub) mActivity.findViewById(R.id.view_shade_step2);
                 mLayoutStep2 = (ViewGroup) mViewStub.inflate();
+                ed_data = (EditText)mLayoutStep2.findViewById(R.id.ed_data);
+               ed_id=(EditText) mLayoutStep2.findViewById(R.id.ed_id);
+                ed_name=(EditText) mLayoutStep2.findViewById(R.id.ed_name);
                 this.setNextBtnLayoutParams(R.id.layout_step2);
                 break;
             case 3:
@@ -204,6 +303,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
         }
     }
 
+
     /**
      * 构建步骤4的布局
      */
@@ -227,6 +327,34 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
         viewGroup.addView(mLayoutStep3Down);
 
         layout.findViewById(R.id.authentication_confirm_sure_btn).setOnClickListener(this);
+
+        layout4 = layout;
+    }
+
+    private  RelativeLayout layout4;
+    /*
+       封装步骤4 的所有内容。
+     */
+    private void getLayout4Date(){
+        if(layout4 == null)
+            return;
+
+        authBean = new AuthEntity();
+        String data = ed_data .getText().toString().trim();
+        String ed_ids =  ed_id.getText().toString().trim();
+        String ed_names = ed_name.getText().toString().trim();
+        authBean.setBirthDate(data);
+        ToastUtil.showToast(data);
+        authBean.setId(AppContext.instance().loginUser.getUserId());
+        authBean.setIdentity(ed_ids);
+        authBean.setSex(intSex+"");
+
+        authBean.setName(ed_names);
+        authBean.setType(intType);
+        authBean.setRating_certificate1("");
+        authBean.setRating_certificate2("");
+        authBean.setIdFrontUrl("");
+        authBean.setIdReverseUrl("");
     }
 
     /**
@@ -264,7 +392,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
 
     private void setTakePhotoPicture(int viewId) {
         Drawable drawable = Drawable.createFromPath(mPhotoFileList.get(viewId));
-        if (drawable == null) {
+            if (drawable == null) {
             return;
         }
 
@@ -272,9 +400,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
             case R.id.grade_certificate_pic1:
                 mImageIdentityPositive.setBackground(null);
                 mImageIdentityPositive.setBackground(drawable);
-//akhghh
-//-----------------
-
                 break;
             case R.id.grade_certificate_pic2:
                 mImageIdentityNegative.setBackground(null);
@@ -293,4 +418,11 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
         }
     }
 
+    @Override
+    public void update(int key, Object o) {
+        // 本方法用于 UI更新
+       // MyTools.showToast(getContext(),(String)o);
+       // Log.e("PersonalAuthenticationFragment",(String)o);
+        ToastUtil.showToast((String)o);
+    }
 }
