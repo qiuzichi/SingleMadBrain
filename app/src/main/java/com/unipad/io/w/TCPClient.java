@@ -52,7 +52,7 @@ public class TCPClient
 	 * @param HostListenningPort
 	 * @throws IOException
 	 */
-	public TCPClient(String HostIp, int HostListenningPort)
+	private TCPClient(String HostIp, int HostListenningPort)
 	{
 		this.hostIp = HostIp;
 		this.hostListenningPort = HostListenningPort;

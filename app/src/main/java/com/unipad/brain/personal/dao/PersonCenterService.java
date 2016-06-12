@@ -7,6 +7,7 @@ import com.unipad.common.MobileInfo;
 import com.unipad.http.HitopLogin;
 import com.unipad.io.XmlUtil;
 import com.unipad.io.bean.Response;
+import com.unipad.io.w.SocketThreadManager;
 import com.unipad.observer.GlobleObserService;
 import com.unipad.utils.MD5Utils;
 
@@ -26,6 +27,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpLogin.buildRequestParams("device_did", MobileInfo.getDeviceId());
         httpLogin.setSevice(this);
         httpLogin.post();
+        SocketThreadManager.sharedInstance();
 
     }
 

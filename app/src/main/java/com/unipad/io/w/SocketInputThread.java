@@ -47,7 +47,7 @@ public class SocketInputThread extends Thread {
     public void run() {
         while (isStart) {
             // 手机能联网，读socket数据
-            if (NetManager.instance().isNetworkConnected()) {
+           // if (NetManager.instance().isNetworkConnected()) {
 
                 if (!TCPClient.instance().isConnect()) {
                     CLog.e(tag, "TCPClient connet server is fail read thread sleep second" + Const.SOCKET_SLEEP_SECOND);
@@ -67,7 +67,7 @@ public class SocketInputThread extends Thread {
                 CLog.e("socket", "TCPClient.instance().isConnect() " + TCPClient.instance().isConnect());
 
 
-            }
+           // }
         }
     }
 

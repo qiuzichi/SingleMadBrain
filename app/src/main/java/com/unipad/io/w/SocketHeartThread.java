@@ -71,6 +71,7 @@ class SocketHeartThread extends Thread
 				{
 					e.printStackTrace();
 				} catch (IOException e) {
+					isStop = true;
 					e.printStackTrace();
 				}
 		}
