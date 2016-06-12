@@ -273,6 +273,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment {
                 mImageIdentityPositive.setBackground(null);
                 mImageIdentityPositive.setBackground(drawable);
 //akhghh
+//-----------------
                 break;
             case R.id.grade_certificate_pic2:
                 mImageIdentityNegative.setBackground(null);
