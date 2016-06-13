@@ -4,7 +4,7 @@ package com.unipad;
  * Created by gongjiebin on 2016/6/8.
  * 描述：  实名认证， 实体
  */
-public class AuthEntity {
+public class AuthEntity extends UserDetailEntity {
     private  String sex; // 性别
 
     private String type; // 用户类别

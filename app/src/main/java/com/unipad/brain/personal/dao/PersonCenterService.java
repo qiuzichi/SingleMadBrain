@@ -4,9 +4,15 @@ import com.unipad.ICoreService;
 import com.unipad.AuthEntity;
 import com.unipad.common.MobileInfo;
 import com.unipad.http.HitopAuth;
+import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopLogin;
+import com.unipad.http.HittopUpload;
 import com.unipad.observer.GlobleObserService;
 import com.unipad.utils.MD5Utils;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by gongkan on 2016/6/6.
@@ -43,9 +49,22 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopAuth.buildRequestParams("user_reaName",authBean.getName());
         hitopAuth.buildRequestParams("user_identity",authBean.getIdentity());
         hitopAuth.buildRequestParams("user_born",authBean.getBirthDate());
-        hitopAuth.buildRequestParams("user_idephoto",authBean.getIdFrontUrl()+ (authBean.getIdReverseUrl() == ""? "" : ","+authBean.getIdReverseUrl()));
-        hitopAuth.buildRequestParams("user_gradCert",authBean.getRating_certificate1() + (authBean.getRating_certificate2() == ""? "" : ","+authBean.getRating_certificate2()));
+        hitopAuth.buildRequestParams("user_onphoto",authBean.getIdFrontUrl());
+        hitopAuth.buildRequestParams("user_idephoto", authBean.getIdReverseUrl());
+        hitopAuth.buildRequestParams("user_gradcert",authBean.getRating_certificate1() + (authBean.getRating_certificate2() == ""? "" : ","+authBean.getRating_certificate2()));
         hitopAuth.setSevice(this);
         hitopAuth.post();
+    }
+
+    /**
+     * 上传实名认证所需图片
+     * @param path   本地地址
+     */
+    public void uploadAuthFile(String path){
+        HitopAuthUploadFile hitopAuthUploadFile = new HitopAuthUploadFile();
+        hitopAuthUploadFile.setSevice(this);
+        Map<String,Object> mapFile = new HashMap<String,Object>();
+        mapFile.put("image",new File(path));
+        hitopAuthUploadFile.UpLoadFile(mapFile);
     }
 }

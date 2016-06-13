@@ -11,9 +11,9 @@ public class HittopUpload extends HitopRequest<Object>{
     public HittopUpload() {
         super(HttpConstant.UPLOAD);
     }
+
     @Override
     public String buildRequestURL() {
-        mParams.addQueryStringParameter("","");
         return null;
     }
 

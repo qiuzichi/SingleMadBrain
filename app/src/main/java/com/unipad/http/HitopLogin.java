@@ -67,7 +67,7 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
             }
         } catch (Exception e) {
             if (sevice != null) {
-                sevice.noticeDataChange(HttpConstant.LOGIN_WRONG_MSG, "Json 数据格式部队不对");
+                sevice.noticeDataChange(HttpConstant.LOGIN_WRONG_MSG, "Json 数据格式不对");
             }
             e.printStackTrace();
         }
