@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.unipad.brain.absPic.dao.FigureService;
+import com.unipad.brain.home.dao.NewsService;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.number.dao.BinaryNumService;
 import com.unipad.brain.portraits.control.HeadService;
@@ -129,6 +130,11 @@ public class AppContext {
             }
             else if (key.equals(Constant.PERSONCENTER)) {
                 service = new PersonCenterService();
+                service.init();
+                serviceList.put(key, service);
+            }
+            else if (key.equals(Constant.NEWS_SERVICE)) {
+                service = new NewsService();
                 service.init();
                 serviceList.put(key, service);
             }

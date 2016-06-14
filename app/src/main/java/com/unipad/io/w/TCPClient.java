@@ -232,6 +232,8 @@ public class TCPClient
 			if (socketChannel != null)
 			{
 				socketChannel.socket().sendUrgentData(0xff);
+			} else {
+				return false;
 			}
 		} catch (IOException e)
 		{
@@ -243,6 +245,7 @@ public class TCPClient
 			e.printStackTrace();
 			return false;
 		}
+		isInitialized = true;
 		return true;
 	}
 	

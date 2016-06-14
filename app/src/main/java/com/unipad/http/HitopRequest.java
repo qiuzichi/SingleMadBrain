@@ -21,7 +21,7 @@ public abstract class HitopRequest<T>{
 
 
 
-    protected String url = "http://221.5.109.34/crazybrain-mng";
+    protected String url = "http://192.168.0.104:8090/crazybrain-mng";
 
     protected RequestParams mParams = null;
 
@@ -58,10 +58,7 @@ public abstract class HitopRequest<T>{
             ToastUtil.showToast("请检查网络");
             return ;
         }
-        if (null == mParams) {
-            mParams = new RequestParams(buildRequestURL());
-        }
-
+        buildRequestURL();
         x.http().post(mParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
