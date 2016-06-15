@@ -2,6 +2,7 @@ package com.unipad.brain.personal;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 import com.unipad.AppContext;
 import com.unipad.UserDetailEntity;
@@ -11,6 +12,8 @@ import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
+
+import org.xutils.view.annotation.ViewInject;
 
 /**
  * 个人中心之个人资料
@@ -22,7 +25,13 @@ public class PersonalInfoFragment extends PersonalCommonFragment implements IDat
 
     private UserDetailEntity userDetailEntity = AppContext.instance().loginUser;
 
-    
+    private EditText ed_mail;
+    private EditText ed_phone;
+    private EditText ed_nationality;
+    private EditText ed_scho;
+    private EditText ed_addr;
+    private EditText ed_name;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -30,7 +39,31 @@ public class PersonalInfoFragment extends PersonalCommonFragment implements IDat
         mTitleBarRightText = mActivity.getString(R.string.save);
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         service.registerObserver(HttpConstant.PERSONALDATA,this);
+
+        ed_mail = (EditText)mActivity.findViewById(R.id.ed_mail);
+        ed_addr = (EditText)mActivity.findViewById(R.id.ed_addr);
+        ed_name = (EditText)mActivity.findViewById(R.id.ed_name);
+        ed_nationality = (EditText)mActivity.findViewById(R.id.ed_nationality);
+        ed_phone = (EditText)mActivity.findViewById(R.id.ed_phone);
+        ed_scho = (EditText)mActivity.findViewById(R.id.ed_scho);
+        initData();
     }
+
+    /*
+      初始化数据
+     */
+    private void initData(){
+        if(null == userDetailEntity)
+            return;
+        ed_mail.setText(userDetailEntity.getMail());
+        ed_addr.setText(userDetailEntity.getAddr());
+        ed_name.setText(userDetailEntity.getUserName());
+        ed_nationality.setText(userDetailEntity.getCountry());
+        ed_phone.setText(userDetailEntity.getTel());
+        ed_scho.setText(userDetailEntity.getSchool());
+    }
+
+
 
     @Override
     public int getLayoutId() {
@@ -75,6 +108,7 @@ public class PersonalInfoFragment extends PersonalCommonFragment implements IDat
     public void update(int key, Object o) {
         switch (key){
             case HttpConstant.PERSONALDATA:
+
                 break;
         };
     }

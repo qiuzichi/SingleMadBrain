@@ -44,8 +44,7 @@ public abstract class PersonalCommonFragment extends Fragment implements View.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mParentLayout = (ViewGroup) inflater.inflate(R.layout.personal_frg_common, container, false);
-        mParentLayout.addView(inflater.inflate(this.getLayoutId(), null),
-                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mParentLayout.addView(inflater.inflate(this.getLayoutId(), null), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         return mParentLayout;
     }
 

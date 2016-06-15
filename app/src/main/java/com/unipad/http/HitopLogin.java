@@ -53,12 +53,15 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
                         user.setTel(dataJson.getString("phone"));
                         user.setCountry(dataJson.getString("country"));
                         user.setAuth(dataJson.getInt("auth"));
+                        // {"data":{"auth":1,"born":"1992-03-18 00:00:00","country":"cn","createTime":"2016-06-12 14:38:45","id":"15857BD2D334481FA47A3BB7F6B1F718","name":"gongjb","phone":"18681079005","sex":1},"ret_code":"0000","ret_msg":"登录成功"}
+                        user.setSchool(dataJson.optString("scho"));
+                        user.setMail(dataJson.optString("mail"));
+                        user.setAddr(dataJson.optString("address"));
                         user.setSex(dataJson.getInt("sex") == 0 ? "男" : "女");
                         if (sevice != null) {
                             sevice.noticeDataChange(HttpConstant.LOGIN_UPDATE_UI, user);
                         }
                     }
-
                 }
                 if (sevice != null) {
                     sevice.noticeDataChange(HttpConstant.LOGIN_WRONG_MSG, jsObj.getString("ret_msg"));

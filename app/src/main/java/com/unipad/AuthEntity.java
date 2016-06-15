@@ -5,7 +5,6 @@ package com.unipad;
  * 描述：  实名认证， 实体
  */
 public class AuthEntity extends UserDetailEntity {
-    private  String sex; // 性别
 
     private String type; // 用户类别
 
@@ -25,9 +24,8 @@ public class AuthEntity extends UserDetailEntity {
 
     private String rating_certificate2; // 等级证书2
 
-    public AuthEntity(String type, String sex, String name, String id, String birthDate, String idFrontUrl, String idReverseUrl, String rating_certificate1, String rating_certificate2) {
+    public AuthEntity(String type, String name, String id, String birthDate, String idFrontUrl, String idReverseUrl, String rating_certificate1, String rating_certificate2) {
         this.type = type;
-        this.sex = sex;
         this.name = name;
         this.identity = id;
         this.birthDate = birthDate;
@@ -56,13 +54,7 @@ public class AuthEntity extends UserDetailEntity {
         this.id = id;
     }
 
-    public String getSex() {
-        return sex;
-    }
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
 
     public String getType() {
         return type;
