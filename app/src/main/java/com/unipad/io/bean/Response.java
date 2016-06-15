@@ -22,11 +22,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 /**
  * Created by gongkan on 2016/5/31.
  */
-public class Response implements IPack {
+public class Response  {
 
     private static int HEAD_LENGTH = 0;
 
     private Map<String,String> datas;
+
     public static enum PackType {
 
     }
@@ -41,8 +42,7 @@ public class Response implements IPack {
     }
 
 
-    @Override
-    public void parsePack(byte[] data) {
+    public void parsePack(String data) {
         try {
             readXMLString(data);
         } catch (Exception e) {
@@ -50,10 +50,10 @@ public class Response implements IPack {
         }
     }
 
-    private void readXMLString(byte[] xmlData) throws Exception {
+    private void readXMLString(String xmlData) throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = dbf.newDocumentBuilder();
-        InputStream inputStream = new ByteArrayInputStream(xmlData);
+        InputStream inputStream = new ByteArrayInputStream(xmlData.getBytes("GBK"));
         Document doc = builder.parse(inputStream); //
         // 下面开始读取
         Element root = doc.getDocumentElement();

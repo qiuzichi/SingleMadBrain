@@ -1,6 +1,8 @@
 package com.unipad.brain.personal;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -19,14 +21,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.AuthEntity;
 import com.unipad.brain.App;
 import com.unipad.brain.R;
-import com.unipad.brain.home.util.MyTools;
-import com.unipad.AuthEntity;
+import com.unipad.brain.personal.bean.UploadFileBean;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.PicUtil;
 import com.unipad.utils.ToastUtil;
 
 import java.io.File;
@@ -62,6 +66,9 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
     private EditText ed_id;
 
     private EditText ed_data;
+    // 上传图片
+    private int indexUpLoadFile;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -70,7 +77,10 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         mLayoutStep123Parent = (RelativeLayout) mActivity.findViewById(R.id.layout_step123_parent);
         // 这一部分  获取后台交互服务（个人中心）
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
+
         service.registerObserver(HttpConstant.USER_AUTH,this);
+
+        service.registerObserver(HttpConstant.UOLOAD_AUTH_FILE,this);
 
         mLayoutStep1 = (ViewGroup) mLayoutStep123Parent.findViewById(R.id.layout_step1);
         View view = mLayoutStep1.findViewById(R.id.radio_men);
@@ -152,8 +162,8 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
 
                 File file = new File(App.getContext().getTakePhotoFile(), v.getId() + PHOTO_POSTFIX);
                 if (file.exists()) {
-                    file.delete();
-                }
+                file.delete();
+            }
                 mPhotoFileList.put(v.getId(), file.getPath());
 
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));// 设置系统相机拍摄照片完成后图片文件的存放地址
@@ -162,7 +172,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
             case R.id.authentication_confirm_sure_btn:
                 // 确认提交
                 this.getLayout4Date();
-                this.submit();
                 break;
             default:
                 break;
@@ -176,9 +185,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
        if(this.isNotNull()){
            //  提交 实名认证信息
            service.userAuth(authBean);
-       } else
-           MyTools.showToast(getContext(),"请将信息填写完整然后提交");
-
+       }
    };
 
     /*
@@ -196,33 +203,104 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         }
 
         if(TextUtils.isEmpty(authBean.getName())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_name));
             return false;
         }
 
         if(TextUtils.isEmpty(authBean.getIdentity())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_identity));
             return false;
         }
 
         if(TextUtils.isEmpty(authBean.getBirthDate())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_birthdate));
             return  false;
         }
 
-//        if(TextUtils.isEmpty(authBean.getIdFrontUrl())){
-//            return  false;
-//        }
-//
-//        if (TextUtils.isEmpty(authBean.getIdReverseUrl())){
-//            return false;
-//        }
-//
-//        if(TextUtils.isEmpty(authBean.getRating_certificate2())){
-//            return false;
-//        }
-//
-//        if(TextUtils.isEmpty(authBean.getRating_certificate2())){
-//            return  false;
-//        }
+        if(TextUtils.isEmpty(authBean.getIdFrontUrl())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_front));
+            return  false;
+        }
+
+        if (TextUtils.isEmpty(authBean.getIdReverseUrl())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_reverse));
+            return false;
+        }
+
+        if(TextUtils.isEmpty(authBean.getRating_certificate2()) && TextUtils.isEmpty(authBean.getRating_certificate1())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_qc));
+            return  false;
+        }
         return true;
+    }
+
+    private  RelativeLayout layout4;
+    /*
+       封装步骤4 的所有内容。
+     */
+    private void getLayout4Date(){
+        if(layout4 == null)
+            return;
+
+        authBean = new AuthEntity();
+        String data = ed_data .getText().toString().trim();
+        String ed_ids =  ed_id.getText().toString().trim();
+        String ed_names = ed_name.getText().toString().trim();
+        authBean.setBirthDate(data);
+        authBean.setId(AppContext.instance().loginUser.getUserId());
+        authBean.setIdentity(ed_ids);
+        authBean.setSex(intSex + "");
+
+        authBean.setName(ed_names);
+        authBean.setType(intType);
+
+        // 上次
+        //authBean.setRating_certificate1(mPhotoFileList.get(R.id.grade_certificate_pic3));
+        // authBean.setRating_certificate2(mPhotoFileList.get(R.id.grade_certificate_pic4));
+        //authBean.setIdFrontUrl("");
+        // authBean.setIdReverseUrl(mPhotoFileList.get(R.id.grade_certificate_pic2));
+     //   Log.d(this.getClass().getSimpleName(),mPhotoFileList.get(R.id.grade_certificate_pic1).toString());
+        //mPhotoFileList.get(R.id.grade_certificate_pic1);
+        uploadFile();  // 上传文件
+    }
+
+    /*
+      上传文件
+     */
+    public void uploadFile(){
+        // 上传图片文件
+        if(isFourPic()) {
+            // 上传第一张图片
+            ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(25);
+            indexUpLoadFile = 0;
+            service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic1));
+        } else {
+            ToastUtil.showToast(mActivity.getString(R.string.string_ps));
+        }
+    }
+
+
+    public boolean isFourPic(){
+        if(mPhotoFileList == null)
+            return false;
+        int picIndex = 0;
+        String path1 = mPhotoFileList.get(R.id.grade_certificate_pic1);
+        String path2 = mPhotoFileList.get(R.id.grade_certificate_pic2);
+        String path3 = mPhotoFileList.get(R.id.grade_certificate_pic3);
+        String path4 = mPhotoFileList.get(R.id.grade_certificate_pic4);
+        if(!TextUtils.isEmpty(path1))
+            picIndex ++;
+        if(!TextUtils.isEmpty(path2))
+            picIndex ++;
+        if(!TextUtils.isEmpty(path3))
+            picIndex ++;
+        if(!TextUtils.isEmpty(path4))
+            picIndex ++;
+        Log.d(this.getClass().getSimpleName(),"picIndex" + picIndex+"");
+        if(picIndex == 4){
+            return true;
+        }
+        return false;
     }
 
     /*
@@ -331,31 +409,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         layout4 = layout;
     }
 
-    private  RelativeLayout layout4;
-    /*
-       封装步骤4 的所有内容。
-     */
-    private void getLayout4Date(){
-        if(layout4 == null)
-            return;
-
-        authBean = new AuthEntity();
-        String data = ed_data .getText().toString().trim();
-        String ed_ids =  ed_id.getText().toString().trim();
-        String ed_names = ed_name.getText().toString().trim();
-        authBean.setBirthDate(data);
-        ToastUtil.showToast(data);
-        authBean.setId(AppContext.instance().loginUser.getUserId());
-        authBean.setIdentity(ed_ids);
-        authBean.setSex(intSex+"");
-
-        authBean.setName(ed_names);
-        authBean.setType(intType);
-        authBean.setRating_certificate1("");
-        authBean.setRating_certificate2("");
-        authBean.setIdFrontUrl("");
-        authBean.setIdReverseUrl("");
-    }
 
     /**
      * 根据认证步骤的变化，确保让“下一步”按钮位于认证项的父布局的下方
@@ -391,27 +444,30 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
     }
 
     private void setTakePhotoPicture(int viewId) {
-        Drawable drawable = Drawable.createFromPath(mPhotoFileList.get(viewId));
-            if (drawable == null) {
+        // 拍摄完成四张照片时 会出现OOM.      取缩略图
+//        Bitmap picMap = PicUtil.compressImage(BitmapFactory.decodeFile(mPhotoFileList.get(viewId)));
+//        if (picMap == null) {
+//            return;
+//        }
+        //BitmapFactory.Options options = new BitmapFactory.Options();
+        //options.inSampleSize = 2;
+       // Bitmap picMap =  BitmapFactory.decodeFile(mPhotoFileList.get(viewId),options);
+        Bitmap picMap =  PicUtil.getImageThumbnail(mPhotoFileList.get(viewId),76,76);
+        if (picMap == null) {
             return;
         }
-
         switch (viewId) {
             case R.id.grade_certificate_pic1:
-                mImageIdentityPositive.setBackground(null);
-                mImageIdentityPositive.setBackground(drawable);
+                mImageIdentityPositive.setImageBitmap(picMap);
                 break;
             case R.id.grade_certificate_pic2:
-                mImageIdentityNegative.setBackground(null);
-                mImageIdentityNegative.setBackground(drawable);
+                mImageIdentityNegative.setImageBitmap(picMap);
                 break;
             case R.id.grade_certificate_pic3:
-                mImageCertificate1.setBackground(null);
-                mImageCertificate1.setBackground(drawable);
+                mImageCertificate1.setImageBitmap(picMap);
                 break;
             case R.id.grade_certificate_pic4:
-                mImageCertificate2.setBackground(null);
-                mImageCertificate2.setBackground(drawable);
+                mImageCertificate2.setImageBitmap(picMap);
                 break;
             default:
                 break;
@@ -419,10 +475,51 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        service.unregistDataChangeListenerObj(this);
+    }
+
+
+    @Override
     public void update(int key, Object o) {
         // 本方法用于 UI更新
-       // MyTools.showToast(getContext(),(String)o);
-       // Log.e("PersonalAuthenticationFragment",(String)o);
-        ToastUtil.showToast((String)o);
+        switch(key){
+            case HttpConstant.USER_AUTH:
+                // 实名认证
+                HIDDialog.dismissAll();
+                ToastUtil.showToast((String)o);
+                break;
+            case HttpConstant.UOLOAD_AUTH_FILE:
+                // 上传文件
+                indexUpLoadFile ++;
+                UploadFileBean  uploadFileBean = (UploadFileBean)o;
+                if(uploadFileBean.getRet_code() != 0){
+                    HIDDialog.dismissAll();
+                    ToastUtil.showToast(mActivity.getString(R.string.string_upload_fail));
+                    return;
+                }
+
+                switch (indexUpLoadFile){
+                    case 1:// {"data":"\\api\\20160613\\BE46D5F8AF834C6298C65E17C4009CD3.jpg","ret_code":"0"}
+                        authBean.setIdFrontUrl(uploadFileBean.getPath());
+                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic2));
+                        break;
+                    case 2:
+                        authBean.setIdReverseUrl(uploadFileBean.getPath());
+                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic3));
+                        break;
+                    case 3:
+                        authBean.setRating_certificate1(uploadFileBean.getPath());
+                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic4));
+                        break;
+                    case 4:
+                        authBean.setRating_certificate2(uploadFileBean.getPath());
+                        this.submit();
+                        indexUpLoadFile = -1;
+                        break;
+                }
+                break;
+        }
     }
 }

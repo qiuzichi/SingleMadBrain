@@ -31,9 +31,21 @@ public class ProjectBean implements Serializable{
 	private String recall_rule;
 	// 记分规则
 	private String record_rule;
-	public ProjectBean(String name, String target, String[] memorysDate,
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	private String projectId;
+
+	public ProjectBean(String name,String projectId, String target, String[] memorysDate,
 			String[] recallsDate, String[] memorysNum,String attention, String memory_rule,String recall_rule,String record_rule) {
 		super();
+		this.projectId = projectId;
 		this.name = name;
 		this.target = target;
 		this.memorysDate = memorysDate;

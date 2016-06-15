@@ -15,6 +15,7 @@ import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.iview.ICompetition;
 import com.unipad.brain.home.util.MyTools;
 import com.unipad.common.BaseFragment;
+import com.unipad.common.Constant;
 
 /**
  * @描述： 城市赛 页面 帧
@@ -34,6 +35,7 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 
 	private ProjectBean projectBean;
 
+	private CompetitionListActivity activity;
 
 	public static CityCompetitionFragment getCityCompetitionFragment(){
 		if( null == cityCompetitionFragment)
@@ -49,9 +51,14 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 		initView(homeView);
 		return homeView;
 	}
-	
-	
-	
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		activity = (CompetitionListActivity) getActivity();
+		activity.getGameList(Constant.CITY_GAME, 1, 10);
+	}
+
 	@Override
 	public void initView(View view) {
 		super.initView(view);

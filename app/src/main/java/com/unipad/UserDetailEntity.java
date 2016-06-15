@@ -15,7 +15,37 @@ public class UserDetailEntity {
     private String userId;
 
     private int auth;
-    
+
+    private String addr; // 地址
+
+    private String mail; // 邮件
+
+    private String school; // 学校
+
+    public String getAddr() {
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+        this.addr = addr;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
     public String getBirthday() {
         return birthday;
     }
