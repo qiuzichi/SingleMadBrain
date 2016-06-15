@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lidroid.xutils.BitmapUtils;
 import com.unipad.AppContext;
 import com.unipad.AuthEntity;
 import com.unipad.brain.App;
@@ -32,6 +33,14 @@ import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.PicUtil;
 import com.unipad.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.common.util.DensityUtil;
+import org.xutils.http.RequestParams;
+import org.xutils.image.ImageOptions;
+import org.xutils.x;
 
 import java.io.File;
 
@@ -69,7 +78,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
     // 上传图片
     private int indexUpLoadFile;
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -77,11 +85,12 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         mLayoutStep123Parent = (RelativeLayout) mActivity.findViewById(R.id.layout_step123_parent);
         // 这一部分  获取后台交互服务（个人中心）
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
-
-        service.registerObserver(HttpConstant.USER_AUTH,this);
-
+        // 实名认证
+        service.registerObserver(HttpConstant.USER_AUTH, this);
+        // 上传文件
         service.registerObserver(HttpConstant.UOLOAD_AUTH_FILE,this);
-
+        // 显示实名认证信息
+        service.registerObserver(HttpConstant.USER_AUTH_INFO, this);
         mLayoutStep1 = (ViewGroup) mLayoutStep123Parent.findViewById(R.id.layout_step1);
         View view = mLayoutStep1.findViewById(R.id.radio_men);
         view.setOnClickListener(this);
@@ -97,6 +106,17 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
 
         mBtnNextStep = (Button) mActivity.findViewById(R.id.next_step);
         mBtnNextStep.setOnClickListener(this);
+
+        mViewStub = (ViewStub) mActivity.findViewById(R.id.view_shade_step2);
+        mLayoutStep2 = (ViewGroup) mViewStub.inflate();
+        mLayoutStep2.setVisibility(View.GONE);
+        ed_data = (EditText)mLayoutStep2.findViewById(R.id.ed_data);
+        ed_id=(EditText) mLayoutStep2.findViewById(R.id.ed_id);
+        ed_name=(EditText) mLayoutStep2.findViewById(R.id.ed_name);
+        if(AppContext.instance().loginUser.getAuth() != 0){
+            ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(15);
+            service.getAuthInfo(AppContext.instance().loginUser.getUserId());
+        }
     }
 
     @Override
@@ -242,10 +262,11 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         if(layout4 == null)
             return;
 
-        authBean = new AuthEntity();
         String data = ed_data .getText().toString().trim();
         String ed_ids =  ed_id.getText().toString().trim();
         String ed_names = ed_name.getText().toString().trim();
+        if(null == authBean)
+            authBean = new AuthEntity();
         authBean.setBirthDate(data);
         authBean.setId(AppContext.instance().loginUser.getUserId());
         authBean.setIdentity(ed_ids);
@@ -303,6 +324,40 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         return false;
     }
 
+    /**
+     * @描述： 下载文件之后 将路径存入集合当中
+     * @param key id
+     * @param httpUrl 服务器 文件的相对路径
+     */
+    private void loadFile(final int key,String httpUrl){
+        RequestParams params3 = new RequestParams(HttpConstant.PATH_FILE_URL + httpUrl);
+
+        //设置断点续传
+        params3.setAutoResume(true);
+        params3.setSaveFilePath(App.getContext().getTakePhotoFile().getPath());
+
+        x.http().post(params3, new Callback.CommonCallback<File>() {
+            @Override
+            public void onSuccess(File file) {
+                // mPhotoFileList.put(key, file.getPath());
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                //
+            }
+
+            @Override
+            public void onCancelled(CancelledException e) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
     /*
     下一步操作
      */
@@ -321,12 +376,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
                 textCurrent.setSelected(true);
                 textCurrent.setTextColor(Color.parseColor("#853EC6"));
                 mActivity.findViewById(R.id.line_step2).setBackgroundResource(R.drawable.personal_authentication_step_line2);
-
-                mViewStub = (ViewStub) mActivity.findViewById(R.id.view_shade_step2);
-                mLayoutStep2 = (ViewGroup) mViewStub.inflate();
-                ed_data = (EditText)mLayoutStep2.findViewById(R.id.ed_data);
-               ed_id=(EditText) mLayoutStep2.findViewById(R.id.ed_id);
-                ed_name=(EditText) mLayoutStep2.findViewById(R.id.ed_name);
+                mLayoutStep2.setVisibility(View.VISIBLE);
                 this.setNextBtnLayoutParams(R.id.layout_step2);
                 break;
             case 3:
@@ -336,11 +386,9 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
                 textCurrent.setSelected(true);
                 textCurrent.setTextColor(Color.parseColor("#C020B4"));
                 mActivity.findViewById(R.id.line_step3).setBackgroundResource(R.drawable.personal_authentication_step_line3);
-
                 mViewStub = (ViewStub) mActivity.findViewById(R.id.view_shade_step3);
                 mLayoutStep3 = (ViewGroup) mViewStub.inflate();
                 this.setNextBtnLayoutParams(R.id.layout_step3);
-
                 mImageIdentityPositive = (ImageView) mLayoutStep3.findViewById(R.id.grade_certificate_pic1);
                 mImageIdentityPositive.setOnClickListener(this);
                 mImageIdentityNegative = (ImageView) mLayoutStep3.findViewById(R.id.grade_certificate_pic2);
@@ -349,12 +397,19 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
                 mImageCertificate1.setOnClickListener(this);
                 mImageCertificate2 = (ImageView) mLayoutStep3.findViewById(R.id.grade_certificate_pic4);
                 mImageCertificate2.setOnClickListener(this);
+
                 mLayoutStep3Up = (ViewGroup) mLayoutStep3.findViewById(R.id.layout_step3_up);
                 mLayoutStep3UpTitle = (TextView) mLayoutStep3.findViewById(R.id.layout_step3_up_title);
                 mLayoutStep3Down = (ViewGroup) mLayoutStep3.findViewById(R.id.layout_step3_down);
                 mLayoutStep3DownTitle = (TextView) mLayoutStep3.findViewById(R.id.layout_step3_down_title);
                 //把几个空格放在文字前面，目的是为了让“等级证书”与“身份证照片”右对齐，因为前者比后者少一个字
                 mLayoutStep3DownTitle.setText(mActivity.getString(R.string.grade_certificate, "    "));
+                if(AppContext.instance().loginUser.getAuth() != 0)  {
+                   // x.image().bind(mImageIdentityPositive, HttpConstant.PATH_FILE_URL + authBean.getIdFrontUrl());
+                   // x.image().bind(mImageIdentityNegative, HttpConstant.PATH_FILE_URL + authBean.getIdReverseUrl());
+                   // x.image().bind(mImageCertificate1, HttpConstant.PATH_FILE_URL + authBean.getRating_certificate1());
+                   // x.image().bind(mImageCertificate2, HttpConstant.PATH_FILE_URL + authBean.getRating_certificate2());
+                }
                 break;
             case 4:
                 mLayoutStep3Up.removeView(mLayoutStep3UpTitle);
@@ -445,13 +500,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
 
     private void setTakePhotoPicture(int viewId) {
         // 拍摄完成四张照片时 会出现OOM.      取缩略图
-//        Bitmap picMap = PicUtil.compressImage(BitmapFactory.decodeFile(mPhotoFileList.get(viewId)));
-//        if (picMap == null) {
-//            return;
-//        }
-        //BitmapFactory.Options options = new BitmapFactory.Options();
-        //options.inSampleSize = 2;
-       // Bitmap picMap =  BitmapFactory.decodeFile(mPhotoFileList.get(viewId),options);
         Bitmap picMap =  PicUtil.getImageThumbnail(mPhotoFileList.get(viewId),76,76);
         if (picMap == null) {
             return;
@@ -485,10 +533,34 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
     public void update(int key, Object o) {
         // 本方法用于 UI更新
         switch(key){
+            case HttpConstant.USER_AUTH_INFO:
+                HIDDialog.dismissAll();
+                if(o instanceof AuthEntity){
+                    authBean = (AuthEntity)o;
+                    onClick(authBean.getSex().equals("0") ? mLayoutStep1.findViewById(R.id.radio_men) : mLayoutStep1.findViewById(R.id.radio_women));
+                    onClick("00001".equals(authBean.getType()) ? mLayoutStep1.findViewById(R.id.radio_player) : "00002".equals(authBean.getType()) ? mLayoutStep1.findViewById(R.id.radio_judge) : mLayoutStep1.findViewById(R.id.radio_coach));
+                    ed_data.setText(AppContext.instance().loginUser.getBirthday());
+                    ed_id.setText(authBean.getIdentity());
+                    ed_name.setText(authBean.getName());
+                } else {
+                    ToastUtil.showToast((String)o);
+                }
+                break;
             case HttpConstant.USER_AUTH:
                 // 实名认证
                 HIDDialog.dismissAll();
-                ToastUtil.showToast((String)o);
+                String str = (String) o;
+                try {
+                    JSONObject jsonObject = new JSONObject(str);
+                    int code = jsonObject.optInt("ret_code");
+                    if(code == 0) {
+                        ToastUtil.showToast("认证成功");
+                        AppContext.instance().loginUser.setAuth(jsonObject.optInt("data"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case HttpConstant.UOLOAD_AUTH_FILE:
                 // 上传文件
