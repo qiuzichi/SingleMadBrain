@@ -33,7 +33,7 @@ public class BaseFragmentActivity extends FragmentActivity implements FragmentCa
 	}
 
 	
-	@TargetApi(19) 
+	@TargetApi(19)
 	private void setTranslucentStatus(boolean on) {
 		Window win = getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();

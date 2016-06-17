@@ -8,6 +8,7 @@
     <color name="transparent">#00000000</color>
     <color name="main_lf_user_info_bg">#0854ba</color>
     <color name="blue">#0000FF</color>
+    <color name="light_blue">#880000ff</color>
     <color name="right_frg">#F4F4F4</color>
     <color name="bg_one">#deae6e</color>
     <color name="bg_two">#fedfb6</color>
