@@ -1,9 +1,14 @@
 package com.unipad.brain.personal.login;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.unipad.brain.BasicActivity;
@@ -14,9 +19,9 @@ import com.unipad.utils.MD5Utils;
 public class RegisterActivity extends BasicActivity implements View.OnClickListener {
 
     private EditText registName;
-    private EditText registSex;
-    private EditText registBirthday;
-    private EditText registContry;
+    private Spinner registSex;
+    private Spinner registBirthday;
+    private Spinner registContry;
     private EditText registTel;
     private EditText registPwd;
     @Override
@@ -24,19 +29,16 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_aty);
     }
-
     @Override
     public void initData() {
         findViewById(R.id.btn_register).setOnClickListener(this);
+        registSex=(Spinner)findViewById(R.id.register_sex);
         registName = (EditText) findViewById(R.id.register_name);
-        registSex = (EditText) findViewById(R.id.register_sex);
-        registBirthday = (EditText) findViewById(R.id.register_date);
-        registContry = (EditText) findViewById(R.id.register_nation);
+        registBirthday = (Spinner) findViewById(R.id.register_day);
+        registContry = (Spinner) findViewById(R.id.register_nation);
         registTel = (EditText) findViewById(R.id.register_phone);
         registPwd = (EditText) findViewById(R.id.register_pwd);
-
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -45,14 +47,17 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                 break;
             default:
                 break;
+
         }
     }
-
     private void regist() {
         String name = registName.getText().toString().trim();
-        String sex = registSex.getText().toString().trim();
+        String sex=registSex.getSelectedItem().toString().trim();
+        String contry=registContry.getSelectedItem().toString().trim();
+        String birthday=registBirthday.getSelectedItem().toString().trim();
+       /* String sex = registSex.getText().toString().trim();
         String birthday = registBirthday.getText().toString().trim();
-        String contry = registContry.getText().toString().trim();
+        String contry = registContry.getText().toString().trim();*/
         String tel = registTel.getText().toString().trim();
         String pwd = registPwd.getText().toString().trim();
         if (TextUtils.isEmpty(name)){
