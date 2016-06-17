@@ -26,8 +26,8 @@ public class DataHandleThread implements Runnable  {
     @Override
     public void run() {
         Response response = new Response();
-        response.parsePack(this.data);
-        dataHandler.processPack(response, null);
+      //  response.parsePack(this.data);
+       // dataHandler.processPack(response, null);
     }
 
 }

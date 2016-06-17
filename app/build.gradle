@@ -28,4 +28,6 @@ dependencies {
     compile files('src/main/libs/slidingmenu.jar')
     compile files('src/main/libs/universal-image-loader-1.9.5.jar')
     compile files('src/main/libs/xUtils-2.6.7.jar')
+    compile files('src/main/libs/mina-core-2.0.13.jar')
+    compile files('src/main/libs/slf4j-api-1.7.7.jar')
 }

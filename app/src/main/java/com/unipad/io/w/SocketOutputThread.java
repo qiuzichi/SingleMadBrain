@@ -8,6 +8,7 @@ import android.os.Message;
 
 import com.unipad.io.IWrite;
 import com.unipad.io.bean.Request;
+import com.unipad.io.mina.LongTcpClient;
 
 
 /**
@@ -15,7 +16,7 @@ import com.unipad.io.bean.Request;
  *
  * @author way
  */
-public class SocketOutputThread extends Thread implements IWrite {
+public class SocketOutputThread extends Thread  {
     private boolean isStart = true;
     private static String tag = "socketOutputThread";
     private List<Request> sendMsgList;
@@ -32,12 +33,7 @@ public class SocketOutputThread extends Thread implements IWrite {
         }
     }
 
-    // 使用socket发送消息
-    public void sendMsg(byte[] msg) throws Exception {
-        Request request = new Request( msg);
-        addMsgToSendList(request);
 
-    }
 
     // 使用socket发送消息
     public void addMsgToSendList(Request request) {
@@ -58,7 +54,7 @@ public class SocketOutputThread extends Thread implements IWrite {
 
 
                     try {
-                        write(request.getBuffer());
+                        LongTcpClient.instant().sendMsg(request);
                         sendMsgList.remove(request);
                         // 成功消息，通过hander回传
 
@@ -86,21 +82,7 @@ public class SocketOutputThread extends Thread implements IWrite {
 
     }
 
-    @Override
-    public boolean write(byte[] data) {
-        if (data == null) {
-            CLog.e(tag, "sendMsg is null");
-            return false;
-        }
 
-        try {
-            TCPClient.instance().sendMsg(data);
 
-        } catch (Exception e) {
-
-        }
-
-        return true;
-    }
 
 }

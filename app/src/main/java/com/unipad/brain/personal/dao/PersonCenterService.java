@@ -12,8 +12,11 @@ import com.unipad.http.HitopAuth;
 import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopLogin;
+
+import com.unipad.http.HitopMatchStart;
 import com.unipad.http.HitopUserInfoUpdate;
-import com.unipad.http.HittopUpload;
+
+
 import com.unipad.observer.GlobleObserService;
 import com.unipad.utils.MD5Utils;
 
@@ -34,6 +37,10 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpLogin.buildRequestParams("device_did", MobileInfo.getDeviceId());
         httpLogin.setSevice(this);
         httpLogin.post();
+
+
+
+
     }
 
     @Override
@@ -123,5 +130,16 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopApplyed.buildRequestParams("userId",uid);
         hitopApplyed.setSevice(this);
         hitopApplyed.post();
+    }
+
+    /**
+     * 检查是否可以进入比赛
+     * @param matchId
+     */
+    public void checkMatchStart(String matchId){
+        HitopMatchStart hitopMatchStart = new HitopMatchStart();
+        hitopMatchStart.buildRequestParams("matchId",matchId);
+        hitopMatchStart.setSevice(this);
+        hitopMatchStart.post();
     }
 }
