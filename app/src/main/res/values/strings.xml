@@ -191,4 +191,7 @@
     <string name="util_affirm">确认</string>
     <string name="util_getpicfile_failed">未得到相片路径</string>
     <string name= "tailor_fail">裁剪失败</string>
+    <string name="in_game">进入比赛</string>
+    <string name="competition_project">比赛项目</string>
+    <string name="competition_addr">比赛地点</string>
 </resources>

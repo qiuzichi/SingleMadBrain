@@ -7,6 +7,7 @@ import com.unipad.ICoreService;
 import com.unipad.AuthEntity;
 import com.unipad.UserDetailEntity;
 import com.unipad.common.MobileInfo;
+import com.unipad.http.HitopApplyed;
 import com.unipad.http.HitopAuth;
 import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
@@ -111,5 +112,16 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
             userInfoUpdate.buildRequestParams("mail",userDetailEntity.getMail());
         userInfoUpdate.setSevice(this);
         userInfoUpdate.post();
+    }
+
+    /**
+     * 获取
+     * @param uid
+     */
+    public void getApplyList(String uid){
+        HitopApplyed hitopApplyed = new HitopApplyed();
+        hitopApplyed.buildRequestParams("userId",uid);
+        hitopApplyed.setSevice(this);
+        hitopApplyed.post();
     }
 }
