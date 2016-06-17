@@ -10,9 +10,9 @@ public class CompetitionBean {
 
 	private String name;//赛事名称
 
-	private int projectId;//组别
+	private String projectId;//组别
 
-	private int gradeId;//级别
+	private String gradeId;//级别
 
 	//private int groupId;//组别
 	private String address;//比赛地址
@@ -95,19 +95,19 @@ public class CompetitionBean {
 		this.id = id;
 	}
 
-	public int getProjectId() {
+	public String getProjectId() {
 		return projectId;
 	}
 
-	public void setProjectId(int projectId) {
+	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
 
-	public int getGradeId() {
+	public String getGradeId() {
 		return gradeId;
 	}
 
-	public void setGradeId(int gradeId) {
+	public void setGradeId(String gradeId) {
 		this.gradeId = gradeId;
 	}
 

@@ -107,6 +107,7 @@ public abstract class HitopRequest<T>{
         x.http().post(mParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Log.e("request","result = "+result);
                 handleJsonData(result);
             }
 
