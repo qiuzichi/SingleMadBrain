@@ -6,7 +6,7 @@ package com.unipad.http;
 public class HttpConstant {
 
     public static final String LOGIN = "/api/user/login";
-    public static final String GET_USER_GAME_LIST ="/api/match/getMatchByUser" ;
+    public static final String GET_USER_GAME_LIST = "/api/match/getMatchByUser";
 
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
@@ -17,7 +17,10 @@ public class HttpConstant {
     public static String AUTH_INFO_PATH = "/api/user/data";
 
     public static String GET_RULE = "/api/match/getRule";
-
+    /**
+     * 申请报名
+     */
+    public static String APPLY_GAME = "/api/match/apply";
     // 获取图片路径 http://192.168.0.104:8090/crazybrain-mng
     public static String PATH_FILE_URL = "http://192.168.0.104:8090/crazybrain-mng/image/getFile?filePath=";
     // 更新用户信息
@@ -31,10 +34,12 @@ public class HttpConstant {
     public static final int CHINA_GET_HOME_GAME_LIST = 0x10003;
     public static final int WORD_GET_HOME_GAME_LIST = 0x10004;
 
+    public static final int CITY_APPLY_GAME = 0x10005;
+    public static final int CHINA_APPLY_GAME = 0x10006;
+    public static final int WORD_APPLY_GAME = 0x10007;
 
-
-    public static final int USER_AUTH=0x10100;
-    public static final int UOLOAD_AUTH_FILE =0x10200;
-    public static final int PERSONALDATA=0x10300;
-    public static final int USER_AUTH_INFO=0x10400;
+    public static final int USER_AUTH = 0x10100;
+    public static final int UOLOAD_AUTH_FILE = 0x10200;
+    public static final int PERSONALDATA = 0x10300;
+    public static final int USER_AUTH_INFO = 0x10400;
 }

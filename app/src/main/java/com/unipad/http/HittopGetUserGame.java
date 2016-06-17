@@ -66,6 +66,8 @@ public class HittopGetUserGame extends HitopRequest<List<CompetitionBean>> {
                         bean.setCompetitionTime(datasTime[1]);
                         bean.setCost(jsonObj2.getString("applyMoney"));
                         bean.setName(jsonObj2.getString("name"));
+                        bean.setGradeId(jsonObj2.getString("gradeId"));
+                        bean.setProjectId(jsonObj2.getString("projectId"));
                         competitionBeanArrayList.add(bean);
 
                     }

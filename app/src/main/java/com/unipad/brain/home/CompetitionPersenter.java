@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.home.ChinaCompetitionFragment;
 import com.unipad.brain.home.CityCompetitionFragment;
@@ -24,6 +25,7 @@ import com.unipad.common.BaseFragment;
 import com.unipad.common.CommonActivity;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.http.HitopApplyGame;
 
 
 /**
@@ -80,7 +82,7 @@ public class CompetitionPersenter {
     private void setAdapter() {
         iCompetition.setAdapter(competitionAdapter = new CommonAdapter<CompetitionBean>(iCompetition.getContext(), competitionBeans, R.layout.competition_item_layout) {
             @Override
-            public void convert(ViewHolder holder, CompetitionBean homeBean) {
+            public void convert(ViewHolder holder, final CompetitionBean homeBean) {
 //				holder.setText(R.id.txt_name, homeBean.name);
 //				holder.setImageResource(R.id.img_photo, homeBean.isSelect ? homeBean.selImgId : homeBean.norImgId);
 //				holder.setTextColor(R.id.txt_name, homeBean.isSelect ? iHome.getContext().getResources().getColor(R.color.main_1) : iHome.getContext().getResources().getColor(R.color.black));
@@ -91,20 +93,39 @@ public class CompetitionPersenter {
                 TextView addrView = holder.getView(R.id.game_addr);
                 TextView cost = holder.getView(R.id.game_cost);
                 name.setText(homeBean.getName());
-                date.setText(homeBean.getCompetitionDate()+" "+homeBean.getCompetitionTime());
-                cost.setText("费用:￥"+homeBean.getCost());
+                date.setText(homeBean.getCompetitionDate() + " " + homeBean.getCompetitionTime());
+                cost.setText("费用:￥" + homeBean.getCost());
                 apply.setTag(homeBean);
                 addrView.setText(homeBean.getAddress());
                 if (homeBean.getApplyState() == 0) {//未报名
 
                     apply.setText(apply.getResources().getText(R.string.my_apply));
-                    apply.setOnClickListener(applyOrAtClickListenter);
+                    apply.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            HitopApplyGame applyGame = new HitopApplyGame(AppContext.instance().loginUser.getUserId(), homeBean.getId(), homeBean.getProjectId(), homeBean.getGradeId(), 0);
+                            applyGame.post();
+                        }
+                    });
                 } else {
                     apply.setText(apply.getResources().getText(R.string.applied));
                     apply.setOnClickListener(null);
                 }
             }
         });
+    }
+
+    public void notifyData(CompetitionBean competitionBean) {
+        for (int i = 0; i < competitionBeans.size(); i++) {
+            CompetitionBean compet = competitionBeans.get(i);
+            if (compet.getId().equals(competitionBean.getId())) {
+                compet.setApplyState(competitionBean.getApplyState());
+                break;
+            } else {
+                continue;
+            }
+        }
+        competitionAdapter.notifyDataSetChanged();
     }
 
 
@@ -118,6 +139,7 @@ public class CompetitionPersenter {
             switch (v.getId()) {
                 case R.id.game_apply:
                     competitionBean = (CompetitionBean) v.getTag();
+                    /**
                     // 弹出报名Dialog
                     String level = competitionBean.getCompetitionLevel() == 0 ? resources.getString(R.string.message_city) : competitionBean.getCompetitionLevel() == 1 ? resources.getString(R.string.message_china) : resources.getString(R.string.message_world);
                     View view = View.inflate(iCompetition.getContext(), R.layout.competition_apply_cost_layout, null);
@@ -127,6 +149,7 @@ public class CompetitionPersenter {
                     ((Button) view.findViewById(R.id.btn_not_apply)).setOnClickListener(this);
                     pay_dialog = new ShowDialog(iCompetition.getContext());
                     pay_dialog.showDialog(view, ShowDialog.TYPE_RIGHT, ((BaseFragment) iCompetition).getActivity().getWindowManager(), 0.0f, 0.25f);
+                   */
                     break;
                 case R.id.btn_pay:
                     if (null != competitionBean) {
