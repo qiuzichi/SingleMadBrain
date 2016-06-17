@@ -60,6 +60,7 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 		initView(homeView);
 		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
 		service.registerObserver(HttpConstant.CITY_GET_HOME_GAME_LIST, this);
+		service.registerObserver(HttpConstant.CITY_APPLY_GAME, this);
 		return homeView;
 	}
 
@@ -81,6 +82,7 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 	public void onDestroy() {
 		super.onDestroy();
 		service.unRegisterObserve(HttpConstant.CITY_GET_HOME_GAME_LIST, this);
+		service.unRegisterObserve(HttpConstant.CITY_APPLY_GAME, this);
 	}
 
 	@Override
@@ -126,6 +128,17 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 
 	@Override
 	public void update(int key, Object o) {
-		competitionPersenter.setData((List<CompetitionBean>) o);
+		switch (key){
+			case HttpConstant.CITY_GET_HOME_GAME_LIST:
+				competitionPersenter.setData((List<CompetitionBean>) o);
+				break;
+			case HttpConstant.CITY_APPLY_GAME:
+				competitionPersenter.notifyData((CompetitionBean) o);
+				break;
+			default:
+				break;
+		}
+
+
 	}
 }

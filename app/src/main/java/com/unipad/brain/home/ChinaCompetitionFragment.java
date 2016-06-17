@@ -71,6 +71,7 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 		activity.getGameList(Constant.CHIMA_GAME,1,10);
 		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
 		service.registerObserver(HttpConstant.CHINA_GET_HOME_GAME_LIST,this);
+		service.registerObserver(HttpConstant.CHINA_APPLY_GAME,this);
 	}
 
 	@Override
@@ -84,6 +85,7 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 	public void onDestroy() {
 		super.onDestroy();
 		service.unRegisterObserve(HttpConstant.CHINA_GET_HOME_GAME_LIST, this);
+		service.unRegisterObserve(HttpConstant.CHINA_APPLY_GAME, this);
 	}
 
 	@Override
@@ -129,6 +131,15 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 
 	@Override
 	public void update(int key, Object o) {
-		competitionPersenter.setData((List<CompetitionBean>) o);
+		switch (key){
+			case HttpConstant.CHINA_GET_HOME_GAME_LIST:
+				competitionPersenter.setData((List<CompetitionBean>) o);
+				break;
+			case HttpConstant.CHINA_APPLY_GAME:
+				competitionPersenter.notifyData((CompetitionBean) o);
+				break;
+			default:
+				break;
+		}
 	}
 }
