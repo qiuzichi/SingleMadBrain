@@ -43,7 +43,6 @@ public class HttpConstant {
     public static final int CHINA_APPLY_GAME = 0x10006;
     public static final int WORD_APPLY_GAME = 0x10007;
 
-<<<<<<< HEAD
 
     // 实名认证
     public static final int USER_AUTH=0x10100;
@@ -57,10 +56,4 @@ public class HttpConstant {
     public static final int USER_APPLYED = 0x10500;
     // 进入比赛时间判断
     public static final int USER_IN_GAEM = 0x10600;
-=======
-    public static final int USER_AUTH = 0x10100;
-    public static final int UOLOAD_AUTH_FILE = 0x10200;
-    public static final int PERSONALDATA = 0x10300;
-    public static final int USER_AUTH_INFO = 0x10400;
->>>>>>> 6a1951d71620aded10ee790f6e55ce77ea8dfd44
 }
