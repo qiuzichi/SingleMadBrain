@@ -14,12 +14,12 @@ public class HttpConstant {
     public static String AUTH_INFO_PATH = "/api/user/data";
     // 获取图片路径 http://192.168.0.104:8090/crazybrain-mng
     public static String PATH_FILE_URL = "http://192.168.0.104:8090/crazybrain-mng/image/getFile?filePath=";
+    // 更新用户信息
+    public static String UPDATE_USERINFO = "/api/user/modify";
 
     public static int JSON_ERREO = -2;
-
     public static final int LOGIN_UPDATE_UI = 0x10000;
     public static final int LOGIN_WRONG_MSG = 0x10001;
-
     public static final int USER_AUTH=0x10100;
     public static final int UOLOAD_AUTH_FILE =0x10200;
     public static final int PERSONALDATA=0x10300;

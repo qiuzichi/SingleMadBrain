@@ -2,18 +2,48 @@ package com.unipad.brain.personal;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
+import com.unipad.brain.personal.bean.UploadFileBean;
+import com.unipad.brain.personal.dao.PersonCenterService;
+import com.unipad.brain.personal.view.ChatFunctionView;
+import com.unipad.common.Constant;
+import com.unipad.common.widget.HIDDialog;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
+import com.unipad.utils.FileUtil;
+import com.unipad.utils.PicUtil;
+import com.unipad.utils.ToastUtil;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.xutils.common.Callback;
+import org.xutils.x;
 
 /**
  * Created by Wbj on 2016/4/26.
  */
-public class PersonalActivity extends BasicActivity  {
+public class PersonalActivity extends BasicActivity  implements IDataObserver {
+
     private TextView mTextSelected, mTextRight;
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
@@ -25,6 +55,10 @@ public class PersonalActivity extends BasicActivity  {
     private PersonalWalletFragment mWalletFragment;
     private PersonalSettingFragment mSettingFragment;
     private PersonalCommonFragment mCurrentFragment;
+    private TextView txtName;
+    private ImageView user_photo;
+    private final int CROP_FLAG=100;
+    private PersonCenterService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +69,45 @@ public class PersonalActivity extends BasicActivity  {
     @Override
     public void initData() {
         findViewById(R.id.title_bar_left_text).setOnClickListener(this);
+        txtName = (TextView)findViewById(R.id.user_name);
         mTextRight = (TextView) findViewById(R.id.title_bar_right_text);
         mTextRight.setOnClickListener(this);
-
+        user_photo = (ImageView)findViewById(R.id.user_photo);
         mFragmentManager = getFragmentManager();
         this.setTextViewSelected((TextView) findViewById(R.id.personal_info));
+        setTxtName();
+        if(!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
+            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map =  PicUtil.drawableToBitmap(drawable);
+                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
+        // 上传文件
+        service.registerObserver(HttpConstant.UOLOAD_AUTH_FILE, this);
+    }
+
+
+    public void setTxtName(){
+        if(txtName != null)
+            txtName.setText(AppContext.instance().loginUser.getUserName());
     }
 
     public void personalItemClick(View view) {
@@ -162,4 +230,187 @@ public class PersonalActivity extends BasicActivity  {
         mTextRight.setText(TextUtils.isEmpty(text) ? "" : text);
     }
 
+    private ChatFunctionView chatFunctionView;
+
+    private PopupWindow chatFunctionWindow;
+
+    public void showScPic(){
+        initChatFunctionView();
+        chatFunctionWindow.showAtLocation(new Button(this), Gravity.CENTER, 0, 0);
+    }
+
+    /**
+     * 初始化选择拍照view
+     *
+     */
+    private void initColleagueWindow()
+    {
+        if(null==chatFunctionView)
+        {
+            chatFunctionView=new ChatFunctionView(this);
+        }
+    }
+
+    /**
+     * 初始化选择图片的view
+     */
+    private void initChatFunctionView()
+    {
+        if(null==chatFunctionWindow)
+        {
+            chatFunctionWindow=new PopupWindow(this);
+            initColleagueWindow();
+            chatFunctionWindow.setContentView(chatFunctionView);
+            chatFunctionWindow.setFocusable(true);
+//            chatFunctionWindow.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+            chatFunctionWindow.setWidth(400);
+            chatFunctionWindow.setHeight(300);
+            chatFunctionWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+            chatFunctionWindow.setAnimationStyle(R.style.colleague_custom_animation);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 保存图片文件的本地路径
+        switch (requestCode) {
+            case ChatFunctionView.Camera_flag:
+                if(resultCode != this.RESULT_OK){
+                    break;
+                }
+                if(FileUtil.hasSDCard()){
+                    String path = chatFunctionView.getFileName();
+                    if(null == path || "".equals(path)){
+                        ToastUtil.showToast(getString(R.string.util_getpicfile_failed));
+                        return;
+                    }
+                    File file = new File(path);
+                    if(file.length() > 0 && (file.getParent() != null && !"".equals(file.getParent()))){
+                        chatFunctionView.setFileName();
+                        startCrop(file);
+                    }
+                } else {
+                    ToastUtil.showToast(getString(R.string.util_getpicfile_failed));
+                    // MyTools.showToast(this, getResources().getString());
+                }
+                break;
+            case ChatFunctionView.Picture_flag:
+                if(resultCode != RESULT_OK){
+                    break;
+                }
+                String imgFile = chatFunctionView.parseImageFile(data,this);
+                if(TextUtils.isEmpty(imgFile)){
+                    return;
+                }
+                startCrop(new File(imgFile));//chatFunctionView.getFileByFileName(imgFile,getApplicationContext(), this, null);
+                break;
+            case CROP_FLAG:
+                if(resultCode==this.RESULT_OK)
+                {
+                    //MyTools.showToast(GroupFileActivity.this, "裁剪成功");
+                    if (null != data) {
+                        Bitmap bmap = data.getParcelableExtra("data");
+                        if (null != bmap) {
+                            // imgHeadView.setImageBitmap(bmap);
+                            File mainFile=chatFunctionView.getMainPhotoFile();
+                            if(null==mainFile)
+                                return;
+
+                            File saveFile=new File(mainFile, System.currentTimeMillis()+".jpg");
+
+                            FileOutputStream output=null;
+                            try {
+                                output=new FileOutputStream(saveFile);
+                                bmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+                                setHeadImgView(saveFile);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            } finally {
+                                if (null != output)
+                                    try {
+                                        output.close();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                            }
+                        }
+                    }
+                } else {
+                    ToastUtil.showToast(getString(R.string.tailor_fail));
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 开始裁剪
+     * @param file
+     */
+    private void startCrop(File file) {
+        Intent cropIntent=new Intent();
+        Uri uri=Uri.fromFile(file);
+        cropIntent.setDataAndType(uri, "image/*");
+        cropIntent.setAction("com.android.camera.action.CROP");
+        cropIntent.putExtra("crop", true);
+        cropIntent.putExtra("aspectX", 1);
+        cropIntent.putExtra("aspectY", 1);
+        cropIntent.putExtra("outputX", 150);
+        cropIntent.putExtra("outputY", 150);
+        cropIntent.putExtra("return-data", true);
+        this.startActivityForResult(cropIntent, CROP_FLAG);
+    }
+
+    /**
+     *  设置头像
+     * @param file
+     */
+    public void setHeadImgView(File file){
+        if(user_photo != null){
+            if(null != chatFunctionWindow && chatFunctionWindow.isShowing()){
+                chatFunctionWindow.dismiss();
+            }
+            ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
+            service.uploadAuthFile(file.getPath());
+        }
+    }
+
+
+    @Override
+    public void update(int key, Object o) {
+      // 上传头像
+        switch (key){
+            case HttpConstant.UOLOAD_AUTH_FILE:
+                HIDDialog.dismissAll();
+                UploadFileBean uploadFileBean = (UploadFileBean)o;
+                if(uploadFileBean.getRet_code() != 0)
+                    return;
+                AppContext.instance().loginUser.setPhoto(uploadFileBean.getPath());
+                x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + uploadFileBean.getPath(), new Callback.CommonCallback<Drawable>() {
+                    @Override
+                    public void onSuccess(Drawable drawable) {
+                        Bitmap map =  PicUtil.drawableToBitmap(drawable);
+                        user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                        mCurrentFragment.setImageBitmap(map);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable, boolean b) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException e) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+                break;
+        }
+    }
 }

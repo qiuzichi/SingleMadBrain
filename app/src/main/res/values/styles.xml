@@ -258,6 +258,8 @@
         <item name="android:textColorHint">@color/edit_text_hint</item>
         <item name="android:textColor">@color/black</item>
     </style>
-=======
->>>>>>> c45c27baeebfee0996c5bfd88215b786879882b8
+    <style name="colleague_custom_animation">
+        <item name="android:windowEnterAnimation">@anim/colleague_right_in</item>
+        <item name="android:windowExitAnimation">@anim/colleague_right_out</item>
+    </style>
 </resources>
