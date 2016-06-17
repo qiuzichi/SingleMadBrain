@@ -109,6 +109,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                 finish();
                 break;
             case HttpConstant.LOGIN_WRONG_MSG:
+                HIDDialog.dismissAll();
                 userName.setText((String)o);
                 break;
             default:

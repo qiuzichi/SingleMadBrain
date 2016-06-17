@@ -52,7 +52,7 @@ public class TCPClient
 	 * @param HostListenningPort
 	 * @throws IOException
 	 */
-	public TCPClient(String HostIp, int HostListenningPort)
+	private TCPClient(String HostIp, int HostListenningPort)
 	{
 		this.hostIp = HostIp;
 		this.hostListenningPort = HostListenningPort;
@@ -232,6 +232,8 @@ public class TCPClient
 			if (socketChannel != null)
 			{
 				socketChannel.socket().sendUrgentData(0xff);
+			} else {
+				return false;
 			}
 		} catch (IOException e)
 		{
@@ -243,6 +245,7 @@ public class TCPClient
 			e.printStackTrace();
 			return false;
 		}
+		isInitialized = true;
 		return true;
 	}
 	

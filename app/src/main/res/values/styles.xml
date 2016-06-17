@@ -269,4 +269,10 @@
     </style>
 =======
 >>>>>>> c45c27baeebfee0996c5bfd88215b786879882b8
+=======
+    <style name="colleague_custom_animation">
+        <item name="android:windowEnterAnimation">@anim/colleague_right_in</item>
+        <item name="android:windowExitAnimation">@anim/colleague_right_out</item>
+    </style>
+>>>>>>> 08719dca1b8c873ea122493070c8dcb127e56ce5
 </resources>

@@ -14,11 +14,9 @@ public class SocketThreadManager implements IDataHandler
 	
 	private static SocketThreadManager s_SocketManager = null;
 	
-	private SocketInputThread mInputThread = null;
-	
+
 	private SocketOutputThread mOutThread = null;
 	
-	private SocketHeartThread mHeartThread = null;
 
 	
 	// 获取单例
@@ -35,9 +33,6 @@ public class SocketThreadManager implements IDataHandler
 	// 单例，不允许在外部构建对象
 	private SocketThreadManager()
 	{
-		mHeartThread = new SocketHeartThread();
-		mInputThread = new SocketInputThread();
-		mInputThread.setHandler(this);
 		mOutThread = new SocketOutputThread();
 	}
 	
@@ -47,11 +42,7 @@ public class SocketThreadManager implements IDataHandler
 	
 	private void startThreads()
 	{
-		mHeartThread.start();
-		mInputThread.start();
-		mInputThread.setStart(true);
 		mOutThread.start();
-		mInputThread.setStart(true);
 		// mDnsthread.start();
 	}
 	
@@ -60,8 +51,6 @@ public class SocketThreadManager implements IDataHandler
 	 */
 	public void stopThreads()
 	{
-		mHeartThread.stopThread();
-		mInputThread.setStart(false);
 		mOutThread.setStart(false);
 	}
 	
@@ -74,11 +63,7 @@ public class SocketThreadManager implements IDataHandler
 		}
 	}
 	
-	public void sendMsg(byte [] buffer)
-	{
-		Request request = new Request(buffer);
-		mOutThread.addMsgToSendList(request);
-	}
+
 	public void sendMsg(Request request)
 	{
 

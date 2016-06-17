@@ -8,31 +8,25 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-
-import com.sms.smsmemberapp.R;
+import android.widget.RelativeLayout;
+import com.unipad.brain.R;
 /**
  *   
  * @author Administrator
  *
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class WheelMainView extends LinearLayout {
+public class WheelMainView extends RelativeLayout {
 	/** Called when the activity is first created. */
-	
 	private LinearLayout layout = null ;
-	
 	private WheelView yearWV = null;
 	private WheelView monthWV = null;
 	private WheelView dayWV = null;
 	private WheelView hourWV = null;
 	private WheelView minuteWV = null;
-
 //	private Button reset_Btn = null;
-
-
 	int year;
 	int month;
-
 	// 滚轮上的数据，字符串数组
 	String[] yearArrayString = null;
 	String[] dayArrayString = null;
@@ -40,16 +34,11 @@ public class WheelMainView extends LinearLayout {
 	String[] hourArrayString = null;
 	String[] minuteArrayString = null;
 	Calendar c = null;
-
-
 	private Context context;
 	
 	public WheelMainView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
-
-
-
 	public WheelMainView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
@@ -76,22 +65,16 @@ public class WheelMainView extends LinearLayout {
 		monthArrayString = getDayArray(12);
 		hourArrayString = getHMArray(24);
 		minuteArrayString = getHMArray(60);
-
 		// 获取当前系统时间
-		
 		initView(view);
 	}
-
-
 	public void initView(View view) {
 //		reset_Btn = (Button) view.findViewById(R.id.reset_btn);
-
 		yearWV = (WheelView) view.findViewById(R.id.time_year);
 		monthWV = (WheelView) view.findViewById(R.id.time_month);
 		dayWV = (WheelView) view.findViewById(R.id.time_day);
 		hourWV = (WheelView) view.findViewById(R.id.time_hour);
 		minuteWV = (WheelView) view.findViewById(R.id.time_minute);
-
 		// 设置每个滚轮的行数
 		yearWV.setVisibleItems(5);
 		monthWV.setVisibleItems(5);
@@ -105,8 +88,6 @@ public class WheelMainView extends LinearLayout {
 		dayWV.setLabel("日");
 		hourWV.setLabel("时");
 		minuteWV.setLabel("分");
-
-//		
 //		// 地区选择
 //		shengWV = (WheelView) findViewById(R.id.place_sheng);
 //		shiWV = (WheelView) findViewById(R.id.place_shi);

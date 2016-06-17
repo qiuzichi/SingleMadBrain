@@ -10,18 +10,26 @@ import android.widget.ListView;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.bean.ProjectBean;
+import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.iview.ICompetition;
 import com.unipad.brain.home.util.MyTools;
 import com.unipad.common.BaseFragment;
+import com.unipad.common.Constant;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
+
+import java.util.List;
 
 /**
  * @描述：  中国赛
  * @author gongjiebin
  *
  */
-public class ChinaCompetitionFragment extends BaseFragment implements ICompetition {
+public class ChinaCompetitionFragment extends BaseFragment implements ICompetition ,IDataObserver{
 
 	
 	final public static String TAG = "ChinaCompetitionFragment";
@@ -34,7 +42,12 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 	private CompetitionPersenter competitionPersenter;
 	
 	private ProjectBean projectBean;
-	
+
+	private CompetitionListActivity activity;
+
+
+	private HomeGameHandService service;
+
 	public static ChinaCompetitionFragment getChinaCompetitionFragment(){
 		if( null == chinaCompetitionFragment)
 			return chinaCompetitionFragment = new ChinaCompetitionFragment();
@@ -47,15 +60,30 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 		View homeView = inflater.inflate(R.layout.fragment_competition_layout, container,false);
 		ViewUtils.inject(this, homeView);
 		initView(homeView);
+
 		return homeView;
 	}
 
-	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		activity = (CompetitionListActivity) getActivity();
+		activity.getGameList(Constant.CHIMA_GAME,1,10);
+		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
+		service.registerObserver(HttpConstant.CHINA_GET_HOME_GAME_LIST,this);
+	}
+
 	@Override
 	public void initView(View view) {
 		super.initView(view);
 		projectBean = ((CompetitionListActivity)getActivity()).getProjectBean();
 		competitionPersenter = new CompetitionPersenter(this,projectBean);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		service.unRegisterObserve(HttpConstant.CHINA_GET_HOME_GAME_LIST, this);
 	}
 
 	@Override
@@ -97,5 +125,10 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 	@Override
 	public String getCompetitionIndex() {
 		return TAG;
+	}
+
+	@Override
+	public void update(int key, Object o) {
+		competitionPersenter.setData((List<CompetitionBean>) o);
 	}
 }

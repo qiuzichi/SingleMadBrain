@@ -21,6 +21,11 @@ import com.unipad.brain.R;
  */
 public class ShowDialog {
 	private Dialog dialog;
+
+	public Dialog getDialog(){
+		return dialog;
+	};
+
 	private Context context;
 	/**
 	 * TYPE_CENTER :dialog居中显示
@@ -191,18 +196,15 @@ public class ShowDialog {
 	public void dismiss() {
 		if(dialog!=null && dialog.isShowing())dialog.dismiss();
 	}
-	
 	public boolean isShowing(){
 		return null!=dialog&&dialog.isShowing();
 	}
-	
 	public void setCancelable(boolean cancelable,boolean canceledOnTouchOutside){
 		if(null!=dialog){
 			dialog.setCancelable(cancelable);
 			dialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
 		}
 	}
-	
 	/**
 	 *  弹出带 确定键的 dialog
 	 * @param str  需要显示的文本
@@ -213,15 +215,15 @@ public class ShowDialog {
 				"",new BaseConfirmDialog.OnActionClickListener() {
 					@Override
 					public void onActionRight(BaseConfirmDialog dialog) {
-					}
 
+					}
 					@Override
 					public void onActionLeft(BaseConfirmDialog dialog) {
 						dialog.dismiss();
 					}
 				});
 //		dialog.setOnKeyListener(keylistener); // 点击返回键不让dialog 消失
-//		dialog.setCanceledOnTouchOutside(false);  // 触摸屏幕不让 dialog 消失
+		dialog.setCanceledOnTouchOutside(false);  // 触摸屏幕外让 dialog 消失
 		dialog.show();
 	 }
 	
@@ -238,4 +240,7 @@ public class ShowDialog {
 			}
 		}
 	};
+
+
+
 }
