@@ -1,16 +1,19 @@
 package com.unipad.brain.personal.dao;
 
+import android.text.TextUtils;
+
+import com.unipad.AppContext;
 import com.unipad.ICoreService;
 import com.unipad.AuthEntity;
+import com.unipad.UserDetailEntity;
 import com.unipad.common.MobileInfo;
 import com.unipad.http.HitopAuth;
 import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopLogin;
 
-import com.unipad.io.mina.LongTcpClient;
+import com.unipad.http.HitopUserInfoUpdate;
 
-import com.unipad.http.HittopUpload;
 
 import com.unipad.observer.GlobleObserService;
 import com.unipad.utils.MD5Utils;
@@ -87,5 +90,32 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopAuthInfo.buildRequestParams("user_id",userId);
         hitopAuthInfo.setSevice(this);
         hitopAuthInfo.post();
+    }
+
+    /**
+     * @描述： 保存用户基本信息
+     * @param userDetailEntity  用户基本信息
+     */
+    public void saveUserInfo(UserDetailEntity userDetailEntity){
+        if(userDetailEntity == null)
+            return;
+        HitopUserInfoUpdate userInfoUpdate = new HitopUserInfoUpdate();
+        userInfoUpdate.buildRequestParams("id", AppContext.instance().loginUser.getUserId());
+        if(!TextUtils.isEmpty(userDetailEntity.getPhoto()))
+            userInfoUpdate.buildRequestParams("photo", userDetailEntity.getPhoto());
+        if(!TextUtils.isEmpty(userDetailEntity.getUserName()))
+            userInfoUpdate.buildRequestParams("name", userDetailEntity.getUserName());
+        if(!TextUtils.isEmpty(userDetailEntity.getAddr()))
+            userInfoUpdate.buildRequestParams("address",userDetailEntity.getAddr());
+        if(!TextUtils.isEmpty(userDetailEntity.getSchool()))
+            userInfoUpdate.buildRequestParams("scho", userDetailEntity.getSchool());
+        if(!TextUtils.isEmpty(userDetailEntity.getCountry()))
+            userInfoUpdate.buildRequestParams("country", userDetailEntity.getCountry());
+        if(!TextUtils.isEmpty(userDetailEntity.getTel()))
+            userInfoUpdate.buildRequestParams("phone", userDetailEntity.getTel());
+        if(!TextUtils.isEmpty(userDetailEntity.getMail()))
+            userInfoUpdate.buildRequestParams("mail",userDetailEntity.getMail());
+        userInfoUpdate.setSevice(this);
+        userInfoUpdate.post();
     }
 }
