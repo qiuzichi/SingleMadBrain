@@ -12,6 +12,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.iview.ICompetition;
@@ -20,6 +21,8 @@ import com.unipad.common.BaseFragment;
 import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+
+import java.util.List;
 
 /**
  * @描述：  中国赛
@@ -57,7 +60,7 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 		View homeView = inflater.inflate(R.layout.fragment_competition_layout, container,false);
 		ViewUtils.inject(this, homeView);
 		initView(homeView);
-		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
+
 		return homeView;
 	}
 
@@ -66,6 +69,7 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 		super.onCreate(savedInstanceState);
 		activity = (CompetitionListActivity) getActivity();
 		activity.getGameList(Constant.CHIMA_GAME,1,10);
+		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
 		service.registerObserver(HttpConstant.CHINA_GET_HOME_GAME_LIST,this);
 	}
 
@@ -125,6 +129,6 @@ public class ChinaCompetitionFragment extends BaseFragment implements ICompetiti
 
 	@Override
 	public void update(int key, Object o) {
-
+		competitionPersenter.setData((List<CompetitionBean>) o);
 	}
 }

@@ -10,19 +10,26 @@ import android.widget.ListView;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.bean.ProjectBean;
+import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.iview.ICompetition;
 import com.unipad.brain.home.util.MyTools;
 import com.unipad.common.BaseFragment;
 import com.unipad.common.Constant;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
+
+import java.util.List;
 
 /**
  * @描述： 城市赛 页面 帧
  * @author gongjiebin
  *
  */
-public class CityCompetitionFragment extends BaseFragment implements ICompetition {
+public class CityCompetitionFragment extends BaseFragment implements ICompetition,IDataObserver{
 
    final public static String TAG = "CityCompetitionFragment";
 
@@ -37,6 +44,8 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 
 	private CompetitionListActivity activity;
 
+	private HomeGameHandService service;
+
 	public static CityCompetitionFragment getCityCompetitionFragment(){
 		if( null == cityCompetitionFragment)
 			return cityCompetitionFragment = new CityCompetitionFragment();
@@ -49,6 +58,8 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 		View homeView = inflater.inflate(R.layout.fragment_competition_layout, container,false);
 		ViewUtils.inject(this, homeView);
 		initView(homeView);
+		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
+		service.registerObserver(HttpConstant.CITY_GET_HOME_GAME_LIST, this);
 		return homeView;
 	}
 
@@ -66,6 +77,11 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 		competitionPersenter = new CompetitionPersenter(this,projectBean);
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		service.unRegisterObserve(HttpConstant.CITY_GET_HOME_GAME_LIST, this);
+	}
 
 	@Override
 	public Context getContext() {
@@ -106,5 +122,10 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 	@Override
 	public String getCompetitionIndex() {
 		return TAG;
+	}
+
+	@Override
+	public void update(int key, Object o) {
+		competitionPersenter.setData((List<CompetitionBean>) o);
 	}
 }

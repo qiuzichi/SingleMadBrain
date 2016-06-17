@@ -119,6 +119,7 @@
     <string name="competition_time">\t比赛时间</string>
     <string name="apply_cost">\t报名费用</string>
     <string name="my_apply">我要报名</string>
+    <string name="applied">已报名</string>
     <string name="project_1">人名头像记忆</string>
     <string name="project_2">二进制数字</string>
     <string name="project_3">马拉松数字</string>
