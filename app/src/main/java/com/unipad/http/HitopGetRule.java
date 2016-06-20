@@ -32,14 +32,13 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
     public RuleGame handleJsonData(String json) {
         RuleGame rule = null;
         JSONObject jsObj = null;
-        String response = null;
         try {
-            response = new String(json.getBytes(), "utf-8");
-            jsObj = new JSONObject(response);
+            jsObj = new JSONObject(json);
             if (jsObj != null && jsObj.toString().length() != 0) {
                 if (jsObj.getInt("ret_code") == 0) {
                     JSONObject dataJson = new JSONObject(jsObj.getString("data"));
                     if (dataJson != null) {
+                        rule = new RuleGame();
                         rule.setId(dataJson.getString("id"));
                         rule.setGradeId(dataJson.getString("gradeId"));
                         rule.setProjectId(dataJson.getString("projectId"));
@@ -60,7 +59,7 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         if (rule != null) {
             ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).noticeDataChange(HttpConstant.GET_RULE_NOTIFY,rule);

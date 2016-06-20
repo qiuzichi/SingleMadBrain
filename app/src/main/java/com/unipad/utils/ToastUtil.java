@@ -3,6 +3,7 @@ package com.unipad.utils;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -73,11 +74,11 @@ public class ToastUtil {
     {
         HIDDialog.dismissDialog(id);
         HIDDialog WaitingDialog = new HIDDialog(mContext, R.style.dialog_wait, id);
-        WaitingDialog.setContentView(R.layout.show_rule_dlg,
-                (int) mContext.getResources().getDimension(R.dimen.wait_dialog_width), (int) mContext.getResources()
-                        .getDimension(R.dimen.wait_dialog_height));
+        WaitingDialog.setContentView(HIDDialog.ENUM_DIALOG_VIEW.NO_BUTTON_VIEW,
+                (int) mContext.getResources().getDimension(R.dimen.wait_dialog_width),
+                ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        ((TextView) WaitingDialog.findViewById(R.id.dialog_text)).setText(message);
+        ((TextView) WaitingDialog.findViewById(R.id.dialog_text)).setText(rule.getMemeryTip());
         Window win = WaitingDialog.getWindow();
         WindowManager.LayoutParams lp = win.getAttributes();
 

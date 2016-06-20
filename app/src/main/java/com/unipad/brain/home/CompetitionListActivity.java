@@ -16,6 +16,7 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.ProjectBean;
+import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.competitionpj.CompetitionListPresenter;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.iview.ICompetitionList;
@@ -181,8 +182,7 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 	public void update(int key, Object o) {
 		switch (key){
 			case HttpConstant.GET_RULE_NOTIFY:
-
-				ToastUtil.
+				ToastUtil.createRuleDialog(this,Constant.SHOW_RULE_DIG,(RuleGame)o).show();
 				break;
 			default:
 				break;

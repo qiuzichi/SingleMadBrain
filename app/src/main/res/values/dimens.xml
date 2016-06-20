@@ -38,4 +38,7 @@
     <dimen name="wait_dialog_height">180dip</dimen>
     <!-- TOAST弹出的Y轴偏移 -->
     <dimen name="toast_gravity_yoffset">-67dip</dimen>
+
+    <dimen name="rule_dialog_width">569dip</dimen>
+    <dimen name="rule_dialog_height">180dip</dimen>
 </resources>
