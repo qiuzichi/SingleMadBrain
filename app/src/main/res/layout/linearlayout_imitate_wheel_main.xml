@@ -15,7 +15,8 @@
 			android:layout_height="wrap_content"
 			android:layout_width="100dp"
 			android:layout_marginLeft="0dp"
-			android:layout_weight="1"/>
+			android:layout_weight="1"
+			/>
 		
 		<com.unipad.brain.view.WheelView
 			android:id="@+id/time_month"

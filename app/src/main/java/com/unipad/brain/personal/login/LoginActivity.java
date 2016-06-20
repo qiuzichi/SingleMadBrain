@@ -38,6 +38,12 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_aty);
+        Intent intent=getIntent();
+        if (intent==null){
+            String User_name=intent.getStringExtra("use_name");
+            userName.setText(User_name);
+        }
+
     }
 
     @Override
@@ -84,6 +90,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     }
 
     private void login() {
+
         String name = userName.getText().toString().trim();
         String pwd = userPwd.getText().toString().trim();
         if ("".equals(name)) {
@@ -109,7 +116,6 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         startActivity(intent);
         finish();
     }
-
     @Override
     public void update(int key, Object o) {
         Log.e("", "Login update UI");

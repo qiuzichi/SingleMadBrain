@@ -8,6 +8,7 @@ public class HttpConstant {
     public static final String LOGIN = "/api/user/login";
     public static final String GET_USER_GAME_LIST = "/api/match/getMatchByUser";
 
+
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String GET_NEWS_LIST = "/api/news/list";
@@ -56,5 +57,9 @@ public class HttpConstant {
     public static final int USER_APPLYED = 0x10500;
     // 进入比赛时间判断
     public static final int USER_IN_GAEM = 0x10600;
+
+
+    public static final int REGIST_OK = 0x18000;
+    public static final int REGIST_FILED = 0x18001;
 
 }

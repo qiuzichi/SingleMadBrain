@@ -197,7 +197,8 @@
     <string name="util_affirm">确认</string>
     <string name="util_getpicfile_failed">未得到相片路径</string>
     <string name= "tailor_fail">裁剪失败</string>
-    <string name="input_day">请选择生日</string>>
+    <string name="input_day">请选择生日</string>
+    <string name="input_nation">请选择国家</string>
 
     <string name="in_game">进入比赛</string>
     <string name="competition_project">比赛项目</string>
