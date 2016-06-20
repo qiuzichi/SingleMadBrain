@@ -3,6 +3,7 @@ package com.unipad.common;
 import android.content.Context;
 
 import com.unipad.brain.R;
+import com.unipad.brain.home.util.SharedPreferencesUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,8 @@ public class Constant {
 
     private static  Map<String,String>  projectNames;
 
+    private static Map<String,String> projectIds;
+
     /**
      *  根据项目ID 获取项目名字
      * @param context
@@ -51,5 +54,45 @@ public class Constant {
             projectNames.put("00010", context.getString(R.string.project_10));
         }
         return projectNames.get(projectId);
+    }
+
+
+    /**
+     *  根据项目ID 获取项目ID
+     * @param context
+     * @param projectName
+     * @return
+     */
+    public static String getProjectId(Context context,String projectName){
+        if(null == projectIds){
+            projectIds = new HashMap<String,String>();
+            projectIds.put(context.getString(R.string.project_1),"00001");
+            projectIds.put(context.getString(R.string.project_2),"00002");
+            projectIds.put(context.getString(R.string.project_3),"00003");
+            projectIds.put(context.getString(R.string.project_4),"00004");
+            projectIds.put(context.getString(R.string.project_5),"00005");
+            projectIds.put(context.getString(R.string.project_6),"00006");
+            projectIds.put(context.getString(R.string.project_7),"00007");
+            projectIds.put(context.getString(R.string.project_8),"00008");
+            projectIds.put(context.getString(R.string.project_9),"00009");
+            projectIds.put(context.getString(R.string.project_10),"00010");
+        }
+        return projectIds.get(projectName);
+    }
+
+
+    /**
+     * 判断程序是否为第一次运行
+     *
+     * @return true 是 false 否
+     */
+    public static Boolean isfirstRun(Context context,SharedPreferencesUtil sharedPreferencesUtil) {
+        boolean isFirstRun = sharedPreferencesUtil.getBoolean("isFirstRun",true);
+        if (isFirstRun) {
+            sharedPreferencesUtil.saveBoolean("isFirstRun", false);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.unipad.http;
 
+import android.util.Log;
+
 import com.unipad.observer.GlobleObserService;
 
 /**
@@ -24,6 +26,7 @@ public class HitopMatchStart extends HitopRequest<Object> {
     @Override
     public Object handleJsonData(String json) {
         // 处理返回结果
+        Log.d(this.getClass().getSimpleName(),"---" + json);
         this.sevice.noticeDataChange(HttpConstant.USER_IN_GAEM,json);
         return null;
     }

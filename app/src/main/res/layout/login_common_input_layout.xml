@@ -19,67 +19,61 @@
         android:gravity="right|center_vertical"
         android:orientation="vertical"
         android:padding="@dimen/login_margin_top">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/user_name_image" />
-
             <EditText
                 android:id="@+id/register_name"
                 style="@style/EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:hint="@string/input_name">
-
                 <requestFocus />
             </EditText>
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_margin_top"
             android:orientation="horizontal">
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/user_sex_btn" />
-
-            <EditText
-                android:id="@+id/register_sex"
-                style="@style/EditText"
-                android:layout_width="wrap_content"
+                android:src="@drawable/user_sex_btn"
+                />
+            <Spinner
+                android:layout_width="match_parent"
+                style="@style/Spinner"
                 android:layout_height="match_parent"
-                android:hint="@string/register_sex" />
+                android:id="@+id/register_sex"
+                android:entries="@array/sex"
+                >
+            </Spinner>
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_margin_top"
             android:orientation="horizontal">
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/user_date_btn" />
-
-            <EditText
-                android:id="@+id/register_date"
-                style="@style/EditText"
-                android:layout_width="wrap_content"
+            <TextView
+                style="@style/Spinner"
+                android:id="@+id/register_day"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/select_birth_date" />
+                android:hint="@string/input_day"
+                />
+                />
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="@dimen/edit_layout_width"
         android:layout_height="wrap_content"
@@ -88,42 +82,39 @@
         android:gravity="left|center_vertical"
         android:orientation="vertical"
         android:padding="@dimen/login_margin_top">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/user_flag_btn" />
-
-            <EditText
+            <Spinner
+                style="@style/Spinner"
                 android:id="@+id/register_nation"
-                style="@style/EditText"
-                android:layout_width="wrap_content"
+                android:entries="@array/nation"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/select_nationality" />
+                />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_margin_top"
             android:orientation="horizontal">
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/user_phone_btn" />
-
             <EditText
                 android:id="@+id/register_phone"
                 style="@style/EditText"
+                android:inputType="number"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:hint="@string/contact_way" />
+                android:hint="@string/contact_way"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -146,5 +137,4 @@
                 android:inputType="textPassword" />
         </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>
