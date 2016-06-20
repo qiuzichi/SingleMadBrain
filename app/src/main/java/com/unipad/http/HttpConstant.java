@@ -37,6 +37,7 @@ public class HttpConstant {
     public static final int CITY_APPLY_GAME = 0x10005;
     public static final int CHINA_APPLY_GAME = 0x10006;
     public static final int WORD_APPLY_GAME = 0x10007;
+    public static final int GET_RULE_NOTIFY = 0x10008;
 
     public static final int USER_AUTH = 0x10100;
     public static final int UOLOAD_AUTH_FILE = 0x10200;

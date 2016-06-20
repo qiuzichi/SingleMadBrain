@@ -2,6 +2,7 @@ package com.unipad.utils;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import com.unipad.brain.App;
 import com.unipad.brain.R;
+import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.common.widget.HIDDialog;
 
 public class ToastUtil {
@@ -30,17 +32,25 @@ public class ToastUtil {
         String text = App.getContext().getResources().getString(textId);
         showToast(text);
     }
+
+    public static HIDDialog createOnlyConfigDlg(Context mContext, String key, View.OnClickListener listener) {
+        final HIDDialog dialog = new HIDDialog(mContext, key);
+        dialog.setContentView(HIDDialog.ENUM_DIALOG_VIEW.ONE_BUTTON_VIEW);
+        dialog.setText("");
+        dialog.setFirstBTListener(listener);
+        return dialog;
+    }
+
     /**
      * 创建等待对话框
+     *
      * @param mContext
-     * @param message 显示信息
+     * @param message  显示信息
      * @return HIDDialog
      */
-    public static HIDDialog createWaitingDlg(Context mContext, String message, String id)
-    {
+    public static HIDDialog createWaitingDlg(Context mContext, String message, String id) {
         HIDDialog WaitingDialog = new HIDDialog(mContext, R.style.dialog_wait, id);
-        if (null == message)
-        {
+        if (null == message) {
             message = mContext.getString(R.string.ui_please_wait);
         }
 
@@ -55,7 +65,24 @@ public class ToastUtil {
         win.setGravity(Gravity.CENTER_VERTICAL);
 
         win.setAttributes(lp);
-       // HLog.v(TAG, "~~~~~~~~create waite dialog...the dialog id:" + id + "~~~the message:" + message);
+        // HLog.v(TAG, "~~~~~~~~create waite dialog...the dialog id:" + id + "~~~the message:" + message);
+        return WaitingDialog;
+    }
+
+    public static HIDDialog createRuleDialog(Context mContext, String id,RuleGame rule)
+    {
+        HIDDialog.dismissDialog(id);
+        HIDDialog WaitingDialog = new HIDDialog(mContext, R.style.dialog_wait, id);
+        WaitingDialog.setContentView(R.layout.show_rule_dlg,
+                (int) mContext.getResources().getDimension(R.dimen.wait_dialog_width), (int) mContext.getResources()
+                        .getDimension(R.dimen.wait_dialog_height));
+
+        ((TextView) WaitingDialog.findViewById(R.id.dialog_text)).setText(message);
+        Window win = WaitingDialog.getWindow();
+        WindowManager.LayoutParams lp = win.getAttributes();
+
+        lp.y = lp.y + mContext.getResources().getDimensionPixelOffset(R.dimen.toast_gravity_yoffset);
+        win.setAttributes(lp);
         return WaitingDialog;
     }
 }
