@@ -45,7 +45,7 @@ public class FileUtil {
 
 	public static String getPath() {
 		if (hasSDCard()) {
-			return Environment.getExternalStorageDirectory().getPath() + "/abc";
+			return Environment.getExternalStorageDirectory().getPath() + "/MadBrain";
 		} else {
 			return "";
 		}

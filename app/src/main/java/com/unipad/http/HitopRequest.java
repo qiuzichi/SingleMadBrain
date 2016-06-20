@@ -58,10 +58,7 @@ public abstract class HitopRequest<T>{
             ToastUtil.showToast("请检查网络");
             return ;
         }
-        if (null == mParams) {
-            mParams = new RequestParams(buildRequestURL());
-        }
-
+        buildRequestURL();
         x.http().post(mParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -107,24 +104,25 @@ public abstract class HitopRequest<T>{
             }
         }
          mParams.setMultipart(true);
-         x.http().post(mParams, new Callback.CommonCallback<String>() {
-             @Override
-             public void onSuccess(String result) {
-                 handleJsonData(result);
-             }
+        x.http().post(mParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("request","result = "+result);
+                handleJsonData(result);
+            }
 
-             @Override
-             public void onError(Throwable throwable, boolean b) {
+            @Override
+            public void onError(Throwable throwable, boolean b) {
 
-             }
+            }
 
-             @Override
-             public void onCancelled(CancelledException e) {
+            @Override
+            public void onCancelled(CancelledException e) {
 
-             }
+            }
 
-             @Override
-             public void onFinished() {
+            @Override
+            public void onFinished() {
 
              }
          });
@@ -161,7 +159,7 @@ public abstract class HitopRequest<T>{
     /*
      添加文件
      */
-    public void buildRequestParams(String key,File value){
+    public void buildRequestParams(String key,File value) {
 
         mParams.addBodyParameter(key, value);
     }

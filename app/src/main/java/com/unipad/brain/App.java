@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 
+import com.unipad.io.mina.LongTcpClient;
+
 import org.xutils.x;
 
 import java.io.File;

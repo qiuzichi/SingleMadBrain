@@ -78,6 +78,8 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
     // 上传图片
     private int indexUpLoadFile;
 
+    private ImageView user_photo;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -91,6 +93,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         service.registerObserver(HttpConstant.UOLOAD_AUTH_FILE,this);
         // 显示实名认证信息
         service.registerObserver(HttpConstant.USER_AUTH_INFO, this);
+
         mLayoutStep1 = (ViewGroup) mLayoutStep123Parent.findViewById(R.id.layout_step1);
         View view = mLayoutStep1.findViewById(R.id.radio_men);
         view.setOnClickListener(this);
@@ -117,6 +120,30 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
             ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(15);
             service.getAuthInfo(AppContext.instance().loginUser.getUserId());
         }
+
+        if(!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
+            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map =  PicUtil.drawableToBitmap(drawable);
+                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
     }
 
     @Override
@@ -166,7 +193,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
                 } else if(v.getId()==R.id.radio_coach){
                     intType = "00003";
                 }else{
-                    intType = "00004";
+                    intType = "00002";
                 }
                 break;
             case R.id.next_step:
@@ -274,14 +301,6 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
 
         authBean.setName(ed_names);
         authBean.setType(intType);
-
-        // 上次
-        //authBean.setRating_certificate1(mPhotoFileList.get(R.id.grade_certificate_pic3));
-        // authBean.setRating_certificate2(mPhotoFileList.get(R.id.grade_certificate_pic4));
-        //authBean.setIdFrontUrl("");
-        // authBean.setIdReverseUrl(mPhotoFileList.get(R.id.grade_certificate_pic2));
-     //   Log.d(this.getClass().getSimpleName(),mPhotoFileList.get(R.id.grade_certificate_pic1).toString());
-        //mPhotoFileList.get(R.id.grade_certificate_pic1);
         uploadFile();  // 上传文件
     }
 
@@ -324,40 +343,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         return false;
     }
 
-    /**
-     * @描述： 下载文件之后 将路径存入集合当中
-     * @param key id
-     * @param httpUrl 服务器 文件的相对路径
-     */
-    private void loadFile(final int key,String httpUrl){
-        RequestParams params3 = new RequestParams(HttpConstant.PATH_FILE_URL + httpUrl);
 
-        //设置断点续传
-        params3.setAutoResume(true);
-        params3.setSaveFilePath(App.getContext().getTakePhotoFile().getPath());
-
-        x.http().post(params3, new Callback.CommonCallback<File>() {
-            @Override
-            public void onSuccess(File file) {
-                // mPhotoFileList.put(key, file.getPath());
-            }
-
-            @Override
-            public void onError(Throwable throwable, boolean b) {
-                //
-            }
-
-            @Override
-            public void onCancelled(CancelledException e) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-    }
     /*
     下一步操作
      */
@@ -554,7 +540,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
                     JSONObject jsonObject = new JSONObject(str);
                     int code = jsonObject.optInt("ret_code");
                     if(code == 0) {
-                        ToastUtil.showToast("认证成功");
+                        ToastUtil.showToast(mActivity.getString(R.string.submit_sussue));
                         AppContext.instance().loginUser.setAuth(jsonObject.optInt("data"));
                     }
                 } catch (JSONException e) {

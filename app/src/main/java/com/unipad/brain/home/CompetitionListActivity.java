@@ -13,11 +13,15 @@ import android.widget.TextView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.competitionpj.CompetitionListPresenter;
+import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.iview.ICompetitionList;
 import com.unipad.common.BaseFragmentActivity;
+import com.unipad.common.Constant;
+import com.unipad.io.w.Const;
 
 /**
  * @描述：  赛事列表
@@ -47,18 +51,24 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 	private TextView[] titleTxts;
 	
 	private ProjectBean projectBean;
-	
+
+	private HomeGameHandService service;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_competition_list_layout);
 		ViewUtils.inject(this);
 		projectBean = (ProjectBean) getIntent().getSerializableExtra("projectBean");
+		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
 		initView(null);
 		
 	}
 
-	
+	public void getGameList(String groupId,int page,int size) {
+		service.sendMsgGetGame(projectBean.getProjectId(),groupId,page,size);
+	}
+
 	@Override
 	public void initView(View view) {
 		super.initView(view);
@@ -73,7 +83,8 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 		titleTxts = new TextView[]{txt_title_city,txt_title_china,txt_title_world};
 		txt_title_city.performClick();
 	}
-	
+
+
 	
 	@Override
 	public Context getContext() {

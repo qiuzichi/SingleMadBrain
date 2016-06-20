@@ -22,6 +22,16 @@ public class UserDetailEntity {
 
     private String school; // 学校
 
+    private String photo; // 用户头像地址
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public String getAddr() {
         return addr;
     }

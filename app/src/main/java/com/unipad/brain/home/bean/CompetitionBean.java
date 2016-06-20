@@ -6,6 +6,16 @@ package com.unipad.brain.home.bean;
  */
 public class CompetitionBean {
 
+	private String id;
+
+	private String name;//赛事名称
+
+	private String projectId;//组别
+
+	private String gradeId;//级别
+
+	//private int groupId;//组别
+	private String address;//比赛地址
 	// 比赛日期
 	private String competitionDate;
 	// 比赛时间
@@ -58,7 +68,6 @@ public class CompetitionBean {
 		this.cost = cost;
 	}
 
-
 	public boolean isAttention() {
 		return attention;
 	}
@@ -78,7 +87,37 @@ public class CompetitionBean {
 		this.applyState = applyState;
 	}
 
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getGradeId() {
+		return gradeId;
+	}
+
+	public void setGradeId(String gradeId) {
+		this.gradeId = gradeId;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	@Override
 	public String toString() {
 		return "CompetitionBean [competitionDate=" + competitionDate
@@ -86,8 +125,13 @@ public class CompetitionBean {
 				+ ", attention=" + attention + ", applyState=" + applyState
 				+ "]";
 	}
-	
-	
-	
-	
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

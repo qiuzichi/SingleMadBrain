@@ -118,6 +118,7 @@ public class HomePresenter implements ISidebar {
 	 */
 	private List<HomeBean>  initData(){
 		homeBeans = new ArrayList<HomeBean>();
+		/**
 		//人名头像记忆
 		ProjectBean npPj = new ProjectBean("","" , new String[]{"5min","5min","5min"}, new String[]{"15min","15min","15min"}, new String[]{"1" + next,"2" + next,"2" + next},"","","","");
 		HomeBean npBean = new HomeBean(R.drawable.sel_np,R.drawable.nor_np,npPj,false);
@@ -158,7 +159,7 @@ public class HomePresenter implements ISidebar {
 		homeBeans.add(sjcyBean);
 		homeBeans.add(thnumBean);
 		homeBeans.add(kspkBean);
-
+*/
 		return homeBeans;
 	}
 	

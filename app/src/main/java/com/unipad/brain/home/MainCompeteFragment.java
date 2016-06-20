@@ -92,25 +92,21 @@ public class MainCompeteFragment extends MainBasicFragment {
                     relatlayout.setVisibility(View.VISIBLE);
                 }
 
-                //      projectindex = position;
-//                homeListAdapter.notifyDataSetChanged();/
-//                txt_pname.setText(homeBeans.get(position).projectBean.getName());
-//                txt_city_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[0]);
-//                txt_city_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[0]);
-//                txt_china_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[1]);
-//                txt_china_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[1]);
-//                txt_world_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[2]);
-//                txt_world_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[2]);
+                     projectindex = position;
+                homeListAdapter.notifyDataSetChanged();
+                txt_pname.setText(homeBeans.get(position).projectBean.getName());
+                txt_city_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[0]);
+                txt_city_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[0]);
+                txt_china_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[1]);
+                txt_china_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[1]);
+                txt_world_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[2]);
+                txt_world_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[2]);
 
                 if (position == 6 || position == 9) {
                     return;
                 }
 
-                CompeteItemEntity.getInstance().setCompeteItem(homeBeans.get(position).projectBean.getName());
-                CompeteItemEntity.getInstance().setCompeteType("城市赛");
-                CompeteItemEntity.getInstance().setMemoryTime(++TmpSeconds);
-                CompeteItemEntity.getInstance().setRememoryTime(++TmpSeconds);
-                MainCompeteFragment.this.openCommonActivity();
+
             }
         });
     }
@@ -126,8 +122,8 @@ public class MainCompeteFragment extends MainBasicFragment {
      * 打开比赛Activity
      */
     private void openCommonActivity() {
-        Intent intent = new Intent(mActivity, CommonActivity.class);
-        startActivity(intent);
+        // Intent intent = new Intent(mActivity, CommonActivity.class);
+        // startActivity(intent);
     }
 
     @Override
@@ -155,34 +151,34 @@ public class MainCompeteFragment extends MainBasicFragment {
     private void initData() {
         homeBeans = new ArrayList<>();
         //人名头像记忆
-        ProjectBean npPj = new ProjectBean(mActivity.getString(R.string.project_1), "目标", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean npPj = new ProjectBean(mActivity.getString(R.string.project_1), "00001","目标", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean npBean = new HomeBean(R.drawable.sel_np, R.drawable.nor_np, npPj, false);
         //二进制数字
-        ProjectBean ejzPj = new ProjectBean(mActivity.getString(R.string.project_2), "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean ejzPj = new ProjectBean(mActivity.getString(R.string.project_2),"00002","", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean ejzBean = new HomeBean(R.drawable.sel_rjz, R.drawable.nor_rjz, ejzPj, false);
         //马拉松数字项目
-        ProjectBean mlsNumPj = new ProjectBean(mActivity.getString(R.string.project_3), "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean mlsNumPj = new ProjectBean(mActivity.getString(R.string.project_3),"00003","", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean mlsNumBean = new HomeBean(R.drawable.sel_mlsnum, R.drawable.nor_mlsnum, mlsNumPj, false);
         //抽象图形
-        ProjectBean cxTxPj = new ProjectBean(mActivity.getString(R.string.project_4), "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean cxTxPj = new ProjectBean(mActivity.getString(R.string.project_4),"00004", "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean cxTxBean = new HomeBean(R.drawable.sel_cx, R.drawable.nor_cx, cxTxPj, false);
         // 快速随机数字
-        ProjectBean kssjPj = new ProjectBean(mActivity.getString(R.string.project_5), "CDVSDV", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "CDVDVWE", "FBRRYJU", "GWGWG5", "FKBNG");
+        ProjectBean kssjPj = new ProjectBean(mActivity.getString(R.string.project_5),"00005", "CDVSDV", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "CDVDVWE", "FBRRYJU", "GWGWG5", "FKBNG");
         HomeBean kssjBean = new HomeBean(R.drawable.sel_kssj, R.drawable.nor_kssj, kssjPj, false);
         // 虚拟事件和日期
-        ProjectBean xnsjPj = new ProjectBean(mActivity.getString(R.string.project_6), "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean xnsjPj = new ProjectBean(mActivity.getString(R.string.project_6),"00006", "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean xnsjBean = new HomeBean(R.drawable.sel_xlsj, R.drawable.nor_xlsj, xnsjPj, false);
         // 马拉松扑克记忆
-        ProjectBean mlspkPj = new ProjectBean(mActivity.getString(R.string.project_7), "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean mlspkPj = new ProjectBean(mActivity.getString(R.string.project_7),"00007", "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean mlspkBean = new HomeBean(R.drawable.sel_mlspk, R.drawable.nor_mlspk, mlspkPj, false);
         // 随机词语记忆
-        ProjectBean sjcyPj = new ProjectBean(mActivity.getString(R.string.project_8), "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean sjcyPj = new ProjectBean(mActivity.getString(R.string.project_8),"00008", "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean sjcyBean = new HomeBean(R.drawable.sel_sjcy, R.drawable.nor_sjcy, sjcyPj, false);
         //听记数字
-        ProjectBean thnumPj = new ProjectBean(mActivity.getString(R.string.project_9), "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean thnumPj = new ProjectBean(mActivity.getString(R.string.project_9),"00009", "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean thnumBean = new HomeBean(R.drawable.sel_tjnum, R.drawable.nor_tjnum, thnumPj, false);
         // 快速扑克记忆
-        ProjectBean kspkPj = new ProjectBean(mActivity.getString(R.string.project_10), "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean kspkPj = new ProjectBean(mActivity.getString(R.string.project_10),"00010", "", new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean kspkBean = new HomeBean(R.drawable.sel_kspk, R.drawable.nor_kspk, kspkPj, false);
         homeBeans.add(npBean);
         homeBeans.add(ejzBean);
