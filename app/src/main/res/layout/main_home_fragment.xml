@@ -146,13 +146,14 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/lv_mainpager_info"
+            <FrameLayout
+                android:id="@+id/fl_mainpager_left"
                 android:layout_width="match_parent"
                 android:background="@color/light_blue"
                 android:layout_height="match_parent"
                 android:scrollbars="none"
-                android:layout_below="@id/ll_head" />
+                android:layout_below="@id/ll_head" >
+            </FrameLayout>
         </RelativeLayout>
 
         <FrameLayout

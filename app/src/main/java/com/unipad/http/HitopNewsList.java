@@ -1,6 +1,8 @@
 package com.unipad.http;
 
+import com.unipad.AppContext;
 import com.unipad.brain.home.bean.NewEntity;
+import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 
 import java.util.List;
@@ -40,7 +42,8 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
 
     @Override
     public List<NewEntity> handleJsonData(String json) {
-
+        List<NewEntity> newsList = null;
+        ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(HttpConstant.NOTIFY_GET_NEWS,newsList);
         return null;
     }
 

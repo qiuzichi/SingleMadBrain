@@ -44,6 +44,7 @@ public class HttpConstant {
     public static final int WORD_APPLY_GAME = 0x10007;
 
 
+
     // 实名认证
     public static final int USER_AUTH=0x10100;
     // 上传文件
@@ -57,4 +58,7 @@ public class HttpConstant {
     // 进入比赛时间判断
     public static final int USER_IN_GAEM = 0x10600;
 
+
+    //更新数据的 key
+    public static final int NOTIFY_GET_NEWS = 0x20000;
 }
