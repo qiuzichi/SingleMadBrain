@@ -25,10 +25,15 @@ public class HttpConstant {
     public static String PATH_FILE_URL = "http://192.168.0.104:8090/crazybrain-mng/image/getFile?filePath=";
     // 更新用户信息
     public static String UPDATE_USERINFO = "/api/user/modify";
+    // 得到用户已经报名列表
+    public static String USER_APPLYED_HTTP= "/api/user/myApply";
+    // 进入比赛时间判断
+    public static String USER_IN_GAME_HTTP = "/api/match/checkMatchStart";
 
     public static int JSON_ERREO = -2;
     public static final int LOGIN_UPDATE_UI = 0x10000;
     public static final int LOGIN_WRONG_MSG = 0x10001;
+
 
     public static final int CITY_GET_HOME_GAME_LIST = 0x10002;
     public static final int CHINA_GET_HOME_GAME_LIST = 0x10003;
@@ -39,8 +44,18 @@ public class HttpConstant {
     public static final int WORD_APPLY_GAME = 0x10007;
     public static final int GET_RULE_NOTIFY = 0x10008;
 
-    public static final int USER_AUTH = 0x10100;
-    public static final int UOLOAD_AUTH_FILE = 0x10200;
-    public static final int PERSONALDATA = 0x10300;
-    public static final int USER_AUTH_INFO = 0x10400;
+
+    // 实名认证
+    public static final int USER_AUTH=0x10100;
+    // 上传文件
+    public static final int UOLOAD_AUTH_FILE =0x10200;
+    // 获取用户基本信息
+    public static final int PERSONALDATA=0x10300;
+    // 获取用户认证信息
+    public static final int USER_AUTH_INFO=0x10400;
+    // 获取用户已经报名的信息
+    public static final int USER_APPLYED = 0x10500;
+    // 进入比赛时间判断
+    public static final int USER_IN_GAEM = 0x10600;
+
 }

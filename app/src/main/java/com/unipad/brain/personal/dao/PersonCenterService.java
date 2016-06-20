@@ -7,11 +7,13 @@ import com.unipad.ICoreService;
 import com.unipad.AuthEntity;
 import com.unipad.UserDetailEntity;
 import com.unipad.common.MobileInfo;
+import com.unipad.http.HitopApplyed;
 import com.unipad.http.HitopAuth;
 import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopLogin;
 
+import com.unipad.http.HitopMatchStart;
 import com.unipad.http.HitopUserInfoUpdate;
 
 
@@ -117,5 +119,28 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
             userInfoUpdate.buildRequestParams("mail",userDetailEntity.getMail());
         userInfoUpdate.setSevice(this);
         userInfoUpdate.post();
+    }
+
+    /**
+     * 获取
+     * @param uid
+     */
+    public void getApplyList(String uid){
+        HitopApplyed hitopApplyed = new HitopApplyed();
+        hitopApplyed.buildRequestParams("userId",uid);
+        hitopApplyed.setSevice(this);
+        hitopApplyed.post();
+    }
+
+    /**
+     * 检查是否可以进入比赛
+     * @param matchId
+     */
+    public void checkMatchStart(String matchId,String projectId){
+        HitopMatchStart hitopMatchStart = new HitopMatchStart();
+        hitopMatchStart.buildRequestParams("matchId",matchId);
+        hitopMatchStart.buildRequestParams("projectId",projectId);
+        hitopMatchStart.setSevice(this);
+        hitopMatchStart.post();
     }
 }
