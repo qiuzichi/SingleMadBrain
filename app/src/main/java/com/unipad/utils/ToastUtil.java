@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unipad.brain.App;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
+import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
 
 public class ToastUtil {
@@ -72,18 +74,19 @@ public class ToastUtil {
 
     public static HIDDialog createRuleDialog(Context mContext, String id,RuleGame rule)
     {
-        HIDDialog.dismissDialog(id);
-        HIDDialog WaitingDialog = new HIDDialog(mContext, R.style.dialog_wait, id);
-        WaitingDialog.setContentView(HIDDialog.ENUM_DIALOG_VIEW.NO_BUTTON_VIEW,
-                (int) mContext.getResources().getDimension(R.dimen.wait_dialog_width),
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+       final HIDDialog WaitingDialog = new HIDDialog(mContext, id);
+        WaitingDialog.setContentView(R.layout.show_rule_dlg);
 
-        ((TextView) WaitingDialog.findViewById(R.id.dialog_text)).setText(rule.getMemeryTip());
-        Window win = WaitingDialog.getWindow();
-        WindowManager.LayoutParams lp = win.getAttributes();
-
-        lp.y = lp.y + mContext.getResources().getDimensionPixelOffset(R.dimen.toast_gravity_yoffset);
-        win.setAttributes(lp);
+       // WaitingDialog.setTitle(Constant.getProjectName(rule.getProjectId()) + "规则：");
+        String tip = "记忆规则：\n\n"+rule.getMemeryTip()+"\n\n回忆规则：\n\n"+rule.getReCallTip()+"\n\n计分规则：\n\n"+rule.getCountRule()+"\n";
+        ((TextView)WaitingDialog.findViewById(R.id.msg_text)).setText(tip);
+        ((TextView)WaitingDialog.findViewById(R.id.dialog_title)).setText(Constant.getProjectName(rule.getProjectId()) + "规则：");
+        ((Button)WaitingDialog.findViewById(R.id.dialog_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WaitingDialog.dismiss();
+            }
+        });
         return WaitingDialog;
     }
 }

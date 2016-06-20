@@ -30,7 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/"
+            android:background="@drawable/close_btn"
+            android:visibility="gone"
             android:layout_marginRight="10dip"
              />
     </LinearLayout>
@@ -44,9 +45,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dip"
+        android:layout_height="wrap_content"
         android:layout_marginTop="18dip"
-        android:layout_weight="1"
+
         android:minHeight="200dip"
         android:orientation="vertical"
         android:paddingLeft="60dip"

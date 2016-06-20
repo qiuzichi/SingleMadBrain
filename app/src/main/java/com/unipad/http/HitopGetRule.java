@@ -44,17 +44,18 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
                         rule.setProjectId(dataJson.getString("projectId"));
                         rule.setTiltle(dataJson.getString("title"));
                         rule.setRuleNo(dataJson.getString("ruleNo"));
-                        rule.setGradeId(dataJson.getString("groupId"));
-                        rule.setMemeryTime1(dataJson.getInt("momeryTime"));
+                        rule.setMemeryTime1(dataJson.getInt("memoryTime"));
                         rule.setRecallTime1(dataJson.getInt("recallTime"));
-                        rule.setMemeryTime2(dataJson.getInt("momeryTime2"));
-                        rule.setRecallTime2(dataJson.getInt("recallTime2"));
-                        rule.setMemeryTime3(dataJson.getInt("momeryTime3"));
-                        rule.setRecallTime3(dataJson.getInt("recallTime3"));
-                        rule.setMemeryTip(dataJson.getString("MEMORY_TEXT"));
-                        rule.setReCallTip(dataJson.getString("RECALL_TEXT"));
+                        if ("00009".equals(rule.getProjectId())) {
+                            rule.setMemeryTime2(dataJson.getInt("memoryTime2"));
+                            rule.setRecallTime2(dataJson.getInt("recallTime2"));
+                            rule.setMemeryTime3(dataJson.getInt("memoryTime3"));
+                            rule.setRecallTime3(dataJson.getInt("recallTime3"));
+                        }
+                        rule.setMemeryTip(dataJson.getString("memoryText"));
+                        rule.setReCallTip(dataJson.getString("recallText"));
+                        rule.setCountRule(dataJson.getString("scoreText"));
                         rule.setCountRecall(dataJson.getInt("RECALL_COUNT"));
-                        rule.setCountRule(dataJson.getString("SCORE_TEXT"));
                     }
                 }
             }

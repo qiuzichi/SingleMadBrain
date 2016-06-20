@@ -90,6 +90,21 @@ public class HIDDialog  extends Dialog
         }
     }
 
+    public void showColseButton(){
+        if (enumTypeView == null || viewDialog == null)
+        {
+            return;
+        }
+        Button closeDlg = (Button) viewDialog.findViewById(R.id.dialog_close);
+        closeDlg.setVisibility(View.VISIBLE);
+        closeDlg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
+
     public HIDDialog(Context context, String ID)
     {
         super(context, R.style.dialog);
@@ -216,7 +231,6 @@ public class HIDDialog  extends Dialog
      */
     public void setContentView(ENUM_DIALOG_VIEW enumTypeView)
     {
-        getWindow().setBackgroundDrawableResource(R.color.transparent);
         viewDialog = getLayoutInflater().inflate(enumTypeView.viewRes, null);
         setContentView(viewDialog,
                 new LayoutParams((int) mContext.getResources().getDimension(R.dimen.dialog_width),
@@ -230,7 +244,6 @@ public class HIDDialog  extends Dialog
      */
     public void setContentView(ENUM_DIALOG_VIEW enumTypeView, int width, int height)
     {
-        getWindow().setBackgroundDrawableResource(R.color.transparent);
         viewDialog = getLayoutInflater().inflate(enumTypeView.viewRes, null);
         setContentView(viewDialog, new LayoutParams(width, height));
         this.enumTypeView = enumTypeView;
@@ -641,7 +654,7 @@ public class HIDDialog  extends Dialog
      */
     public void setContentView(int layoutResID, int width, int height)
     {
-        getWindow().setBackgroundDrawableResource(R.color.transparent);
+
         viewDialog = getLayoutInflater().inflate(layoutResID, null);
         setContentView(viewDialog, new LayoutParams(width, height));
     }
@@ -668,7 +681,6 @@ public class HIDDialog  extends Dialog
      */
     public void setContentView(View view, LayoutParams params)
     {
-        getWindow().setBackgroundDrawableResource(R.color.transparent);
         viewDialog = view;
         super.setContentView(viewDialog, params);
         enumTypeView = null;

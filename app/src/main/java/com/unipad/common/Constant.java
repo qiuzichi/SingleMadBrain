@@ -2,6 +2,7 @@ package com.unipad.common;
 
 import android.content.Context;
 
+import com.unipad.brain.App;
 import com.unipad.brain.R;
 import com.unipad.brain.home.util.SharedPreferencesUtil;
 
@@ -34,49 +35,38 @@ public class Constant {
 
     private static Map<String,String> projectIds;
 
-    /**
-     *  根据项目ID 获取项目名字
-     * @param context
-     * @param projectId
-     * @return
-     */
-    public static String getProjectName(Context context,String projectId){
+
+    public static String getProjectName(String projectId){
         if(null == projectNames){
             projectNames = new HashMap<String,String>();
-            projectNames.put("00001",context.getString(R.string.project_1));
-            projectNames.put("00002",context.getString(R.string.project_2));
-            projectNames.put("00003",context.getString(R.string.project_3));
-            projectNames.put("00004",context.getString(R.string.project_4));
-            projectNames.put("00005",context.getString(R.string.project_5));
-            projectNames.put("00006",context.getString(R.string.project_6));
-            projectNames.put("00007",context.getString(R.string.project_7));
-            projectNames.put("00008",context.getString(R.string.project_8));
-            projectNames.put("00009",context.getString(R.string.project_9));
-            projectNames.put("00010", context.getString(R.string.project_10));
+            projectNames.put("00001", App.getContext().getString(R.string.project_1));
+            projectNames.put("00002",App.getContext().getString(R.string.project_2));
+            projectNames.put("00003",App.getContext().getString(R.string.project_3));
+            projectNames.put("00004",App.getContext().getString(R.string.project_4));
+            projectNames.put("00005",App.getContext().getString(R.string.project_5));
+            projectNames.put("00006",App.getContext().getString(R.string.project_6));
+            projectNames.put("00007",App.getContext().getString(R.string.project_7));
+            projectNames.put("00008",App.getContext().getString(R.string.project_8));
+            projectNames.put("00009",App.getContext().getString(R.string.project_9));
+            projectNames.put("00010", App.getContext().getString(R.string.project_10));
         }
         return projectNames.get(projectId);
     }
 
 
-    /**
-     *  根据项目ID 获取项目ID
-     * @param context
-     * @param projectName
-     * @return
-     */
-    public static String getProjectId(Context context,String projectName){
+    public static String getProjectId(String projectName){
         if(null == projectIds){
             projectIds = new HashMap<String,String>();
-            projectIds.put(context.getString(R.string.project_1),"00001");
-            projectIds.put(context.getString(R.string.project_2),"00002");
-            projectIds.put(context.getString(R.string.project_3),"00003");
-            projectIds.put(context.getString(R.string.project_4),"00004");
-            projectIds.put(context.getString(R.string.project_5),"00005");
-            projectIds.put(context.getString(R.string.project_6),"00006");
-            projectIds.put(context.getString(R.string.project_7),"00007");
-            projectIds.put(context.getString(R.string.project_8),"00008");
-            projectIds.put(context.getString(R.string.project_9),"00009");
-            projectIds.put(context.getString(R.string.project_10),"00010");
+            projectIds.put(App.getContext().getString(R.string.project_1),"00001");
+            projectIds.put(App.getContext().getString(R.string.project_2),"00002");
+            projectIds.put(App.getContext().getString(R.string.project_3),"00003");
+            projectIds.put(App.getContext().getString(R.string.project_4),"00004");
+            projectIds.put(App.getContext().getString(R.string.project_5),"00005");
+            projectIds.put(App.getContext().getString(R.string.project_6),"00006");
+            projectIds.put(App.getContext().getString(R.string.project_7),"00007");
+            projectIds.put(App.getContext().getString(R.string.project_8),"00008");
+            projectIds.put(App.getContext().getString(R.string.project_9),"00009");
+            projectIds.put(App.getContext().getString(R.string.project_10),"00010");
         }
         return projectIds.get(projectName);
     }
