@@ -136,9 +136,10 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
      * 检查是否可以进入比赛
      * @param matchId
      */
-    public void checkMatchStart(String matchId){
+    public void checkMatchStart(String matchId,String projectId){
         HitopMatchStart hitopMatchStart = new HitopMatchStart();
         hitopMatchStart.buildRequestParams("matchId",matchId);
+        hitopMatchStart.buildRequestParams("projectId",projectId);
         hitopMatchStart.setSevice(this);
         hitopMatchStart.post();
     }

@@ -16,8 +16,7 @@ import com.unipad.utils.ToastUtil;
  * 个人中心之设置中心
  * Created by Wbj on 2016/4/27.
  */
-public class
-PersonalSettingFragment extends PersonalCommonFragment {
+public class PersonalSettingFragment extends PersonalCommonFragment {
     private EditText mEditSuggest;
     private int mSelectedViewId = -1;
     private int mNormalColor, mRedColor, mTextHint;

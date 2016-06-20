@@ -21,6 +21,11 @@ import com.unipad.brain.R;
  */
 public class ShowDialog {
 	private Dialog dialog;
+
+	public Dialog getDialog(){
+		return dialog;
+	};
+
 	private Context context;
 	/**
 	 * TYPE_CENTER :dialog居中显示
@@ -168,41 +173,21 @@ public class ShowDialog {
 		dialog.show();
 	}
 	
-	/**
-	 * 显示普通对话框，包含标题，提示内容，确定按钮，取消按钮
-	 * @return void;
-	 * */
-//	public void showCustomDialog(String title,String message,String queding,String quxiao,OnClickListener quedingClick,OnClickListener quxiaoClick){
-//		View v=View.inflate(context, R.layout.cust_diaolog, null);
-//		t_title=(TextView) v.findViewById(R.id.title);
-//		t_message=(TextView) v.findViewById(R.id.text_message);
-//		b_queding=(Button) v.findViewById(R.id.btn_quedingWf);
-//		b_quxiao=(Button) v.findViewById(R.id.btn_quXiaoWf);
-//		t_title.setText(title);
-//		t_message.setText(message);
-//		b_queding.setText(queding);
-//		b_quxiao.setText(quxiao);
-//		b_queding.setOnClickListener(quedingClick);
-//		b_quxiao.setOnClickListener(quxiaoClick);
-//		this.createDialog(v, null, TYPE_CENTER);
-//	}
+
 
 	// 关闭dialog
 	public void dismiss() {
 		if(dialog!=null && dialog.isShowing())dialog.dismiss();
 	}
-	
 	public boolean isShowing(){
 		return null!=dialog&&dialog.isShowing();
 	}
-	
 	public void setCancelable(boolean cancelable,boolean canceledOnTouchOutside){
 		if(null!=dialog){
 			dialog.setCancelable(cancelable);
 			dialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
 		}
 	}
-	
 	/**
 	 *  弹出带 确定键的 dialog
 	 * @param str  需要显示的文本
@@ -213,15 +198,15 @@ public class ShowDialog {
 				"",new BaseConfirmDialog.OnActionClickListener() {
 					@Override
 					public void onActionRight(BaseConfirmDialog dialog) {
-					}
 
+					}
 					@Override
 					public void onActionLeft(BaseConfirmDialog dialog) {
 						dialog.dismiss();
 					}
 				});
 //		dialog.setOnKeyListener(keylistener); // 点击返回键不让dialog 消失
-//		dialog.setCanceledOnTouchOutside(false);  // 触摸屏幕不让 dialog 消失
+		dialog.setCanceledOnTouchOutside(false);  // 触摸屏幕外让 dialog 消失
 		dialog.show();
 	 }
 	
@@ -238,4 +223,38 @@ public class ShowDialog {
 			}
 		}
 	};
+
+	/**
+	 *  绑定一个View 控件的点击事件
+	 */
+	public void bindOnClickListener(View view,int[] ids){
+		if(ids == null)
+			return;
+		for(int i = 0 ; i < ids.length;i++) {
+			view.findViewById(ids[i]).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(null != onShowDialogClick)
+						onShowDialogClick.dialogClick(v.getId());
+				}
+			});
+		}
+	}
+
+	/**
+	 *
+	 *
+	 *   此接口  返回自定义dialog中所有的点击事件
+	 */
+	public interface OnShowDialogClick{
+		 void dialogClick(int id);
+	}
+
+	private OnShowDialogClick onShowDialogClick;
+
+	public void setOnShowDialogClick( OnShowDialogClick onShowDialogClick){
+		this.onShowDialogClick = onShowDialogClick;
+	}
+
+
 }

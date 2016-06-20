@@ -56,4 +56,5 @@ public class HttpConstant {
     public static final int USER_APPLYED = 0x10500;
     // 进入比赛时间判断
     public static final int USER_IN_GAEM = 0x10600;
+
 }

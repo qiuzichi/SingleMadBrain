@@ -61,6 +61,7 @@ public class HitopApplyed extends  HitopRequest<Object> {
                     competitionBean.setName(objCom.optString("name"));
                     competitionBean.setCost(objCom.optString("applyMoney"));
                     competitionBean.setCompetitionDate(objCom.optString("startDate"));
+                    competitionBean.setProjectId(objCom.optString("projectId"));
                     competitionBean.setProjecNname(Constant.getProjectName(App.getContext(), objCom.optString("projectId")));
                     competitionBean.setApplyState(objCom.optInt("status"));
                     competitionBeans.add(competitionBean);

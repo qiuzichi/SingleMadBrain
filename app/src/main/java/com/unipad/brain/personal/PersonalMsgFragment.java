@@ -1,5 +1,6 @@
 package com.unipad.brain.personal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.personal.bean.CompetitionBean;
 import com.unipad.brain.personal.dao.PersonCenterService;
+import com.unipad.common.CommonActivity;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
@@ -111,15 +113,19 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                 try {
                     JSONObject jsonObject = new JSONObject((String)o);
                     if(jsonObject == null){
+                        //13973752686
                         ToastUtil.showToast((String)o);
                         return;
                     }
                     int code = jsonObject.optInt("ret_code");
                     if(code == 0){
-                        String data = jsonObject.optString("data");
-                        if("0".equals(data)){
-                            ToastUtil.showToast("进入比赛界面");
-                        } else if("-1".equals(data)){
+                        JSONObject data = jsonObject.optJSONObject("data");
+                        String allow = data.optString("allow");
+                        if("0".equals(allow)){
+                            Intent intent = new Intent(mActivity, CommonActivity.class);
+                            intent.putExtra("projectId",data.optString("projectId"));
+                            this.startActivity(intent);
+                        } else if("-1".equals(allow)){
                             ToastUtil.showToast(getString(R.string.not_game));
                         } else {
                             ToastUtil.showToast(getString(R.string.gameed));
@@ -137,11 +143,11 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
     /**
      *  进入比赛
      */
-    class OnClickApply implements View.OnClickListener{
+    class OnClickApply implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             CompetitionBean competitionBean = (CompetitionBean)v.getTag();
-            service.checkMatchStart(competitionBean.getComId());
+            service.checkMatchStart(competitionBean.getComId(),competitionBean.getProjectId());
         }
     }
 }

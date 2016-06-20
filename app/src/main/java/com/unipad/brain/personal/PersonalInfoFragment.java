@@ -52,8 +52,6 @@ public class PersonalInfoFragment extends PersonalCommonFragment implements IDat
     private EditText ed_addr;
     private EditText ed_name;
 
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

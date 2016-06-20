@@ -22,8 +22,16 @@ public class CompetitionBean {
 	private String name;
 	// 参赛项目名称
 	private String projecNname;
+   // 已经报名的项目ID
+	private String projectId;
 
+	public String getProjectId() {
+		return projectId;
+	}
 
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
 
 	public String getComId() {
 		return comId;
