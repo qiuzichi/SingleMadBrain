@@ -35,11 +35,7 @@ public class MainHomeFragment extends MainBasicFragment implements IDataObserver
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         HitopNewsList newsList = new HitopNewsList("00001","",1,10);
         //newsList.post();
-        Map<String,String> body = new HashMap<String,String>();
-        body.put("USERID",AppContext.instance().loginUser.getUserId());
-        body.put("SCHEDULEID","6BD96887E062405EB2762BEBD2B7EE84");
-        Request request = new Request("10001",body);
-        SocketThreadManager.sharedInstance().sendMsg(request);
+
     }
 
     @Override

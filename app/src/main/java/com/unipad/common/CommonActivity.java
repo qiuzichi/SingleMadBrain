@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import com.unipad.AppContext;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
 import com.unipad.brain.absPic.view.AbsFigureFragment;
@@ -12,6 +13,11 @@ import com.unipad.brain.portraits.view.HeadPortraitFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
 import com.unipad.brain.words.view.WordRightFragment;
 import com.unipad.common.bean.CompeteItemEntity;
+import com.unipad.io.bean.Request;
+import com.unipad.io.w.SocketThreadManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Wbj on 2016/4/7.
@@ -23,6 +29,11 @@ public class CommonActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_aty);
+        Map<String,String> body = new HashMap<String,String>();
+        body.put("USERID", AppContext.instance().loginUser.getUserId());
+        body.put("SCHEDULEID", "6BD96887E062405EB2762BEBD2B7EE84");
+        Request request = new Request("10001",body);
+        SocketThreadManager.sharedInstance().sendMsg(request);
     }
 
     @Override

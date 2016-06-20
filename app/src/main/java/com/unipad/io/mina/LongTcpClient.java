@@ -98,11 +98,19 @@ public class LongTcpClient {
         }
     }
 
+    public void release(){
+        disConnect();
+        if (instance != null) {
+            isInstanceed = false;
+            instance = null;
+        }
+    }
 
     public boolean reConnect() {
         boolean connect = false;
         ConnectFuture future = connector.connect(new InetSocketAddress(
                 HOSTNAME, PORT));
+
         future.awaitUninterruptibly();// 等待连接创建完成
         session = future.getSession();
         if (session.isConnected()) {
@@ -110,6 +118,7 @@ public class LongTcpClient {
         } else {
             Toast.makeText(App.getContext(), "请检查网络", Toast.LENGTH_SHORT).show();
         }
+
         return connect;
     }
 
@@ -118,7 +127,10 @@ public class LongTcpClient {
             session.write(data);
         }
     }
-
+    public void disConnect() {
+        handler.setIsReconect(false);
+        session.closeNow();
+    }
     public void sendMsg(Request request) {
         if (request != null) {
             request.sendMsg(session);

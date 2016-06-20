@@ -43,7 +43,7 @@ public class ClientSessionHandler extends IoHandlerAdapter{
 			try {
 				Thread.sleep(3000);
 				// 这里是异步操作 连接后立即返回
-
+				LongTcpClient.instant().reConnect();
 			} catch (Exception e) {
 			}
 		}
