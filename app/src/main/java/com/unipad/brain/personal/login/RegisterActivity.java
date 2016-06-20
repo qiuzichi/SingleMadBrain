@@ -115,27 +115,27 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         String tel = registTel.getText().toString().trim();
 
         if (TextUtils.isEmpty(name)){
-            Toast.makeText(this,"用户名不能为空",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"用户名不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(sex)){
-            Toast.makeText(this,"性别不能为空",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"性别不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(birthday)){
-            Toast.makeText(this,"出身日期不能为空",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"出身日期不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(nation)){
-            Toast.makeText(this,"国籍不能为空",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"国籍不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(tel)){
-            Toast.makeText(this,"联系方式不能为空",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"联系方式不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(pwd)){
-            Toast.makeText(this,"密码不能为空",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"密码不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
         HitopRegist httpRegist = new HitopRegist();
@@ -188,7 +188,12 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
 
     @Override
     public void afterTextChanged(Editable s) {
-
+        String regex= "[\u4e00-\u9fa5\\w]+";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(s);
+        if (matcher.matches()){
+            return;
+        }
     }
 }
 
