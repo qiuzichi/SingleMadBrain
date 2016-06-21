@@ -11,6 +11,7 @@ import com.unipad.http.HitopApplyed;
 import com.unipad.http.HitopAuth;
 import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
+import com.unipad.http.HitopFeedback;
 import com.unipad.http.HitopLogin;
 
 import com.unipad.http.HitopMatchStart;
@@ -38,10 +39,6 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpLogin.buildRequestParams("device_did", MobileInfo.getDeviceId());
         httpLogin.setSevice(this);
         httpLogin.post();
-
-
-
-
     }
 
     @Override
@@ -67,7 +64,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopAuth.buildRequestParams("user_onphoto",authBean.getIdFrontUrl());
         hitopAuth.buildRequestParams("user_idephoto", authBean.getIdReverseUrl());
         hitopAuth.buildRequestParams("sex",authBean.getSex());
-        hitopAuth.buildRequestParams("user_gradcert",authBean.getRating_certificate1() + (authBean.getRating_certificate2() == ""? "" : ","+authBean.getRating_certificate2()));
+        hitopAuth.buildRequestParams("user_gradcert", authBean.getRating_certificate1() + (authBean.getRating_certificate2() == "" ? "" : "," + authBean.getRating_certificate2()));
         hitopAuth.setSevice(this);
         hitopAuth.post();
     }
@@ -159,5 +156,18 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         updataPwd.buildRequestParams("newPassword",MD5Utils.MD5_two(newPassword));
         updataPwd.setSevice(this);
         updataPwd.post();
+    }
+
+    /**
+     * @描述：提交意见反馈
+     * @param uid
+     * @param send_text
+     */
+    public void feedback(String uid,String send_text){
+        HitopFeedback hitopFeedback = new HitopFeedback();
+        hitopFeedback.buildRequestParams("user_id",uid);
+        hitopFeedback.buildRequestParams("send_text",send_text);
+        hitopFeedback.setSevice(this);
+        hitopFeedback.post();
     }
 }

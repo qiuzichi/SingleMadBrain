@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.main.MainActivity;
 import com.unipad.brain.personal.bean.Pwd;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
@@ -19,6 +20,9 @@ import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ActivityCollector;
 import com.unipad.utils.MD5Utils;
 import com.unipad.utils.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 个人中心之设置中心
@@ -35,8 +39,8 @@ public class PersonalSettingFragment extends PersonalCommonFragment implements I
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
-        //
-        service.registerObserver(HttpConstant.UPDATA_LOGIN_PWD,this);
+        service.registerObserver(HttpConstant.UPDATA_LOGIN_PWD, this);
+        service.registerObserver(HttpConstant.SUBMIT_FEEDBACK,this);
 
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mNormalColor = mActivity.getResources().getColor(R.color.personal_setting_text);
@@ -288,8 +292,9 @@ public class PersonalSettingFragment extends PersonalCommonFragment implements I
                 ToastUtil.showToast(R.string.suggest_content_empty);
                 return;
             }
-
-            ToastUtil.showToast(suggestText);
+            ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(15);
+            service.feedback(AppContext.instance().loginUser.getUserId(),suggestText);
+            /// 意見反饋
         } else if (mSelectedViewId == R.id.text_modify_login_pwd) {
 
             this.confirmModifyLoginPwd();
@@ -302,10 +307,21 @@ public class PersonalSettingFragment extends PersonalCommonFragment implements I
     public void update(int key, Object o) {
         // 此方法 用于更新界面UI
         switch (key){
+            case HttpConstant.SUBMIT_FEEDBACK:
             case HttpConstant.UPDATA_LOGIN_PWD:
                 HIDDialog.dismissAll();
-                //Log.d(this.getClass().getSimpleName(), (String) o);
-                ToastUtil.showToast((String)o);
+                try {
+                    JSONObject jsonObject = new JSONObject((String)o);
+                    int ret_code = jsonObject.optInt("ret_code");
+                    if(ret_code == 0){
+                        ToastUtil.showToast(mActivity.getString(R.string.submit_sussue));
+                    } else {
+                        ToastUtil.showToast(mActivity.getString(R.string.submit_fail));
+                    }
+                } catch (JSONException e) {
+                    ToastUtil.showToast(mActivity.getString(R.string.string_json_error));
+                    e.printStackTrace();
+                }
                 break;
         }
     }

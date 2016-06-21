@@ -1,22 +1,17 @@
 package com.unipad.brain.personal.login;
 
-import android.app.Dialog;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
-import com.unipad.brain.home.dialog.ShowDialog;
+import com.unipad.brain.dialog.ShowDialog;
 import com.unipad.brain.view.WheelMainView;
 import com.unipad.http.HitopRegist;
 import com.unipad.utils.MD5Utils;
