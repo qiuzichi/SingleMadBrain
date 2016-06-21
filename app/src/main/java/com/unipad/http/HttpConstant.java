@@ -7,8 +7,7 @@ public class HttpConstant {
 
     public static final String LOGIN = "/api/user/login";
     public static final String GET_USER_GAME_LIST = "/api/match/getMatchByUser";
-
-
+    public static final String FORGET_PWD = "/api/user/forget";
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String GET_NEWS_LIST = "/api/news/list";
@@ -61,5 +60,7 @@ public class HttpConstant {
 
     public static final int REGIST_OK = 0x18000;
     public static final int REGIST_FILED = 0x18001;
+    public static final int MODIFY_OK = 0x18002;
+    public static final int MODIFY_FILED = 0x18003;
 
 }

@@ -7,6 +7,7 @@ import com.unipad.UserDetailEntity;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
 import com.unipad.io.w.Const;
+import com.unipad.utils.ToastUtil;
 
 import org.json.JSONObject;
 import org.xutils.http.RequestParams;
@@ -42,9 +43,14 @@ public class HitopRegist extends HitopRequest<Object>{
                 if (jsObj.getInt("ret_code") == 0) {
                     ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).
                             noticeDataChange(HttpConstant.REGIST_OK,null);
+                    ToastUtil.showToast("注册成功！");
                     return null;
                 }
-
+                else {
+                    ToastUtil.showToast(jsObj.getString("ret_msg"));
+                    ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).
+                            noticeDataChange(HttpConstant.REGIST_FILED,jsObj.getString("ret_msg"));
+                }
             }
 
         }catch (Exception e){

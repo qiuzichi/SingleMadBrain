@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.unipad.AppContext;
 import com.unipad.UserDetailEntity;
@@ -41,7 +42,10 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         Intent intent=getIntent();
         if (intent==null){
             String User_name=intent.getStringExtra("use_name");
+            String Pwd=intent.getStringExtra("user_pwd");
+            Toast.makeText(this,"注册成功，请重新登陆。",Toast.LENGTH_SHORT).show();
             userName.setText(User_name);
+            userPwd.setText(Pwd);
         }
 
     }
@@ -135,7 +139,6 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                 break;
         }
     }
-
     @Override
     public void dialogClick(int id) {
         if(id != 0 && showDialog != null){
