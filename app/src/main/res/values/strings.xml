@@ -182,4 +182,6 @@
 
 
     <string name="current_time">09:58 am</string>
+    <string name="news_title">新闻标题</string>
+    <string name="check_detail">查看详情</string>
 </resources>

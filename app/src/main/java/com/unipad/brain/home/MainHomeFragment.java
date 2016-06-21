@@ -1,5 +1,6 @@
 package com.unipad.brain.home;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -9,7 +10,7 @@ import android.widget.TextView;
 import com.unipad.brain.R;
 
 public class MainHomeFragment extends MainBasicFragment {
-    ListView lv_homepage;
+
     FrameLayout fl_homepager;
     TextView txt_back;
     TextView txt_showmain;
@@ -17,6 +18,7 @@ public class MainHomeFragment extends MainBasicFragment {
     TextView txt_time;
     TextView txt_power;
     TextView txt_wifi;
+    private FrameLayout fl_hmepage_left;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -28,13 +30,14 @@ public class MainHomeFragment extends MainBasicFragment {
     private void initView(){
 
         //listview 组件
-        lv_homepage = (ListView)mActivity.findViewById(R.id.lv_mainpager_info);
+        fl_hmepage_left = (FrameLayout)mActivity.findViewById(R.id.fl_mainpager_left);
         //frame 组件
         fl_homepager = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
         //返回键
         txt_back = (TextView) mActivity.findViewById(R.id.tv_title_back_left);
         //主菜单组件
         txt_showmain = (TextView) mActivity.findViewById(R.id.tv_title_mainmenu_show);
+        //折叠显示
         txt_flod = (TextView) mActivity.findViewById(R.id.tv_title_main_flod_show);
         //当前时间
         txt_time = (TextView) mActivity.findViewById(R.id.tv_current_time_text);
