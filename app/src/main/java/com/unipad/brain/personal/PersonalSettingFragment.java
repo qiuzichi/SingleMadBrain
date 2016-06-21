@@ -3,27 +3,41 @@ package com.unipad.brain.personal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.personal.bean.Pwd;
+import com.unipad.brain.personal.dao.PersonCenterService;
+import com.unipad.common.Constant;
+import com.unipad.common.widget.HIDDialog;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ActivityCollector;
+import com.unipad.utils.MD5Utils;
 import com.unipad.utils.ToastUtil;
 
 /**
  * 个人中心之设置中心
  * Created by Wbj on 2016/4/27.
  */
-public class PersonalSettingFragment extends PersonalCommonFragment {
+public class PersonalSettingFragment extends PersonalCommonFragment implements IDataObserver {
     private EditText mEditSuggest;
     private int mSelectedViewId = -1;
     private int mNormalColor, mRedColor, mTextHint;
 
+    private PersonCenterService service;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
+        //
+        service.registerObserver(HttpConstant.UPDATA_LOGIN_PWD,this);
+
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mNormalColor = mActivity.getResources().getColor(R.color.personal_setting_text);
         mTextHint = mActivity.getResources().getColor(R.color.edit_text_hint);
@@ -53,6 +67,18 @@ public class PersonalSettingFragment extends PersonalCommonFragment {
 
         mActivity.findViewById(R.id.btn_confirm_modify_login).setOnClickListener(this);
         mActivity.findViewById(R.id.btn_confirm_modify_pay).setOnClickListener(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        thisShowView = 7;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        service.unregistDataChangeListenerObj(this);
     }
 
     @Override
@@ -89,7 +115,6 @@ public class PersonalSettingFragment extends PersonalCommonFragment {
                 mActivity.findViewById(R.id.setting_login_pwd_layout).setVisibility(View.GONE);
                 mActivity.findViewById(R.id.setting_pay_pwd_layout).setVisibility(View.GONE);
                 mActivity.findViewById(R.id.setting_feedback_layout).setVisibility(View.VISIBLE);
-
                 int suggestTextLen = mEditSuggest.getText().toString().length();
                 if (suggestTextLen > 0) {
                     mEditSuggest.setSelection(suggestTextLen);//设置光标位置
@@ -234,7 +259,7 @@ public class PersonalSettingFragment extends PersonalCommonFragment {
             return;
         }
 
-        if (!"123456".equals(originPwd)) {
+        if (!MD5Utils.MD5_two(originPwd).equals(AppContext.instance().loginUser.getLoginPwd())) {
             originPwdEdit.setTextColor(mRedColor);
             ToastUtil.showToast(mActivity.getString(R.string.origin_pwd_nomatch));
             return;
@@ -249,10 +274,9 @@ public class PersonalSettingFragment extends PersonalCommonFragment {
         } else {
             repeatNewPwdEdit.setTextColor(mNormalColor);
         }
-
-        ToastUtil.showToast(R.string.login_pwd);
-
-        new Pwd(originPwd, newPwd, repeatNewPwd);
+        ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(15);
+        Pwd pwd = new Pwd(originPwd, newPwd, repeatNewPwd);
+        service.updataLoginPwd(AppContext.instance().loginUser.getUserId(),pwd.getOriginPwd(),pwd.getRepeatNewPwd());
     }
 
     @Override
@@ -267,10 +291,22 @@ public class PersonalSettingFragment extends PersonalCommonFragment {
 
             ToastUtil.showToast(suggestText);
         } else if (mSelectedViewId == R.id.text_modify_login_pwd) {
+
             this.confirmModifyLoginPwd();
         } else if (mSelectedViewId == R.id.text_modify_pay_pwd) {
             this.confirmModifyPayPwd();
         }
     }
 
+    @Override
+    public void update(int key, Object o) {
+        // 此方法 用于更新界面UI
+        switch (key){
+            case HttpConstant.UPDATA_LOGIN_PWD:
+                HIDDialog.dismissAll();
+                //Log.d(this.getClass().getSimpleName(), (String) o);
+                ToastUtil.showToast((String)o);
+                break;
+        }
+    }
 }

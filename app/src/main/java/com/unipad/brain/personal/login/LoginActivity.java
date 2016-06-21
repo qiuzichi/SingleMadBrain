@@ -20,6 +20,7 @@ import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.MD5Utils;
 import com.unipad.utils.ToastUtil;
 
 /**
@@ -127,6 +128,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
             case HttpConstant.LOGIN_UPDATE_UI:
                 HIDDialog.dismissAll();
                 AppContext.instance().loginUser = (UserDetailEntity)o;
+                AppContext.instance().loginUser.setLoginPwd(MD5Utils.MD5_two(userPwd.getText().toString().trim()));
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();

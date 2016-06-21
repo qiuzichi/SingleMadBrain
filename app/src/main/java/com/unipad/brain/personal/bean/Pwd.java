@@ -14,4 +14,27 @@ public class Pwd {
         this.repeatNewPwd = repeatNewPwd;
     }
 
+    public String getOriginPwd() {
+        return originPwd;
+    }
+
+    public void setOriginPwd(String originPwd) {
+        this.originPwd = originPwd;
+    }
+
+    public String getNewPwd() {
+        return newPwd;
+    }
+
+    public void setNewPwd(String newPwd) {
+        this.newPwd = newPwd;
+    }
+
+    public String getRepeatNewPwd() {
+        return repeatNewPwd;
+    }
+
+    public void setRepeatNewPwd(String repeatNewPwd) {
+        this.repeatNewPwd = repeatNewPwd;
+    }
 }

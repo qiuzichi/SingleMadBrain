@@ -24,6 +24,16 @@ public class UserDetailEntity {
 
     private String photo; // 用户头像地址
 
+    private String loginPwd; // 登录密码
+
+    public String getLoginPwd() {
+        return loginPwd;
+    }
+
+    public void setLoginPwd(String loginPwd) {
+        this.loginPwd = loginPwd;
+    }
+
     public String getPhoto() {
         return photo;
     }

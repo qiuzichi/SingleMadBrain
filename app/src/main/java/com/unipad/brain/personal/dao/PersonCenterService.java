@@ -14,6 +14,7 @@ import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopLogin;
 
 import com.unipad.http.HitopMatchStart;
+import com.unipad.http.HitopUpdataPwd;
 import com.unipad.http.HitopUserInfoUpdate;
 
 
@@ -78,7 +79,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
     public void uploadAuthFile(String path){
         HitopAuthUploadFile hitopAuthUploadFile = new HitopAuthUploadFile();
         hitopAuthUploadFile.setSevice(this);
-        Map<String,Object> mapFile = new HashMap<String,Object>();
+        Map<String,File> mapFile = new HashMap<String,File>();
         mapFile.put("image", new File(path));
         hitopAuthUploadFile.UpLoadFile(mapFile);
     }
@@ -138,9 +139,25 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
      */
     public void checkMatchStart(String matchId,String projectId){
         HitopMatchStart hitopMatchStart = new HitopMatchStart();
-        hitopMatchStart.buildRequestParams("matchId",matchId);
+        hitopMatchStart.buildRequestParams("matchId",matchId); //
         hitopMatchStart.buildRequestParams("projectId",projectId);
         hitopMatchStart.setSevice(this);
         hitopMatchStart.post();
+    }
+
+
+    /**
+     * 更改用户密码
+     * @param uid 用户
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     */
+    public void updataLoginPwd(String uid,String oldPassword, String newPassword){
+        HitopUpdataPwd updataPwd = new HitopUpdataPwd();
+        updataPwd.buildRequestParams("userId",uid);
+        updataPwd.buildRequestParams("oldPassword",MD5Utils.MD5_two(oldPassword));
+        updataPwd.buildRequestParams("newPassword",MD5Utils.MD5_two(newPassword));
+        updataPwd.setSevice(this);
+        updataPwd.post();
     }
 }

@@ -68,9 +68,16 @@ public class PersonalInfoFragment extends PersonalCommonFragment implements IDat
         initData();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        thisShowView = 1;
+    }
+
+
     /*
-      初始化数据
-     */
+          初始化数据
+         */
     private void initData() {
         if(null == userDetailEntity)
             return;

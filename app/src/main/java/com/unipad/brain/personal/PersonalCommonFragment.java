@@ -70,6 +70,8 @@ public abstract class PersonalCommonFragment extends Fragment implements View.On
     }
     TextView txtName;
 
+    // 当前显示的页面
+    public int thisShowView;
 
     @Nullable
     @Override
@@ -81,6 +83,8 @@ public abstract class PersonalCommonFragment extends Fragment implements View.On
         user_photo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                if(thisShowView != 1)
+                    return;
                 mActivity.showScPic();
             }
         });
