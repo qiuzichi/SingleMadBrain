@@ -14,6 +14,7 @@ import com.unipad.common.CommonActivity;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
