@@ -1,6 +1,7 @@
 package com.unipad.common;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
@@ -12,20 +13,29 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.home.bean.RuleGame;
+import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.common.bean.CompeteItemEntity;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
+
+import org.xutils.x;
 
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener {
+public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver{
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
     private CommonActivity mActivity;
     private RelativeLayout mParentLayout;
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
     private Button mBtnCompeteMode;
     private CountDownTime mCountDownTime;
+    private RuleGame rule;
+    private ImageView mIconImageView;
     /**
      * 是否处于回忆模式，只有两种模式且先记忆再回忆；默认为false，即处于记忆模式；
      */
@@ -57,10 +67,12 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextName.setSelected(true);
         this.getBgColorArray(mParentLayout);
 
-        mCountDownTime = new CountDownTime(CompeteItemEntity.getInstance().getMemoryTime(), true);
+        mCountDownTime = new CountDownTime(0, false);
         mCountDownTime.setTimeListener(this);
         mTextTime.setText(mCountDownTime.getTimeString());
-
+        mTextName.setText(AppContext.instance().loginUser.getUserName());
+        mIconImageView = (ImageView) mParentLayout.findViewById(R.id.user_photo);
+        x.image().bind(mIconImageView,AppContext.instance().loginUser.getPhoto());
         if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
             mTextCompeteProcess.setText(R.string.playing_voice);
         }
@@ -78,6 +90,18 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
 
             mColorArray.put(R.id.text_change_layout_img_bg1 + i, COLORS[i]);
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).unRegisterObserve(HttpConstant.GET_RULE_NOTIFY, this);
     }
 
     @Override
@@ -165,6 +189,18 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
 
     public void setICommunicate(ICommunicate iCommunicate) {
         mICommunicate = iCommunicate;
+    }
+
+    @Override
+    public void update(int key, Object o) {
+        switch (key) {
+            case HttpConstant.GET_RULE_NOTIFY:
+               rule = (RuleGame) o;
+                mTextTime.setText( mCountDownTime.setNewSeconds(rule.getMemeryTime1(), false));
+                break;
+            default:
+                break;
+        }
     }
 
     /**

@@ -102,7 +102,7 @@ public class CountDownTime implements App.HandlerCallback {
      * @param newSeconds 新的倒计时时间，单位：秒
      * @return “XX:XX:XX”格式的时间
      */
-    public String setNewSeconds(int newSeconds) {
+    public String setNewSeconds(int newSeconds,boolean isAuto) {
         this.stopCountTime();
 
         if (newSeconds < 0) {
@@ -116,12 +116,15 @@ public class CountDownTime implements App.HandlerCallback {
         mStarted = false;
         mPausing = false;
         takeTime = 0;
-
-        this.startCountTime();
+        if (isAuto) {
+            this.startCountTime();
+        }
 
         return this.getTimeString();
     }
-
+    public String setNewSeconds(int newSeconds) {
+        return setNewSeconds(newSeconds,true);
+    }
     /**
      * @return “XX:XX:XX”格式的时间
      */
