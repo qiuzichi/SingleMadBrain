@@ -4,10 +4,14 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.unipad.io.IDataHandler;
+import com.unipad.io.IOConstant;
 import com.unipad.io.IPack;
 import com.unipad.io.IWrite;
 import com.unipad.io.bean.Request;
+import com.unipad.io.bean.Response;
 import com.unipad.io.mina.LongTcpClient;
+
+import java.util.Map;
 
 
 public class SocketThreadManager implements IDataHandler
@@ -34,7 +38,7 @@ public class SocketThreadManager implements IDataHandler
 	// 单例，不允许在外部构建对象
 	private SocketThreadManager()
 	{
-		mOutThread = new SocketOutputThread();
+		mOutThread = new SocketOutputThread(this);
 	}
 	
 	/**
@@ -74,8 +78,15 @@ public class SocketThreadManager implements IDataHandler
 	}
 
 	@Override
-	public void processPack(IPack pack, IWrite writer) {
+	public void processPack(IPack pack) {
+		handPack((Response) pack);
+	}
 
+	private void handPack(Response response) {
+		Map<String,String>data = response.getDatas();
+		if(IOConstant.SEND_QUESTIONS.equals(data.get("TRXCODE"))){//收到服务器下发试题的通知
+
+		}
 	}
 
 	public void clear(){

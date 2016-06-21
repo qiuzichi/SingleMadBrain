@@ -22,7 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 /**
  * Created by gongkan on 2016/5/31.
  */
-public class Response  {
+public class Response  implements IPack{
 
     private static int HEAD_LENGTH = 0;
 

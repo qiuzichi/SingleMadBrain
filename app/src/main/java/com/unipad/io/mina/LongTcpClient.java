@@ -3,6 +3,8 @@ package com.unipad.io.mina;
 import android.widget.Toast;
 
 import com.unipad.brain.App;
+import com.unipad.io.IDataHandler;
+import com.unipad.io.IPack;
 import com.unipad.io.bean.Request;
 
 import java.net.InetSocketAddress;
@@ -19,7 +21,7 @@ import org.apache.mina.filter.keepalive.KeepAliveRequestTimeoutHandler;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
-public class LongTcpClient {
+public class LongTcpClient implements IDataHandler{
 
     private static LongTcpClient instance;
 
@@ -42,6 +44,8 @@ public class LongTcpClient {
 
     public IoSession session;
 
+    private IDataHandler dataHandler;
+
     private LongTcpClient() {
 
     }
@@ -60,42 +64,45 @@ public class LongTcpClient {
         return instance;
     }
 
-    private void init() {
-
-        connector = new NioSocketConnector();
-        // Configure the service.
-        connector.setConnectTimeoutMillis(CONNECT_TIMEOUT);
-        handler = new ClientSessionHandler();
-        connector.setHandler(handler);
-        connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory(Charset.forName("GBK"))));
+    public boolean init() {
+        if(!isInstanceed) {
+            connector = new NioSocketConnector();
+            // Configure the service.
+            connector.setConnectTimeoutMillis(CONNECT_TIMEOUT);
+            handler = new ClientSessionHandler(this);
+            connector.setHandler(handler);
+            connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory(Charset.forName("GBK"))));
 //        connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new ObjectSerializationCodecFactory()));
-        connector.getFilterChain().addLast("log", new LoggingFilter());
-        ClientKeepAliveMessageFactoryImp heartBeatFactory = new ClientKeepAliveMessageFactoryImp();
+            connector.getFilterChain().addLast("log", new LoggingFilter());
+            ClientKeepAliveMessageFactoryImp heartBeatFactory = new ClientKeepAliveMessageFactoryImp();
 
-        KeepAliveFilter heartBeat = new KeepAliveFilter(heartBeatFactory,
-                IdleStatus.BOTH_IDLE);
+            KeepAliveFilter heartBeat = new KeepAliveFilter(heartBeatFactory,
+                    IdleStatus.BOTH_IDLE);
 
-        //�����Ƿ�forward����һ��filter
-        heartBeat.setForwardEvent(true);
-        //��������Ƶ��
-        heartBeat.setRequestInterval(HEARTBEATRATE);
-        connector.getFilterChain().addLast("keeplive", new KeepAliveFilter(new ClientKeepAliveMessageFactoryImp(), IdleStatus.READER_IDLE, KeepAliveRequestTimeoutHandler.DEAF_SPEAKER, 10, 5));
+            //�����Ƿ�forward����һ��filter
+            heartBeat.setForwardEvent(true);
+            //��������Ƶ��
+            heartBeat.setRequestInterval(HEARTBEATRATE);
+            connector.getFilterChain().addLast("keeplive", new KeepAliveFilter(new ClientKeepAliveMessageFactoryImp(), IdleStatus.READER_IDLE, KeepAliveRequestTimeoutHandler.DEAF_SPEAKER, 10, 5));
 
-        try {
-            ConnectFuture future = connector.connect(new InetSocketAddress(
-                    HOSTNAME, PORT));
-            future.awaitUninterruptibly();// 等待连接创建完成
-            session = future.getSession();
-            if (session.isConnected()) {
+            try {
+                ConnectFuture future = connector.connect(new InetSocketAddress(
+                        HOSTNAME, PORT));
+                future.awaitUninterruptibly();// 等待连接创建完成
+                session = future.getSession();
+                if (session.isConnected()) {
 
-            } else {
+                } else {
+
+                }
+                isInstanceed = true;
+            } catch (RuntimeIoException e) {
+                System.err.println("Failed to connect.");
+                e.printStackTrace();
 
             }
-        } catch (RuntimeIoException e) {
-            System.err.println("Failed to connect.");
-            e.printStackTrace();
-
         }
+        return isInstanceed;
     }
 
     public void release(){
@@ -135,5 +142,16 @@ public class LongTcpClient {
         if (request != null) {
             request.sendMsg(session);
         }
+    }
+
+    @Override
+    public void processPack(IPack pack) {
+        if (dataHandler != null) {
+            dataHandler.processPack(pack);
+        }
+    }
+
+    public void setDataHandler(IDataHandler dataHandler) {
+        this.dataHandler = dataHandler;
     }
 }

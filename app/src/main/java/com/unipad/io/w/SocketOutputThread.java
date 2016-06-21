@@ -1,11 +1,13 @@
 package com.unipad.io.w;
 
+import java.nio.LongBuffer;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.os.Handler;
 import android.os.Message;
 
+import com.unipad.io.IDataHandler;
 import com.unipad.io.IWrite;
 import com.unipad.io.bean.Request;
 import com.unipad.io.mina.LongTcpClient;
@@ -20,8 +22,8 @@ public class SocketOutputThread extends Thread  {
     private boolean isStart = true;
     private static String tag = "socketOutputThread";
     private List<Request> sendMsgList;
-
-    public SocketOutputThread() {
+    private IDataHandler handler;
+    public SocketOutputThread(IDataHandler hangler) {
 
         sendMsgList = new CopyOnWriteArrayList<Request>();
     }
@@ -50,6 +52,9 @@ public class SocketOutputThread extends Thread  {
             // 锁发送list
             synchronized (sendMsgList) {
                 // 发送消息
+                if (LongTcpClient.instant().init()) {
+                    LongTcpClient.instant().setDataHandler(handler);
+                }
                 for (Request request : sendMsgList) {
 
 

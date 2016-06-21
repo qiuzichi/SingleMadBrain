@@ -17,34 +17,34 @@ public class IOConstant {
     /**
      * 选手在移动端进入比赛，发送签到报文到管控端
      */
-    public static int ATHLETE_SIGN_IN = 10001;
+    public static String ATHLETE_SIGN_IN = "10001";
 
     /**
      * 管控端发起试题下载通知
      */
-    public static int SEND_QUESTIONS = 10002;
+    public static String SEND_QUESTIONS = "10002";
 
     /**
      * 管控端发起开始比赛请求
      */
-    public static int GAME_START = 10003;
+    public static String GAME_START = "10003";
     /**
      * 管控端发起暂停比赛请求
      */
-    public static int GAME_PAUSE = 10004;
+    public static String GAME_PAUSE = "10004";
     /**
      * 管控端发起恢复比赛请求
      */
-    public static int GAME_RESTART = 10005;
+    public static String GAME_RESTART = "10005";
     /**
      * 客户端主动发起结束比赛请求
      */
-    public static int END_GAME_BY_Client = 10006;
+    public static String END_GAME_BY_Client = "10006";
 
     /**
      * 管控端发起全场结束比赛请求
      */
-    public static int END_GAME_BY_SERVER = 10061;
+    public static String END_GAME_BY_SERVER = "10061";
 
     /**
      * 客户端发起下载完成交易请求

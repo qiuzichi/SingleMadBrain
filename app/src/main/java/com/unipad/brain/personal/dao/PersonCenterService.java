@@ -39,9 +39,9 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpLogin.setSevice(this);
         httpLogin.post();
 
-        HitopDownLoad httpdownload = new HitopDownLoad("api/file/download?questionId=1111");
+        HitopDownLoad httpdownload = new HitopDownLoad("/api/file/download?questionId=1111");
 
-        httpdownload.downLoad(/sdcard/);
+        httpdownload.downLoad("/sdcard/333.mp4");
     }
 
     @Override

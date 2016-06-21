@@ -1,5 +1,7 @@
 package com.unipad.http;
 
+import android.util.Log;
+
 import com.lidroid.xutils.http.ResponseInfo;
 import com.unipad.utils.ToastUtil;
 
@@ -34,6 +36,7 @@ public class HitopDownLoad extends HitopRequest<File>{
 
           @Override
           public void onSuccess(File file) {
+              Log.e("","success");
               ToastUtil.showToast("下载成功！");
           }
 
@@ -46,26 +49,28 @@ public class HitopDownLoad extends HitopRequest<File>{
 
           @Override
           public void onCancelled(CancelledException e) {
+              Log.e("","onCancelled");
 
           }
 
           @Override
           public void onFinished() {
-
+              Log.e("","onFinished");
           }
 
           @Override
           public void onWaiting() {
-
+              Log.e("","onWaiting");
           }
 
           @Override
           public void onStarted() {
-
+              Log.e("","onStarted");
           }
 
           @Override
           public void onLoading(long total, long current, boolean isDownloading) {
+              Log.e("","total = "+total+",current="+current+",isDownloading="+isDownloading);
               if (total != current) {
 
               }
