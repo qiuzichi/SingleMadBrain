@@ -188,7 +188,7 @@
     <string name="string_json_error">json 格式错误</string>
     <string name="updata_userinfo">资料上传成功</string>
     <string name="submit_sussue">"提交成功</string>
-
+    <string name="submit_fail">提交失败</string>
 
     <string name="util_camera_not_enable">相机不可用</string>
     <string name="util_hint">提示</string>
@@ -197,13 +197,15 @@
     <string name="util_affirm">确认</string>
     <string name="util_getpicfile_failed">未得到相片路径</string>
     <string name= "tailor_fail">裁剪失败</string>
-    <string name="input_day">请选择生日</string>>
-
+    <string name="input_day">请选择生日</string>
+    <string name="input_nation">请选择国家</string>
     <string name="in_game">进入比赛</string>
     <string name="competition_project">比赛项目</string>
     <string name="competition_addr">比赛地点</string>
     <string name="error_apply">您没有报名任何赛事</string>
     <string name="not_game">离比赛开始还有30分钟以上，暂时无法进入比赛</string>
     <string name="gameed">赛事已过期，无法进去比赛</string>
+    <string name="auth_hint">您还未进行实名认证，请在个人中心里进行实名认证。认证之后才能进行比赛报名,谢谢！</string>
+    <string name="auth_fail_hint">您提交的实名认证信息未通过，请重新提交！</string>
 
 </resources>

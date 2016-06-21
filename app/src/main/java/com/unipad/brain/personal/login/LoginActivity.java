@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.unipad.AppContext;
 import com.unipad.UserDetailEntity;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
-import com.unipad.brain.home.dialog.ShowDialog;
+import com.unipad.brain.dialog.ShowDialog;
 import com.unipad.brain.home.util.SharedPreferencesUtil;
 import com.unipad.brain.main.MainActivity;
 import com.unipad.brain.personal.dao.PersonCenterService;
@@ -39,6 +39,20 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_aty);
+        Intent intent=getIntent();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000 && resultCode == 1001){
+            String User_name=data.getStringExtra("user_name");
+            String Pwd=data.getStringExtra("user_pwd");
+          //  Toast.makeText(this,"注册成功，请重新登陆。",Toast.LENGTH_SHORT).show();
+            userName.setText(User_name);
+            userPwd.setText(Pwd);
+           // login();
+        }
     }
 
     @Override
@@ -54,7 +68,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         service.registerObserver(HttpConstant.LOGIN_WRONG_MSG,this);
         if(Constant.isfirstRun(this,new SharedPreferencesUtil(this))){
             View view = View.inflate(this,R.layout.first_login_dialog,null);
-            showDialog.showDialog(view,ShowDialog.TYPE_CENTER);
+            showDialog.showDialog(view,ShowDialog.TYPE_CENTER,getWindowManager(),0.4f,0.5f);
             showDialog.setOnShowDialogClick(this);
             showDialog.bindOnClickListener(view,new int[]{R.id.img_close});
         }
@@ -85,6 +99,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     }
 
     private void login() {
+
         String name = userName.getText().toString().trim();
         String pwd = userPwd.getText().toString().trim();
         if ("".equals(name)) {
@@ -107,10 +122,8 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
     private void openRegisterActivity() {
         Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-        finish();
+        this.startActivityForResult(intent, 1000);
     }
-
     @Override
     public void update(int key, Object o) {
         Log.e("", "Login update UI");
@@ -131,7 +144,6 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                 break;
         }
     }
-
     @Override
     public void dialogClick(int id) {
         if(id != 0 && showDialog != null){

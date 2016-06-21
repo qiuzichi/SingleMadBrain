@@ -8,19 +8,23 @@ import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.BasicActivity;
 
 import com.unipad.brain.R;
+import com.unipad.brain.dialog.ShowDialog;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.MainCompeteFragment;
 import com.unipad.brain.home.MainHomeFragment;
+import com.unipad.brain.home.util.SharedPreferencesUtil;
 import com.unipad.brain.location.LocationActivity;
 import com.unipad.brain.personal.PersonalActivity;
+import com.unipad.common.Constant;
 
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class MainActivity extends BasicActivity {
+public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDialogClick {
     private static final int MSG_LOCATION = 0x100;
     private TextView mTextLocation;
     private FragmentManager mFragmentManager;
@@ -29,6 +33,7 @@ public class MainActivity extends BasicActivity {
     private MainCompeteFragment mCompeteFragment = new MainCompeteFragment();
     private MainBasicFragment mCurrentFrg;
     private View mCurrentView;
+    private ShowDialog showDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,15 @@ public class MainActivity extends BasicActivity {
         findViewById(R.id.main_lf_compete).setOnClickListener(this);
         findViewById(R.id.main_lf_location).setOnClickListener(this);
 
+        if(AppContext.instance().loginUser.getAuth() == 0 || AppContext.instance().loginUser.getAuth() == 3){
+            View dialogView = View.inflate(this,R.layout.first_login_dialog,null);
+            TextView txt_msg = (TextView)dialogView.findViewById(R.id.txt_msg);
+            txt_msg.setText(AppContext.instance().loginUser.getAuth() == 0 ? this.getString(R.string.auth_hint) : this.getString(R.string.auth_fail_hint));
+            showDialog = new ShowDialog(this);
+            showDialog.showDialog(dialogView, ShowDialog.TYPE_CENTER,getWindowManager(),0.4f,0.5f);
+            showDialog.setOnShowDialogClick(this);
+            showDialog.bindOnClickListener(dialogView,new int[]{R.id.img_close});
+        }
         mHandler.sendEmptyMessageDelayed(MSG_LOCATION, 5000);
     }
 
@@ -136,4 +150,10 @@ public class MainActivity extends BasicActivity {
         }
     }
 
+    @Override
+    public void dialogClick(int id) {
+        if(null != showDialog && showDialog.isShowing()){
+            showDialog.dismiss();
+        }
+    }
 }

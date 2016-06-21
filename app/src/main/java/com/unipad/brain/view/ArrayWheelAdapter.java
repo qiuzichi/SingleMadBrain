@@ -38,7 +38,6 @@ public class ArrayWheelAdapter<T> implements WheelAdapter {
 		this.items = items;
 		this.length = length;
 	}
-	
 	/**
 	 * Contructor
 	 * @param items the items

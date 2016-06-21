@@ -11,10 +11,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.xutils.http.annotation.HttpResponse;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
@@ -45,7 +41,7 @@ import android.widget.Toast;
 
 import com.lidroid.xutils.util.LogUtils;
 import com.unipad.brain.R;
-import com.unipad.brain.home.dialog.LoadingDialog;
+import com.unipad.brain.dialog.LoadingDialog;
 
 
 public class MyTools {

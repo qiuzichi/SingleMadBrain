@@ -13,16 +13,13 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
-import com.unipad.brain.home.ChinaCompetitionFragment;
-import com.unipad.brain.home.CityCompetitionFragment;
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.bean.ProjectBean;
-import com.unipad.brain.home.competitionpj.RapidRandomNumberActivity;
 import com.unipad.brain.home.dao.HomeGameHandService;
-import com.unipad.brain.home.dialog.ShowDialog;
+import com.unipad.brain.dialog.ShowDialog;
+
 import com.unipad.brain.home.iview.ICompetition;
 import com.unipad.brain.home.util.ConstSettings;
-import com.unipad.common.BaseFragment;
 import com.unipad.common.CommonActivity;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;

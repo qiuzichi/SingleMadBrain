@@ -7,7 +7,7 @@ public class HttpConstant {
 
     public static final String LOGIN = "/api/user/login";
     public static final String GET_USER_GAME_LIST = "/api/match/getMatchByUser";
-
+    public static final String FORGET_PWD = "/api/user/forget";
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String GET_NEWS_LIST = "/api/news/list";
@@ -31,6 +31,9 @@ public class HttpConstant {
     public static String USER_IN_GAME_HTTP = "/api/match/checkMatchStart";
     // 修改用户密码
     public static String UPDATA_PWD_HTTP = "/api/user/modifyPassword";
+    // 意见提交
+     public static String SUBMIT_FEED_HTTP = "/api/user/feedback";
+
 
     public static int JSON_ERREO = -2;
     public static final int LOGIN_UPDATE_UI = 0x10000;
@@ -61,5 +64,13 @@ public class HttpConstant {
     public static final int USER_IN_GAEM = 0x10600;
     // 修改登录密码
     public static final int UPDATA_LOGIN_PWD = 0x10700;
+    // 提交意见
+    public static final int SUBMIT_FEEDBACK=0x10800;
+
+
+    public static final int REGIST_OK = 0x18000;
+    public static final int REGIST_FILED = 0x18001;
+    public static final int MODIFY_OK = 0x18002;
+    public static final int MODIFY_FILED = 0x18003;
 
 }
