@@ -33,6 +33,7 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
     private MainCompeteFragment mCompeteFragment = new MainCompeteFragment();
     private MainBasicFragment mCurrentFrg;
     private View mCurrentView;
+    private ShowDialog showDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +62,9 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
 
         if(AppContext.instance().loginUser.getAuth() == 0 || AppContext.instance().loginUser.getAuth() == 3){
             View dialogView = View.inflate(this,R.layout.first_login_dialog,null);
-            TextView txt_msg = (TextView)view.findViewById(R.id.txt_msg);
+            TextView txt_msg = (TextView)dialogView.findViewById(R.id.txt_msg);
             txt_msg.setText(AppContext.instance().loginUser.getAuth() == 0 ? this.getString(R.string.auth_hint) : this.getString(R.string.auth_fail_hint));
-            ShowDialog showDialog = new ShowDialog(this);
+            showDialog = new ShowDialog(this);
             showDialog.showDialog(dialogView, ShowDialog.TYPE_CENTER,getWindowManager(),0.4f,0.5f);
             showDialog.setOnShowDialogClick(this);
             showDialog.bindOnClickListener(dialogView,new int[]{R.id.img_close});
@@ -151,6 +152,8 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
 
     @Override
     public void dialogClick(int id) {
-
+        if(null != showDialog && showDialog.isShowing()){
+            showDialog.dismiss();
+        }
     }
 }
