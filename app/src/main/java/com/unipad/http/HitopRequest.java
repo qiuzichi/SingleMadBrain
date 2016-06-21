@@ -109,6 +109,7 @@ public abstract class HitopRequest<T>{
             public void onSuccess(String result) {
                 Log.e("request","result = "+result);
                 handleJsonData(result);
+
             }
 
             @Override

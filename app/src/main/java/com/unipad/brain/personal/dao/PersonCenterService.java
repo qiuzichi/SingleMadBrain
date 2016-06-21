@@ -11,6 +11,7 @@ import com.unipad.http.HitopApplyed;
 import com.unipad.http.HitopAuth;
 import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
+import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopLogin;
 
 import com.unipad.http.HitopMatchStart;
@@ -38,9 +39,9 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpLogin.setSevice(this);
         httpLogin.post();
 
+        HitopDownLoad httpdownload = new HitopDownLoad("api/file/download?questionId=1111");
 
-
-
+        httpdownload.downLoad(/sdcard/);
     }
 
     @Override
