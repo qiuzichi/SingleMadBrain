@@ -1,6 +1,6 @@
 package com.unipad.brain.home;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,7 +29,7 @@ public class MainHomeFragment extends MainBasicFragment {
     //界面的初始化
     private void initView(){
 
-        //listview 组件
+        //左侧组件
         fl_hmepage_left = (FrameLayout)mActivity.findViewById(R.id.fl_mainpager_left);
         //frame 组件
         fl_homepager = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
