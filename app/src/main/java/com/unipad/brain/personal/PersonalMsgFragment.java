@@ -48,6 +48,11 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
         service.getApplyList(AppContext.instance().loginUser.getUserId());
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        thisShowView = 6;
+    }
 
     @Override
     public void onDestroyView() {
@@ -125,6 +130,7 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                         if("0".equals(allow)){
                             Intent intent = new Intent(mActivity, CommonActivity.class);
                             intent.putExtra("projectId",data.optString("projectId"));
+                            intent.putExtra("matchId",data.optString("matchId"));
                             this.startActivity(intent);
                         } else if("-1".equals(allow)){
                             ToastUtil.showToast(getString(R.string.not_game));

@@ -39,6 +39,12 @@ public class PersonalFavoriteFragment extends PersonalCommonFragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        thisShowView = 4;
+    }
+
     /**
      * 清空关注列表
      */

@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -60,9 +61,16 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
     private final int CROP_FLAG=100;
     private PersonCenterService service;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(null != savedInstanceState) {
+            filePath = savedInstanceState.getString("path");
+            ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
+            service.uploadAuthFile(filePath);
+        }
         setContentView(R.layout.personal_aty);
     }
 
@@ -319,20 +327,25 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
                             File saveFile=new File(mainFile, System.currentTimeMillis()+".jpg");
 
                             FileOutputStream output=null;
-                            try {
-                                output=new FileOutputStream(saveFile);
-                                bmap.compress(Bitmap.CompressFormat.PNG, 100, output);
-                                setHeadImgView(saveFile);
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            } finally {
-                                if (null != output)
-                                    try {
-                                        output.close();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                try {
+                                    output = new FileOutputStream(saveFile);
+                                    bmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+                                    if (saveFile != null && saveFile.exists()){
+                                        filePath = saveFile.getPath();
+                                        setHeadImgView();
+                                    } else{
+                                        ToastUtil.showToast("文件不存在");
                                     }
-                            }
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                } finally {
+                                    if (null != output)
+                                        try {
+                                            output.close();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                }
                         }
                     }
                 } else {
@@ -344,11 +357,15 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
         }
     }
 
+
+
+    private String filePath;   // 开始裁剪之前 保存图片的路径以防数据的丢失
     /**
      * 开始裁剪
      * @param file
      */
     private void startCrop(File file) {
+        filePath = file.getAbsolutePath();
         Intent cropIntent=new Intent();
         Uri uri=Uri.fromFile(file);
         cropIntent.setDataAndType(uri, "image/*");
@@ -364,18 +381,35 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
 
     /**
      *  设置头像
-     * @param file
+     * @param
      */
-    public void setHeadImgView(File file){
+    public void setHeadImgView(){
         if(user_photo != null){
             if(null != chatFunctionWindow && chatFunctionWindow.isShowing()){
                 chatFunctionWindow.dismiss();
             }
             ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
-            service.uploadAuthFile(file.getPath());
+            service.uploadAuthFile(filePath);
         }
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString("path", filePath);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(null != savedInstanceState) {
+            filePath = savedInstanceState.getString("path");
+            setHeadImgView();
+        }
+       // Log.e(this.getClass().getSimpleName(),"onRestoreInstanceState" + filePath);
+    }
 
     @Override
     public void update(int key, Object o) {

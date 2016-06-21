@@ -29,6 +29,8 @@ public class HttpConstant {
     public static String USER_APPLYED_HTTP= "/api/user/myApply";
     // 进入比赛时间判断
     public static String USER_IN_GAME_HTTP = "/api/match/checkMatchStart";
+    // 修改用户密码
+    public static String UPDATA_PWD_HTTP = "/api/user/modifyPassword";
 
     public static int JSON_ERREO = -2;
     public static final int LOGIN_UPDATE_UI = 0x10000;
@@ -57,5 +59,7 @@ public class HttpConstant {
     public static final int USER_APPLYED = 0x10500;
     // 进入比赛时间判断
     public static final int USER_IN_GAEM = 0x10600;
+    // 修改登录密码
+    public static final int UPDATA_LOGIN_PWD = 0x10700;
 
 }

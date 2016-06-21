@@ -69,7 +69,6 @@ public abstract class HitopRequest<T>{
             @Override
             public void onError(Throwable throwable, boolean b) {
 
-
             }
 
             @Override
@@ -87,7 +86,7 @@ public abstract class HitopRequest<T>{
     /**
      * 上传文件
      */
-    public void UpLoadFile(Map<String,Object> map){
+    public void UpLoadFile(Map<String,File> map){
         if(!NetWorkUtil.isNetworkAvailable(App.getContext())) {
             ToastUtil.showToast("请检查网络");
             return ;
@@ -98,7 +97,7 @@ public abstract class HitopRequest<T>{
         }
 
         if(null!=map){
-            for(Map.Entry<String, Object> entry : map.entrySet()){
+            for(Map.Entry<String, File> entry : map.entrySet()){
                // mParams.addParameter(entry.getKey(), entry.getValue());
                 mParams.addBodyParameter(entry.getKey(), (File)entry.getValue());
             }
@@ -140,17 +139,9 @@ public abstract class HitopRequest<T>{
         params.setSaveFilePath(filepath);
         Callback.Cancelable cancelable = x.http().get(params, callback);
         return cancelable;
-}
-
-
-
-
-
-
-
+    }
 
     private static final String VERSION_CODE = "versionCode";
-
 
     public void buildRequestParams(String key,String value){
 
