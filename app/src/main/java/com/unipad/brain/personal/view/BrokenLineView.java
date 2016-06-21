@@ -292,7 +292,7 @@ public class BrokenLineView extends LinearLayout {
             // 绘制纵向网格线，不包括最左边的Y轴刻度线
             histogramCanvas.drawLine(startX, mYPivotHeight, startX, 0, mPaintGridLine);
 
-            /*
+
             // 绘制折线上的转折点(小正方形)
             histogramCanvas.drawRect(startX - 5, startY - 5, startX + 5, startY + 5,
                     mPaintRect);
@@ -307,7 +307,7 @@ public class BrokenLineView extends LinearLayout {
             // 绘制柱体上的数值文字
             String histogramValue = String.valueOf(mHistogramEntityList.get(i));
             histogramCanvas.drawText(histogramValue, startX + 2, startY, mPaintTextCity);
-*/
+
             // 绘制柱体名称
             String histogramName = mHistogramEntityList.get(i);
             if (!TextUtils.isEmpty(histogramName)) {
