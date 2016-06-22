@@ -3,16 +3,11 @@ package com.unipad.http;
 import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.UserDetailEntity;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
-import com.unipad.io.w.Const;
 import com.unipad.utils.ToastUtil;
 
 import org.json.JSONObject;
-import org.xutils.http.RequestParams;
-
-import java.util.List;
 
 /**
  * Created by gongkan on 2016/5/30.

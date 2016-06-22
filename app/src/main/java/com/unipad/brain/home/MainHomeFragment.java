@@ -8,13 +8,7 @@ import com.unipad.brain.R;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopNewsList;
-import com.unipad.io.bean.Request;
-import com.unipad.io.mina.LongTcpClient;
-import com.unipad.io.w.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainHomeFragment extends MainBasicFragment implements IDataObserver{
 

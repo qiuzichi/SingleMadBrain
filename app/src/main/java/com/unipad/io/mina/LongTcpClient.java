@@ -3,9 +3,6 @@ package com.unipad.io.mina;
 import android.widget.Toast;
 
 import com.unipad.brain.App;
-import com.unipad.io.IDataHandler;
-import com.unipad.io.IPack;
-import com.unipad.io.bean.Request;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
@@ -21,7 +18,7 @@ import org.apache.mina.filter.keepalive.KeepAliveRequestTimeoutHandler;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
-public class LongTcpClient implements IDataHandler{
+public class LongTcpClient implements ClientSessionHandler.IDataHandler {
 
     private static LongTcpClient instance;
 
@@ -44,7 +41,7 @@ public class LongTcpClient implements IDataHandler{
 
     public IoSession session;
 
-    private IDataHandler dataHandler;
+    private ClientSessionHandler.IDataHandler dataHandler;
 
     private LongTcpClient() {
 
@@ -151,7 +148,7 @@ public class LongTcpClient implements IDataHandler{
         }
     }
 
-    public void setDataHandler(IDataHandler dataHandler) {
+    public void setDataHandler(ClientSessionHandler.IDataHandler dataHandler) {
         this.dataHandler = dataHandler;
     }
 }

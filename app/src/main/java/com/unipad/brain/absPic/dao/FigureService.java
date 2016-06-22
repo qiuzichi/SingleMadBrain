@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Created by gongkan on 2016/4/15.
  */
-public class FigureService implements ICoreService {
+public class FigureService implements ICoreService{
 
     public ArrayList<Figure> allFigures = new ArrayList<>();
     private String headResourse = "assets://absFigure/";

@@ -23,7 +23,6 @@ import com.unipad.brain.home.iview.ICompetitionList;
 import com.unipad.common.BaseFragmentActivity;
 import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
-import com.unipad.io.w.Const;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
 
