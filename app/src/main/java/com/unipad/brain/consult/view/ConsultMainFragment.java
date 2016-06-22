@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.unipad.brain.R;
+import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.common.BaseFragment;
 import com.unipad.utils.LogUtil;
 
@@ -13,7 +14,7 @@ import com.unipad.utils.LogUtil;
 /**
  * Created by 63 on 2016/6/20.
  */
-public class ConsultMainFragment extends BaseFragment {
+public class ConsultMainFragment extends MainBasicFragment {
 
 
 //    @Override
@@ -27,4 +28,14 @@ public class ConsultMainFragment extends BaseFragment {
 ////        initListener(mView);
 ////        return mView;
 //    }
+
+    @Override
+    public  int getLayoutId(){
+        return R.layout.fragment_consult_main;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }
