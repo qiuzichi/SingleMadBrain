@@ -1,4 +1,4 @@
-package com.unipad.io;
+package com.unipad.io.mina;
 
 import android.text.format.DateFormat;
 import android.text.format.Time;

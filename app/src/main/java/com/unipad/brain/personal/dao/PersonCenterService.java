@@ -13,6 +13,7 @@ import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopFeedback;
+import com.unipad.http.HitopGetQuestion;
 import com.unipad.http.HitopLogin;
 
 import com.unipad.http.HitopMatchStart;
@@ -41,9 +42,13 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpLogin.setSevice(this);
         httpLogin.post();
 
-        //HitopDownLoad httpdownload = new HitopDownLoad("/api/file/download?questionId=1111");
-       // httpdownload.downLoad("/sdcard/333.mp4");
+        HitopDownLoad httpdownload = new HitopDownLoad();
+        httpdownload.buildRequestParams("questionId","2AB5D7C647ED4A768CAF9258A1A0EAC6");
+        httpdownload.downLoad("/sdcard/333.zip");
 
+        HitopGetQuestion httpGetQuestion =new HitopGetQuestion();
+        httpGetQuestion.buildRequestParams("questionId","2AB5D7C647ED4A768CAF9258A1A0EAC6");
+        httpGetQuestion.post();
     }
 
     @Override

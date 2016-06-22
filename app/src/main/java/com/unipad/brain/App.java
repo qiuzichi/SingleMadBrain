@@ -45,13 +45,15 @@ public class App extends Application {
             if (mAppFile.exists() && mAppFile.isDirectory()) {
                 mTakePhotoFile = new File(mAppFile, "TakePhoto");
                 mTakePhotoFile.mkdir();
+                File gameFile = new File(mAppFile,"game");
+                gameFile.mkdir();
             }
 
         }
     }
 
-    public File getAppFile() {
-        return mAppFile;
+    public String getAppFilePath() {
+        return mAppFile.getAbsolutePath();
     }
 
     public File getTakePhotoFile() {

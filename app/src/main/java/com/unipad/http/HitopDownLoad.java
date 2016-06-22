@@ -21,6 +21,9 @@ public class HitopDownLoad extends HitopRequest<File>{
         super(path);
     }
 
+    public HitopDownLoad(){
+        super(HttpConstant.DOWNLOAD_QUESTION);
+    }
     @Override
     public String buildRequestURL() {
         return null;

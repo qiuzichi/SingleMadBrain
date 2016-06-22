@@ -1,16 +1,7 @@
 package com.unipad.io.mina;
 
-import android.widget.Toast;
-
-import com.unipad.brain.App;
-import com.unipad.io.IDataHandler;
-import com.unipad.io.bean.Response;
-
-import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
-
-import java.net.InetSocketAddress;
 
 public class ClientSessionHandler extends IoHandlerAdapter {
 
@@ -68,4 +59,10 @@ public class ClientSessionHandler extends IoHandlerAdapter {
         this.isReconect = isReconect;
     }
 
+    /**
+     * Created by gongkan on 2016/5/31.
+     */
+    public static interface IDataHandler {
+        void processPack(IPack pack);
+    }
 }
