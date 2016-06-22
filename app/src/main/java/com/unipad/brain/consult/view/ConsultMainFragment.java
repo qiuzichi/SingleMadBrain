@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.slidingmenu.lib.CustomViewAbove;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultTab;
@@ -20,7 +21,7 @@ import java.lang.reflect.Field;
 /**
  * Created by 63 on 2016/6/20.
  */
-public class ConsultMainFragment extends ConsultBaseFragment {
+public class ConsultMainFragment extends ConsultBaseFragment{
     private TabWidget mTabWidget;
     private ViewPager mViewPager;
     private int mCurrentIndex;
@@ -69,16 +70,24 @@ public class ConsultMainFragment extends ConsultBaseFragment {
     }
 
     private void initViewPager(){
-        FragmentPagerAdapter adapter = new ChildsFragmentAdapter(
-                getChildFragmentManager());
+        FragmentPagerAdapter adapter = new ChildsFragmentAdapter(getChildFragmentManager()
+                );
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(adapter);
 
-//        mViewPager.seto
+        mViewPager.setOnPageChangeListener(mSimpleOnPageChangeListener);
     }
 
-    private View.OnClickListener mTabClickListener = new View.OnClickListener() {
+    private ViewPager.SimpleOnPageChangeListener mSimpleOnPageChangeListener = new ViewPager.SimpleOnPageChangeListener(){
+        public void onPageSelected(int position) {
+            if(position == mCurrentIndex)return;
+            setTabSelectedChanged(mCurrentIndex, false);
+            mCurrentIndex = position;
+            setTabSelectedChanged(mCurrentIndex, true);
+        }
+    };
 
+    private View.OnClickListener mTabClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {

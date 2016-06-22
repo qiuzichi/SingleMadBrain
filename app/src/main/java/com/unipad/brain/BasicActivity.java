@@ -1,8 +1,8 @@
 package com.unipad.brain;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.unipad.utils.ActivityCollector;
@@ -10,7 +10,7 @@ import com.unipad.utils.ActivityCollector;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public abstract class BasicActivity extends Activity implements View.OnClickListener, App.HandlerCallback {
+public abstract class BasicActivity extends FragmentActivity implements View.OnClickListener, App.HandlerCallback {
     protected App.AppHandler mHandler = new App.AppHandler(this);
     private boolean mFlag;
 

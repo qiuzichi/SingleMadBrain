@@ -8,13 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.common.AppGlobalManager;
 import com.unipad.utils.LogUtil;
 
 /**
  * Created by liuxiang on 2016/6/22.
  */
-public abstract class ConsultBaseFragment extends Fragment implements View.OnClickListener{
+public abstract class ConsultBaseFragment extends MainBasicFragment{
     private String TAG;
     private Context mActivity;
 

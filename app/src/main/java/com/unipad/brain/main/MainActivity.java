@@ -1,10 +1,10 @@
 package com.unipad.brain.main;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,7 +43,7 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
 
     @Override
     public void initData() {
-        mFragmentManager = getFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.add(R.id.c_rfg_container, mHomeFragment);
         mFragmentTransaction.commit();
