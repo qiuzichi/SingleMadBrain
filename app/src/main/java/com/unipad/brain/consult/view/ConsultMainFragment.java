@@ -16,15 +16,15 @@ import com.unipad.utils.LogUtil;
 public class ConsultMainFragment extends BaseFragment {
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        LogUtil.d("liuxiangg", "onCreateView" + " : " + "onCreateView");
-//		if(mView == null)
-        mView = inflater.inflate(R.layout., null);
-        initView(mView);
-        initData();
-        initListener(mView);
-        return mView;
-    }
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        LogUtil.d("liuxiangg", "onCreateView" + " : " + "onCreateView");
+////		if(mView == null)
+////         = inflater.inflate(R.layout.fragment_consult_main, null);
+////        initView(mView);
+////        initData();
+////        initListener(mView);
+////        return mView;
+//    }
 }
