@@ -47,7 +47,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpLogin.setSevice(this);
         httpLogin.post();
 
-        HitopDownLoad httpdownload = new HitopDownLoad();
+       /** HitopDownLoad httpdownload = new HitopDownLoad();
         httpdownload.buildRequestParams("questionId", "2AB5D7C647ED4A768CAF9258A1A0EAC6");
         httpdownload.setService((HeadService) AppContext.instance().getService(Constant.HEADSERVICE));
         httpdownload.downLoad("333.zip");
@@ -57,6 +57,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpGetQuestion.setService((IGameHand) AppContext.instance().getService(Constant.HEADSERVICE));
         httpGetQuestion.setService((HeadService) AppContext.instance().getService(Constant.HEADSERVICE));
         httpGetQuestion.post();
+        */
 
 
     }
