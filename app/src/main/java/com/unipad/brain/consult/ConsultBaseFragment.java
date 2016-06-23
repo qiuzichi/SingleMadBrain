@@ -108,6 +108,6 @@ public abstract class ConsultBaseFragment extends MainBasicFragment{
     }
 
     protected Context getmContext(){
-        return mActivity;
-    }
+    return mActivity;
+}
 }
