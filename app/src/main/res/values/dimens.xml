@@ -39,15 +39,12 @@
     <!-- TOAST弹出的Y轴偏移 -->
     <dimen name="toast_gravity_yoffset">-67dip</dimen>
 
-<<<<<<< HEAD
     <!-- 收藏/点赞/评论/分析默认宽高 -->
     <dimen name="favorite_width">20dip</dimen>
     <dimen name="favorite_height">20dip</dimen>
 
 
-=======
     <dimen name="rule_dialog_width">600dip</dimen>
     <dimen name="rule_dialog_height">300dip</dimen>
     <dimen name="history_answer_item_heigth">60dip</dimen>
->>>>>>> adb26b7dc0fcea6ea54f83b2ce8e97c07698e336
 </resources>
