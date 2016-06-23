@@ -8,10 +8,13 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
-<<<<<<< HEAD
 import com.unipad.brain.consult.view.IntroductionFragment;
+import com.unipad.brain.home.dao.NewsService;
 import com.unipad.brain.main.MainActivity;
+import com.unipad.common.Constant;
+import com.unipad.http.HitopNewsList;
 
 public class MainHomeFragment extends MainBasicFragment {
 
@@ -33,6 +36,12 @@ public class MainHomeFragment extends MainBasicFragment {
 //        fl_homepager.addView(introductionFragment.getRoot());
 
     }
+
+    @Override
+    public int getLayoutId() {
+        return 0;
+    }
+
     //界面的初始化
     private void initView(){
 
@@ -61,60 +70,9 @@ public class MainHomeFragment extends MainBasicFragment {
         txt_flod.setOnClickListener(this);
 
     }
-=======
-import com.unipad.brain.home.dao.NewsService;
-import com.unipad.common.Constant;
-import com.unipad.http.HitopNewsList;
-import com.unipad.observer.IDataObserver;
-
-public class MainHomeFragment extends MainBasicFragment implements IDataObserver{
->>>>>>> adb26b7dc0fcea6ea54f83b2ce8e97c07698e336
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-        public int getLayoutId() {
-            return R.layout.main_home_fragment;
-        }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.tv_title_back_left:  //返回键
-                mActivity.finish();
-                break;
-            case R.id.tv_title_mainmenu_show:  //返回到主界面
-
-
-                break;
-            case R.id.tv_title_main_flod_show:  //折叠显示;
-
-                break;
-
-        }
-    }
-
-    @Override
-<<<<<<< HEAD
-    public void onAttach(Context context) {
-        super.onAttach(context);
-=======
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
-        HitopNewsList newsList = new HitopNewsList("00001","",1,10);
-        //newsList.post();
->>>>>>> adb26b7dc0fcea6ea54f83b2ce8e97c07698e336
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
 
     }
 }

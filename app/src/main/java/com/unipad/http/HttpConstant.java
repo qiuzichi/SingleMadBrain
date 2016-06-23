@@ -37,6 +37,12 @@ public class HttpConstant {
     public static String UPDATA_PWD_HTTP = "/api/user/modifyPassword";
     // 意见提交
      public static String SUBMIT_FEED_HTTP = "/api/user/feedback";
+    // 获取省份列表
+    public static String GET_PROVINCE_HTTP = "/pub/province/list";
+    // 根据省份ID 获取城市列表
+    public static String GET_CITY_HTTP="/pub/city/list";
+    // 根据城市ID 获取赛事列表
+    public static String GET_CITY_GAME = "/api/match/getMatchByCity";
 
 
     public static int JSON_ERREO = -2;
@@ -77,7 +83,12 @@ public class HttpConstant {
     public static final int REGIST_FILED = 0x18001;
     public static final int MODIFY_OK = 0x18002;
     public static final int MODIFY_FILED = 0x18003;
-
+    // 获取省份列表
+    public static final int GET_PROVINCE = 0x10900;
+    // 根据城市列表
+    public static final int GET_CITY = 0x11000;
+    // 根据城市id 获取比赛列表
+    public static final int CITY_GAME=0x11100;
 
     //获取news数据的 key
     public static final int NOTIFY_GET_NEWS = 0x20000;

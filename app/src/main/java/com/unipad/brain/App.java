@@ -1,11 +1,15 @@
 package com.unipad.brain;
 
 import android.app.Application;
+import android.app.Service;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 
+import com.baidu.mapapi.SDKInitializer;
+import com.unipad.baiduservice.LocationService;
 import com.unipad.io.mina.LongTcpClient;
 
 import org.xutils.x;
@@ -20,6 +24,8 @@ public class App extends Application {
     private static App mContext;
     private File mAppFile, mTakePhotoFile;
     public static int screenWidth = 0, screenHeight = 0;
+    public LocationService locationService;
+    public Vibrator mVibrator;
 
     @Override
     public void onCreate() {
@@ -31,7 +37,10 @@ public class App extends Application {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
-
+        // 初始化 百度定位
+        locationService = new LocationService(getApplicationContext());
+        mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+        SDKInitializer.initialize(getApplicationContext());
         this.createDirs();
     }
 
