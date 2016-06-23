@@ -8,4 +8,6 @@ public class CityBean {
     public String cityId;
 
     public String cityName;
+    // 是否选中
+    public boolean isSel;
 }

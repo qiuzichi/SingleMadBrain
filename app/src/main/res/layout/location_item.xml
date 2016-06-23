@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/txt_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:paddingLeft="3dp"
-        android:layout_height="55dp" />
-    <include layout="@layout/personal_view_divide_line" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="3dp"
+            android:layout_height="55dp" />
+        <include layout="@layout/personal_view_divide_line" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_bian"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_gravity="right"
+        android:src="@drawable/line_location"/>
+</FrameLayout>

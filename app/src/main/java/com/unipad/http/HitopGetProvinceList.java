@@ -1,8 +1,10 @@
 package com.unipad.http;
 
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.unipad.AppContext;
+import com.unipad.brain.App;
+import com.unipad.brain.R;
 import com.unipad.brain.location.bean.ProvinceBean;
 import com.unipad.observer.GlobleObserService;
 
@@ -10,8 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Created by gongjiebin on 2016/6/22.
@@ -43,18 +44,25 @@ public class HitopGetProvinceList extends   HitopRequest<Object>{
                 JSONObject jsonObject = new JSONObject(json);
                 JSONArray arrayList = jsonObject.optJSONArray("lists");
                 int length = arrayList.length();
-                List<ProvinceBean> provinceBeans = new ArrayList<ProvinceBean>();
+                LinkedList<ProvinceBean> provinceBeans = new LinkedList<ProvinceBean>();
                 ProvinceBean provinceBean;
                 for(int i = 0; i < length; i ++ ) {
                     provinceBean = new ProvinceBean();
                     JSONObject provinceObj = arrayList.optJSONObject(i);
                     provinceBean.provinceId = provinceObj.optString("regionId");
-                    provinceBean.ProvinceName = provinceObj.optString("regionName");
+                    provinceBean.provinceName = provinceObj.optString("regionName");
+                    if(null != AppContext.instance().location){
+                        if(AppContext.instance().location.getProvince().contains(provinceBean.provinceName)){
+                            //provinceBean.isSel = true;
+                            provinceBeans.addFirst(provinceBean);
+                            continue;
+                        }
+                    }
                     provinceBeans.add(provinceBean);
                 }
                 sevice.noticeDataChange(HttpConstant.GET_PROVINCE,provinceBeans);
             } catch (JSONException e) {
-                sevice.noticeDataChange(HttpConstant.GET_PROVINCE,"JSON 格式错误");
+                sevice.noticeDataChange(HttpConstant.GET_PROVINCE, App.getContext().getString(R.string.string_json_error));
                 e.printStackTrace();
             }
         } else {

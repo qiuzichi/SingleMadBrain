@@ -77,6 +77,8 @@ public class HttpConstant {
     public static final int UPDATA_LOGIN_PWD = 0x10700;
     // 提交意见
     public static final int SUBMIT_FEEDBACK=0x10800;
+    // 上传文件（头像）
+    public static final int UOLOAD_PHOTO_FILE=0x10900;
 
 
     public static final int REGIST_OK = 0x18000;

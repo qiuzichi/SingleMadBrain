@@ -25,8 +25,10 @@ import com.unipad.AppContext;
 import com.unipad.AuthEntity;
 import com.unipad.brain.App;
 import com.unipad.brain.R;
+import com.unipad.brain.dialog.ShowDialog;
 import com.unipad.brain.personal.bean.UploadFileBean;
 import com.unipad.brain.personal.dao.PersonCenterService;
+import com.unipad.brain.view.WheelMainView;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
@@ -48,7 +50,7 @@ import java.io.File;
  * 个人中心之实名认证
  * Created by Wbj on 2016/4/26.
  */
-public class PersonalAuthenticationFragment extends PersonalCommonFragment implements IDataObserver {
+public class PersonalAuthenticationFragment extends PersonalCommonFragment implements IDataObserver, WheelMainView.OnChangingListener {
     private static final String PHOTO_POSTFIX = ".jpg".trim();
     private static final int MAX_STEP = 4;
     private View mTextSelectedSex;
@@ -74,11 +76,11 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
 
     private EditText ed_id;
 
-    private EditText ed_data;
+    private Button ed_data;
     // 上传图片
     private int indexUpLoadFile;
-
-    private ImageView user_photo;
+    // 自定义dialog
+    private ShowDialog showDialog;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -114,37 +116,23 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         mViewStub = (ViewStub) mActivity.findViewById(R.id.view_shade_step2);
         mLayoutStep2 = (ViewGroup) mViewStub.inflate();
         mLayoutStep2.setVisibility(View.GONE);
-        ed_data = (EditText)mLayoutStep2.findViewById(R.id.ed_data);
+
+        ed_data = (Button)mLayoutStep2.findViewById(R.id.ed_data);
+        showDialog = new ShowDialog(mActivity);
+        ed_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WheelMainView wheelMainView = new WheelMainView(mActivity);
+                wheelMainView.setChangingListener(PersonalAuthenticationFragment.this);
+                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
+            }
+        });
         ed_id=(EditText) mLayoutStep2.findViewById(R.id.ed_id);
         ed_name=(EditText) mLayoutStep2.findViewById(R.id.ed_name);
         if(AppContext.instance().loginUser.getAuth() != 0){
             ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(15);
             service.getAuthInfo(AppContext.instance().loginUser.getUserId());
         }
-
-        if(!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
-            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
-                @Override
-                public void onSuccess(Drawable drawable) {
-                    Bitmap map =  PicUtil.drawableToBitmap(drawable);
-                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
-                }
-
-                @Override
-                public void onError(Throwable throwable, boolean b) {
-
-                }
-
-                @Override
-                public void onCancelled(CancelledException e) {
-
-                }
-
-                @Override
-                public void onFinished() {
-
-                }
-            });
     }
 
     @Override
@@ -320,7 +308,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
             // 上传第一张图片
             ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(25);
             indexUpLoadFile = 0;
-            service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic1));
+            service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic1),0);
         } else {
             ToastUtil.showToast(mActivity.getString(R.string.string_ps));
         }
@@ -568,15 +556,15 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
                 switch (indexUpLoadFile){
                     case 1:// {"data":"\\api\\20160613\\BE46D5F8AF834C6298C65E17C4009CD3.jpg","ret_code":"0"}
                         authBean.setIdFrontUrl(uploadFileBean.getPath());
-                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic2));
+                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic2),0);
                         break;
                     case 2:
                         authBean.setIdReverseUrl(uploadFileBean.getPath());
-                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic3));
+                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic3),0);
                         break;
                     case 3:
                         authBean.setRating_certificate1(uploadFileBean.getPath());
-                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic4));
+                        service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic4),0);
                         break;
                     case 4:
                         authBean.setRating_certificate2(uploadFileBean.getPath());
@@ -586,5 +574,10 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onChanging(String changStr) {
+        ed_data.setText(changStr);
     }
 }

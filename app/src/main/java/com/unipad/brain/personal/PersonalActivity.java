@@ -72,7 +72,7 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
         if (null != savedInstanceState) {
             filePath = savedInstanceState.getString("path");
             ToastUtil.createWaitingDlg(this, null, Constant.LOGIN_WAIT_DLG).show(15);
-            service.uploadAuthFile(filePath);
+            service.uploadAuthFile(filePath,1);
         }
         setContentView(R.layout.personal_aty);
     }
@@ -112,7 +112,7 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
             });
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         // 上传文件
-        service.registerObserver(HttpConstant.UOLOAD_AUTH_FILE, this);
+        service.registerObserver(HttpConstant.UOLOAD_PHOTO_FILE, this);
     }
 
 
@@ -401,7 +401,7 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
                 chatFunctionWindow.dismiss();
             }
             ToastUtil.createWaitingDlg(this, null, Constant.LOGIN_WAIT_DLG).show(15);
-            service.uploadAuthFile(filePath);
+            service.uploadAuthFile(filePath,1);
         }
     }
 
@@ -427,7 +427,7 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
     public void update(int key, Object o) {
         // 上传头像
         switch (key) {
-            case HttpConstant.UOLOAD_AUTH_FILE:
+            case HttpConstant.UOLOAD_PHOTO_FILE:
                 HIDDialog.dismissAll();
                 UploadFileBean uploadFileBean = (UploadFileBean) o;
                 if (uploadFileBean.getRet_code() != 0)
