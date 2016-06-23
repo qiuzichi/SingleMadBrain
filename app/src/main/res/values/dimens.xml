@@ -30,6 +30,7 @@
     <dimen name="abs_figure_answer_height">70dp</dimen>
     <dimen name="abs_figure_item_width">100dp</dimen>
     <dimen name="abs_figure_item_text_height">30dp</dimen>
+    <dimen name="project_name">120dp</dimen>
     <!-- 弹出框默认宽高 -->
     <dimen name="dialog_width">574dip</dimen>
     <dimen name="dialog_height">356dip</dimen>

@@ -2,11 +2,14 @@ package com.unipad.brain.personal;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridView;
 
 import com.unipad.brain.R;
+import com.unipad.brain.home.util.CommomAdapter;
 import com.unipad.brain.personal.bean.BrokenLineData;
 import com.unipad.brain.personal.view.BrokenLineView;
 import com.unipad.utils.ToastUtil;
@@ -34,7 +37,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
      */
     private boolean mIsBrokenLine = true;
     private int mRedColor, mBlackColor;
-
+    private ViewGroup pictureView;
+    private GridView gridView;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -167,7 +171,13 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
 
         return dataList;
     }
+    private View getGridView(){
+        if (gridView == null) {
+            gridView = (GridView) LayoutInflater.from(getActivity()).inflate(R.layout.gridrecord,null);
 
+        }
+        return gridView;
+    }
     /**
      * 切换成绩视图浏览模式
      */
@@ -199,5 +209,4 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
 
         mActivity.setRightText(mTitleBarRightText);
     }
-
 }

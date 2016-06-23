@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TableRow>
+           <TextView android:text="@string/site_name" />
+            <TextView android:text="@string/site_mode" />
+            <TextView android:text="@string/site_num" />
+            <TextView android:text="@string/site_time" />
+            <TextView android:text="@string/score" />
+            <TextView android:text="@string/ranking" />
+        </TableRow>
+        <TableRow>
 
-</TableLayout>
+        </TableRow>
+
+
+
+
+    </TableLayout>
+</LinearLayout>
