@@ -3,6 +3,10 @@ package com.unipad.http;
 import android.util.Log;
 
 import com.lidroid.xutils.http.ResponseInfo;
+import com.unipad.ICoreService;
+import com.unipad.brain.AbsBaseGameService;
+import com.unipad.common.Constant;
+import com.unipad.utils.FileUtil;
 import com.unipad.utils.ToastUtil;
 
 import org.xutils.common.Callback;
@@ -21,23 +25,38 @@ public class HitopDownLoad extends HitopRequest<File>{
         super(path);
     }
 
+    private AbsBaseGameService service;
+    public HitopDownLoad(){
+        super(HttpConstant.DOWNLOAD_QUESTION);
+    }
     @Override
     public String buildRequestURL() {
         return null;
     }
 
-    public void downLoad(String savaPath){
-
+    public void downLoad(String name){
+        final String filePath = Constant.GAME_FILE_PATH+File.separator+name;
+                File file = new File(filePath);
+        if(file.exists()) {
+            file.delete();
+        }
         //设置断点续传
         mParams.setAutoResume(true);
-        mParams.setSaveFilePath(savaPath);
+        mParams.setSaveFilePath(filePath);
       x.http().get(mParams, new Callback.ProgressCallback<File>() {
 
 
           @Override
           public void onSuccess(File file) {
-              Log.e("","success");
-              ToastUtil.showToast("下载成功！");
+              if (file.getName().endsWith(".zip")) {
+                  FileUtil.upZip(file.getAbsolutePath());
+
+              }
+
+              if (service != null) {
+                  service.initResourse(file.getAbsolutePath());
+                  service.setIsInitResourseAready(true);
+              }
           }
 
           @Override
@@ -49,28 +68,28 @@ public class HitopDownLoad extends HitopRequest<File>{
 
           @Override
           public void onCancelled(CancelledException e) {
-              Log.e("","onCancelled");
+              Log.e("", "onCancelled");
 
           }
 
           @Override
           public void onFinished() {
-              Log.e("","onFinished");
+              Log.e("", "onFinished");
           }
 
           @Override
           public void onWaiting() {
-              Log.e("","onWaiting");
+              Log.e("", "onWaiting");
           }
 
           @Override
           public void onStarted() {
-              Log.e("","onStarted");
+              Log.e("", "onStarted");
           }
 
           @Override
           public void onLoading(long total, long current, boolean isDownloading) {
-              Log.e("","total = "+total+",current="+current+",isDownloading="+isDownloading);
+              Log.e("", "total = " + total + ",current=" + current + ",isDownloading=" + isDownloading);
               if (total != current) {
 
               }
@@ -86,5 +105,9 @@ public class HitopDownLoad extends HitopRequest<File>{
     @Override
     public void buildRequestParams() {
 
+    }
+
+    public void setService(AbsBaseGameService service) {
+        this.service = service;
     }
 }

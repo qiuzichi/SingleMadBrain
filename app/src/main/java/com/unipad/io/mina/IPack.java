@@ -1,4 +1,4 @@
-package com.unipad.io;
+package com.unipad.io.mina;
 
 /**
  * Created by gongkan on 2016/5/31.

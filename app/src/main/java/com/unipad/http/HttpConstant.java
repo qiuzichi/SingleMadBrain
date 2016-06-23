@@ -8,6 +8,8 @@ public class HttpConstant {
     public static final String LOGIN = "/api/user/login";
     public static final String GET_USER_GAME_LIST = "/api/match/getMatchByUser";
     public static final String FORGET_PWD = "/api/user/forget";
+    public static final String DOWNLOAD_QUESTION ="/api/file/download" ;
+    public static final String GET_QUESTION = "/api/match/getQuestion";
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String GET_NEWS_LIST = "/api/news/list";

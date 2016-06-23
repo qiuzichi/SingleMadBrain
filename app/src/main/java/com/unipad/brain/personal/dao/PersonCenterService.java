@@ -6,6 +6,10 @@ import com.unipad.AppContext;
 import com.unipad.ICoreService;
 import com.unipad.AuthEntity;
 import com.unipad.UserDetailEntity;
+import com.unipad.brain.AbsBaseGameService;
+import com.unipad.brain.portraits.control.HeadService;
+import com.unipad.brain.portraits.view.HeadPortraitFragment;
+import com.unipad.common.Constant;
 import com.unipad.common.MobileInfo;
 import com.unipad.http.HitopApplyed;
 import com.unipad.http.HitopAuth;
@@ -13,6 +17,7 @@ import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopFeedback;
+import com.unipad.http.HitopGetQuestion;
 import com.unipad.http.HitopLogin;
 
 import com.unipad.http.HitopMatchStart;
@@ -21,6 +26,7 @@ import com.unipad.http.HitopUserInfoUpdate;
 
 
 import com.unipad.observer.GlobleObserService;
+import com.unipad.utils.LogUtil;
 import com.unipad.utils.MD5Utils;
 
 import java.io.File;
@@ -41,8 +47,17 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         httpLogin.setSevice(this);
         httpLogin.post();
 
-        //HitopDownLoad httpdownload = new HitopDownLoad("/api/file/download?questionId=1111");
-       // httpdownload.downLoad("/sdcard/333.mp4");
+        HitopDownLoad httpdownload = new HitopDownLoad();
+        httpdownload.buildRequestParams("questionId", "2AB5D7C647ED4A768CAF9258A1A0EAC6");
+        httpdownload.setService((HeadService) AppContext.instance().getService(Constant.HEADSERVICE));
+        httpdownload.downLoad("333.zip");
+
+        HitopGetQuestion httpGetQuestion =new HitopGetQuestion();
+        httpGetQuestion.buildRequestParams("questionId", "2AB5D7C647ED4A768CAF9258A1A0EAC6");
+        httpGetQuestion.setService((IGameHand) AppContext.instance().getService(Constant.HEADSERVICE));
+        httpGetQuestion.setService((HeadService) AppContext.instance().getService(Constant.HEADSERVICE));
+        httpGetQuestion.post();
+
 
     }
 

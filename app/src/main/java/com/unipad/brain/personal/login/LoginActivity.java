@@ -48,13 +48,18 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         if(requestCode == 1000 && resultCode == 1001){
             String User_name=data.getStringExtra("user_name");
             String Pwd=data.getStringExtra("user_pwd");
-          //  Toast.makeText(this,"注册成功，请重新登陆。",Toast.LENGTH_SHORT).show();
             userName.setText(User_name);
             userPwd.setText(Pwd);
-           // login();
+            return;
         }
-    }
-
+        if (requestCode==1002&&requestCode==1003){
+            String Modify_name=data.getStringExtra("modify_name");
+            String Modify_pwd=data.getStringExtra("modify_pwd");
+            userName.setText(Modify_name);
+            userPwd.setText(Modify_pwd);
+            return;
+        }
+        }
     @Override
     public void initData() {
         showDialog = new ShowDialog(this);
@@ -116,7 +121,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
     private void openForgetPwdActivity() {
         Intent intent = new Intent(this, ForgetPwdActivity.class);
-        startActivity(intent);
+        this.startActivityForResult(intent,1002);
         finish();
     }
 

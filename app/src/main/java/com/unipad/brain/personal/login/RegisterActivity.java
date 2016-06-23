@@ -154,7 +154,6 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                         Intent intent=new Intent();
                         intent.putExtra("user_name",name);
                         intent.putExtra("user_pwd", pwd);
-                        Log.d(this.getClass().getSimpleName(), name + "pwd");
                         this.setResult(1001,intent);
                         this.finish();
                 break;

@@ -1,22 +1,17 @@
-package com.unipad.io.w;
+package com.unipad.io.mina;
 
-import android.os.Handler;
 import android.text.TextUtils;
 
 import com.unipad.AppContext;
-import com.unipad.io.IDataHandler;
-import com.unipad.io.IOConstant;
-import com.unipad.io.IPack;
-import com.unipad.io.IWrite;
-import com.unipad.io.bean.Request;
-import com.unipad.io.bean.Response;
-import com.unipad.io.mina.LongTcpClient;
+import com.unipad.common.Constant;
+import com.unipad.http.HitopDownLoad;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class SocketThreadManager implements IDataHandler {
+public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
 
     private static SocketThreadManager s_SocketManager = null;
 
@@ -54,7 +49,7 @@ public class SocketThreadManager implements IDataHandler {
         mOutThread.setStart(false);
     }
 
-    public  void releaseInstance() {
+    public void releaseInstance() {
         LongTcpClient.instant().release();
 
         if (s_SocketManager != null) {
@@ -70,10 +65,10 @@ public class SocketThreadManager implements IDataHandler {
     }
 
     public void signOK(String id) {
-        Map<String,String> body = new HashMap<String,String>();
+        Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());
-        body.put("SCHEDULEID",id);
-        Request request = new Request("10001",body);
+        body.put("SCHEDULEID", id);
+        Request request = new Request("10001", body);
         sendMsg(request);
     }
 
@@ -85,6 +80,30 @@ public class SocketThreadManager implements IDataHandler {
     private void handPack(Response response) {
         Map<String, String> data = response.getDatas();
         if (IOConstant.SEND_QUESTIONS.equals(data.get("TRXCODE"))) {//收到服务器下发试题的通知
+            String projectId = data.get("PROJECTID");
+
+            if (Constant.GAME_ABS_PICTURE.equals(projectId) || Constant.GAME_LISTON_AND_MEMORY_WORDS.equals(projectId)
+                    || Constant.GAME_PORTRAITS.equals(projectId)) {
+
+                String fileDir = Constant.GAME_FILE_PATH;
+                HitopDownLoad httpDown = new HitopDownLoad();
+                httpDown.buildRequestParams("questionId", data.get("QUESTIONID"));
+                String filePath;
+                String fileData = data.get("VOICE");
+                if (TextUtils.isEmpty(fileData)) {
+                    filePath = fileDir + "/question.zip";
+
+                } else {
+                    String taile = fileData.split(".")[1];
+                    filePath = fileDir + "/voice" + taile;
+
+                }
+                File file = new File(filePath);
+                if (file.exists()) {
+                    file.delete();
+                }
+                httpDown.downLoad(filePath);
+            }
 
         }
     }

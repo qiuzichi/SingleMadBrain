@@ -1,9 +1,7 @@
-package com.unipad.io.bean;
+package com.unipad.io.mina;
 
 import android.util.Log;
 
-import com.unipad.io.IPack;
-import com.unipad.io.IWrite;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,7 +12,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

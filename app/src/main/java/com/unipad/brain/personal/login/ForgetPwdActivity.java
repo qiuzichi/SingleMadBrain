@@ -155,17 +155,11 @@ public class ForgetPwdActivity extends BasicActivity implements View.OnClickList
     public void update(int key, Object o) {
         switch (key){
             case HttpConstant.MODIFY_OK:
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
                         Intent intent=new Intent();
-                        intent.putExtra("user_name",modify_name);
-                        intent.putExtra("user_pwd",modify_pwd);
-                        intent.setClass(ForgetPwdActivity.this,LoginActivity.class);
-                        ForgetPwdActivity.this.startActivity(intent);
-                        finish();
-                    }
-                },3000);
+                        intent.putExtra("modify_name",modify_name);
+                        intent.putExtra("modify_pwd",modify_pwd);
+                        this.setResult(1003,intent);
+                        this.finish();
                 break;
             case HttpConstant.MODIFY_FILED:
                 break;

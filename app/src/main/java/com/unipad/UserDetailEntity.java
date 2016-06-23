@@ -123,4 +123,5 @@ public class UserDetailEntity {
     public void setAuth(int auth) {
         this.auth = auth;
     }
+
 }

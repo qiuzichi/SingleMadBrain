@@ -1,24 +1,17 @@
-package com.unipad.io.bean;
+package com.unipad.io.mina;
 
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.unipad.io.IPack;
-import com.unipad.io.IWrite;
-import com.unipad.io.XmlUtil;
 
 import org.apache.mina.core.session.IoSession;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
  * Created by gongkan on 2016/5/31.
  */
-public class Request implements IWrite{
+public class Request {
 
 
 
@@ -35,7 +28,7 @@ public class Request implements IWrite{
 
     public void addBodyParamter(String key,String value) {
         if (body != null) {
-            body.put(key,value);
+            body.put(key, value);
         } else {
 
         }
@@ -53,10 +46,7 @@ public class Request implements IWrite{
             Log.e("uipad","send msg err! session is null");
         }
     }
-    @Override
-    public boolean write(String data) {
-        return false;
-    }
+
 
 
 
