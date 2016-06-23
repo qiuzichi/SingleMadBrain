@@ -16,6 +16,8 @@ public class UserDetailEntity {
 
     private int auth;
 
+
+
     private String addr; // 地址
 
     private String mail; // 邮件
@@ -23,6 +25,9 @@ public class UserDetailEntity {
     private String school; // 学校
 
     private String photo; // 用户头像地址
+
+
+    private String roleId;
 
     private String loginPwd; // 登录密码
 
@@ -33,6 +38,7 @@ public class UserDetailEntity {
     public void setLoginPwd(String loginPwd) {
         this.loginPwd = loginPwd;
     }
+
 
     public String getPhoto() {
         return photo;
@@ -122,6 +128,15 @@ public class UserDetailEntity {
 
     public void setAuth(int auth) {
         this.auth = auth;
+    }
+
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
 }

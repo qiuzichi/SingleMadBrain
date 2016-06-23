@@ -3,12 +3,178 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="主页资讯信息"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
+    <RelativeLayout
+        android:id="@+id/rl_title_home"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@color/main_lf_bg"
+        >
+        <TextView
+            android:id="@+id/tv_title_back_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/back"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:drawablePadding="@dimen/radius_4dip"
+
+            />
+        <TextView
+            android:id="@+id/tv_title_mainmenu_show"
+            android:layout_toRightOf="@id/tv_title_back_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/main_home_btn_bg"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:drawablePadding="@dimen/radius_4dip"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_main_flod_show"
+            android:layout_toRightOf="@id/tv_title_mainmenu_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/main_home_btn_bg"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:drawablePadding="@dimen/radius_4dip"
+            />
+
+        <TextView
+            android:id="@+id/tv_current_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/current_time"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_text_24"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_battery_power_icon"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/key_down"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:drawablePadding="@dimen/radius_4dip"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_title_wifi_icon"
+            android:layout_toLeftOf="@id/tv_title_battery_power_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/key_up"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:drawablePadding="@dimen/radius_4dip"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@id/rl_title_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:background="@color/white" >
+
+            <LinearLayout
+                android:id="@+id/ll_head"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/main_1"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/photo_a" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lisa  丽莎"
+                        android:textSize="23sp"
+                        android:textColor="@color/white" />
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:paddingRight="70dp"
+                        android:src="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:drawableLeft="@drawable/heart"
+                        android:gravity="center_vertical"
+                        android:textSize="20sp"
+                        android:text="  23·纽约"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_mainpager_left"
+                android:layout_width="match_parent"
+                android:background="@color/light_blue"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                android:layout_below="@id/ll_head" >
+            </FrameLayout>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_mainpager_info"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/home_bg"
+            android:layout_weight="8">
+
+        </FrameLayout>
+    </LinearLayout>
+
+
+
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:text="主页资讯信息"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="30sp" />-->
 
 </RelativeLayout>

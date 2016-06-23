@@ -21,6 +21,7 @@ import com.unipad.http.HitopGetQuestion;
 import com.unipad.http.HitopLogin;
 
 import com.unipad.http.HitopMatchStart;
+import com.unipad.http.HitopUpPhoto;
 import com.unipad.http.HitopUpdataPwd;
 import com.unipad.http.HitopUserInfoUpdate;
 
@@ -94,12 +95,20 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
      * 上传实名认证所需图片
      * @param path   本地文件地址
      */
-    public void uploadAuthFile(String path){
-        HitopAuthUploadFile hitopAuthUploadFile = new HitopAuthUploadFile();
-        hitopAuthUploadFile.setSevice(this);
-        Map<String,File> mapFile = new HashMap<String,File>();
-        mapFile.put("image", new File(path));
-        hitopAuthUploadFile.UpLoadFile(mapFile);
+    public void uploadAuthFile(String path,int index){
+        if(index == 0){
+            HitopAuthUploadFile hitopAuthUploadFile = new HitopAuthUploadFile();
+            hitopAuthUploadFile.setSevice(this);
+            Map<String,File> mapFile = new HashMap<String,File>();
+            mapFile.put("image", new File(path));
+            hitopAuthUploadFile.UpLoadFile(mapFile);
+        } else {
+            HitopUpPhoto hitopUpPhoto = new HitopUpPhoto();
+            hitopUpPhoto.setSevice(this);
+            Map<String,File> mapFile = new HashMap<String,File>();
+            mapFile.put("image", new File(path));
+            hitopUpPhoto.UpLoadFile(mapFile);
+        }
     }
 
     /**

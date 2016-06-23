@@ -8,9 +8,11 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import com.baidu.location.BDLocation;
 import com.unipad.brain.absPic.dao.FigureService;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.dao.NewsService;
+import com.unipad.brain.location.dao.LocationService;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.number.dao.BinaryNumService;
 import com.unipad.brain.portraits.control.HeadService;
@@ -59,6 +61,12 @@ public class AppContext {
      */
     public int[] disPlay = {1280, 800};
 
+    /**
+     *  用户对当前地址信息
+     *  请查找相关API http://developer.baidu.com/map/loc_refer/com/baidu/location/BDLocation.html
+     *  使用时应当判断对象是否为空
+     */
+    public BDLocation location;
 
     private DbManager.DaoConfig daoConfig;
 
@@ -138,6 +146,10 @@ public class AppContext {
                 serviceList.put(key, service);
             } else if (key.equals(Constant.HOME_GAME_HAND_SERVICE)) {
                 service = new HomeGameHandService();
+                service.init();
+                serviceList.put(key, service);
+            } else if(key.equals(Constant.LOCATION_SERVICE)){
+                service = new LocationService();
                 service.init();
                 serviceList.put(key, service);
             }

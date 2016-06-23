@@ -12,9 +12,10 @@
     </style>
     <!--dialog style begin-->
     <style name="dialog_wait" parent="android:style/Theme.Holo.Dialog">
-        <item name="android:windowBackground"> @color/blue
+        <item name="android:windowBackground"> @drawable/y_tips_bg
         </item>
     </style>
+
     <style name="dlg_title_white_20dip_wwrap_hwrap">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -267,12 +268,10 @@
         <item name="android:textColor">@color/txt_ash</item>
         <item name="android:background">@drawable/edit_bg</item>
     </style>
-=======
->>>>>>> c45c27baeebfee0996c5bfd88215b786879882b8
-=======
+
     <style name="colleague_custom_animation">
         <item name="android:windowEnterAnimation">@anim/colleague_right_in</item>
         <item name="android:windowExitAnimation">@anim/colleague_right_out</item>
     </style>
->>>>>>> 08719dca1b8c873ea122493070c8dcb127e56ce5
+
 </resources>

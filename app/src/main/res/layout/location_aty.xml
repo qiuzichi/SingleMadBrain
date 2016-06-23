@@ -58,4 +58,35 @@
             android:textSize="@dimen/common_text_22" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+          <ListView
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_weight="7"
+              android:dividerHeight="@dimen/margin_1dp"
+              android:scrollbars="none"
+              android:divider="@color/transparent"
+              android:id="@+id/lv_province" />
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:dividerHeight="1dp"
+            android:scrollbars="none"
+            android:divider="@color/transparent"
+            android:id="@+id/lv_city" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:dividerHeight="1dp"
+            android:scrollbars="none"
+            android:divider="@color/transparent"
+            android:id="@+id/lv_com" />
+    </LinearLayout>
+
 </LinearLayout>
