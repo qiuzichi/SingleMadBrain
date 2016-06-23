@@ -16,6 +16,7 @@ import com.unipad.brain.virtual.VirtualRightFragment;
 import com.unipad.brain.words.view.WordRightFragment;
 import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.LogUtil;
 
 /**
  * Created by Wbj on 2016/4/7.
@@ -28,16 +29,31 @@ public class CommonActivity extends BasicActivity implements IDataObserver{
     private String projectId;
 
     private RuleGame rule;
+    long startTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_aty);
-
+        startTime = System.currentTimeMillis();
         matchId = getIntent().getStringExtra("matchId");
         projectId = getIntent().getStringExtra("projectId");
-        SocketThreadManager.sharedInstance().signOK(matchId);
-        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SocketThreadManager.sharedInstance().signOK(matchId);
+                ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
+            }
+        }).start();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTime = startTime- System.currentTimeMillis();
+        LogUtil.e("-------","time = "+startTime);
     }
 
     @Override

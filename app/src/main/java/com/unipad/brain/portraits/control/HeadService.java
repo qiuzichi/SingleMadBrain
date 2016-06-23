@@ -31,14 +31,14 @@ public class HeadService extends AbsBaseGameService{
     public ArrayList<Person> data = new ArrayList<>();
 
     private String headResourse = "assets://portraits/";//file:///android_asset/portraits/
-
+    private INotifyInitData dataInitNotify;
     /**
      * @return
      */
     @Override
     public boolean init() {
         //data = DbUtils.findAllPerson();
-        List list = DbUtils.findAllPerson();
+       /** List list = DbUtils.findAllPerson();
         if (null != list) {
             data.addAll(list);
         }
@@ -79,6 +79,7 @@ public class HeadService extends AbsBaseGameService{
             }
         }
         shuffData();
+        */
         return true;
     }
     public void shuffData() {
@@ -93,6 +94,7 @@ public class HeadService extends AbsBaseGameService{
     @Override
     public void parseData(String data) {
         LogUtil.e("",data);
+        super.parseData(data);
         String [] persData = data.split(",");
         for (int i = 0; i <persData.length ; i++) {
             Person person;
@@ -114,7 +116,10 @@ public class HeadService extends AbsBaseGameService{
 
 
         }
-        super.parseData(data);
+
+        if (IsALlAready() || dataInitNotify != null) {
+            dataInitNotify.initDataFinished();
+        }
     }
 
     @Override
@@ -144,5 +149,17 @@ public class HeadService extends AbsBaseGameService{
 
             }
         }
+        setIsInitResourseAready(true);
+        if (IsALlAready() || dataInitNotify != null) {
+            dataInitNotify.initDataFinished();
+        }
+    }
+
+    public void setDataInitNotify(INotifyInitData dataInitNotify) {
+        this.dataInitNotify = dataInitNotify;
+    }
+
+    public interface INotifyInitData{
+        void initDataFinished();
     }
 }

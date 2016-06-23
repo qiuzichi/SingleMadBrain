@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.unipad.AppContext;
 import com.unipad.common.Constant;
+import com.unipad.common.MobileInfo;
 import com.unipad.http.HitopDownLoad;
 
 import java.io.File;
@@ -68,6 +69,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());
         body.put("SCHEDULEID", id);
+        body.put("DEVICE", MobileInfo.getDeviceId());
         Request request = new Request("10001", body);
         sendMsg(request);
     }
