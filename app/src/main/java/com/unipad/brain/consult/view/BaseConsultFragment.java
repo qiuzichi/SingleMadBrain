@@ -32,6 +32,7 @@ public abstract class BaseConsultFragment extends Fragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         //初始化数据;
         initData();
         //初始化事件

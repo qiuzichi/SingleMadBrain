@@ -38,4 +38,10 @@
     <dimen name="wait_dialog_height">180dip</dimen>
     <!-- TOAST弹出的Y轴偏移 -->
     <dimen name="toast_gravity_yoffset">-67dip</dimen>
+
+    <!-- 收藏/点赞/评论/分析默认宽高 -->
+    <dimen name="favorite_width">20dip</dimen>
+    <dimen name="favorite_height">20dip</dimen>
+
+
 </resources>

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.unipad.brain.BasicActivity;
 
 import com.unipad.brain.R;
+import com.unipad.brain.consult.view.IntroductionFragment;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.MainCompeteFragment;
 import com.unipad.brain.home.MainHomeFragment;
@@ -25,7 +26,7 @@ public class MainActivity extends BasicActivity {
     private TextView mTextLocation;
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
-    private MainHomeFragment mHomeFragment = new MainHomeFragment();
+    private IntroductionFragment mHomeFragment = new IntroductionFragment();
     private MainCompeteFragment mCompeteFragment = new MainCompeteFragment();
     private MainBasicFragment mCurrentFrg;
     private View mCurrentView;

@@ -6,8 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/lv_introduction_listview"
+        android:scrollbars="none"
+        android:divider="#00000000"
+        android:dividerHeight="0dip"
+        android:listSelector="@android:color/transparent"
         >
-
 
     </ListView>
 </LinearLayout>

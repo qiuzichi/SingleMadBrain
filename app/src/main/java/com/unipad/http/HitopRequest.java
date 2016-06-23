@@ -48,6 +48,7 @@ public abstract class HitopRequest<T>{
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
+                Log.e("","result:"+result);
                 handleJsonData(result);
 
             }

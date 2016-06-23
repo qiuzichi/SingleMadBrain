@@ -11,6 +11,8 @@ public class HttpConstant {
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String GET_NEWS_LIST = "/api/news/list";
+    //点赞 评论的 url
+    public static String GET_NEWS_OPERATE = "/api/news/operate";
     // 实名认证
     public static String AUTH_PATH = "/api/user/auth";
     // 调取实名认证信息 ----在用户已经实名认证之后 调取。
@@ -59,6 +61,10 @@ public class HttpConstant {
     public static final int USER_IN_GAEM = 0x10600;
 
 
-    //更新数据的 key
+    //获取news数据的 key
     public static final int NOTIFY_GET_NEWS = 0x20000;
+    //获取评论 收藏 点赞数据的 key
+    public static final int NOTIFY_GET_OPERATE = 0x20001;
+
+
 }

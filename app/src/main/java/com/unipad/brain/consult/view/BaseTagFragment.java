@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.unipad.brain.main.MainActivity;
+import com.unipad.common.BaseFragment;
 
 /**
  * Created by Administrator on 2016/6/20.
@@ -16,6 +17,7 @@ import com.unipad.brain.main.MainActivity;
 public abstract class BaseTagFragment {
     protected MainActivity mActivity;
     protected View root;
+
 
     public BaseTagFragment(MainActivity mActivity){
         this.mActivity = mActivity;

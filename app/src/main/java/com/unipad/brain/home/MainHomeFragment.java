@@ -1,6 +1,7 @@
 package com.unipad.brain.home;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -8,23 +9,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.unipad.brain.R;
+import com.unipad.brain.consult.view.IntroductionFragment;
+import com.unipad.brain.main.MainActivity;
 
 public class MainHomeFragment extends MainBasicFragment {
 
-    FrameLayout fl_homepager;
-    TextView txt_back;
-    TextView txt_showmain;
-    TextView txt_flod;
-    TextView txt_time;
-    TextView txt_power;
-    TextView txt_wifi;
+    private FrameLayout fl_homepager;
+    private TextView txt_back;
+    private TextView txt_showmain;
+    private TextView txt_flod;
+    private TextView txt_time;
+    private TextView txt_power;
+    private TextView txt_wifi;
     private FrameLayout fl_hmepage_left;
-
+    private IntroductionFragment introductionFragment;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //初始化界面;
         initView();
+        introductionFragment = new IntroductionFragment();
+//        fl_homepager.addView(introductionFragment.getRoot());
+
     }
     //界面的初始化
     private void initView(){
@@ -33,6 +39,7 @@ public class MainHomeFragment extends MainBasicFragment {
         fl_hmepage_left = (FrameLayout)mActivity.findViewById(R.id.fl_mainpager_left);
         //frame 组件
         fl_homepager = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
+
         //返回键
         txt_back = (TextView) mActivity.findViewById(R.id.tv_title_back_left);
         //主菜单组件
@@ -54,6 +61,11 @@ public class MainHomeFragment extends MainBasicFragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
 
     @Override
         public int getLayoutId() {
@@ -75,5 +87,17 @@ public class MainHomeFragment extends MainBasicFragment {
                 break;
 
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
     }
 }

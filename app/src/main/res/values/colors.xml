@@ -40,4 +40,18 @@
     <color name="hv_broken_line">#488577</color>
     <color name="histogram_view_grid_line">#CFDFF2</color>
     <color name="paint_pivot">#1C64C1</color>
+
+    <color name="introduction_single_bg">#EAF3FE</color>
+    <color name="introduction_plural_bg">#FEF3F3</color>
+
+    <color name="introduction_redline">#FFE3E3</color>
+    <color name="introduction_blueline">#D8E9FE</color>
+
+    <color name="introduction_checkdetail_bg_blue">#D7E8FD</color>
+    <color name="introduction_checkdetail_bg_red">#FFEAEA</color>
+
+    <color name="introduction_text_color_blue">#0C59BD</color>
+    <color name="introduction_text_color_red">#FD5A5A</color>
+
+
 </resources>
