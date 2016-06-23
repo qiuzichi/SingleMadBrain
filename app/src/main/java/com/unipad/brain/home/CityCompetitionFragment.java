@@ -1,6 +1,7 @@
 package com.unipad.brain.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.iview.ICompetition;
 import com.unipad.brain.home.util.MyTools;
 import com.unipad.common.BaseFragment;
+import com.unipad.common.CommonActivity;
 import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
@@ -131,9 +133,14 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 		switch (key){
 			case HttpConstant.CITY_GET_HOME_GAME_LIST:
 				competitionPersenter.setData((List<CompetitionBean>) o);
+
 				break;
 			case HttpConstant.CITY_APPLY_GAME:
 				competitionPersenter.notifyData((CompetitionBean) o);
+				Intent intent = new Intent(getActivity(), CommonActivity.class);
+				intent.putExtra("projectId",((CompetitionBean) o).getProjectId());
+				intent.putExtra("matchId",((CompetitionBean) o).getId());
+				this.startActivity(intent);
 				break;
 			default:
 				break;

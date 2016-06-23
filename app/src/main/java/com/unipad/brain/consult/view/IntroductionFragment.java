@@ -44,7 +44,7 @@ import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HttpConstant;
-import com.unipad.io.XmlUtil;
+
 import com.unipad.observer.IDataObserver;
 
 

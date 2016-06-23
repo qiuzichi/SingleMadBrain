@@ -10,12 +10,16 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
@@ -42,7 +46,7 @@ import org.xutils.x;
 /**
  * Created by Wbj on 2016/4/26.
  */
-public class PersonalActivity extends BasicActivity  implements IDataObserver {
+public class PersonalActivity extends BasicActivity implements IDataObserver {
 
     private TextView mTextSelected, mTextRight;
     private FragmentManager mFragmentManager;
@@ -57,30 +61,37 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
     private PersonalCommonFragment mCurrentFragment;
     private TextView txtName;
     private ImageView user_photo;
-    private final int CROP_FLAG=100;
+    private final int CROP_FLAG = 100;
     private PersonCenterService service;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (null != savedInstanceState) {
+            filePath = savedInstanceState.getString("path");
+            ToastUtil.createWaitingDlg(this, null, Constant.LOGIN_WAIT_DLG).show(15);
+            service.uploadAuthFile(filePath);
+        }
         setContentView(R.layout.personal_aty);
     }
 
     @Override
     public void initData() {
         findViewById(R.id.title_bar_left_text).setOnClickListener(this);
-        txtName = (TextView)findViewById(R.id.user_name);
+        txtName = (TextView) findViewById(R.id.user_name);
         mTextRight = (TextView) findViewById(R.id.title_bar_right_text);
         mTextRight.setOnClickListener(this);
-        user_photo = (ImageView)findViewById(R.id.user_photo);
+        user_photo = (ImageView) findViewById(R.id.user_photo);
         mFragmentManager = getFragmentManager();
         this.setTextViewSelected((TextView) findViewById(R.id.personal_info));
         setTxtName();
-        if(!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
             x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
                 @Override
                 public void onSuccess(Drawable drawable) {
-                    Bitmap map =  PicUtil.drawableToBitmap(drawable);
+                    Bitmap map = PicUtil.drawableToBitmap(drawable);
                     user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
                 }
 
@@ -105,9 +116,22 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
     }
 
 
-    public void setTxtName(){
-        if(txtName != null)
+    public void setTxtName() {
+        if (txtName != null)
             txtName.setText(AppContext.instance().loginUser.getUserName());
+    }
+
+    private View getView() {
+        TableLayout table = (TableLayout) LayoutInflater.from(this).inflate(R.layout.history_answer, null);
+        table.addView(createTableRow());
+
+        return table;
+    }
+
+    private TableRow createTableRow() {
+        TableRow table = (TableRow) LayoutInflater.from(this).inflate(R.layout.history_item, null);
+
+        return table;
     }
 
     public void personalItemClick(View view) {
@@ -234,31 +258,26 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
 
     private PopupWindow chatFunctionWindow;
 
-    public void showScPic(){
+    public void showScPic() {
         initChatFunctionView();
         chatFunctionWindow.showAtLocation(new Button(this), Gravity.CENTER, 0, 0);
     }
 
     /**
      * 初始化选择拍照view
-     *
      */
-    private void initColleagueWindow()
-    {
-        if(null==chatFunctionView)
-        {
-            chatFunctionView=new ChatFunctionView(this);
+    private void initColleagueWindow() {
+        if (null == chatFunctionView) {
+            chatFunctionView = new ChatFunctionView(this);
         }
     }
 
     /**
      * 初始化选择图片的view
      */
-    private void initChatFunctionView()
-    {
-        if(null==chatFunctionWindow)
-        {
-            chatFunctionWindow=new PopupWindow(this);
+    private void initChatFunctionView() {
+        if (null == chatFunctionWindow) {
+            chatFunctionWindow = new PopupWindow(this);
             initColleagueWindow();
             chatFunctionWindow.setContentView(chatFunctionView);
             chatFunctionWindow.setFocusable(true);
@@ -275,17 +294,17 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
         // 保存图片文件的本地路径
         switch (requestCode) {
             case ChatFunctionView.Camera_flag:
-                if(resultCode != this.RESULT_OK){
+                if (resultCode != this.RESULT_OK) {
                     break;
                 }
-                if(FileUtil.hasSDCard()){
+                if (FileUtil.hasSDCard()) {
                     String path = chatFunctionView.getFileName();
-                    if(null == path || "".equals(path)){
+                    if (null == path || "".equals(path)) {
                         ToastUtil.showToast(getString(R.string.util_getpicfile_failed));
                         return;
                     }
                     File file = new File(path);
-                    if(file.length() > 0 && (file.getParent() != null && !"".equals(file.getParent()))){
+                    if (file.length() > 0 && (file.getParent() != null && !"".equals(file.getParent()))) {
                         chatFunctionView.setFileName();
                         startCrop(file);
                     }
@@ -295,34 +314,38 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
                 }
                 break;
             case ChatFunctionView.Picture_flag:
-                if(resultCode != RESULT_OK){
+                if (resultCode != RESULT_OK) {
                     break;
                 }
-                String imgFile = chatFunctionView.parseImageFile(data,this);
-                if(TextUtils.isEmpty(imgFile)){
+                String imgFile = chatFunctionView.parseImageFile(data, this);
+                if (TextUtils.isEmpty(imgFile)) {
                     return;
                 }
                 startCrop(new File(imgFile));//chatFunctionView.getFileByFileName(imgFile,getApplicationContext(), this, null);
                 break;
             case CROP_FLAG:
-                if(resultCode==this.RESULT_OK)
-                {
+                if (resultCode == this.RESULT_OK) {
                     //MyTools.showToast(GroupFileActivity.this, "裁剪成功");
                     if (null != data) {
                         Bitmap bmap = data.getParcelableExtra("data");
                         if (null != bmap) {
                             // imgHeadView.setImageBitmap(bmap);
-                            File mainFile=chatFunctionView.getMainPhotoFile();
-                            if(null==mainFile)
+                            File mainFile = chatFunctionView.getMainPhotoFile();
+                            if (null == mainFile)
                                 return;
 
-                            File saveFile=new File(mainFile, System.currentTimeMillis()+".jpg");
+                            File saveFile = new File(mainFile, System.currentTimeMillis() + ".jpg");
 
-                            FileOutputStream output=null;
+                            FileOutputStream output = null;
                             try {
-                                output=new FileOutputStream(saveFile);
+                                output = new FileOutputStream(saveFile);
                                 bmap.compress(Bitmap.CompressFormat.PNG, 100, output);
-                                setHeadImgView(saveFile);
+                                if (saveFile != null && saveFile.exists()) {
+                                    filePath = saveFile.getPath();
+                                    setHeadImgView();
+                                } else {
+                                    ToastUtil.showToast("文件不存在");
+                                }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             } finally {
@@ -344,13 +367,18 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
         }
     }
 
+
+    private String filePath;   // 开始裁剪之前 保存图片的路径以防数据的丢失
+
     /**
      * 开始裁剪
+     *
      * @param file
      */
     private void startCrop(File file) {
-        Intent cropIntent=new Intent();
-        Uri uri=Uri.fromFile(file);
+        filePath = file.getAbsolutePath();
+        Intent cropIntent = new Intent();
+        Uri uri = Uri.fromFile(file);
         cropIntent.setDataAndType(uri, "image/*");
         cropIntent.setAction("com.android.camera.action.CROP");
         cropIntent.putExtra("crop", true);
@@ -363,34 +391,52 @@ public class PersonalActivity extends BasicActivity  implements IDataObserver {
     }
 
     /**
-     *  设置头像
-     * @param file
+     * 设置头像
+     *
+     * @param
      */
-    public void setHeadImgView(File file){
-        if(user_photo != null){
-            if(null != chatFunctionWindow && chatFunctionWindow.isShowing()){
+    public void setHeadImgView() {
+        if (user_photo != null) {
+            if (null != chatFunctionWindow && chatFunctionWindow.isShowing()) {
                 chatFunctionWindow.dismiss();
             }
-            ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
-            service.uploadAuthFile(file.getPath());
+            ToastUtil.createWaitingDlg(this, null, Constant.LOGIN_WAIT_DLG).show(15);
+            service.uploadAuthFile(filePath);
         }
     }
 
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString("path", filePath);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (null != savedInstanceState) {
+            filePath = savedInstanceState.getString("path");
+            setHeadImgView();
+        }
+        // Log.e(this.getClass().getSimpleName(),"onRestoreInstanceState" + filePath);
+    }
+
+    @Override
     public void update(int key, Object o) {
-      // 上传头像
-        switch (key){
+        // 上传头像
+        switch (key) {
             case HttpConstant.UOLOAD_AUTH_FILE:
                 HIDDialog.dismissAll();
-                UploadFileBean uploadFileBean = (UploadFileBean)o;
-                if(uploadFileBean.getRet_code() != 0)
+                UploadFileBean uploadFileBean = (UploadFileBean) o;
+                if (uploadFileBean.getRet_code() != 0)
                     return;
                 AppContext.instance().loginUser.setPhoto(uploadFileBean.getPath());
                 x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + uploadFileBean.getPath(), new Callback.CommonCallback<Drawable>() {
                     @Override
                     public void onSuccess(Drawable drawable) {
-                        Bitmap map =  PicUtil.drawableToBitmap(drawable);
+                        Bitmap map = PicUtil.drawableToBitmap(drawable);
                         user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
                         mCurrentFragment.setImageBitmap(map);
                     }

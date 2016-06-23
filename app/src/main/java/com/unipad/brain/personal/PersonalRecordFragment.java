@@ -46,6 +46,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
         mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data);
         mActivity.findViewById(R.id.record_text_search).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_delete).setOnClickListener(this);
+
+        validateDate();
     }
 
     @Override
@@ -74,6 +76,12 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        thisShowView = 3;
     }
 
     /**
@@ -164,6 +172,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
      * 切换成绩视图浏览模式
      */
     private void switchBrowse() {
+//        mViewBrokenLine.setVisibility(View.VISIBLE);
         if (mIsBrokenLine) {
             mTitleBarRightText = mActivity.getString(R.string.broken_line_graph);
 
@@ -183,7 +192,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
 
             if (mViewBrokenLine != null) {
                 mViewBrokenLine.setVisibility(View.VISIBLE);
-            }
+           }
         }
 
         mIsBrokenLine = !mIsBrokenLine;

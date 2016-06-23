@@ -84,6 +84,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTitleBarRightText = mActivity.getString(R.string.next_step);
+
         mLayoutStep123Parent = (RelativeLayout) mActivity.findViewById(R.id.layout_step123_parent);
         // 这一部分  获取后台交互服务（个人中心）
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
@@ -144,6 +145,12 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
 
                 }
             });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        thisShowView = 2;
     }
 
     @Override

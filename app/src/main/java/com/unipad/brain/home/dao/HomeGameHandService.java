@@ -2,6 +2,7 @@ package com.unipad.brain.home.dao;
 
 import com.unipad.AppContext;
 import com.unipad.ICoreService;
+import com.unipad.http.HitopGetRule;
 import com.unipad.http.HittopGetUserGame;
 import com.unipad.observer.GlobleObserService;
 
@@ -25,5 +26,9 @@ public class HomeGameHandService extends GlobleObserService implements ICoreServ
         httpGame.post();
     }
 
+    public void getRule(String id){
+        HitopGetRule httpGetRule = new HitopGetRule(id,null);
+        httpGetRule.post();
+    }
 
 }

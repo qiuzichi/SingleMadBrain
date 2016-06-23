@@ -38,6 +38,12 @@ public class PersonalWalletFragment extends PersonalCommonFragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        thisShowView = 5;
+    }
+
     private void tempClick() {
         ToastUtil.showToast(mTitleBarRightText);
     }

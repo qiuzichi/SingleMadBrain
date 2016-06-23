@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="224dp">
-
     <ImageView
         android:id="@+id/line"
         android:layout_width="1dp"
@@ -32,7 +31,9 @@
                 style="@style/EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:hint="@string/input_name">
+                android:hint="@string/input_name"
+
+                >
                 <requestFocus />
             </EditText>
         </LinearLayout>
@@ -46,15 +47,26 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/user_sex_btn"
                 />
-            <Spinner
+            <LinearLayout
                 android:layout_width="match_parent"
-                style="@style/Spinner"
                 android:layout_height="match_parent"
-                android:id="@+id/register_sex"
-                android:entries="@array/sex"
+                android:orientation="horizontal"
+                style="@style/Spinner"
                 >
-            </Spinner>
+            <TextView
+                android:id="@+id/radio_men"
+                style="@style/PersonalAuthenticationTextType"
+                android:drawableLeft="@drawable/personal_men_bg"
+                android:text="@string/men" />
+
+            <TextView
+                android:id="@+id/radio_women"
+                style="@style/PersonalAuthenticationTextType"
+                android:drawableLeft="@drawable/personal_women_bg"
+                android:text="@string/women" />
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,6 +108,7 @@
                 android:entries="@array/nation"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:hint="@string/input_nation"
                 />
         </LinearLayout>
         <LinearLayout
@@ -114,6 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:hint="@string/contact_way"
+                android:maxLength="11"
                 />
         </LinearLayout>
 

@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.unipad.brain.R;
+<<<<<<< HEAD
 import com.unipad.brain.consult.view.IntroductionFragment;
 import com.unipad.brain.main.MainActivity;
 
@@ -60,6 +61,14 @@ public class MainHomeFragment extends MainBasicFragment {
         txt_flod.setOnClickListener(this);
 
     }
+=======
+import com.unipad.brain.home.dao.NewsService;
+import com.unipad.common.Constant;
+import com.unipad.http.HitopNewsList;
+import com.unipad.observer.IDataObserver;
+
+public class MainHomeFragment extends MainBasicFragment implements IDataObserver{
+>>>>>>> adb26b7dc0fcea6ea54f83b2ce8e97c07698e336
 
     @Override
     public void onStart() {
@@ -90,8 +99,16 @@ public class MainHomeFragment extends MainBasicFragment {
     }
 
     @Override
+<<<<<<< HEAD
     public void onAttach(Context context) {
         super.onAttach(context);
+=======
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
+        HitopNewsList newsList = new HitopNewsList("00001","",1,10);
+        //newsList.post();
+>>>>>>> adb26b7dc0fcea6ea54f83b2ce8e97c07698e336
 
     }
 

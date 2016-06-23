@@ -45,6 +45,14 @@ public class Person {
      */
     private String answerLastName = "";
 
+    private String content;//保留字段
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    private String tag;//保留字段
+
     public Person(){
 
     }
@@ -114,5 +122,23 @@ public class Person {
             score += 1;
         }
         return score;
+    }
+
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return content+"^"+firstName+"^"+lastName+"^"+answerFirstName+"^"+answerLastName;
+    }
+
+    public String getTag() {
+        return tag;
     }
 }

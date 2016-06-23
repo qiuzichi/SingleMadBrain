@@ -13,16 +13,15 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
-import com.unipad.brain.home.ChinaCompetitionFragment;
-import com.unipad.brain.home.CityCompetitionFragment;
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.bean.ProjectBean;
-import com.unipad.brain.home.competitionpj.RapidRandomNumberActivity;
-import com.unipad.brain.home.dialog.ShowDialog;
+import com.unipad.brain.home.dao.HomeGameHandService;
+import com.unipad.brain.dialog.ShowDialog;
+
 import com.unipad.brain.home.iview.ICompetition;
 import com.unipad.brain.home.util.ConstSettings;
-import com.unipad.common.BaseFragment;
 import com.unipad.common.CommonActivity;
+import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HitopApplyGame;
@@ -97,6 +96,13 @@ public class CompetitionPersenter {
                 cost.setText("费用:￥" + homeBean.getCost());
                 apply.setTag(homeBean);
                 addrView.setText(homeBean.getAddress());
+
+                holder.getView(R.id.game_all).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(homeBean.getId());
+                    }
+                });
                 if (homeBean.getApplyState() == 0) {//未报名
 
                     apply.setText(apply.getResources().getText(R.string.my_apply));

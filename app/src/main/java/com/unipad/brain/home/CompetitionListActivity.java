@@ -16,19 +16,22 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.ProjectBean;
+import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.competitionpj.CompetitionListPresenter;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.iview.ICompetitionList;
 import com.unipad.common.BaseFragmentActivity;
 import com.unipad.common.Constant;
-import com.unipad.io.w.Const;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
+import com.unipad.utils.ToastUtil;
 
 /**
  * @描述：  赛事列表
  * @author gongjiebin
  *
  */
-public class CompetitionListActivity extends BaseFragmentActivity implements ICompetitionList,OnPageChangeListener {
+public class CompetitionListActivity extends BaseFragmentActivity implements ICompetitionList,OnPageChangeListener,IDataObserver {
 
 	@ViewInject(R.id.viewPager_MessageFragment)
 	private ViewPager viewPager;
@@ -61,6 +64,7 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 		ViewUtils.inject(this);
 		projectBean = (ProjectBean) getIntent().getSerializableExtra("projectBean");
 		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
+		service.registerObserver(HttpConstant.GET_RULE_NOTIFY,this);
 		initView(null);
 		
 	}
@@ -156,6 +160,11 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 		
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		service.unregistDataChangeListenerObj(this);
+	}
 
 	@Override
 	public void onPageSelected(int arg0) {
@@ -166,5 +175,16 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 	@Override
 	public ProjectBean getProjectBean() {
 		return projectBean;
+	}
+
+	@Override
+	public void update(int key, Object o) {
+		switch (key){
+			case HttpConstant.GET_RULE_NOTIFY:
+				ToastUtil.createRuleDialog(this,Constant.SHOW_RULE_DIG,(RuleGame)o).show();
+				break;
+			default:
+				break;
+		}
 	}
 }
