@@ -14,7 +14,7 @@ import com.unipad.utils.LogUtil;
 
 /**
  * Created by liuxiang on 2016/6/22.
- */
+        */
 public abstract class ConsultBaseFragment extends MainBasicFragment{
     private String TAG;
     private Context mActivity;
@@ -108,6 +108,6 @@ public abstract class ConsultBaseFragment extends MainBasicFragment{
     }
 
     protected Context getmContext(){
-        return mActivity;
-    }
+    return mActivity;
+}
 }
