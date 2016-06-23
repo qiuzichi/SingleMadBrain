@@ -31,14 +31,14 @@ public class HitopGetQuestion extends HitopRequest<String>{
         try {
             jsObj = new JSONObject(json);
             if (jsObj != null && jsObj.toString().length() != 0) {
-                if (jsObj.getInt("ret_code") == 0) {
+                //if (jsObj.getInt("ret_code") == 0) {
                     JSONObject dataJson = new JSONObject(jsObj.getString("data"));
                     if (dataJson != null) {
                         String data = dataJson.getString("content1");
                         if (service != null){
                             service.parseData(data);
                         }
-                    }
+                   // }
                 }
             }
         }catch (Exception e){

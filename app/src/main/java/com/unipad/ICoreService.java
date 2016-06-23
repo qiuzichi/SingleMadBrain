@@ -8,5 +8,7 @@ public interface  ICoreService {
     void clear();
     public interface IGameHand extends ICoreService{
         void parseData(String data);
+        boolean IsALlAready();
+        void initResourse(String soursePath);
     }
 }

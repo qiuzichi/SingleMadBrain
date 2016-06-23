@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/group_historry_list"
+    android:layout_width="fill_parent"
+    android:layout_height="60dip"
+
+    android:gravity="left|center_vertical" >
+
+    <ImageView
+        android:id="@+id/check_box"
+        android:layout_width="40dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dip" />
+
+    <TextView
+        android:id="@+id/online_icon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_marginLeft="30dip" />
+
+    <LinearLayout
+        android:layout_width="460dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dip" >
+
+        <TextView
+            android:id="@+id/site_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="site_name"
+            android:singleLine="true"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/site_num"
+        android:layout_width="300dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:singleLine="true"
+        android:text="site_num"
+        android:textColor="@color/sty_addr_text_default_color"
+        android:textSize="20sp" />
+</TableRow>

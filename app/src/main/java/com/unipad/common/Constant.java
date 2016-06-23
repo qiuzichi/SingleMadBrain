@@ -23,6 +23,7 @@ public class Constant {
     public static final String PERSONCENTER = "personcenterservice";
     public static final String NEWS_SERVICE = "news_service";
 
+
     public static final String LOGIN_WAIT_DLG = "com.unipad.LOGIN_WAIT_DLG";
     public static final String SHOW_RULE_DIG = "com.unipad.SHOW_RULE_DLG";
 

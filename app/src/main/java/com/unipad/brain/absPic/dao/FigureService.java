@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.unipad.ICoreService;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.App;
 import com.unipad.brain.absPic.bean.Figure;
 
@@ -18,13 +19,13 @@ import java.util.Random;
 /**
  * Created by gongkan on 2016/4/15.
  */
-public class FigureService implements ICoreService{
+public class FigureService extends AbsBaseGameService{
 
     public ArrayList<Figure> allFigures = new ArrayList<>();
     private String headResourse = "assets://absFigure/";
     private String path = "absFigure";
     private static final int VOLUM = 5;//每行抽象图形的个数
-    public int mode = 0;//0记忆模式，1为答题模式，2对答案模式；
+
 
     @Override
     public boolean init() {

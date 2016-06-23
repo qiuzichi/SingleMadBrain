@@ -211,4 +211,21 @@ public class FileUtil {
 		myOutput.close();
 		myInput.close();
 	}
+	public static String upZip(String mFilePathName) {
+		if (mFilePathName.endsWith(".zip")) {
+			String strPath = mFilePathName;
+			strPath = strPath.substring(0, strPath.lastIndexOf('/'));
+			try {
+				ZIP.UnZipFolder(mFilePathName, strPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+			File fZip = new File(mFilePathName);
+			fZip.delete();
+			return strPath;
+		}
+		return null;
+	}
 }

@@ -4,12 +4,17 @@ import android.util.Log;
 
 import com.unipad.AppContext;
 import com.unipad.ICoreService;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.portraits.bean.Person;
+import com.unipad.utils.LogUtil;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +22,7 @@ import java.util.List;
 /**
  * Created by gongkan on 2016/4/11.
  */
-public class HeadService implements ICoreService {
+public class HeadService extends AbsBaseGameService{
     /**
      * 0为记忆模式，1为答题回忆模式
      */
@@ -83,5 +88,61 @@ public class HeadService implements ICoreService {
     public void clear() {
         data.clear();
         mode = 0;
+    }
+
+    @Override
+    public void parseData(String data) {
+        LogUtil.e("",data);
+        String [] persData = data.split(",");
+        for (int i = 0; i <persData.length ; i++) {
+            Person person;
+            if (this.data.size() < i+1) {
+                person = new Person();
+                String[] detail = persData[i].split("^");
+                person.setContent(detail[0]);
+                person.setFirstName(detail[1]);
+                person.setLastName(detail[2]);
+                this.data.add(person);
+            } else {
+                person = this.data.get(i);
+                String[] detail = persData[i].split("\\^");
+                person.setTag(detail[0]);
+                person.setContent(detail[1]);
+                person.setFirstName(detail[2]);
+                person.setLastName(detail[3]);
+            }
+
+
+        }
+        super.parseData(data);
+    }
+
+    @Override
+    public void initResourse(String soursePath) {
+        String dir  = soursePath.substring(0, soursePath.lastIndexOf('.'));
+        File fiel = new File(dir);
+        if (fiel.exists() && fiel.isDirectory()) {
+
+             String[] fileList = fiel.list(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String filename) {
+
+                    return filename.endsWith("jpg") || filename.endsWith("png");
+                }
+            });
+
+            for (int i = 0; i < fileList.length; i++) {
+                Person person;
+               if (this.data.size() < i+1) {
+                   person = new Person();
+                   person.setHeadPortraitPath(fileList[i]);
+                   this.data.add(person);
+               }else {
+                   person = data.get(i);
+                   person.setHeadPortraitPath(fileList[i]);
+               }
+
+            }
+        }
     }
 }
