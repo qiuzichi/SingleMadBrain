@@ -40,6 +40,5 @@
         android:layout_marginLeft="20dip"
         android:singleLine="true"
         android:text="site_num"
-        android:textColor="@color/sty_addr_text_default_color"
         android:textSize="20sp" />
 </TableRow>
