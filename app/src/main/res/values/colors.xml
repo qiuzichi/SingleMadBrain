@@ -8,6 +8,10 @@
     <color name="transparent">#00000000</color>
     <color name="main_lf_user_info_bg">#0854ba</color>
     <color name="blue">#0000FF</color>
+    <color name="light_blue">#fff2dc</color>
+    <color name="title_tab_normal_red">#FD4B4B</color>
+    <color name="title_tab_select_red">#FF1F1F</color>
+
     <color name="right_frg">#F4F4F4</color>
     <color name="bg_one">#deae6e</color>
     <color name="bg_two">#fedfb6</color>
@@ -36,4 +40,18 @@
     <color name="hv_broken_line">#488577</color>
     <color name="histogram_view_grid_line">#CFDFF2</color>
     <color name="paint_pivot">#1C64C1</color>
+
+    <color name="introduction_single_bg">#EAF3FE</color>
+    <color name="introduction_plural_bg">#FEF3F3</color>
+
+    <color name="introduction_redline">#FFE3E3</color>
+    <color name="introduction_blueline">#D8E9FE</color>
+
+    <color name="introduction_checkdetail_bg_blue">#D7E8FD</color>
+    <color name="introduction_checkdetail_bg_red">#FFEAEA</color>
+
+    <color name="introduction_text_color_blue">#0C59BD</color>
+    <color name="introduction_text_color_red">#FD5A5A</color>
+
+
 </resources>

@@ -13,6 +13,8 @@ public class HttpConstant {
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String GET_NEWS_LIST = "/api/news/list";
+    //点赞 评论的 url
+    public static String GET_NEWS_OPERATE = "/api/news/operate";
     // 实名认证
     public static String AUTH_PATH = "/api/user/auth";
     // 调取实名认证信息 ----在用户已经实名认证之后 调取。
@@ -35,6 +37,12 @@ public class HttpConstant {
     public static String UPDATA_PWD_HTTP = "/api/user/modifyPassword";
     // 意见提交
      public static String SUBMIT_FEED_HTTP = "/api/user/feedback";
+    // 获取省份列表
+    public static String GET_PROVINCE_HTTP = "/pub/province/list";
+    // 根据省份ID 获取城市列表
+    public static String GET_CITY_HTTP="/pub/city/list";
+    // 根据城市ID 获取赛事列表
+    public static String GET_CITY_GAME = "/api/match/getMatchByCity";
 
 
     public static int JSON_ERREO = -2;
@@ -50,6 +58,7 @@ public class HttpConstant {
     public static final int CHINA_APPLY_GAME = 0x10006;
     public static final int WORD_APPLY_GAME = 0x10007;
     public static final int GET_RULE_NOTIFY = 0x10008;
+
 
 
     // 实名认证
@@ -74,5 +83,17 @@ public class HttpConstant {
     public static final int REGIST_FILED = 0x18001;
     public static final int MODIFY_OK = 0x18002;
     public static final int MODIFY_FILED = 0x18003;
+    // 获取省份列表
+    public static final int GET_PROVINCE = 0x10900;
+    // 根据城市列表
+    public static final int GET_CITY = 0x11000;
+    // 根据城市id 获取比赛列表
+    public static final int CITY_GAME=0x11100;
+
+    //获取news数据的 key
+    public static final int NOTIFY_GET_NEWS = 0x20000;
+    //获取评论 收藏 点赞数据的 key
+    public static final int NOTIFY_GET_OPERATE = 0x20001;
+
 
 }

@@ -76,9 +76,14 @@
         android:layout_width="90dip"
         android:layout_height="60dp"
         android:singleLine="true"
+<<<<<<< HEAD
         android:text="@string/ranking"
         android:textColor="@color/stroke_color"
         android:textSize="20sp"
         android:gravity="center" />
     </LinearLayout>
+=======
+        android:text="site_num"
+        android:textSize="20sp" />
+>>>>>>> d5e9aeed825b58e25e5b87529749fd72073fd5c2
 </TableRow>
