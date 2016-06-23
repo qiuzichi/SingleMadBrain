@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 注：修改该文件需要同步修改dialog_view_0bt.xml dialog_view_1bt.xml dialog_view_2bt.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <!-- android:background="@drawable/dlg_bg_img" 标题区 android:background="#227cd1" -->
+
+    <LinearLayout
+        android:id="@+id/dialog_title_area"
+        android:layout_width="match_parent"
+        android:layout_height="52dip"
+        android:orientation="horizontal" >
+
+        <!-- 标题 -->
+
+        <TextView
+            android:id="@+id/dialog_title"
+            style="@style/dlg_title_white_20dip_wwrap_hwrap"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:text="@string/dlg_title_default" />
+        <Button
+            android:id="@+id/dialog_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/close_btn"
+            android:visibility="gone"
+            android:layout_marginRight="10dip"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/dlg_contenticon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dip"
+        android:contentDescription="dlg content icom" />
+    <!-- 内容 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+
+        android:layout_marginTop="18dip"
+        android:layout_weight="1"
+        android:minHeight="200dip"
+        android:orientation="vertical"
+        android:paddingLeft="60dip"
+        android:paddingRight="60dip" >
+
+        <ScrollView
+            android:id="@+id/dialog_textview_scroll_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" >
+
+            <TextView
+                android:id="@+id/dialog_text"
+                style="@style/dlg_body_666666_24dip_wwrap_hwrap"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingLeft="28dip"
+                android:paddingRight="28dip" />
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/dialog_content_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:src="#e5e5e5" >
+    </ImageView>
+    <!-- 按钮 -->
+
+    <LinearLayout
+        android:id="@+id/dialog_firstbutton_area"
+        android:layout_width="match_parent"
+        android:layout_height="52dip" >
+
+        <!-- 第一个按钮 -->
+
+        <LinearLayout
+            android:id="@+id/dialog_second_button_layout"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <Button
+                android:id="@+id/dialog_second_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/sel_dlg_btn_left"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="#666666"
+                android:textSize="20sp" >
+            </Button>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:src="#e5e5e5" >
+        </ImageView>
+        <!-- 第二个按钮 -->
+
+        <LinearLayout
+            android:id="@+id/dialog_first_button_layout"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/dialog_first_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/sel_dlg_btn_right"
+                android:gravity="center"
+                android:text="@string/confirm"
+                android:textColor="#666666"
+                android:textSize="20sp" >
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

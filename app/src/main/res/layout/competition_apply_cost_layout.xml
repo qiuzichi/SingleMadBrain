@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+    <LinearLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+         <RelativeLayout 
+             android:layout_height="70dp"
+             android:layout_width="match_parent"
+             android:background="@color/main_1"
+             android:gravity="center">
+             
+              <TextView 
+                  android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:textColor="@color/white"
+                  android:textSize="18sp"
+                  android:text="@string/pay_apply_cost"/>
+         </RelativeLayout>
+         
+         <TextView 
+             android:id="@+id/txt_hint"
+             android:layout_height="wrap_content"
+             android:layout_width="match_parent"
+             android:textColor="@color/bijiaohei"
+              android:textSize="18sp"
+              android:layout_marginTop="15dp"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+             android:text="@string/str_apply_pay_time"/>
+         
+         
+         <Button 
+               android:layout_height="55dp"
+              android:layout_width="240dp"      
+              android:background="@drawable/yj_apply_pay_bg"
+              android:textColor="@color/main_1"
+              android:gravity="center"
+               android:textSize="20sp"
+               android:layout_marginTop="15dp"
+                android:text="￥5.00"/>
+         
+         
+         <TextView 
+             android:layout_height="wrap_content"
+             android:layout_width="match_parent"
+             android:textColor="@color/main_1"
+              android:textSize="18sp"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+              android:layout_marginTop="15dp"
+             android:text="@string/str_sel_apply"/>
+         
+         <RelativeLayout 
+             android:layout_height="wrap_content"
+             android:layout_width="match_parent"
+             android:layout_marginTop="15dp">
+             <TextView 
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:textSize="18sp"
+                 android:paddingLeft="10dp"
+              	 android:paddingRight="10dp"
+              	 android:drawableLeft="@drawable/pay_b"
+              	  android:gravity="center_vertical"
+              	  android:textColor="@color/black"
+                 android:text="@string/pay_b_pay"/>
+             
+             <ImageView 
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:src="@drawable/sel_pay"
+                 android:layout_alignParentRight="true"
+                 android:layout_centerVertical="true"
+                 android:layout_marginRight="10dp"/>
+         </RelativeLayout>
+         
+         <ImageView 
+             android:layout_height="1dp"
+             android:layout_width="fill_parent"
+             android:src="@color/bijiaohei"
+             android:paddingLeft="10dp"
+             android:layout_marginTop="15dp"
+             android:paddingRight="10dp"/>
+         
+         <RelativeLayout 
+             android:layout_height="wrap_content"
+             android:layout_width="match_parent"
+             android:layout_marginTop="15dp">
+             <TextView 
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:textSize="18sp"
+                 android:paddingLeft="10dp"
+              	 android:paddingRight="10dp"
+              	 android:gravity="center_vertical"
+              	 android:drawableLeft="@drawable/wei"
+              	 android:textColor="@color/black"
+                 android:text="@string/wei_pay"/>
+             
+             <ImageView 
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:src="@drawable/nor_pay"
+                 android:layout_alignParentRight="true"
+                 android:layout_centerVertical="true"
+                 android:layout_marginRight="10dp"/>
+         </RelativeLayout>
+         
+          <ImageView 
+             android:layout_height="1dp"
+             android:layout_width="fill_parent"
+             android:src="@color/bijiaohei"
+             android:layout_marginTop="15dp"/>
+          
+           <Button 
+               android:id="@+id/btn_not_apply"
+               android:layout_height="wrap_content"
+              android:layout_width="wrap_content"      
+              android:background="@drawable/ex_apply"
+              android:textColor="@color/white"
+              android:gravity="center"
+               android:textSize="20sp"
+               android:layout_marginTop="33dp"
+                android:text="@string/str_ex_apply"/>
+           
+            <Button 
+                android:id="@+id/btn_pay"
+               android:layout_height="wrap_content"
+              android:layout_width="wrap_content"      
+              android:background="@drawable/pay_confirm"
+              android:textColor="@color/white"
+              android:gravity="center"
+               android:textSize="20sp"
+               android:layout_marginTop="23dp"
+                android:text="@string/str_pay_confirm"/>
+         
+    </LinearLayout>
+</ScrollView>

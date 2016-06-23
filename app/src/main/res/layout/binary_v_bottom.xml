@@ -1,0 +1,59 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/btn_vibrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="@dimen/quick_poker_right_w"
+        android:background="@drawable/binary_1"
+        android:contentDescription="@string/project_2"
+        android:text="@string/keyboard_vibrate"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/quick_poker_right_w"
+        android:layout_marginRight="@dimen/quick_poker_right_w"
+        android:background="@drawable/binary_1"
+        android:text="@string/delete"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/ibtn_binary_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/quick_poker_right_w"
+        android:layout_marginRight="@dimen/quick_poker_right_w"
+        android:background="@drawable/binary_0"
+        android:contentDescription="@string/project_2" />
+
+    <ImageButton
+        android:id="@+id/ibtn_binary_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/quick_poker_right_w"
+        android:layout_marginRight="@dimen/quick_poker_right_w"
+        android:background="@drawable/binary_1"
+        android:contentDescription="@string/project_2" />
+
+    <Button
+        android:id="@+id/btn_go_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/quick_poker_right_w"
+        android:background="@drawable/binary_1"
+        android:contentDescription="@string/project_2"
+        android:text="@string/goto_top"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+</merge>
