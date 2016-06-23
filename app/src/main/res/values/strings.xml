@@ -210,7 +210,7 @@
     <string name="check_detail">查看详情</string>
     <string name="current_time">11:44am</string>
     <string name="input_comment">请输入评论内容          </string>
-<string name="button_commit">提交评论</string>
+    <string name="button_commit">提交评论</string>
 
     <string name="auth_hint">您还未进行实名认证，请在个人中心里进行实名认证。认证之后才能进行比赛报名,谢谢！</string>
     <string name="auth_fail_hint">您提交的实名认证信息未通过，请重新提交！</string>
