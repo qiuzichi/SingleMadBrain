@@ -155,4 +155,5 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
     public void setDataHandler(ClientSessionHandler.IDataHandler dataHandler) {
         this.dataHandler = dataHandler;
     }
+
 }

@@ -100,10 +100,11 @@ public class HeadService extends AbsBaseGameService{
             Person person;
             if (this.data.size() < i+1) {
                 person = new Person();
-                String[] detail = persData[i].split("^");
-                person.setContent(detail[0]);
-                person.setFirstName(detail[1]);
-                person.setLastName(detail[2]);
+                String[] detail = persData[i].split("\\^");
+                person.setTag(detail[0]);
+                person.setContent(detail[1]);
+                person.setFirstName(detail[2]);
+                person.setLastName(detail[3]);
                 this.data.add(person);
             } else {
                 person = this.data.get(i);
@@ -117,7 +118,7 @@ public class HeadService extends AbsBaseGameService{
 
         }
 
-        if (IsALlAready() || dataInitNotify != null) {
+        if (IsALlAready() && dataInitNotify != null) {
             dataInitNotify.initDataFinished();
         }
     }
@@ -131,7 +132,7 @@ public class HeadService extends AbsBaseGameService{
              String[] fileList = fiel.list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
-
+                    LogUtil.e("","path = "+dir.getAbsolutePath()+",fileName="+filename);
                     return filename.endsWith("jpg") || filename.endsWith("png");
                 }
             });
@@ -143,14 +144,15 @@ public class HeadService extends AbsBaseGameService{
                    person.setHeadPortraitPath(fileList[i]);
                    this.data.add(person);
                }else {
+
                    person = data.get(i);
-                   person.setHeadPortraitPath(fileList[i]);
+                   person.setHeadPortraitPath(dir+File.separator+fileList[i]);
                }
 
             }
         }
         setIsInitResourseAready(true);
-        if (IsALlAready() || dataInitNotify != null) {
+        if (IsALlAready() && dataInitNotify != null) {
             dataInitNotify.initDataFinished();
         }
     }
