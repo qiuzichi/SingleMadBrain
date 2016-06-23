@@ -44,7 +44,9 @@
     <dimen name="favorite_height">20dip</dimen>
 
 
+
     <dimen name="rule_dialog_width">600dip</dimen>
     <dimen name="rule_dialog_height">300dip</dimen>
     <dimen name="history_answer_item_heigth">60dip</dimen>
+
 </resources>
