@@ -1,4 +1,4 @@
-package com.unipad.brain.consult.manager;
+package com.unipad.brain.consult.Manager;
 
 
 import com.unipad.brain.consult.dao.ConsultFragmentFactory;

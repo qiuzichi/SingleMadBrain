@@ -131,7 +131,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         @Override
         public Fragment getItem(int position) {
             initTabs();
-            return com.unipad.brain.consult.manager.FragmentManager.getFragment(mConsultTabs[position]);
+            return com.unipad.brain.consult.Manager.FragmentManager.getFragment(mConsultTabs[position]);
         }
 
         @Override
