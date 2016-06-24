@@ -17,7 +17,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewParent = (ViewGroup) inflater.inflate(getLayoutId(), container, false);
-        mViewParent.setVisibility(View.GONE);
+        //mViewParent.setVisibility(View.GONE);
         return mViewParent;
     }
 

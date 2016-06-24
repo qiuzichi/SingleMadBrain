@@ -6,7 +6,6 @@
             android:id="@+id/dialog_tip_content"
             style="@style/dlg_title_white_20dip_wwrap_hwrap"
             android:layout_centerInParent="true"
-            android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/dlg_title_default" />
 

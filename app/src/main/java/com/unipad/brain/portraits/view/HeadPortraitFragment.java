@@ -51,12 +51,6 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     public void initDataFinished() {
         super.initDataFinished();
         adapter.notifyDataSetChanged();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SocketThreadManager.sharedInstance().downLoadQuestionOK(mActivity.getMatchId());
-            }
-        }).start();
     }
 
     @Override

@@ -171,6 +171,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     @Override
     public void initDataFinished() {
+        SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId,100);
         handler.sendEmptyMessage(INIT_DATA_FINISH);
     }
 

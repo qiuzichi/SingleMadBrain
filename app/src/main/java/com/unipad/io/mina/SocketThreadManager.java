@@ -78,10 +78,11 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Request request = new Request("10001", body);
         sendMsg(request);
     }
-    public void downLoadQuestionOK(String id) {
+    public void downLoadQuestionOK(String id,int progress) {
         Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());
         body.put("SCHEDULEID", id);
+        body.put("PROGRESS", progress+"");
         Request request = new Request(IOConstant.LOAD_QUSETION_END, body);
         sendMsg(request);
     }
@@ -122,6 +123,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
                 || Constant.GAME_PORTRAITS.equals(projectId)) {
             String fileDir = Constant.GAME_FILE_PATH;
             HitopDownLoad httpDown = new HitopDownLoad();
+            httpDown.setMatchId(data.get("SCHEDULEID"));
             httpDown.buildRequestParams("questionId", data.get("QUESTIONID"));
             String filePath;
             String fileData = data.get("VOICE");
