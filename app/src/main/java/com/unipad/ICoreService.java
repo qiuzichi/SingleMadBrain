@@ -10,5 +10,12 @@ public interface  ICoreService {
         void parseData(String data);
         boolean IsALlAready();
         void initResourse(String soursePath);
+
+        void startGame();
+
+        void pauseGame();
+
+        void reStartGame();
+        void initDataFinished();
     }
 }

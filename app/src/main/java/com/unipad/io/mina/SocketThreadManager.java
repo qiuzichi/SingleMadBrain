@@ -22,6 +22,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
 
     private SocketOutputThread mOutThread = null;
 
+    private AbsBaseGameService service;
 
     // 获取单例
     public static SocketThreadManager sharedInstance() {
@@ -77,7 +78,13 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Request request = new Request("10001", body);
         sendMsg(request);
     }
-
+    public void downLoadQuestionOK(String id) {
+        Map<String, String> body = new HashMap<String, String>();
+        body.put("USERID", AppContext.instance().loginUser.getUserId());
+        body.put("SCHEDULEID", id);
+        Request request = new Request(IOConstant.LOAD_QUSETION_END, body);
+        sendMsg(request);
+    }
     @Override
     public void processPack(IPack pack) {
         handPack((Response) pack);
@@ -87,8 +94,18 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Map<String, String> data = response.getDatas();
         if (IOConstant.SEND_QUESTIONS.equals(data.get("TRXCODE"))) {//收到服务器下发试题的通知
             handDownQuestion(data);
-        }else {
-
+        }else if(IOConstant.GAME_START.equals(data.get("TRXCODE"))){
+            if (service != null) {
+                service.startGame();
+            }
+        }else if(IOConstant.GAME_PAUSE.equals(data.get("TRXCODE"))){
+            if (service != null) {
+                service.pauseGame();
+            }
+        }else if (IOConstant.GAME_RESTART.equals(data.get("TRXCODE"))){
+            if (service != null) {
+                service.reStartGame();
+            }
         }
     }
 
@@ -113,16 +130,20 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
             if (file.exists()) {
                 file.delete();
             }
-            httpDown.setService((AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId));
+            httpDown.setService(service);
             httpDown.downLoad(filePath);
         }
         HitopGetQuestion httpGetQuestion = new HitopGetQuestion();
-        httpGetQuestion.buildRequestParams("questionId", "2AB5D7C647ED4A768CAF9258A1A0EAC6");
-        httpGetQuestion.setService((ICoreService.IGameHand) AppContext.instance().getService(Constant.HEADSERVICE));
+        httpGetQuestion.buildRequestParams("questionId", data.get("QUESTIONID"));
+        httpGetQuestion.setService(service);
         httpGetQuestion.post();
     }
 
     public void clear() {
 
+    }
+
+    public void setService(AbsBaseGameService service) {
+        this.service = service;
     }
 }

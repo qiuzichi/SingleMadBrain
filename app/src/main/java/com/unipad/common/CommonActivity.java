@@ -5,6 +5,8 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.unipad.AppContext;
+import com.unipad.brain.AbsBaseGameService;
+import com.unipad.brain.App;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
 import com.unipad.brain.absPic.view.AbsFigureFragment;
@@ -23,6 +25,22 @@ import com.unipad.utils.LogUtil;
  */
 public class CommonActivity extends BasicActivity implements IDataObserver{
     private CommonFragment mCommonFragment = new CommonFragment();
+    private AbsBaseGameService service;
+    public String getMatchId() {
+        return matchId;
+    }
+
+    public void setMatchId(String matchId) {
+        this.matchId = matchId;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
 
     private String matchId;
 
@@ -37,11 +55,12 @@ public class CommonActivity extends BasicActivity implements IDataObserver{
         startTime = System.currentTimeMillis();
         matchId = getIntent().getStringExtra("matchId");
         projectId = getIntent().getStringExtra("projectId");
-
+        service = (AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 SocketThreadManager.sharedInstance().signOK(matchId);
+                SocketThreadManager.sharedInstance().setService(service);
                 ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
             }
         }).start();
@@ -55,7 +74,6 @@ public class CommonActivity extends BasicActivity implements IDataObserver{
         startTime = startTime- System.currentTimeMillis();
         LogUtil.e("-------","time = "+startTime);
     }
-
     @Override
     public void initData() {
         FragmentManager fragmentManager = getFragmentManager();

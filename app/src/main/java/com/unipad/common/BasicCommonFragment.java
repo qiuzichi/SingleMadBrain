@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.unipad.IOperateGame;
+import com.unipad.brain.AbsBaseGameService;
+
 public abstract class BasicCommonFragment extends Fragment implements
-        View.OnClickListener, CommonFragment.ICommunicate {
+        View.OnClickListener, CommonFragment.ICommunicate ,IOperateGame{
     protected CommonActivity mActivity;
     protected ViewGroup mViewParent;
 
@@ -35,4 +38,23 @@ public abstract class BasicCommonFragment extends Fragment implements
     }
 
     public abstract int getLayoutId();
+    @Override
+    public void pauseGame() {
+
+    }
+
+    @Override
+    public void startGame() {
+
+    }
+
+    @Override
+    public void reStartGame() {
+
+    }
+
+    @Override
+    public void initDataFinished() {
+
+    }
 }

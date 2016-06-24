@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.R;
 import com.unipad.brain.portraits.control.HeadService.INotifyInitData;
 import com.unipad.common.BasicCommonFragment;
@@ -21,6 +22,7 @@ import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.brain.portraits.bean.Person;
 import com.unipad.brain.portraits.control.HeadService;
+import com.unipad.io.mina.SocketThreadManager;
 
 import org.xutils.x;
 
@@ -32,7 +34,11 @@ import java.util.List;
 public class HeadPortraitFragment extends BasicCommonFragment {
     private HeadAdapter adapter;
     private GridView mListView;
-    private HeadService service;
+
+
+    public HeadPortraitFragment(AbsBaseGameService service) {
+        super(service);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -41,14 +47,21 @@ public class HeadPortraitFragment extends BasicCommonFragment {
 
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
 
-        adapter = new HeadAdapter(mActivity, service.data, R.layout.list_portrait);
+        adapter = new HeadAdapter(mActivity, ((HeadService)service).data, R.layout.list_portrait);
         mListView.setAdapter(adapter);
-        service.setDataInitNotify(new INotifyInitData() {
+
+    }
+
+    @Override
+    public void initDataFinished() {
+        super.initDataFinished();
+        adapter.notifyDataSetChanged();
+        new Thread(new Runnable() {
             @Override
-            public void initDataFinished() {
-                adapter.notifyDataSetChanged();
+            public void run() {
+                SocketThreadManager.sharedInstance().downLoadQuestionOK(mActivity.getMatchId());
             }
-        });
+        }).start();
     }
 
     @Override
@@ -63,8 +76,14 @@ public class HeadPortraitFragment extends BasicCommonFragment {
 
     private void showAnserView() {
         service.mode = 1;
-        service.shuffData();
+        ((HeadService)service).shuffData();
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void startGame() {
+
+
     }
 
     @Override
