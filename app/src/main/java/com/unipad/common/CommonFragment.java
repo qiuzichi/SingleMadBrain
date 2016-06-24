@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.IOperateGame;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
@@ -27,7 +28,7 @@ import org.xutils.x;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver{
+public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver,IOperateGame{
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
     private CommonActivity mActivity;
     private RelativeLayout mParentLayout;
@@ -203,6 +204,36 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             default:
                 break;
         }
+    }
+
+    @Override
+    public void initDataFinished() {
+
+    }
+
+    @Override
+    public void downloadingQuestion() {
+
+    }
+
+    @Override
+    public void startGame() {
+        mCountDownTime.startCountTime();
+    }
+
+    @Override
+    public void pauseGame() {
+        mCountDownTime.stopCountTime();
+    }
+
+    @Override
+    public void reStartGame() {
+        mCountDownTime.startCountTime();
+    }
+
+    @Override
+    public void finishGame() {
+
     }
 
     /**

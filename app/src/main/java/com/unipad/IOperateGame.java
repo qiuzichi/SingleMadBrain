@@ -5,10 +5,11 @@ package com.unipad;
  */
 public interface IOperateGame {
     void initDataFinished();
-
+    void downloadingQuestion();
     void startGame();
 
     void pauseGame();
 
     void reStartGame();
+    void finishGame();
 }

@@ -17,6 +17,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewParent = (ViewGroup) inflater.inflate(getLayoutId(), container, false);
+        mViewParent.setVisibility(View.GONE);
         return mViewParent;
     }
 
@@ -40,21 +41,31 @@ public abstract class BasicCommonFragment extends Fragment implements
     public abstract int getLayoutId();
     @Override
     public void pauseGame() {
-
+        mViewParent.setVisibility(View.GONE);
     }
 
     @Override
     public void startGame() {
-
+        mViewParent.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void reStartGame() {
-
+        mViewParent.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void initDataFinished() {
+
+    }
+
+    @Override
+    public void finishGame() {
+
+    }
+
+    @Override
+    public void downloadingQuestion() {
 
     }
 }

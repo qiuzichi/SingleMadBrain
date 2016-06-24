@@ -14,8 +14,7 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.R;
-import com.unipad.brain.portraits.control.HeadService.INotifyInitData;
+import com.unipad.brain.R;;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
@@ -31,14 +30,10 @@ import java.util.List;
 /**
  * Created by gongkan on 2016/4/11.
  */
-public class HeadPortraitFragment extends BasicCommonFragment {
+public class HeadPortraitFragment extends BasicCommonFragment{
     private HeadAdapter adapter;
     private GridView mListView;
-
-
-    public HeadPortraitFragment(AbsBaseGameService service) {
-        super(service);
-    }
+    private HeadService service;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -47,7 +42,7 @@ public class HeadPortraitFragment extends BasicCommonFragment {
 
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
 
-        adapter = new HeadAdapter(mActivity, ((HeadService)service).data, R.layout.list_portrait);
+        adapter = new HeadAdapter(mActivity, ((HeadService) service).data, R.layout.list_portrait);
         mListView.setAdapter(adapter);
 
     }
@@ -76,7 +71,7 @@ public class HeadPortraitFragment extends BasicCommonFragment {
 
     private void showAnserView() {
         service.mode = 1;
-        ((HeadService)service).shuffData();
+        ((HeadService) service).shuffData();
         adapter.notifyDataSetChanged();
     }
 

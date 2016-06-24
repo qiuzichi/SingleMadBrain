@@ -12,7 +12,6 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     protected boolean isInitQuestionAready;
 
     private IOperateGame operateGame;
-
     public boolean isInitResourseAready() {
         return isInitResourseAready;
     }
@@ -85,7 +84,17 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     @Override
     public void initDataFinished() {
         if (operateGame != null) {
-            initDataFinished();
+            operateGame.initDataFinished();
+        }
+    }
+    public void finishGame(){
+        if (operateGame != null) {
+            operateGame.finishGame();
+        }
+    }
+    public void downloadingQuestion(){
+        if (operateGame != null) {
+            operateGame.downloadingQuestion();
         }
     }
 }

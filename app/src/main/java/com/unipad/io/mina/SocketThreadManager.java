@@ -93,6 +93,9 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
     private void handPack(Response response) {
         Map<String, String> data = response.getDatas();
         if (IOConstant.SEND_QUESTIONS.equals(data.get("TRXCODE"))) {//收到服务器下发试题的通知
+            if (service != null) {
+                service.downloadingQuestion();
+            }
             handDownQuestion(data);
         }else if(IOConstant.GAME_START.equals(data.get("TRXCODE"))){
             if (service != null) {
@@ -105,6 +108,10 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         }else if (IOConstant.GAME_RESTART.equals(data.get("TRXCODE"))){
             if (service != null) {
                 service.reStartGame();
+            }
+        }else if (IOConstant.END_GAME_BY_SERVER.equals(data.get("TRXCODE"))){
+            if (service != null) {
+                service.finishGame();
             }
         }
     }
