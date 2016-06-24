@@ -7,6 +7,7 @@ import com.unipad.brain.App;
 import com.unipad.utils.NetWorkUtil;
 import com.unipad.utils.ToastUtil;
 
+import org.json.JSONException;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -29,7 +30,7 @@ public abstract class HitopRequest<T>{
 
     public  abstract String buildRequestURL();
     
-    public abstract T handleJsonData(String json);
+    public abstract T handleJsonData(String json) throws JSONException;
 
     public abstract void buildRequestParams();
 
@@ -49,7 +50,11 @@ public abstract class HitopRequest<T>{
             public void onSuccess(String result) {
                 super.onSuccess(result);
                 Log.e("","result:"+result);
-                handleJsonData(result);
+                try {
+                    handleJsonData(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -64,7 +69,11 @@ public abstract class HitopRequest<T>{
             @Override
             public void onSuccess(String result) {
                 Log.e("",result);
-                handleJsonData(result);
+                try {
+                    handleJsonData(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -108,7 +117,11 @@ public abstract class HitopRequest<T>{
             @Override
             public void onSuccess(String result) {
                 Log.e("request","result = "+result);
-                handleJsonData(result);
+                try {
+                    handleJsonData(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
 

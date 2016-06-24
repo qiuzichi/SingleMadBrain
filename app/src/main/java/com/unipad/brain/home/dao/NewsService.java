@@ -4,7 +4,6 @@ import com.unipad.ICoreService;
 import com.unipad.http.HitopNewsList;
 import com.unipad.http.HitopNewsOperate;
 import com.unipad.observer.GlobleObserService;
-
 /**
  * Created by gongkan on 2016/6/13.
  */

@@ -7,13 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
-
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import com.unipad.brain.R;
 import com.unipad.brain.home.util.CommomAdapter;
 import com.unipad.brain.personal.bean.BrokenLineData;
 import com.unipad.brain.personal.view.BrokenLineView;
 import com.unipad.utils.ToastUtil;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,7 +40,9 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
     private boolean mIsBrokenLine = true;
     private int mRedColor, mBlackColor;
     private ViewGroup pictureView;
-    private GridView gridView;
+    private TableLayout gridView;
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -50,7 +54,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
         mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data);
         mActivity.findViewById(R.id.record_text_search).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_delete).setOnClickListener(this);
-
         validateDate();
     }
 
@@ -168,15 +171,25 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
         for (int i = 0; i < total; i++) {
             dataList.add(new BrokenLineData("", 0, 98));
         }
-
         return dataList;
     }
     private View getGridView(){
         if (gridView == null) {
-            gridView = (GridView) LayoutInflater.from(getActivity()).inflate(R.layout.gridrecord,null);
-
+            gridView = (TableLayout) LayoutInflater.from(getActivity()).inflate(R.layout.history_answer,null);
+            gridView.addView(createTableRow());
         }
         return gridView;
+    }
+    private TableRow createTableRow(){
+        TableRow tableRow = (TableRow) LayoutInflater.from(getActivity()).inflate(R.layout.history_item,null);
+        ((TextView)tableRow.findViewById(R.id.item)).setText("");
+        ((TextView)tableRow.findViewById(R.id.mode)).setText("");
+        ((TextView)tableRow.findViewById(R.id.site_num)).setText("");
+        ((TextView)tableRow.findViewById(R.id.site_time)).setText("");
+        ((TextView)tableRow.findViewById(R.id.recall_time)).setText("");
+        ((TextView)tableRow.findViewById(R.id.score)).setText("");
+        ((TextView)tableRow.findViewById(R.id.ranking)).setText("");
+        return  tableRow;
     }
     /**
      * 切换成绩视图浏览模式

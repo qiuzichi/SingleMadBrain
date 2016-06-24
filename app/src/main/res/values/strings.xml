@@ -222,7 +222,7 @@
     <string name="recall_time">回忆时间</string>
     <string name="score">得分</string>
     <string name="ranking">排名</string>
-    <string name="icon">头像</string>
+    <string name="icon">人名头像记忆</string>
 
 
 </resources>

@@ -12,6 +12,7 @@ public class HttpConstant {
     public static final String GET_QUESTION = "/api/match/getQuestion";
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
+    public static String HisRecord="/api/match/history";
     public static String GET_NEWS_LIST = "/api/news/list";
     //点赞 评论的 url
     public static String GET_NEWS_OPERATE = "/api/news/operate";
@@ -83,6 +84,8 @@ public class HttpConstant {
     public static final int REGIST_FILED = 0x18001;
     public static final int MODIFY_OK = 0x18002;
     public static final int MODIFY_FILED = 0x18003;
+    public static final int HISRECORD_OK=0x18004;
+    public static final int HISRECORD_FILED=0x18005;
     // 获取省份列表
     public static final int GET_PROVINCE = 0x10900;
     // 根据城市列表
