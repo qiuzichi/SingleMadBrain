@@ -71,6 +71,17 @@
             android:name=".location.LocationActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+<activity
+            android:name=".consult.view.PagerDetailActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".location.LocationActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustPan" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
