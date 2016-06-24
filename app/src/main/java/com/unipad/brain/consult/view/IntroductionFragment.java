@@ -42,6 +42,7 @@ import com.lidroid.xutils.http.client.HttpRequest;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.entity.AdPictureBean;
+import com.unipad.brain.consult.widget.RecommendPot;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.bean.NewEntity;
 import com.unipad.brain.home.bean.NewsOperateBean;
@@ -97,7 +98,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private LinearLayout ll_point;
     //记录viewpager上面点击在那个画面;
     private int selectPicIndex;
-
+    private RecommendPot adPotView;
 
 
     private void getNews(String contentType,String title,int page,int size ){
@@ -112,12 +113,10 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         super.onActivityCreated(savedInstanceState);
         initData();
         initEvent();
-        //初始化弹出窗体
+
         initPopupWindows();
-        getNews("00001",null,1,10);
-        //初始化点的个数;
-        initLunboPoint();
-        //默认显示 第一个点;
+        getNews("00001", null, 1, 10);
+
         setPointSelect(selectPicIndex);
         //开发播放
         lunTask.startLunbo();
@@ -132,10 +131,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         //广告轮播图;
         mAdvertLuobo = (ViewPager) getView().findViewById(R.id.vp_advert_luopo_pager);
         //轮播图的点的视图;
-        View view_point = View.inflate(mActivity, R.layout.advert_luobo_picture, null);
-        //轮播图的 view组件
-        ll_point = (LinearLayout) view_point.findViewById(R.id.ll_advert_point);
-
+        adPotView = (RecommendPot) getView().findViewById(R.id.ad_pot);
+        adPotView.setIndicatorChildCount(DEFAULUPAGER);
         adAdapter = new AdViewPagerAdapter();
         mAdvertLuobo.setAdapter(adAdapter);
 //        //广告标题
@@ -170,7 +167,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             @Override
             public void onPageSelected(int position) {
                 selectPicIndex = position;
-                setPointSelect(selectPicIndex);
+                adPotView.setCurrentScreen(position);
             }
 
             @Override
@@ -231,26 +228,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }
     }
 
-    //初始化点的个数;
-    private void initLunboPoint(){
-        //先清空 所有的点
-        ll_point.removeAllViews();
-        for(int i=0; i<newsAdvertDatas.size(); i++){
-            View point = new View(mActivity);
 
-            point.setBackgroundResource(R.drawable.advert_point_select);
-            //默认为false;
-            point.setEnabled(false);
-
-            //点的大小属性;
-            int px = 10;
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(px,px);
-            params.leftMargin = 2* px;
-
-            ll_point.addView(point, params);
-        }
-    }
     private void setPointSelect(int pointSelectIndex){
 
         for(int i=0; i<newsAdvertDatas.size(); i++){
@@ -415,7 +393,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         @Override
         public int getCount() {
             //访问网络失败的时候
-            if(newsAdvertDatas== null && newsAdvertDatas.size() == 0){
+            if(newsAdvertDatas == null && newsAdvertDatas.size() == 0){
                return DEFAULUPAGER;
             }
             return newsAdvertDatas.size();
@@ -432,7 +410,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             iv_lunbo.setScaleType(ImageView.ScaleType.FIT_XY);
 
             //如果网络差  默认图片;
-            iv_lunbo.setImageResource(R.drawable.common_google_signin_btn_text_dark_normal);
 
            adPictureBean =  newsAdvertDatas.get(position);
             //图片url path
