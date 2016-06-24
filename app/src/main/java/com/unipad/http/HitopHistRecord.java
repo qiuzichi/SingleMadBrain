@@ -51,8 +51,11 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
              Log.e("", "" + json);
             if (jsObj != null && jsObj.toString().length() != 0)
                 if (jsObj.getInt("ret_code") == 0) {
-                    JSONArray jsonArray = jsObj.getJSONArray("lists");
+
+                    JSONObject data = new JSONObject(jsObj.getString("data"));
+                    JSONArray jsonArray = data.getJSONArray("resultList");
                     int iSize = jsonArray.length();
+
                     if (!(iSize==0)){
                         hisRecords = new ArrayList<>();
                     }
@@ -60,9 +63,9 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         HisRecord bean = new HisRecord();
                         bean.setMatchId(jsonObject.getString("matchId"));
-                        bean.setProjectId(jsonObject.getString("projectName"));
-                        bean.setGroupId(jsonObject.getString("groupText"));
-                        bean.setGradeId(jsonObject.getString("gradeText"));
+                        bean.setProjectId(jsonObject.getString("projectId"));
+                        bean.setGroupId(jsonObject.getString("groupId"));
+                        bean.setGradeId(jsonObject.getString("gradeId"));
                         bean.setStartDate(jsonObject.getString("startDate"));
                         bean.setRectime(jsonObject.getString("rectime"));
                         bean.setMemtime(jsonObject.getString("memtime"));

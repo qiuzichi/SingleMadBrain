@@ -38,7 +38,7 @@ public class Constant {
     public static final String WORD_GAME = "00003";
 
     private static Map<String, String> projectNames;
-
+    private static Map<String,String> GradeId;
     private static Map<String, String> projectIds;
 
     public static final String GAME_PORTRAITS = "00001";
@@ -77,7 +77,18 @@ public class Constant {
         }
         return projectNames.get(projectId);
     }
-
+    public static String getGradeId(String gradId) {
+        if (CITY_GAME.equals(gradId)) {
+            return "城市赛";
+        }
+        if (CHIMA_GAME.equals(gradId)){
+            return "中国赛";
+        }
+        if (WORD_GAME.equals(gradId)){
+            return "世界赛";
+        }
+        return GradeId.get(gradId);
+    }
 
     public static String getProjectId(String projectName) {
         if (null == projectIds) {

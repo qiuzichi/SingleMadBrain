@@ -215,10 +215,10 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
 
     private TableRow createTableRow(HisRecord record){
         TableRow tableRow = (TableRow) LayoutInflater.from(getActivity()).inflate(R.layout.history_item,null);
-        ((TextView)tableRow.findViewById(R.id.matchId)).setText(record.getMatchId());
-        ((TextView)tableRow.findViewById(R.id.projectId)).setText(record.getProjectId());
-        ((TextView)tableRow.findViewById(R.id.gradeId)).setText(record.getGradeId());
-        ((TextView)tableRow.findViewById(R.id.groupId)).setText(record.getGroupId());
+        ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));
+       ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
+        /*((TextView)tableRow.findViewById(R.id.gradeId)).setText(Constant.getGradeId(record.getGradeId()));*/
+        /*((TextView)tableRow.findViewById(R.id.groupId)).setText(record.getGroupId());*/
         ((TextView)tableRow.findViewById(R.id.startDate)).setText(record.getStartDate());
         ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getRectime());
         ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getMemtime());
