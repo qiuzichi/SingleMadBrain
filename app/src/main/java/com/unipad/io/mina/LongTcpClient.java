@@ -132,8 +132,12 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
         }
     }
     public void disConnect() {
-        handler.setIsReconect(false);
-        session.closeNow();
+        if (handler != null) {
+            handler.setIsReconect(false);
+        }
+        if (session != null) {
+            session.closeNow();
+        }
     }
     public void sendMsg(Request request) {
         if (request != null) {
@@ -151,4 +155,5 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
     public void setDataHandler(ClientSessionHandler.IDataHandler dataHandler) {
         this.dataHandler = dataHandler;
     }
+
 }

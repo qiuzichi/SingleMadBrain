@@ -49,7 +49,7 @@ public class HitopDownLoad extends HitopRequest<File>{
           @Override
           public void onSuccess(File file) {
               if (file.getName().endsWith(".zip")) {
-                  FileUtil.upZip(file.getAbsolutePath());
+                  FileUtil.upZip(filePath);
 
               }
 

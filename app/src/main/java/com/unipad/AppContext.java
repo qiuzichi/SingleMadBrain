@@ -136,18 +136,15 @@ public class AppContext {
                 service = new BinaryNumService();
                 service.init();
                 serviceList.put(key, service);
-            }
-            else if (key.equals(Constant.PERSONCENTER)) {
+            } else if (key.equals(Constant.PERSONCENTER)) {
                 service = new PersonCenterService();
                 service.init();
                 serviceList.put(key, service);
-            }
-            else if (key.equals(Constant.NEWS_SERVICE)) {
+            } else if (key.equals(Constant.NEWS_SERVICE)) {
                 service = new NewsService();
                 service.init();
                 serviceList.put(key, service);
-            }
-            else if (key.equals(Constant.HOME_GAME_HAND_SERVICE)) {
+            } else if (key.equals(Constant.HOME_GAME_HAND_SERVICE)) {
                 service = new HomeGameHandService();
                 service.init();
                 serviceList.put(key, service);
@@ -160,6 +157,32 @@ public class AppContext {
         return service;
     }
 
+    public ICoreService getGameServiceByProject(String projectId) {
+        String key = null;
+        if (Constant.GAME_PORTRAITS.endsWith(projectId)) {
+            key = Constant.HEADSERVICE;
+        } else if (Constant.GAME_BINARY_NUM.endsWith(projectId)){
+
+        }else if (Constant.GAME_LONG_NUM.endsWith(projectId)){
+
+        }else if (Constant.GAME_ABS_PICTURE.endsWith(projectId)){
+            key = Constant.ABS_FIGURE;
+        }else if (Constant.GAME_RANDOM_NUM.endsWith(projectId)){
+
+        }else if (Constant.GAME_VIRTUAL_DATE.endsWith(projectId)){
+
+        }else if (Constant.GAME_LONG_POCKER.endsWith(projectId)){
+
+        }else if (Constant.GAME_RANDOM_WORDS.endsWith(projectId)){
+
+        }else if (Constant.GAME_LISTON_AND_MEMORY_WORDS.endsWith(projectId)){
+
+        }else if (Constant.GAME_QUICKIY_POCKER.endsWith(projectId)){
+
+        }
+
+        return getService(key);
+    }
 
     /**
      * 初始化屏幕的像素参数
@@ -207,4 +230,6 @@ public class AppContext {
         }
         isInstanceed = false;
     }
-;}
+
+    ;
+}

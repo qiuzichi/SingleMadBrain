@@ -127,16 +127,16 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                     if(code == 0){
                         JSONObject data = jsonObject.optJSONObject("data");
                         String allow = data.optString("allow");
-                        if("0".equals(allow)){
+                       // if("0".equals(allow)){
                             Intent intent = new Intent(mActivity, CommonActivity.class);
                             intent.putExtra("projectId",data.optString("projectId"));
                             intent.putExtra("matchId",data.optString("matchId"));
                             this.startActivity(intent);
-                        } else if("-1".equals(allow)){
-                            ToastUtil.showToast(getString(R.string.not_game));
-                        } else {
-                            ToastUtil.showToast(getString(R.string.gameed));
-                        }
+                       // } else if("-1".equals(allow)){
+                        //    ToastUtil.showToast(getString(R.string.not_game));
+                       // } else {
+                       //     ToastUtil.showToast(getString(R.string.gameed));
+                       // }
                     } else {
                         ToastUtil.showToast("系统错误");
                     }

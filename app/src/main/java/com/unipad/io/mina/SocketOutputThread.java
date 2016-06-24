@@ -14,7 +14,7 @@ public class SocketOutputThread extends Thread  {
     private static String tag = "socketOutputThread";
     private List<Request> sendMsgList;
     private ClientSessionHandler.IDataHandler handler;
-    public SocketOutputThread(ClientSessionHandler.IDataHandler hangler) {
+    public SocketOutputThread() {
 
         sendMsgList = new CopyOnWriteArrayList<Request>();
     }
@@ -43,9 +43,11 @@ public class SocketOutputThread extends Thread  {
             // 锁发送list
             synchronized (sendMsgList) {
                 // 发送消息
-                if (LongTcpClient.instant().init()) {
+              /**  if (LongTcpClient.instant().init()) {
+                    if (LongTcpClient.instant().)
                     LongTcpClient.instant().setDataHandler(handler);
                 }
+               */
                 for (Request request : sendMsgList) {
 
 

@@ -7,5 +7,7 @@ package com.unipad.brain.location.bean;
 public class ProvinceBean {
     public String provinceId;
 
-    public String ProvinceName;
+    public String provinceName;
+    // 是否选中
+    public boolean isSel;
 }

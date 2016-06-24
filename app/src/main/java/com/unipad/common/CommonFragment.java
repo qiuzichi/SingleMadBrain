@@ -72,7 +72,8 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextTime.setText(mCountDownTime.getTimeString());
         mTextName.setText(AppContext.instance().loginUser.getUserName());
         mIconImageView = (ImageView) mParentLayout.findViewById(R.id.user_photo);
-        x.image().bind(mIconImageView,AppContext.instance().loginUser.getPhoto());
+
+        x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
         //if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
           //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}

@@ -49,7 +49,7 @@ public class HitopGetCityGame extends HitopRequest<Object> {
             if (ret_code == 0) {
                 JSONArray jsonArray = jsonObject.optJSONArray("lists");
                 if (null == jsonArray) {
-                    this.sevice.noticeDataChange(HttpConstant.USER_APPLYED, App.getContext().getString(R.string.error_apply));
+                    this.sevice.noticeDataChange(HttpConstant.CITY_GAME, App.getContext().getString(R.string.error_apply));
                     return null;
                 }
                 int length = jsonArray.length();

@@ -3,7 +3,9 @@ package com.unipad.brain.location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.unipad.brain.location.dao.LocationService;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
@@ -61,6 +64,7 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
         service.registerObserver(HttpConstant.GET_PROVINCE, this);
         service.registerObserver(HttpConstant.GET_CITY, this);
         service.registerObserver(HttpConstant.CITY_GAME, this);
+        ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
         service.getProvinceList();
     }
 
@@ -93,17 +97,24 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
                     ToastUtil.showToast((String) o);
                 } else {
                     cityBeans = (List<CityBean>) o;
-                    lv_city.setAdapter(new CommonAdapter<CityBean>(this, cityBeans, R.layout.location_item) {
-                        @Override
-                        public void convert(ViewHolder holder, CityBean provinceBean) {
-                            holder.setText(R.id.txt_name, provinceBean.cityName);
-                            TextView txtName = (TextView) holder.getView(R.id.txt_name);
-                            txtName.setTextColor(LocationActivity.this.getResources().getColor(R.color.black));
-                        }
+                        lv_city.setAdapter(new CommonAdapter<CityBean>(this, cityBeans, R.layout.location_item) {
+                            @Override
+                            public void convert(ViewHolder holder, CityBean provinceBean) {
+                                holder.setText(R.id.txt_name, provinceBean.cityName);
+                                TextView txtName = (TextView) holder.getView(R.id.txt_name);
+                                txtName.setTextColor(LocationActivity.this.getResources().getColor(R.color.black));
+                                ImageView img_bian = (ImageView)holder.getView(R.id.img_bian);
+                                if(provinceBean.isSel){
+                                    img_bian.setImageResource(R.drawable.line_two_location);
+                                } else {
+                                    img_bian.setImageResource(R.drawable.line_location);
+                                }
+                            }
                     });
                 }
                 break;
             case HttpConstant.GET_PROVINCE:
+                HIDDialog.dismissAll();
                 if (o instanceof String) {
                     ToastUtil.showToast((String) o);
                 } else {
@@ -111,14 +122,17 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
                     lv_province.setAdapter(new CommonAdapter<ProvinceBean>(this, provinceBeans, R.layout.location_item) {
                         @Override
                         public void convert(ViewHolder holder, ProvinceBean provinceBean) {
-                            holder.setText(R.id.txt_name, provinceBean.ProvinceName);
+                            holder.setText(R.id.txt_name, provinceBean.provinceName);
                             TextView txtName = (TextView) holder.getView(R.id.txt_name);
+                            ImageView img_bian = (ImageView)holder.getView(R.id.img_bian);
                             txtName.setTextColor(LocationActivity.this.getResources().getColor(R.color.text_gray));
+                            if(provinceBean.isSel){
+                                img_bian.setImageResource(R.drawable.line_two_location);
+                            } else {
+                                img_bian.setImageResource(R.drawable.line_location);
+                            }
                         }
                     });
-                    if (null != provinceBeans && provinceBeans.size() > 0) {
-                        service.getCityList(provinceBeans.get(0).provinceId);
-                    }
                 }
                 break;
             case HttpConstant.CITY_GAME:
@@ -153,10 +167,26 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.lv_province:
+                for(int i = 0; i < provinceBeans.size() ; i ++ ){
+                    if(i == position){
+                        provinceBeans.get(i).isSel = true;
+                    } else {
+                        provinceBeans.get(i).isSel = false;
+                    }
+                }
+                ((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
                 service.getCityList(provinceBeans.get(position).provinceId);
                 break;
             case R.id.lv_city:
                 // 根据城市ID 获取比赛列表
+                for(int i = 0; i < cityBeans.size() ; i ++ ){
+                    if(i == position){
+                        cityBeans.get(i).isSel = true;
+                    } else {
+                        cityBeans.get(i).isSel = false;
+                    }
+                }
+                ((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
                 service.getCompetitionList(cityBeans.get(position).cityId);
                 break;
         }
