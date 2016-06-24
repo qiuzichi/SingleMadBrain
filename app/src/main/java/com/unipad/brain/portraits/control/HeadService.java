@@ -16,6 +16,7 @@ import org.xutils.x;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -139,7 +140,9 @@ public class HeadService extends AbsBaseGameService{
         //得到名 扣除分数
         float nameDeduct = getRepeatName(names,repeatLength,repeatScore);
         // 得到最后得分
-        int lastScore = (int)Math.rint(score-(surDeduct + nameDeduct));
+        BigDecimal bigDecimal =  new BigDecimal(score-(surDeduct + nameDeduct)).setScale(0, BigDecimal.ROUND_HALF_UP);
+        //int lastScore = bigDecimal.
+        Integer lastScore = bigDecimal.intValue();
         // 得到姓加名的错误次数
         mistakeNumber = getErrorNumber(surs,repeatLength) + getErrorNumber(names,repeatLength);
 
@@ -181,7 +184,7 @@ public class HeadService extends AbsBaseGameService{
         while (it.hasNext()){
             java.util.Map.Entry <String, Integer> entry = (Map.Entry<String, Integer>)it.next();
             Log.e(this.getClass().getSimpleName(),"姓或者名" + entry.getKey() + " 出现次数 " + entry.getValue());
-            //  -- 当一个名字出现超过既定次数，则判定
+            //  -- 当一个名字出现超过既定次数，则判定错误一次
             if(entry.getValue() >  repeatLength){
                 errorNumber ++;
             }
