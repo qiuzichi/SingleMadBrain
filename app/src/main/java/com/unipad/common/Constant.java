@@ -28,7 +28,7 @@ public class Constant {
 
     public static final String LOGIN_WAIT_DLG = "com.unipad.LOGIN_WAIT_DLG";
     public static final String SHOW_RULE_DIG = "com.unipad.SHOW_RULE_DLG";
-
+    public static final String SHOW_GAME_PAUSE = "com.unipad.SHOW_GAME_PAUSE";
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
 
     public static final String CITY_GAME = "00001";

@@ -3,6 +3,9 @@ package com.unipad.brain.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.consult.view.InfoListFragment;
 import com.unipad.brain.consult.view.IntroductionFragment;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.brain.main.MainActivity;
@@ -18,37 +22,40 @@ import com.unipad.http.HitopNewsList;
 
 public class MainHomeFragment extends MainBasicFragment {
 
-    private FrameLayout fl_homepager;
+    private FrameLayout mLayoutHome;
     private TextView txt_back;
     private TextView txt_showmain;
     private TextView txt_flod;
     private TextView txt_time;
     private TextView txt_power;
     private TextView txt_wifi;
-    private FrameLayout fl_hmepage_left;
-    private IntroductionFragment introductionFragment;
+//    private IntroductionFragment introductionFragment;
+    private Fragment mLeftFragment;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //初始化界面;
         initView();
-        introductionFragment = new IntroductionFragment();
+//        introductionFragment = new IntroductionFragment();
 //        fl_homepager.addView(introductionFragment.getRoot());
 
     }
 
     @Override
     public int getLayoutId() {
-        return 0;
+        return R.layout.fragment_main_home;
     }
 
     //界面的初始化
     private void initView(){
 
         //左侧组件
-        fl_hmepage_left = (FrameLayout)mActivity.findViewById(R.id.fl_mainpager_left);
+//        fl_hmepage_left = (FrameLayout)mActivity.findViewById(R.id.fl_mainpager_left);
+        initLeftFragment();
         //frame 组件
-        fl_homepager = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
+//        fl_homepager = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
+        initHomeFragment();
 
         //返回键
         txt_back = (TextView) mActivity.findViewById(R.id.tv_title_back_left);
@@ -74,5 +81,23 @@ public class MainHomeFragment extends MainBasicFragment {
     @Override
     public void onClick(View v) {
 
+    }
+
+    public void initLeftFragment(){
+        if(mLeftFragment == null){
+            mLeftFragment = new InfoListFragment();
+        }
+        getTransaction().replace(R.id.fl_mainpager_left, mLeftFragment);
+    }
+
+    // 1.获取FragmentManager对象
+    public FragmentTransaction getTransaction(){
+        FragmentManager manager = getChildFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        return transaction;
+    }
+
+    public void initHomeFragment(){
+        mLayoutHome = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
     }
 }

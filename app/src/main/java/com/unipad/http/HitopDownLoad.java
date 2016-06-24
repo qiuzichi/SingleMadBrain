@@ -6,6 +6,7 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.common.Constant;
+import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.utils.FileUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -29,6 +30,7 @@ public class HitopDownLoad extends HitopRequest<File>{
     public HitopDownLoad(){
         super(HttpConstant.DOWNLOAD_QUESTION);
     }
+    private String matchId;
     @Override
     public String buildRequestURL() {
         return null;
@@ -91,7 +93,8 @@ public class HitopDownLoad extends HitopRequest<File>{
           public void onLoading(long total, long current, boolean isDownloading) {
               Log.e("", "total = " + total + ",current=" + current + ",isDownloading=" + isDownloading);
               if (total != current) {
-
+                  int progress = (int) (current*100/total);
+                  SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId,progress);
               }
           }
       });
@@ -109,5 +112,9 @@ public class HitopDownLoad extends HitopRequest<File>{
 
     public void setService(AbsBaseGameService service) {
         this.service = service;
+    }
+
+    public void setMatchId(String matchId) {
+        this.matchId = matchId;
     }
 }

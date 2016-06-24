@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.IOperateGame;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
@@ -27,14 +28,13 @@ import org.xutils.x;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver{
+public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver,IOperateGame{
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
     private CommonActivity mActivity;
     private RelativeLayout mParentLayout;
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
     private Button mBtnCompeteMode;
     private CountDownTime mCountDownTime;
-    private RuleGame rule;
     private ImageView mIconImageView;
     /**
      * 是否处于回忆模式，只有两种模式且先记忆再回忆；默认为false，即处于记忆模式；
@@ -42,6 +42,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     private boolean isRememoryStatus;
     private ICommunicate mICommunicate;
     private SparseArray mColorArray = new SparseArray();
+
 
     @Nullable
     @Override
@@ -197,12 +198,42 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     public void update(int key, Object o) {
         switch (key) {
             case HttpConstant.GET_RULE_NOTIFY:
-               rule = (RuleGame) o;
-                mTextTime.setText( mCountDownTime.setNewSeconds(rule.getMemeryTime1(), false));
+                mActivity.getService().rule = (RuleGame) o;
+                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemeryTime1(), false));
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void initDataFinished() {
+
+    }
+
+    @Override
+    public void downloadingQuestion() {
+
+    }
+
+    @Override
+    public void startGame() {
+        mCountDownTime.startCountTime();
+    }
+
+    @Override
+    public void pauseGame() {
+        mCountDownTime.stopCountTime();
+    }
+
+    @Override
+    public void reStartGame() {
+        mCountDownTime.startCountTime();
+    }
+
+    @Override
+    public void finishGame() {
+
     }
 
     /**

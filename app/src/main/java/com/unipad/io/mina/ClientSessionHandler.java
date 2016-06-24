@@ -29,8 +29,10 @@ public class ClientSessionHandler extends IoHandlerAdapter {
         System.out.println(message);
         String dataContent = message.toString();
         int length =Integer.valueOf(dataContent.substring(0, 8));
+        LogUtil.e("",dataContent);
         String content = dataContent.substring(8,dataContent.length());
-        if (length == content.length()) {
+        int check = content.getBytes("GBK").length;
+        if (length == check) {
             Response response = new Response();
             //<?XML VERSION="1.0" ENCODING="GBK"?><TRX><HEAD><TRXCODE>10002</TRXCODE></HEAD><BODY><SCHEDULEID>0E523FC4E5864B29B16332FB3BD530BF</SCHEDULEID><QUESTIONID>2AB5D7C647ED4A768CAF9258A1A0EAC6</QUESTIONID><PROJECTID>00001</PROJECTID></BODY></TRX>
             response.parsePack(content.replace("<?XML VERSION=\"1.0\" ENCODING=\"GBK\"?>",""));

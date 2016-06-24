@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_lf_bg">
+
+    <RelativeLayout
+        android:id="@+id/user_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/main_lf_user_info_bg">
+
+        <ImageView
+            android:id="@+id/user_photo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/user_photo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/user_photo"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+                android:id="@+id/user_name"
+                style="@style/TextMarquee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lisa OR 丽莎奥那"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_text_22" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/margin_5dip"
+                android:layout_marginTop="@dimen/margin_5dip"
+                android:background="@color/white" />
+
+            <TextView
+                android:id="@+id/user_age_ads"
+                style="@style/TextMarquee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/user_favorite"
+                android:drawablePadding="4dp"
+                android:text="23·乌鲁木齐"
+                android:textColor="@color/white"
+                android:textSize="@dimen/person_text_age_s" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/memory_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_info_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/common_lf_margin"
+        android:text="@string/memorying"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_text_22" />
+
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="156dp"
+        android:layout_height="156dp"
+        android:layout_below="@id/memory_stats"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/time_bg"
+        android:gravity="center"
+        android:padding="2dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_text_24" />
+
+    <TextView
+        android:id="@+id/text_change_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="@string/change_bg"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_text_22" />
+
+    <LinearLayout
+        android:id="@+id/text_change_bg_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bg_wh"
+        android:layout_below="@+id/text_change_bg"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/text_change_layout_img_bg1"
+            android:layout_width="@dimen/bg_wh"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/text_change_layout_img_bg2"
+            android:layout_width="@dimen/bg_wh"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp" />
+
+        <ImageView
+            android:id="@+id/text_change_layout_img_bg3"
+            android:layout_width="@dimen/bg_wh"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_compete_process"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/text_exit"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/start_end_memory"
+        android:gravity="center"
+        android:text="@string/end_memory"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_text_24" />
+
+    <TextView
+        android:id="@+id/text_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/common_lf_margin"
+        android:drawableLeft="@drawable/back"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:text="@string/exit_competition"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_text_24" />
+</RelativeLayout>
