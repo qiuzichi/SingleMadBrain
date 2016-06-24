@@ -2,6 +2,7 @@ package com.unipad.brain;
 
 import com.unipad.ICoreService;
 import com.unipad.IOperateGame;
+import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.observer.GlobleObserService;
 
 /**
@@ -12,6 +13,9 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     protected boolean isInitQuestionAready;
 
     private IOperateGame operateGame;
+
+    public RuleGame rule;
+
     public boolean isInitResourseAready() {
         return isInitResourseAready;
     }

@@ -3,6 +3,7 @@ package com.unipad.common;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 
 import com.unipad.AppContext;
@@ -33,7 +34,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     public String getMatchId() {
         return matchId;
     }
-    private App.AppHandler handler;
+    private Handler handler;
     private BasicCommonFragment gameFragment;
     public void setMatchId(String matchId) {
         this.matchId = matchId;
@@ -51,7 +52,6 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     private String projectId;
 
-    private RuleGame rule;
     long startTime;
 
     private static final int STRAT_GAME = 0;
@@ -70,54 +70,57 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         projectId = getIntent().getStringExtra("projectId");
         service = (AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId);
         service.setOperateGame(this);
-        handler  = new App.AppHandler(new App.HandlerCallback() {
+        handler  = new Handler() {
             @Override
             public void dispatchMessage(Message msg) {
-                int what =  msg.what;
-                switch ( msg.what) {
-                    case  STRAT_GAME:
+                int what = msg.what;
+                switch (msg.what) {
+                    case STRAT_GAME:
                         HIDDialog.dismissAll();
                         gameFragment.startGame();
                         mCommonFragment.startGame();
                         break;
-                    case  DOWNLOAD_QUESTION:
-                        ToastUtil.createTipDialog(CommonActivity.this,Constant.SHOW_GAME_PAUSE,"下载试题中").show();
+                    case DOWNLOAD_QUESTION:
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
                         break;
 
-                    case  PAUSE_GAME:
-                        ToastUtil.createTipDialog(CommonActivity.this,Constant.SHOW_GAME_PAUSE,"比赛暂停").show();
+                    case PAUSE_GAME:
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
                         break;
-                    case  RESTAT_GAME:
+                    case RESTAT_GAME:
                         HIDDialog.dismissAll();
                         gameFragment.reStartGame();
                         mCommonFragment.reStartGame();
                         break;
-                    case  FINISH_GAME:
+                    case FINISH_GAME:
                         gameFragment.finishGame();
                         mCommonFragment.finishGame();
                         break;
-                    case  INIT_DATA_FINISH:
+                    case INIT_DATA_FINISH:
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
                         HIDDialog.dismissAll();
-                        ToastUtil.createTipDialog(CommonActivity.this,Constant.SHOW_GAME_PAUSE,"等待裁判准备开始").show();
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "等待裁判准备开始").show();
                         break;
                 }
-
             }
-        });
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SocketThreadManager.sharedInstance().signOK(matchId);
-                SocketThreadManager.sharedInstance().setService(service);
-                ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
-            }
-        }).start();
+        };
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SocketThreadManager.sharedInstance().signOK(matchId);
+                        SocketThreadManager.sharedInstance().setService(service);
+                        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
+                    }
+                }).start();
 
 
+    }
+
+    public AbsBaseGameService getService() {
+        return service;
     }
 
     @Override
