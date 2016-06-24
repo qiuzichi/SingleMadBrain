@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:background="@color/white" >
+
+            <LinearLayout
+                android:id="@+id/ll_head"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/main_1"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/photo_a" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lisa  丽莎"
+                        android:textSize="23sp"
+                        android:textColor="@color/white" />
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:paddingRight="70dp"
+                        android:src="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:drawableLeft="@drawable/heart"
+                        android:gravity="center_vertical"
+                        android:textSize="20sp"
+                        android:text="  23·纽约"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_project"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/line"
+                android:scrollbars="none"
+                android:dividerHeight="1dp"
+                android:layout_below="@id/ll_head" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_project"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/home_bg"
+            android:layout_weight="8">
+
+
+<include layout="@layout/fragment_project_layout"/>
+
+
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

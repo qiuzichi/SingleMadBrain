@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import com.slidingmenu.lib.CustomViewAbove;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultTab;

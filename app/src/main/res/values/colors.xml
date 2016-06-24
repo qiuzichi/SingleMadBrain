@@ -53,5 +53,6 @@
     <color name="introduction_text_color_blue">#0C59BD</color>
     <color name="introduction_text_color_red">#FD5A5A</color>
 
-
+    <!-- 咨询相关颜色-->
+    <color name="cosult_bg_light_blue">#d2e9ff</color>
 </resources>
