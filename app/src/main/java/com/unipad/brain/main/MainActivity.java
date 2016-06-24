@@ -23,6 +23,9 @@ import com.unipad.brain.home.util.SharedPreferencesUtil;
 import com.unipad.brain.location.LocationActivity;
 import com.unipad.brain.personal.PersonalActivity;
 import com.unipad.common.Constant;
+import com.unipad.utils.ToastUtil;
+
+import java.math.BigDecimal;
 
 /**
  * Created by Wbj on 2016/4/7.

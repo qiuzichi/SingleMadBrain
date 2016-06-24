@@ -1,6 +1,8 @@
 package com.unipad.brain;
 
 import com.unipad.ICoreService;
+import com.unipad.IOperateGame;
+import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.observer.GlobleObserService;
 
 /**
@@ -10,6 +12,9 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     protected boolean isInitQuestionAready;
 
+    private IOperateGame operateGame;
+
+    public RuleGame rule;
 
     public boolean isInitResourseAready() {
         return isInitResourseAready;
@@ -53,5 +58,47 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     @Override
     public void initResourse(String soursePath) {
 
+    }
+
+    @Override
+    public void pauseGame() {
+        if (operateGame != null) {
+            operateGame.pauseGame();
+        }
+    }
+
+    @Override
+    public void startGame() {
+        if (operateGame != null) {
+            operateGame.startGame();
+        }
+    }
+
+    @Override
+    public void reStartGame() {
+        if (operateGame != null) {
+            operateGame.reStartGame();
+        }
+    }
+
+    public void setOperateGame(IOperateGame operateGame) {
+        this.operateGame = operateGame;
+    }
+
+    @Override
+    public void initDataFinished() {
+        if (operateGame != null) {
+            operateGame.initDataFinished();
+        }
+    }
+    public void finishGame(){
+        if (operateGame != null) {
+            operateGame.finishGame();
+        }
+    }
+    public void downloadingQuestion(){
+        if (operateGame != null) {
+            operateGame.downloadingQuestion();
+        }
     }
 }

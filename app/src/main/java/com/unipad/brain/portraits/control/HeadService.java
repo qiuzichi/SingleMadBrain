@@ -1,9 +1,9 @@
 package com.unipad.brain.portraits.control;
 
+
+import android.text.TextUtils;
 import android.util.Log;
 
-import com.unipad.AppContext;
-import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.portraits.bean.Person;
 import com.unipad.utils.LogUtil;
@@ -15,9 +15,15 @@ import org.xutils.x;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.zip.Deflater;
 
 /**
  * Created by gongkan on 2016/4/11.
@@ -31,7 +37,6 @@ public class HeadService extends AbsBaseGameService{
     public ArrayList<Person> data = new ArrayList<>();
 
     private String headResourse = "assets://portraits/";//file:///android_asset/portraits/
-    private INotifyInitData dataInitNotify;
     /**
      * @return
      */
@@ -82,9 +87,115 @@ public class HeadService extends AbsBaseGameService{
         */
         return true;
     }
+
+    /**
+     * @描述 得到人名头像的计分 分数
+     * @param persons 选手所填答案的集合与试题集合
+     * @param nameScore  名字正确所得分数
+     * @param surScore   姓正确所得分数
+     * @param  repeatScore 重复出现同样的答案所扣除的分数
+     * @return  下标【0】 为总得分 下标【1】 为犯错次数
+     */
+    public int[] getPortraitsScor(ArrayList<Person> persons,float nameScore,float surScore,float  repeatScore){
+        int mistakeNumber = 0; // 犯错次数
+        float score = 0; // 总得分
+        final int  repeatLength = 2; // 如有答案重复出现超过两次 错一个姓或者名扣分
+          //////---- 先计算出总得分
+        if(null == persons)
+            return new int[]{0,0};
+        //选手所答姓的集合
+        String[] surs = new String[persons.size()];
+        // 选手所答名的集合
+        String[] names = new String[persons.size()];
+        for(int i = 0; i < persons.size(); i ++ ){
+            Person person = persons.get(i);
+            // 对比试题与答题的姓
+            if(!TextUtils.isEmpty(person.getAnswerFirstName())){
+                if(person.getFirstName().equals(person.getAnswerFirstName())){
+                    // 累加分
+                    score = score + surScore;
+                }
+                // 添加选手的姓进入数组，去除选手未答的姓
+                surs[i] = person.getAnswerFirstName();
+            } else {
+                // 不计分
+            }
+            // 对比试题与答题名字
+            if(!TextUtils.isEmpty(person.getAnswerLastName())){
+                // 累加分
+                if(person.getLastName().equals(person.getAnswerLastName())){
+                    // 累加分
+                    score = score + nameScore;
+                }
+                // 添加选手的名进入数组，去除选手未答的名
+                names[i] = person.getAnswerLastName();
+            } else {
+                // 不计分
+            }
+        }
+        // 得到姓 扣除分数
+        float surDeduct = getRepeatName(surs,repeatLength,repeatScore);
+        //得到名 扣除分数
+        float nameDeduct = getRepeatName(names,repeatLength,repeatScore);
+        // 得到最后得分
+        BigDecimal bigDecimal =  new BigDecimal(score-(surDeduct + nameDeduct)).setScale(0, BigDecimal.ROUND_HALF_UP);
+        //int lastScore = bigDecimal.
+        Integer lastScore = bigDecimal.intValue();
+        // 得到姓加名的错误次数
+        mistakeNumber = getErrorNumber(surs,repeatLength) + getErrorNumber(names,repeatLength);
+
+        return new int[]{lastScore,mistakeNumber};
+    }
+
+
+    /**
+     * @描述： 返回姓或名所扣分数
+     * @param names 姓或者名的数组集合
+     * @param repeatLength 重复出现次数的界限
+     * @param repeatScore  重复出现次数超出界限所扣分数
+     * @return 返回扣分情况
+     */
+    private float getRepeatName(String[] names,int repeatLength,float repeatScore){
+        int errorNumber = getErrorNumber(names,repeatLength);
+        float contScore = errorNumber * repeatScore;
+        return contScore;
+    }
+
+    /**
+     * @描述： 得到错误次数（出现相同姓或者名超过既定界限扣除相应分数）
+     * @param names 姓或者名数组
+     * @param repeatLength 既定界限
+     * @return
+     */
+    private int getErrorNumber(String[] names,int repeatLength){
+        int errorNumber = 0; // 错误次数
+        if(null == names)
+            return errorNumber;
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for (String str : names) {
+            Integer num = map.get(str);
+            num = null == num ? 1 : num + 1;
+            map.put(str, num);
+        }
+        Set set = map.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()){
+            java.util.Map.Entry <String, Integer> entry = (Map.Entry<String, Integer>)it.next();
+            Log.e(this.getClass().getSimpleName(),"姓或者名" + entry.getKey() + " 出现次数 " + entry.getValue());
+            //  -- 当一个名字出现超过既定次数，则判定错误一次
+            if(entry.getValue() >  repeatLength){
+                errorNumber ++;
+            }
+        }
+        return errorNumber;
+    }
+
+
     public void shuffData() {
         Collections.shuffle(data);
     }
+
+
     @Override
     public void clear() {
         data.clear();
@@ -118,8 +229,8 @@ public class HeadService extends AbsBaseGameService{
 
         }
 
-        if (IsALlAready() && dataInitNotify != null) {
-            dataInitNotify.initDataFinished();
+        if (IsALlAready()) {
+            initDataFinished();
         }
     }
 
@@ -152,16 +263,12 @@ public class HeadService extends AbsBaseGameService{
             }
         }
         setIsInitResourseAready(true);
-        if (IsALlAready() && dataInitNotify != null) {
-            dataInitNotify.initDataFinished();
+        if (IsALlAready()) {
+            initDataFinished();
         }
     }
 
-    public void setDataInitNotify(INotifyInitData dataInitNotify) {
-        this.dataInitNotify = dataInitNotify;
-    }
 
-    public interface INotifyInitData{
-        void initDataFinished();
-    }
+
+
 }

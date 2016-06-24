@@ -49,7 +49,7 @@ public class IOConstant {
     /**
      * 客户端发起下载完成交易请求
      */
-    public static int LOAD_QUSETION_END = 10021;
+    public static String LOAD_QUSETION_END = "10021";
 
     /**
      * 代码	代码含义

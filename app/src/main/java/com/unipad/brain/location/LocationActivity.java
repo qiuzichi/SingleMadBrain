@@ -91,6 +91,7 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
 
     @Override
     public void update(int key, Object o) {
+        HIDDialog.dismissAll();
         switch (key) {
             case HttpConstant.GET_CITY:
                 if (o instanceof String) {
@@ -114,7 +115,6 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
                 }
                 break;
             case HttpConstant.GET_PROVINCE:
-                HIDDialog.dismissAll();
                 if (o instanceof String) {
                     ToastUtil.showToast((String) o);
                 } else {
@@ -165,6 +165,7 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
         switch (parent.getId()) {
             case R.id.lv_province:
                 for(int i = 0; i < provinceBeans.size() ; i ++ ){
@@ -173,6 +174,10 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
                     } else {
                         provinceBeans.get(i).isSel = false;
                     }
+                }
+                if(competitionBeans != null){
+                    competitionBeans.clear();
+                    ((BaseAdapter)lv_com.getAdapter()).notifyDataSetChanged();
                 }
                 ((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
                 service.getCityList(provinceBeans.get(position).provinceId);
