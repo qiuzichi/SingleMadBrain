@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import com.slidingmenu.lib.CustomViewAbove;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultTab;
@@ -131,7 +130,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         @Override
         public Fragment getItem(int position) {
             initTabs();
-            return com.unipad.brain.consult.Manager.FragmentManager.getFragment(mConsultTabs[position]);
+            return com.unipad.brain.consult.manager.FragmentManager.getFragment(mConsultTabs[position]);
         }
 
         @Override
