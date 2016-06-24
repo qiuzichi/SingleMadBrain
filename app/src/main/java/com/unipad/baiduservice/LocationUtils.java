@@ -10,6 +10,7 @@ import com.unipad.brain.App;
 
 /**
  * Created by gongjiebin on 2016/6/22.
+ * @描述  ：  定位帮助类
  */
 public class LocationUtils {
 
@@ -143,6 +144,4 @@ public class LocationUtils {
             e.printStackTrace();
         }
     }
-
-
 }

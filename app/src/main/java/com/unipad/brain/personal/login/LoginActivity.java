@@ -22,6 +22,8 @@ import com.unipad.observer.IDataObserver;
 import com.unipad.utils.MD5Utils;
 import com.unipad.utils.ToastUtil;
 
+import java.math.BigDecimal;
+
 /**
  * Created by LiuPeng on 2016/4/14.
  */
@@ -40,6 +42,10 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_aty);
         Intent intent=getIntent();
+//        BigDecimal bigDecimal =  new BigDecimal("2.4").setScale(0, BigDecimal.ROUND_HALF_UP);
+//        //int lastScore = bigDecimal.
+//        Integer lastScore = bigDecimal.intValue();
+//        ToastUtil.showToast(lastScore+"");
     }
 
     @Override
