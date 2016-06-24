@@ -18,9 +18,11 @@ import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopFeedback;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.http.HitopHistRecord;
 import com.unipad.http.HitopLogin;
 
 import com.unipad.http.HitopMatchStart;
+import com.unipad.http.HitopUpPhoto;
 import com.unipad.http.HitopUpdataPwd;
 import com.unipad.http.HitopUserInfoUpdate;
 
@@ -32,7 +34,6 @@ import com.unipad.utils.MD5Utils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * Created by gongkan on 2016/6/6.
  */
@@ -58,8 +59,6 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
          httpGetQuestion.setService((HeadService) AppContext.instance().getService(Constant.HEADSERVICE));
          httpGetQuestion.post();
          */
-
-
     }
 
     @Override
@@ -71,7 +70,6 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
     public void clear() {
 
     }
-
     /*
         实名认证
      */
@@ -89,7 +87,6 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopAuth.setSevice(this);
         hitopAuth.post();
     }
-
     /**
      * 上传实名认证所需图片
      *
@@ -100,7 +97,21 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopAuthUploadFile.setSevice(this);
         Map<String, File> mapFile = new HashMap<String, File>();
         mapFile.put("image", new File(path));
-        hitopAuthUploadFile.UpLoadFile(mapFile);
+        hitopAuthUploadFile.UpLoadFile(mapFile);}
+    public void uploadAuthFile(String path,int index){
+        if(index == 0){
+            HitopAuthUploadFile hitopAuthUploadFile = new HitopAuthUploadFile();
+            hitopAuthUploadFile.setSevice(this);
+            Map<String,File> mapFile = new HashMap<String,File>();
+            mapFile.put("image", new File(path));
+            hitopAuthUploadFile.UpLoadFile(mapFile);
+        } else {
+            HitopUpPhoto hitopUpPhoto = new HitopUpPhoto();
+            hitopUpPhoto.setSevice(this);
+            Map<String,File> mapFile = new HashMap<String,File>();
+            mapFile.put("image", new File(path));
+            hitopUpPhoto.UpLoadFile(mapFile);
+        }
     }
 
     /**
@@ -193,5 +204,15 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopFeedback.setSevice(this);
         hitopFeedback.post();
     }
+    /**
+     * @param
+     * @param
+     * @描述：查询历史战绩
+     */
+    public void getHistoryRecord(String startTime, String endTime) {
+        HitopHistRecord hitopRecord = new HitopHistRecord(-1,startTime,endTime,1,20);
+        hitopRecord.post();
+    }
+
 }
 

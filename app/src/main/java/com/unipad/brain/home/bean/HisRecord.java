@@ -3,46 +3,44 @@ package com.unipad.brain.home.bean;
  * Created by Administrator on 2016/6/23 0023.
  */
 public class HisRecord {
-
-    /*历史战绩id*/
+    private String matchId;
+    /*历史战绩*/
     private String projectId;
     /*项目*/
-    private String item;
+    private String gradeId;
     /*级别*/
-    private String grade;
+    private String groupId;
     /*组别*/
-    private String group;
-    /*比赛日期*/
     private String startDate;
-    /*记忆时间*/
+    /*比赛日期*/
     private String rectime;
-    /*回忆时间*/
+    /*记忆时间*/
     private String memtime;
+    /*回忆时间*/
     /*得分*/
     private String score;
     /*排名*/
     private String ranking;
+    
 
-    public String getGrade() {
-        return grade;
+    public String getMatchId(){
+        return matchId;
     }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public void setMatchId(String matchId){
+        this.matchId=matchId;
     }
-
-    public void setItem(String item) {
-        this.item = item;
+    public String getGroupId(){
+        return groupId;
     }
-
-    public String getGroup() {
-        return group;
+    public void setGroupId(String groupId){
+        this.groupId=groupId;
     }
-
-    public void setGroup(String group) {
-        this.group = group;
+    public String getGradeId(){
+        return gradeId;
     }
-
+    public void setGradeId(String gradeId){
+        this.gradeId=gradeId;
+    }
     public String getStartDate() {
         return startDate;
     }
@@ -88,7 +86,7 @@ public class HisRecord {
     public void setProjectId(String id) {
         this.projectId = id;
     }
-    public String getItem() {
-        return item;
-    }
+
+
 }
+

@@ -31,14 +31,14 @@ public class HeadService extends AbsBaseGameService{
     public ArrayList<Person> data = new ArrayList<>();
 
     private String headResourse = "assets://portraits/";//file:///android_asset/portraits/
-
+    private INotifyInitData dataInitNotify;
     /**
      * @return
      */
     @Override
     public boolean init() {
         //data = DbUtils.findAllPerson();
-        List list = DbUtils.findAllPerson();
+       /** List list = DbUtils.findAllPerson();
         if (null != list) {
             data.addAll(list);
         }
@@ -79,6 +79,7 @@ public class HeadService extends AbsBaseGameService{
             }
         }
         shuffData();
+        */
         return true;
     }
     public void shuffData() {
@@ -93,15 +94,17 @@ public class HeadService extends AbsBaseGameService{
     @Override
     public void parseData(String data) {
         LogUtil.e("",data);
+        super.parseData(data);
         String [] persData = data.split(",");
         for (int i = 0; i <persData.length ; i++) {
             Person person;
             if (this.data.size() < i+1) {
                 person = new Person();
-                String[] detail = persData[i].split("^");
-                person.setContent(detail[0]);
-                person.setFirstName(detail[1]);
-                person.setLastName(detail[2]);
+                String[] detail = persData[i].split("\\^");
+                person.setTag(detail[0]);
+                person.setContent(detail[1]);
+                person.setFirstName(detail[2]);
+                person.setLastName(detail[3]);
                 this.data.add(person);
             } else {
                 person = this.data.get(i);
@@ -114,7 +117,10 @@ public class HeadService extends AbsBaseGameService{
 
 
         }
-        super.parseData(data);
+
+        if (IsALlAready() && dataInitNotify != null) {
+            dataInitNotify.initDataFinished();
+        }
     }
 
     @Override
@@ -126,7 +132,7 @@ public class HeadService extends AbsBaseGameService{
              String[] fileList = fiel.list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
-
+                    LogUtil.e("","path = "+dir.getAbsolutePath()+",fileName="+filename);
                     return filename.endsWith("jpg") || filename.endsWith("png");
                 }
             });
@@ -138,11 +144,24 @@ public class HeadService extends AbsBaseGameService{
                    person.setHeadPortraitPath(fileList[i]);
                    this.data.add(person);
                }else {
+
                    person = data.get(i);
-                   person.setHeadPortraitPath(fileList[i]);
+                   person.setHeadPortraitPath(dir+File.separator+fileList[i]);
                }
 
             }
         }
+        setIsInitResourseAready(true);
+        if (IsALlAready() && dataInitNotify != null) {
+            dataInitNotify.initDataFinished();
+        }
+    }
+
+    public void setDataInitNotify(INotifyInitData dataInitNotify) {
+        this.dataInitNotify = dataInitNotify;
+    }
+
+    public interface INotifyInitData{
+        void initDataFinished();
     }
 }

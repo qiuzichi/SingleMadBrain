@@ -65,27 +65,20 @@
           <ListView
              android:layout_width="wrap_content"
              android:layout_height="match_parent"
-             android:layout_weight="5"
+             android:layout_weight="7"
               android:dividerHeight="@dimen/margin_1dp"
               android:scrollbars="none"
               android:divider="@color/transparent"
               android:id="@+id/lv_province" />
-        <ImageView
-            android:layout_width="@dimen/margin_1dp"
-            android:layout_height="match_parent"
-            android:src="@color/personal_authentication_text_step"/>
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="7"
             android:dividerHeight="1dp"
             android:scrollbars="none"
             android:divider="@color/transparent"
             android:id="@+id/lv_city" />
-        <ImageView
-            android:layout_width="@dimen/margin_1dp"
-            android:layout_height="match_parent"
-            android:src="@color/personal_authentication_text_step"/>
+
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

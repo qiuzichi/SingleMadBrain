@@ -1,5 +1,7 @@
 package com.unipad.io.mina;
 
+import com.unipad.utils.LogUtil;
+
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
@@ -24,12 +26,17 @@ public class ClientSessionHandler extends IoHandlerAdapter {
     public void messageReceived(IoSession session, Object message)
             throws Exception {
         // TODO Auto-generated method stub
-        System.out.println("sign...messageReceived");
         System.out.println(message);
-        Response response = new Response();
-        response.parsePack(message.toString());
-        if (handler != null) {
-            handler.processPack(response);
+        String dataContent = message.toString();
+        int length =Integer.valueOf(dataContent.substring(0, 8));
+        String content = dataContent.substring(8,dataContent.length());
+        if (length == content.length()) {
+            Response response = new Response();
+            //<?XML VERSION="1.0" ENCODING="GBK"?><TRX><HEAD><TRXCODE>10002</TRXCODE></HEAD><BODY><SCHEDULEID>0E523FC4E5864B29B16332FB3BD530BF</SCHEDULEID><QUESTIONID>2AB5D7C647ED4A768CAF9258A1A0EAC6</QUESTIONID><PROJECTID>00001</PROJECTID></BODY></TRX>
+            response.parsePack(content.replace("<?XML VERSION=\"1.0\" ENCODING=\"GBK\"?>",""));
+            if (handler != null) {
+                handler.processPack(response);
+            }
         }
 
     }

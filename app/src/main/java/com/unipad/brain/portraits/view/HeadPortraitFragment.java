@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.portraits.control.HeadService.INotifyInitData;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
@@ -39,8 +40,15 @@ public class HeadPortraitFragment extends BasicCommonFragment {
         mListView = (GridView) mViewParent.findViewById(R.id.gridview);
 
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
+
         adapter = new HeadAdapter(mActivity, service.data, R.layout.list_portrait);
         mListView.setAdapter(adapter);
+        service.setDataInitNotify(new INotifyInitData() {
+            @Override
+            public void initDataFinished() {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

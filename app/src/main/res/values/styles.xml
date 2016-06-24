@@ -12,9 +12,10 @@
     </style>
     <!--dialog style begin-->
     <style name="dialog_wait" parent="android:style/Theme.Holo.Dialog">
-        <item name="android:windowBackground"> @color/blue
+        <item name="android:windowBackground"> @drawable/y_tips_bg
         </item>
     </style>
+
     <style name="dlg_title_white_20dip_wwrap_hwrap">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

@@ -3,6 +3,7 @@ package com.unipad.http;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.unipad.AppContext;
 import com.unipad.brain.App;
 import com.unipad.brain.R;
 import com.unipad.brain.location.bean.CityBean;
@@ -14,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -44,13 +46,20 @@ public class HitopGetCityList extends  HitopRequest<Object>{
                 JSONObject jsonObject = new JSONObject(json);
                 JSONArray arrayList = jsonObject.optJSONArray("lists");
                 int length = arrayList.length();
-                List<CityBean> cityBeans = new ArrayList<CityBean>();
+                LinkedList<CityBean> cityBeans = new LinkedList<CityBean>();
                 CityBean cityBean;
                 for(int i = 0; i < length; i ++ ) {
                     cityBean = new CityBean();
                     JSONObject provinceObj = arrayList.optJSONObject(i);
                     cityBean.cityId = provinceObj.optString("regionId");
                     cityBean.cityName = provinceObj.optString("regionName");
+                    if(null != AppContext.instance().location){
+                        if(AppContext.instance().location.getCity().contains(cityBean.cityName)){
+//                            cityBean.isSel = true;
+                            cityBeans.addFirst(cityBean);
+                            continue;
+                        }
+                    }
                     cityBeans.add(cityBean);
                 }
                 sevice.noticeDataChange(HttpConstant.GET_CITY,cityBeans);
