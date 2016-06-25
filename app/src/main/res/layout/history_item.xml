@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/startDate"
         android:textSize="@dimen/hisrecord_game_date"
-        android:layout_width="@dimen/hisrecord_height_answer"
+        android:layout_width="@dimen/hisrecord_widht_answer"
         android:layout_height="wrap_content"
         android:gravity="center"/>
     <TextView

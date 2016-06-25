@@ -42,8 +42,6 @@ import java.util.Random;
  */
 public class PersonalRecordFragment extends PersonalCommonFragment implements IDataObserver
 ,WheelMainView.OnChangingListener{
-    private WheelMainView wheelMainView;
-    private ShowDialog showDialog;
     private static final String TAG = PersonalRecordFragment.class.getSimpleName();
     private static final String DATE_REGEX = "\\d{4}/\\d{2}/\\d{2}";
     private EditText mEditSearchBeginDate, mEditSearchEndDate;
@@ -71,6 +69,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         validateDate();
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
     }
+
 
     @Override
     public int getLayoutId() {
@@ -263,7 +262,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
 
             if (mViewBrokenLine != null) {
                 viewParent.removeAllViews();
-                viewParent.addView(mViewBrokenLine);
+                viewParent.addView(gridView);
            }
         }
 
