@@ -201,7 +201,7 @@ public class BrokenLineView extends LinearLayout {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
+//        super.dispatchDraw(canvas);
         Log.i(TAG, "HistogramView-->dispatchDraw");
         if (mHistogramViewWidth == 0) {
             mHistogramViewWidth = this.getWidth();

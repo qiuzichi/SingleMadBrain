@@ -52,7 +52,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
      */
     private boolean mIsBrokenLine = true;
     private int mRedColor, mBlackColor;
-    private ViewGroup pictureView;
     private TableLayout gridView;
     private List<HisRecord> hisRecords;
     private ViewGroup viewParent;
@@ -164,24 +163,27 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
                 mEditSearchBeginDate.setTextColor(mBlackColor);
             }
 
-            ArrayList<String> histogramNameList = new ArrayList<>();
-
-            Calendar calendar = Calendar.getInstance();
-            final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
-            Date date = sdf.parse(searchBeginDate.substring(searchBeginDate.indexOf("/") + 1, searchBeginDate.length()));
-            calendar.setTime(date);
-            //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
-            histogramNameList.add(sdf.format(calendar.getTime()));
-            final int intervalDays = (int) ((endTimeSeconds - beginTimeSeconds) / (24 * 60 * 60));
-            //Log.i(TAG, "intervalDays-->" + intervalDays);
-            for (int i = 0; i < intervalDays; ++i) {
-                calendar.add(Calendar.DATE, 1);
-                histogramNameList.add(sdf.format(calendar.getTime()));
-                //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
-            }
-            mViewBrokenLine = new BrokenLineView(mActivity, histogramNameList);
             viewParent = (ViewGroup) mActivity.findViewById(R.id.record_histogram_container);
-            viewParent.addView(mViewBrokenLine);
+            if(mIsBrokenLine) {
+                ArrayList<String> histogramNameList = new ArrayList<>();
+
+                Calendar calendar = Calendar.getInstance();
+                final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
+                Date date = sdf.parse(searchBeginDate.substring(searchBeginDate.indexOf("/") + 1, searchBeginDate.length()));
+                calendar.setTime(date);
+                //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
+                histogramNameList.add(sdf.format(calendar.getTime()));
+                final int intervalDays = (int) ((endTimeSeconds - beginTimeSeconds) / (24 * 60 * 60));
+                //Log.i(TAG, "intervalDays-->" + intervalDays);
+                for (int i = 0; i < intervalDays; ++i) {
+                    calendar.add(Calendar.DATE, 1);
+                    histogramNameList.add(sdf.format(calendar.getTime()));
+                    //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
+                }
+                viewParent.removeAllViews();
+                mViewBrokenLine = new BrokenLineView(mActivity, histogramNameList);
+                viewParent.addView(mViewBrokenLine);
+            }
             ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
                     .getHistoryRecord(mEditSearchBeginDate.getText().toString().trim(),mEditSearchEndDate.getText().toString().trim());
         } catch (ParseException e) {
@@ -205,8 +207,11 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         if (gridView == null) {
             gridView = (TableLayout) LayoutInflater.from(getActivity()).inflate(R.layout.history_answer, null);
         } else {
+            View child = gridView.getChildAt(0);
             gridView.removeAllViews();
+            gridView.addView(child);
         }
+
         for (HisRecord record:hisRecords) {
             gridView.addView(createTableRow(record));
          };
@@ -249,21 +254,20 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
             mActivity.findViewById(R.id.text_record_city).setVisibility(View.GONE);
             mActivity.findViewById(R.id.text_record_china).setVisibility(View.GONE);
             mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
-
-            if (mViewBrokenLine != null) {
-                mViewBrokenLine.setVisibility(View.GONE);
-            }
+            viewParent.removeAllViews();
+            viewParent.addView(getGridView());
         } else {
             mTitleBarRightText = mActivity.getString(R.string.table_graph);
 
             mActivity.findViewById(R.id.text_record_city).setVisibility(View.VISIBLE);
             mActivity.findViewById(R.id.text_record_china).setVisibility(View.VISIBLE);
             mActivity.findViewById(R.id.text_record_world).setVisibility(View.VISIBLE);
-
+            viewParent.removeAllViews();
             if (mViewBrokenLine != null) {
-                viewParent.removeAllViews();
-                viewParent.addView(gridView);
-           }
+                viewParent.addView(mViewBrokenLine);
+            }
+
+
         }
 
         mIsBrokenLine = !mIsBrokenLine;
@@ -296,7 +300,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
 
     @Override
     public void onChanging(String changStr) {
-        mEditSearchBeginDate.setText(changStr);
-        mEditSearchEndDate.setText(changStr);
+
     }
 }

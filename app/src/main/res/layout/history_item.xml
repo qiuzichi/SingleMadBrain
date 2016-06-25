@@ -17,7 +17,7 @@
         android:id="@+id/projectId"
         android:textSize="@dimen/hisrecord_text_size"
         android:layout_width="@dimen/hisrecord_widht_answer_mode"
-        android:layout_height="@dimen/history_answer_item_heigth"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         />
     <TextView
