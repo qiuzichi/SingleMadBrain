@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
@@ -101,8 +102,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                     case INIT_DATA_FINISH:
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
-                        HIDDialog.dismissAll();
-                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "等待裁判准备开始").show();
+                        ((TextView) HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE).findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
                         break;
                 }
             }
