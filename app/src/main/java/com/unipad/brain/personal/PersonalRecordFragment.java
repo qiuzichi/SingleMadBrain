@@ -249,24 +249,23 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     private void switchBrowse() {
 //        mViewBrokenLine.setVisibility(View.VISIBLE);
         if (mIsBrokenLine) {
+            viewParent.addView(getGridView());
             mTitleBarRightText = mActivity.getString(R.string.broken_line_graph);
 
             mActivity.findViewById(R.id.text_record_city).setVisibility(View.GONE);
             mActivity.findViewById(R.id.text_record_china).setVisibility(View.GONE);
             mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
             viewParent.removeAllViews();
-            viewParent.addView(getGridView());
+
         } else {
             mTitleBarRightText = mActivity.getString(R.string.table_graph);
 
             mActivity.findViewById(R.id.text_record_city).setVisibility(View.VISIBLE);
             mActivity.findViewById(R.id.text_record_china).setVisibility(View.VISIBLE);
             mActivity.findViewById(R.id.text_record_world).setVisibility(View.VISIBLE);
-            viewParent.removeAllViews();
             if (mViewBrokenLine != null) {
                 viewParent.addView(mViewBrokenLine);
             }
-
 
         }
 
