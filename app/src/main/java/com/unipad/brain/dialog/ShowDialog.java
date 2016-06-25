@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.unipad.brain.R;
+import com.unipad.brain.personal.PersonalRecordFragment;
 
 
 /**
@@ -21,6 +22,11 @@ import com.unipad.brain.R;
  */
 public class ShowDialog {
 	private Dialog dialog;
+
+	public ShowDialog(PersonalRecordFragment personalRecordFragment) {
+
+	}
+
 
 	public Dialog getDialog(){
 		return dialog;
