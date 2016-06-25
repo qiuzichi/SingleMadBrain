@@ -15,7 +15,11 @@ public class HttpConstant {
     public static String HisRecord="/api/match/history";
     public static String GET_NEWS_LIST = "/api/news/list";
     //点赞 评论的 url
-    public static String GET_NEWS_OPERATE = "/api/news/operate";
+    public static String GET_NEWS_OPERATE = "/api/advert/get";
+    //广告轮播图的 url
+    public static String GET_NEWS_ADVERTPIC = "/api/news/operate";
+    //赛事资讯 url
+    public static String GET_NEWS_OCCASION = "/api/match/list";
     // 实名认证
     public static String AUTH_PATH = "/api/user/auth";
     // 调取实名认证信息 ----在用户已经实名认证之后 调取。
@@ -99,6 +103,12 @@ public class HttpConstant {
     public static final int NOTIFY_GET_NEWS = 0x20000;
     //获取评论 收藏 点赞数据的 key
     public static final int NOTIFY_GET_OPERATE = 0x20001;
+    //获取新闻详情
+    public static final int NOTIFY_GET_DETAIL = 0x20002;
+    //获取广告轮播图
+    public static final int NOTIFY_GET_ADVERT = 0x20003;
+    //获取赛事资讯
+    public static final int NOTIFY_GET_COMPETITION = 0x20004;
 
 
 }

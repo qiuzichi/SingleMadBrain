@@ -23,14 +23,11 @@ import com.unipad.http.HitopNewsList;
 public class MainHomeFragment extends MainBasicFragment {
 
     private FrameLayout mLayoutHome;
-    private TextView txt_back;
-    private TextView txt_showmain;
-    private TextView txt_flod;
-    private TextView txt_time;
-    private TextView txt_power;
-    private TextView txt_wifi;
-//    private IntroductionFragment introductionFragment;
+
+    //    private IntroductionFragment introductionFragment;
     private Fragment mLeftFragment;
+
+    private MainBasicFragment mRightFragment;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -48,7 +45,7 @@ public class MainHomeFragment extends MainBasicFragment {
     }
 
     //界面的初始化
-    private void initView(){
+    private void initView() {
 
         //左侧组件
 //        fl_hmepage_left = (FrameLayout)mActivity.findViewById(R.id.fl_mainpager_left);
@@ -57,25 +54,6 @@ public class MainHomeFragment extends MainBasicFragment {
 //        fl_homepager = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
         initHomeFragment();
 
-        //返回键
-        txt_back = (TextView) mActivity.findViewById(R.id.tv_title_back_left);
-        //主菜单组件
-        txt_showmain = (TextView) mActivity.findViewById(R.id.tv_title_mainmenu_show);
-        //折叠显示
-        txt_flod = (TextView) mActivity.findViewById(R.id.tv_title_main_flod_show);
-        //当前时间
-        txt_time = (TextView) mActivity.findViewById(R.id.tv_current_time_text);
-        //电量
-        txt_power = (TextView) mActivity.findViewById(R.id.tv_title_battery_power_icon);
-        //wifi标示
-        txt_wifi = (TextView) mActivity.findViewById(R.id.tv_title_wifi_icon);
-
-
-
-        txt_back.setOnClickListener(this);
-        txt_showmain.setOnClickListener(this);
-        txt_flod.setOnClickListener(this);
-
     }
 
     @Override
@@ -83,21 +61,27 @@ public class MainHomeFragment extends MainBasicFragment {
 
     }
 
-    public void initLeftFragment(){
-        if(mLeftFragment == null){
+    public void initLeftFragment() {
+        if (mLeftFragment == null) {
             mLeftFragment = new InfoListFragment();
         }
         getTransaction().replace(R.id.fl_mainpager_left, mLeftFragment);
     }
 
     // 1.获取FragmentManager对象
-    public FragmentTransaction getTransaction(){
+    public FragmentTransaction getTransaction() {
         FragmentManager manager = getChildFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         return transaction;
     }
 
-    public void initHomeFragment(){
+    public void initHomeFragment() {
         mLayoutHome = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
+        mRightFragment = new IntroductionFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.fl_mainpager_info, mRightFragment);
+        //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
+        transaction.commit();
     }
 }
