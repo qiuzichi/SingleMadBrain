@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.consult.view.ConsultMainFragment;
 import com.unipad.brain.consult.view.InfoListFragment;
 import com.unipad.brain.consult.view.IntroductionFragment;
 import com.unipad.brain.home.dao.NewsService;
@@ -77,9 +78,8 @@ public class MainHomeFragment extends MainBasicFragment {
 
     public void initHomeFragment() {
         mLayoutHome = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
-        mRightFragment = new IntroductionFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        mRightFragment = new ConsultMainFragment();
+        FragmentTransaction transaction = getTransaction();
         transaction.add(R.id.fl_mainpager_info, mRightFragment);
         //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
         transaction.commit();

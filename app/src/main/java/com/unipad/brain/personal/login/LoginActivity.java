@@ -41,11 +41,6 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_aty);
-        Intent intent=getIntent();
-//        BigDecimal bigDecimal =  new BigDecimal("2.4").setScale(0, BigDecimal.ROUND_HALF_UP);
-//        //int lastScore = bigDecimal.
-//        Integer lastScore = bigDecimal.intValue();
-//        ToastUtil.showToast(lastScore+"");
     }
 
     @Override
@@ -114,10 +109,10 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         super.onDestroy();
         service.unRegisterObserve(HttpConstant.LOGIN_UPDATE_UI, this);
         service.unRegisterObserve(HttpConstant.LOGIN_WRONG_MSG,this);
+        
     }
 
     private void login() {
-
         String name = userName.getText().toString().trim();
         String pwd = userPwd.getText().toString().trim();
         if ("".equals(name)) {
@@ -142,6 +137,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         Intent intent = new Intent(this, RegisterActivity.class);
         this.startActivityForResult(intent, 1000);
     }
+
     @Override
     public void update(int key, Object o) {
         Log.e("", "Login update UI");
@@ -162,6 +158,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                 break;
         }
     }
+
     @Override
     public void dialogClick(int id) {
         if(id != 0 && showDialog != null){

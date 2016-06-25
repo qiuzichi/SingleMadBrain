@@ -124,8 +124,9 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 	
 	@OnClick({R.id.message_title_china,R.id.message_title_city,R.id.message_title_world})
 	public void onTitleClick(View view){
-		//  
-		viewPager.setCurrentItem(view.getId() == R.id.message_title_city ? 0 : view.getId() == R.id.message_title_china ? 1 : 2);
+		//
+		if(viewPager != null)
+			viewPager.setCurrentItem(view.getId() == R.id.message_title_city ? 0 : view.getId() == R.id.message_title_china ? 1 : 2);
 	}
 
 	
