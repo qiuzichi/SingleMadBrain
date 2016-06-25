@@ -24,6 +24,9 @@ import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 /**
@@ -63,6 +66,7 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
 		service.registerObserver(HttpConstant.CITY_GET_HOME_GAME_LIST, this);
 		service.registerObserver(HttpConstant.CITY_APPLY_GAME, this);
+		service.registerObserver(HttpConstant.ATTENTION,this);
 		return homeView;
 	}
 
@@ -133,11 +137,23 @@ public class CityCompetitionFragment extends BaseFragment implements ICompetitio
 		switch (key){
 			case HttpConstant.CITY_GET_HOME_GAME_LIST:
 				competitionPersenter.setData((List<CompetitionBean>) o);
-
 				break;
 			case HttpConstant.CITY_APPLY_GAME:
 				competitionPersenter.notifyData((CompetitionBean) o);
-
+				break;
+			case HttpConstant.ATTENTION:
+				try {
+					JSONObject jsonObject = new JSONObject((String)o);
+					int ret_code = jsonObject.optInt("ret_code");
+					if(ret_code == 0){
+						int index = jsonObject.optInt("dataset");
+						// 刷新界面
+						competitionPersenter.notifyData(index);
+					}
+					showToast(jsonObject.optString("ret_msg"));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 				break;
 			default:
 				break;

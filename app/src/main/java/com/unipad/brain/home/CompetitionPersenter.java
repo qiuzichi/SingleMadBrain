@@ -6,9 +6,11 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
@@ -67,9 +69,7 @@ public class CompetitionPersenter {
      */
 
     public void setData(List<CompetitionBean> beans) {
-
         competitionBeans.clear();
-
         competitionBeans.addAll(beans);
         competitionAdapter.notifyDataSetChanged();
     }
@@ -81,7 +81,7 @@ public class CompetitionPersenter {
     private void setAdapter() {
         iCompetition.setAdapter(competitionAdapter = new CommonAdapter<CompetitionBean>(iCompetition.getContext(), competitionBeans, R.layout.competition_item_layout) {
             @Override
-            public void convert(ViewHolder holder, final CompetitionBean homeBean) {
+            public void convert(final ViewHolder holder, final CompetitionBean homeBean) {
 //				holder.setText(R.id.txt_name, homeBean.name);
 //				holder.setImageResource(R.id.img_photo, homeBean.isSelect ? homeBean.selImgId : homeBean.norImgId);
 //				holder.setTextColor(R.id.txt_name, homeBean.isSelect ? iHome.getContext().getResources().getColor(R.color.main_1) : iHome.getContext().getResources().getColor(R.color.black));
@@ -90,17 +90,27 @@ public class CompetitionPersenter {
                 TextView name = holder.getView(R.id.game_name);
                 TextView date = holder.getView(R.id.game_data);
                 TextView addrView = holder.getView(R.id.game_addr);
+                ImageView img_gz = holder.getView(R.id.img_gz);
                 TextView cost = holder.getView(R.id.game_cost);
-                name.setText(homeBean.getName());
+                String projecName = projectBean != null ? "/" + projectBean.getName() : "";
+                name.setText(homeBean.getName() + projecName);
                 date.setText(homeBean.getCompetitionDate() + " " + homeBean.getCompetitionTime());
                 cost.setText("费用:￥" + homeBean.getCost());
                 apply.setTag(homeBean);
                 addrView.setText(homeBean.getAddress());
-
+                //
+                img_gz.setImageResource(homeBean.isAttention() ? R.drawable.personal_favorite_press : R.drawable.personal_favorite_normal);
+                img_gz.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).attention(homeBean.getId(), AppContext.instance().loginUser.getUserId(), "0", !homeBean.isAttention() + "", holder.getPosition() + "");
+                    }
+                });
+                img_gz.setTag(homeBean);
                 holder.getView(R.id.game_all).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(homeBean.getId());
+                        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(homeBean.getId());
                     }
                 });
                 if (homeBean.getApplyState() == 0) {//未报名
@@ -133,6 +143,18 @@ public class CompetitionPersenter {
         }
         competitionAdapter.notifyDataSetChanged();
     }
+
+    public void notifyData(int index) {
+        for (int i = 0; i < competitionBeans.size(); i++) {
+            if (i == index) {
+                CompetitionBean compet = competitionBeans.get(i);
+                compet.setAttention(!compet.isAttention());
+                break;
+            }
+        }
+        competitionAdapter.notifyDataSetChanged();
+    }
+
 
 
     /**
@@ -168,6 +190,11 @@ public class CompetitionPersenter {
                     if (null != pay_dialog) {
                         pay_dialog.dismiss();
                     }
+                    break;
+                case R.id.img_gz:
+                    // 关注 按钮
+                    //ATTENTION
+
                     break;
                 default:
                     break;
