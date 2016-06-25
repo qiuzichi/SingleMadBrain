@@ -24,8 +24,10 @@ public class MainHomeFragment extends MainBasicFragment {
 
     private FrameLayout mLayoutHome;
 
-//    private IntroductionFragment introductionFragment;
+    //    private IntroductionFragment introductionFragment;
     private Fragment mLeftFragment;
+
+    private MainBasicFragment mRightFragment;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class MainHomeFragment extends MainBasicFragment {
     }
 
     //界面的初始化
-    private void initView(){
+    private void initView() {
 
         //左侧组件
 //        fl_hmepage_left = (FrameLayout)mActivity.findViewById(R.id.fl_mainpager_left);
@@ -59,21 +61,27 @@ public class MainHomeFragment extends MainBasicFragment {
 
     }
 
-    public void initLeftFragment(){
-        if(mLeftFragment == null){
+    public void initLeftFragment() {
+        if (mLeftFragment == null) {
             mLeftFragment = new InfoListFragment();
         }
         getTransaction().replace(R.id.fl_mainpager_left, mLeftFragment);
     }
 
     // 1.获取FragmentManager对象
-    public FragmentTransaction getTransaction(){
+    public FragmentTransaction getTransaction() {
         FragmentManager manager = getChildFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         return transaction;
     }
 
-    public void initHomeFragment(){
+    public void initHomeFragment() {
         mLayoutHome = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
+        mRightFragment = new IntroductionFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.fl_mainpager_info, mRightFragment);
+        //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
+        transaction.commit();
     }
 }

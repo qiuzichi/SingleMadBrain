@@ -114,8 +114,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         initData();
         initEvent();
 
-        initPopupWindows();
-        getNews("00001", null, 1, 10);
+       // initPopupWindows();
+       // getNews("00001", null, 1, 10);
 
         setPointSelect(selectPicIndex);
         //开发播放
