@@ -15,11 +15,9 @@ public class HttpConstant {
     public static String HisRecord="/api/match/history";
     public static String GET_NEWS_LIST = "/api/news/list";
     //点赞 评论的 url
-    public static String GET_NEWS_OPERATE = "/api/advert/get";
+    public static String GET_NEWS_OPERATE = "/api/news/operate";
     //广告轮播图的 url
-    public static String GET_NEWS_ADVERTPIC = "/api/news/operate";
-    //赛事资讯 url
-    public static String GET_NEWS_OCCASION = "/api/match/list";
+    public static String GET_NEWS_ADVERTPIC = "//api/advert/get";
     // 实名认证
     public static String AUTH_PATH = "/api/user/auth";
     // 调取实名认证信息 ----在用户已经实名认证之后 调取。
@@ -48,6 +46,8 @@ public class HttpConstant {
     public static String GET_CITY_HTTP="/pub/city/list";
     // 根据城市ID 获取赛事列表
     public static String GET_CITY_GAME = "/api/match/getMatchByCity";
+    // 关注 取消关注
+    public static String ATTENTION_HTTP = "/api/match/operate";
 
 
     public static int JSON_ERREO = -2;
@@ -84,6 +84,8 @@ public class HttpConstant {
     public static final int SUBMIT_FEEDBACK=0x10800;
     // 上传文件（头像）
     public static final int UOLOAD_PHOTO_FILE=0x10900;
+    // 关注比赛
+    public static final int ATTENTION = 0x11000;
 
 
     public static final int REGIST_OK = 0x18000;

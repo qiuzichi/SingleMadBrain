@@ -1,5 +1,7 @@
 package com.unipad.http;
 
+import android.util.Log;
+
 import com.unipad.AppContext;
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.bean.NewEntity;
@@ -53,7 +55,6 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
         JSONObject jsObj = null;
 
         try {
-
             jsObj = new JSONObject(json);
             if (jsObj != null && jsObj.toString().length() != 0) {
                 if (jsObj.getInt("ret_code") == 0) {
