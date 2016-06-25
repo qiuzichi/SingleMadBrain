@@ -33,6 +33,12 @@
     <dimen name="abs_figure_item_width">100dp</dimen>
     <dimen name="abs_figure_item_text_height">30dp</dimen>
     <dimen name="project_name">120dp</dimen>
+    <dimen name="hisrecord_widht_answer">150dp</dimen>
+    <dimen name="hisrecord_widht_item">180dp</dimen>
+    <dimen name="hisrecord_height_answer">40dp</dimen>
+    <dimen name="hisrecord_widht_answer_mode">100dp</dimen>
+    <dimen name="hisrecord_text_size">30sp</dimen>
+    <dimen name="hisrecord_game_date">20sp</dimen>
     <!-- 弹出框默认宽高 -->
     <dimen name="dialog_width">574dip</dimen>
     <dimen name="dialog_height">356dip</dimen>
