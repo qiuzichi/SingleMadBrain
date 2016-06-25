@@ -7,14 +7,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/adver_lunbo_height">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_advert_luopo_pager"
+        <com.unipad.brain.consult.widget.RecommendGallery
+            android:id="@+id/point_gallery"
+            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:spacing="0dp"
+            android:unselectedAlpha="1" />
         <com.unipad.brain.consult.widget.RecommendPot
             android:id="@+id/ad_pot"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
     </RelativeLayout>
 
     <ListView
