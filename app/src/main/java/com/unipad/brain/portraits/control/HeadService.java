@@ -173,6 +173,8 @@ public class HeadService extends AbsBaseGameService{
             return errorNumber;
         Map<String, Integer> map = new HashMap<String, Integer>();
         for (String str : names) {
+            if(TextUtils.isEmpty(str))
+                continue;
             Integer num = map.get(str);
             num = null == num ? 1 : num + 1;
             map.put(str, num);
@@ -268,7 +270,15 @@ public class HeadService extends AbsBaseGameService{
         }
     }
 
+    @Override
+    public double getScore() {
+        return  getPortraitsScor(data,0.5f,0.5f,0.5f)[0];
+    }
 
+    @Override
+    public String getAnswerData() {
+        return data.toString();
+    }
 
 
 }

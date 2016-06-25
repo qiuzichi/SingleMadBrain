@@ -132,7 +132,9 @@ public class CountDownTime implements App.HandlerCallback {
         return StringUtil.addZero(hour, 2) + ":" + StringUtil.addZero(minute, 2) + ":"
                 + StringUtil.addZero(second, 2);
     }
-
+    public int getTime(){
+        return hour*3600+minute*60+second;
+    }
     @Override
     public void dispatchMessage(Message msg) {
         if (countTimeListener != null) {

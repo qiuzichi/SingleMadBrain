@@ -40,11 +40,12 @@ public class WordRightFragment extends BasicCommonFragment {
     }
 
     @Override
-    public void memoryTimeToEnd() {
+    public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
     }
 
     @Override
-    public void rememoryTimeToEnd() {
+    public void rememoryTimeToEnd(int answerTime) {
 
     }
 

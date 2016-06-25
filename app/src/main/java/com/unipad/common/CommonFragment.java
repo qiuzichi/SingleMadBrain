@@ -135,9 +135,9 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             mTextCompeteProcess.setText(R.string.rememorying);
             mBtnCompeteMode.setText(R.string.commit_answer);
             if (mICommunicate != null) {
-                mICommunicate.memoryTimeToEnd();
+                mICommunicate.memoryTimeToEnd( mActivity.getService().rule.getMemeryTime1() - mCountDownTime.getTime());
             }
-            mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemeryTime1(),true));
+            mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getRecallTime1(),true));
         } else {//回忆模式下才可以提交答案
             this.commitAnswer();
         }
@@ -150,7 +150,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mCountDownTime.stopCountTime();
 
         if (mICommunicate != null) {
-            mICommunicate.rememoryTimeToEnd();
+            mICommunicate.rememoryTimeToEnd(mActivity.getService().rule.getRecallTime1()-mCountDownTime.getTime());
         }
     }
 
@@ -249,12 +249,12 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         /**
          * 当记忆时间到时调用的方法
          */
-        void memoryTimeToEnd();
+        void memoryTimeToEnd(int memoryTime);
 
         /**
          * 当回忆时间到时调用的方法
          */
-        void rememoryTimeToEnd();
+        void rememoryTimeToEnd(int answerTime);
 
         /**
          * 退出当前Activity

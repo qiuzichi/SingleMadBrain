@@ -73,4 +73,14 @@ public class FigureService extends AbsBaseGameService{
     public void clear() {
 
     }
+
+    @Override
+    public double getScore() {
+        return 0;
+    }
+
+    @Override
+    public String getAnswerData() {
+        return null;
+    }
 }
