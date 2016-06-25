@@ -26,6 +26,7 @@ public abstract class BasicCommonFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         mActivity = (CommonActivity) getActivity();
         mActivity.getCommonFragment().setICommunicate(this);
+        mViewParent.setVisibility(View.GONE);
     }
 
     @Override

@@ -73,7 +73,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextTime.setText(mCountDownTime.getTimeString());
         mTextName.setText(AppContext.instance().loginUser.getUserName());
         mIconImageView = (ImageView) mParentLayout.findViewById(R.id.user_photo);
-
+        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
         x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
         //if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
           //  mTextCompeteProcess.setText(R.string.playing_voice);
@@ -98,13 +98,12 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).unRegisterObserve(HttpConstant.GET_RULE_NOTIFY, this);
     }
 
     @Override
@@ -122,6 +121,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).unRegisterObserve(HttpConstant.GET_RULE_NOTIFY, this);
         mCountDownTime.stopCountTime();
         mColorArray.clear();
     }
@@ -133,12 +133,11 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         if (!isRememoryStatus) {//切换到回忆模式
             isRememoryStatus = true;
             mTextCompeteProcess.setText(R.string.rememorying);
-            mTextTime.setText(mCountDownTime.setNewSeconds(CompeteItemEntity.getInstance().getRememoryTime()));
             mBtnCompeteMode.setText(R.string.commit_answer);
-
             if (mICommunicate != null) {
                 mICommunicate.memoryTimeToEnd();
             }
+            mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemeryTime1(),true));
         } else {//回忆模式下才可以提交答案
             this.commitAnswer();
         }
@@ -223,12 +222,12 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
 
     @Override
     public void pauseGame() {
-        mCountDownTime.stopCountTime();
+        mCountDownTime.pauseCountTime();
     }
 
     @Override
     public void reStartGame() {
-        mCountDownTime.startCountTime();
+        mCountDownTime.resumeCountTime();
     }
 
     @Override

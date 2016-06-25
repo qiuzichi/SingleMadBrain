@@ -69,11 +69,6 @@ public class HeadPortraitFragment extends BasicCommonFragment{
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void startGame() {
-
-
-    }
 
     @Override
     public void rememoryTimeToEnd() {
