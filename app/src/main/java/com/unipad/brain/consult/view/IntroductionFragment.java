@@ -115,7 +115,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         initEvent();
 
        // initPopupWindows();
-       // getNews("00001", null, 1, 10);
+        getNews("00001", null, 1, 10);
 
         setPointSelect(selectPicIndex);
         //开发播放
@@ -393,7 +393,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         @Override
         public int getCount() {
             //访问网络失败的时候
-            if(newsAdvertDatas == null && newsAdvertDatas.size() == 0){
+            if(newsAdvertDatas.size() == 0){
                return DEFAULUPAGER;
             }
             return newsAdvertDatas.size();
@@ -410,11 +410,14 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             iv_lunbo.setScaleType(ImageView.ScaleType.FIT_XY);
 
             //如果网络差  默认图片;
-
            adPictureBean =  newsAdvertDatas.get(position);
             //图片url path
             String imageUrl = adPictureBean.getAdvertPath();
-            bitmapUtils.display(iv_lunbo, imageUrl);
+            if(TextUtils.isEmpty(imageUrl)){
+                iv_lunbo.setImageResource(R.drawable.default_advert_pic);
+            }else {
+                bitmapUtils.display(iv_lunbo, imageUrl);
+            }
 
             //由于点下  与松开 状态不同 所以是touch  而不是click
             iv_lunbo.setOnTouchListener(new ImageView.OnTouchListener() {
