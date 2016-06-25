@@ -1,10 +1,9 @@
 package com.unipad.brain.portraits.control;
 
+
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.unipad.AppContext;
-import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.portraits.bean.Person;
 import com.unipad.utils.LogUtil;
@@ -38,7 +37,6 @@ public class HeadService extends AbsBaseGameService{
     public ArrayList<Person> data = new ArrayList<>();
 
     private String headResourse = "assets://portraits/";//file:///android_asset/portraits/
-    private INotifyInitData dataInitNotify;
     /**
      * @return
      */
@@ -231,8 +229,8 @@ public class HeadService extends AbsBaseGameService{
 
         }
 
-        if (IsALlAready() && dataInitNotify != null) {
-            dataInitNotify.initDataFinished();
+        if (IsALlAready()) {
+            initDataFinished();
         }
     }
 
@@ -265,16 +263,12 @@ public class HeadService extends AbsBaseGameService{
             }
         }
         setIsInitResourseAready(true);
-        if (IsALlAready() && dataInitNotify != null) {
-            dataInitNotify.initDataFinished();
+        if (IsALlAready()) {
+            initDataFinished();
         }
     }
 
-    public void setDataInitNotify(INotifyInitData dataInitNotify) {
-        this.dataInitNotify = dataInitNotify;
-    }
 
-    public interface INotifyInitData{
-        void initDataFinished();
-    }
+
+
 }

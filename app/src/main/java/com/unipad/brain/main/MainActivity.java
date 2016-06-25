@@ -35,7 +35,7 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
     private TextView mTextLocation;
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
-    private IntroductionFragment mHomeFragment = new IntroductionFragment();
+    private MainHomeFragment mHomeFragment = new MainHomeFragment();
     private MainCompeteFragment mCompeteFragment = new MainCompeteFragment();
     private MainBasicFragment mCurrentFrg;
     private View mCurrentView;

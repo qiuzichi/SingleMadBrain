@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.IOperateGame;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
@@ -27,14 +28,13 @@ import org.xutils.x;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver{
+public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver,IOperateGame{
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
     private CommonActivity mActivity;
     private RelativeLayout mParentLayout;
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
     private Button mBtnCompeteMode;
     private CountDownTime mCountDownTime;
-    private RuleGame rule;
     private ImageView mIconImageView;
     /**
      * 是否处于回忆模式，只有两种模式且先记忆再回忆；默认为false，即处于记忆模式；
@@ -42,6 +42,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     private boolean isRememoryStatus;
     private ICommunicate mICommunicate;
     private SparseArray mColorArray = new SparseArray();
+
 
     @Nullable
     @Override
@@ -72,7 +73,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextTime.setText(mCountDownTime.getTimeString());
         mTextName.setText(AppContext.instance().loginUser.getUserName());
         mIconImageView = (ImageView) mParentLayout.findViewById(R.id.user_photo);
-
+        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
         x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
         //if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
           //  mTextCompeteProcess.setText(R.string.playing_voice);
@@ -97,13 +98,12 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).unRegisterObserve(HttpConstant.GET_RULE_NOTIFY, this);
     }
 
     @Override
@@ -121,6 +121,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).unRegisterObserve(HttpConstant.GET_RULE_NOTIFY, this);
         mCountDownTime.stopCountTime();
         mColorArray.clear();
     }
@@ -132,12 +133,11 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         if (!isRememoryStatus) {//切换到回忆模式
             isRememoryStatus = true;
             mTextCompeteProcess.setText(R.string.rememorying);
-            mTextTime.setText(mCountDownTime.setNewSeconds(CompeteItemEntity.getInstance().getRememoryTime()));
             mBtnCompeteMode.setText(R.string.commit_answer);
-
             if (mICommunicate != null) {
                 mICommunicate.memoryTimeToEnd();
             }
+            mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemeryTime1(),true));
         } else {//回忆模式下才可以提交答案
             this.commitAnswer();
         }
@@ -197,12 +197,42 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     public void update(int key, Object o) {
         switch (key) {
             case HttpConstant.GET_RULE_NOTIFY:
-               rule = (RuleGame) o;
-                mTextTime.setText( mCountDownTime.setNewSeconds(rule.getMemeryTime1(), false));
+                mActivity.getService().rule = (RuleGame) o;
+                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemeryTime1(), false));
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void initDataFinished() {
+
+    }
+
+    @Override
+    public void downloadingQuestion() {
+
+    }
+
+    @Override
+    public void startGame() {
+        mCountDownTime.startCountTime();
+    }
+
+    @Override
+    public void pauseGame() {
+        mCountDownTime.pauseCountTime();
+    }
+
+    @Override
+    public void reStartGame() {
+        mCountDownTime.resumeCountTime();
+    }
+
+    @Override
+    public void finishGame() {
+
     }
 
     /**

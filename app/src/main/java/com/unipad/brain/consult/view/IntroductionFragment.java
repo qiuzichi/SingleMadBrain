@@ -2,6 +2,7 @@ package com.unipad.brain.consult.view;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,24 +10,32 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -34,6 +43,9 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.consult.entity.AdPictureBean;
+import com.unipad.brain.consult.widget.RecommendGallery;
+import com.unipad.brain.consult.widget.RecommendPot;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.bean.NewEntity;
 import com.unipad.brain.home.bean.NewsOperateBean;
@@ -48,6 +60,8 @@ import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 
 
+import org.xutils.image.ImageOptions;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,9 +77,9 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private ListView mListViewTab;
     private List<NewEntity> newsDatas = new ArrayList<NewEntity>();
     private List<NewsOperateBean> newsOperateDatas = new ArrayList<NewsOperateBean>();
+    private List<AdPictureBean> newsAdvertDatas = new ArrayList<AdPictureBean>();
     private NewsService service;
     private View view;
-    private MyAdapter mNewsAdapter;
 
     private int postion ;
     private PopupWindow mPopupWindows;
@@ -74,12 +88,26 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private EditText et_commment;
     private Button btn_commit;
     private NewEntity newEntity;
-
+       //用于主界面的  接口回调
+    private OnSwitchPagerButtonOnClick switchPagerClickButton;
+    private View mAdvertPager;
+    private TextView tv_title;
+    private TextView tv_detail;
+    private AdViewPagerAdapter adAdapter;
+    private RecommendGallery mAdvertLuobo;
+    //当无网络的时候 默认显示4个 广告轮播图
+    private static final int DEFAULUPAGER = 4;
+    private BitmapUtils bitmapUtils;
+    private LinearLayout ll_point;
+    //记录viewpager上面点击在那个画面;
+    private int selectPicIndex;
+    private RecommendPot adPotView;
+    private ImageOptions imageOptions;
 
     private void getNews(String contentType,String title,int page,int size ){
         service.getNews(contentType,title,page,size );
     }
-    //获取评论
+
 
 
 
@@ -87,26 +115,62 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
-        //初始化弹出窗体
-        initPopupWindows();
-        getNews("00001",null,1,10);
+        initEvent();
+
+       // initPopupWindows();
+       // getNews("00001", null, 1, 10);
+
+        //开发播放
+        imageOptions = new ImageOptions.Builder()
+
+                        // 加载中或错误图片的ScaleType
+                        //.setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                        //设置加载过程中的图片
+                .setLoadingDrawableId(R.drawable.ic_launcher)
+                        //设置加载失败后的图片
+                .setFailureDrawableId(R.drawable.ic_launcher)
+                        //设置使用缓存
+                .build();
 
 
     }
 
     private void initData() {
-
+        //进行bitmap初始化
+        bitmapUtils = new BitmapUtils(mActivity);
         mListViewTab = (ListView) getView().findViewById(R.id.lv_introduction_listview);
+        //广告轮播图;
+        mAdvertLuobo = (RecommendGallery) getView().findViewById(R.id.point_gallery);
+        //轮播图的点的视图;
+        adPotView = (RecommendPot) getView().findViewById(R.id.ad_pot);
+        newsAdvertDatas.add(new AdPictureBean());
+        newsAdvertDatas.add(new AdPictureBean());
+        adPotView.setIndicatorChildCount(newsAdvertDatas.size());
+        mAdvertLuobo.initSelectePoint(adPotView);
+        adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
+        mAdvertLuobo.setAdapter(adAdapter);
+//        //广告标题
+//        tv_title = (TextView) mAdvertPager.findViewById(R.id.tv_lunbo_title);
+//        //广告介绍
+//        tv_detail = (TextView) mAdvertPager.findViewById(R.id.tv_lunbo_detail);
+
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
 
 
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
 
-        mNewsAdapter = new MyAdapter(mActivity, newsDatas, R.layout.item_listview_introduction);
-        mListViewTab.setAdapter(mNewsAdapter);
-        //获取网络json 数据
+        service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
 
+       // mNewsAdapter = new MyAdapter(mActivity, newsDatas, R.layout.item_listview_introduction);
+        //mListViewTab.setAdapter(mNewsAdapter);
+        //将轮播图放在listview 的头文件
+//        mListViewTab.addHeaderView(mAdvertPager);
+
+    }
+
+    private void initEvent(){
 
     }
     private void initPopupWindows(){
@@ -162,9 +226,11 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
 
+
    private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWS, this);
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE, this);
+        service.unRegisterObserve(HttpConstant.NOTIFY_GET_ADVERT, this);
     }
 
     @Override
@@ -183,7 +249,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     }
 
-    class MyAdapter extends CommonAdapter<NewEntity> {
+    private class MyAdapter extends CommonAdapter<NewEntity> {
         private Boolean isFavorite; //标示每个item 进行操作方式
         private Boolean isZan; //标示每个item 进行点赞方式
 
@@ -194,7 +260,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }
 
         @Override
-        public void convert(final com.unipad.common.ViewHolder holder, final NewEntity newEntity) {
+        public void convert(final ViewHolder holder, final NewEntity newEntity) {
             //设置  缩略图
             final ImageView iv_picture =  (ImageView) holder.getView(R.id.iv_item_introduction_icon);
 
@@ -301,19 +367,44 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             rl_checkDetail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //查看详情的界面  关闭自己
-
+                    //查看详情的界面
+//                    switchPagerClickButton.switchPagerFragment(newEntity.getId());
+                    Intent intent = new Intent(mActivity, PagerDetailActivity.class);
+                    intent.putExtra("pagetId",newEntity.getId());
                 }
             });
 
         }
 
     }
+    //广告轮播图的  adapter
+    class AdViewPagerAdapter extends CommonAdapter<AdPictureBean>{
+
+
+        public AdViewPagerAdapter(Context context, List<AdPictureBean> datas, int layoutId) {
+            super(context, datas, layoutId);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, AdPictureBean adPictureBean) {
+            ImageView imageView = holder.getView(R.id.ad_gallery_item);
+            x.image().bind(imageView, adPictureBean.getAdvertPath(),imageOptions);
+        }
+    }
+
+
+    public void setOnSwitchPagerClick(OnSwitchPagerButtonOnClick switchPagerClickButton){
+        this.switchPagerClickButton = switchPagerClickButton;
+    }
+    //在activity中  去修改 显示的fragment
+    public interface OnSwitchPagerButtonOnClick{
+        public void switchPagerFragment(String pagerId);
+    }
+
 
     public void setNewEntity(NewEntity newEntity){
         //当前的newEntity;
         this.newEntity = newEntity;
-
     }
 
     //用于网络请求数据 key 是网页的id   o是json数据
@@ -323,12 +414,17 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             case HttpConstant.NOTIFY_GET_NEWS:
                 //发送网络请求 获取新闻页面数据
                 newsDatas.addAll((List<NewEntity>) o);
-                mNewsAdapter.notifyDataSetChanged();
+              //  mNewsAdapter.notifyDataSetChanged();
                 break;
 
             case HttpConstant.NOTIFY_GET_OPERATE:
                 //发送网络请求  获取喜欢 点赞 评论 信息
-                mNewsAdapter.notifyDataSetChanged();
+              //  mNewsAdapter.notifyDataSetChanged();
+                break;
+            case HttpConstant.NOTIFY_GET_ADVERT:
+                //获取轮播图数据
+                newsAdvertDatas.addAll((List<AdPictureBean>)o);
+                //mNewsAdapter.notifyDataSetChanged();
                 break;
         }
     }

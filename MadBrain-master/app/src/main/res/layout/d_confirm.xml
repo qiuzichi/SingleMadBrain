@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/yj_add"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="256dip"
+            android:layout_height="wrap_content"
+            
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/hint_content"
+                style="@style/ItemSmallBlackText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:gravity="center"
+                android:minLines="4" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="256dip"
+            android:layout_height="50dip" >
+
+            <Button
+                android:id="@+id/btn_left"
+                style="@style/ItemSmallBlackText"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="确定"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:visibility="gone"
+                android:background="#999999" />
+
+            <Button
+                android:id="@+id/btn_right"
+                style="@style/ItemSmallBlackText"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="取消"
+                android:visibility="gone"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -84,6 +84,13 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
+               /** UserDetailEntity user = new UserDetailEntity();
+                user.setUserName("test");
+                AppContext.instance().loginUser = user;
+                AppContext.instance().loginUser.setLoginPwd(MD5Utils.MD5_two(userPwd.getText().toString().trim()));
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                */
                 this.login();
                 break;
             case R.id.text_new_user:

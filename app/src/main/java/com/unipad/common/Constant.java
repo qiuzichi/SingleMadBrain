@@ -23,11 +23,12 @@ public class Constant {
     public static final String PERSONCENTER = "personcenterservice";
     public static final String NEWS_SERVICE = "news_service";
     public static final String LOCATION_SERVICE = "location_service";
+    public static final String HISRECORD_SERVICE="hisrecord_service";
 
 
     public static final String LOGIN_WAIT_DLG = "com.unipad.LOGIN_WAIT_DLG";
     public static final String SHOW_RULE_DIG = "com.unipad.SHOW_RULE_DLG";
-
+    public static final String SHOW_GAME_PAUSE = "com.unipad.SHOW_GAME_PAUSE";
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
 
     public static final String CITY_GAME = "00001";
@@ -37,7 +38,7 @@ public class Constant {
     public static final String WORD_GAME = "00003";
 
     private static Map<String, String> projectNames;
-
+    private static Map<String,String> GradeId;
     private static Map<String, String> projectIds;
 
     public static final String GAME_PORTRAITS = "00001";
@@ -76,7 +77,18 @@ public class Constant {
         }
         return projectNames.get(projectId);
     }
-
+    public static String getGradeId(String gradId) {
+        if (CITY_GAME.equals(gradId)) {
+            return "城市赛";
+        }
+        if (CHIMA_GAME.equals(gradId)){
+            return "中国赛";
+        }
+        if (WORD_GAME.equals(gradId)){
+            return "世界赛";
+        }
+        return GradeId.get(gradId);
+    }
 
     public static String getProjectId(String projectName) {
         if (null == projectIds) {

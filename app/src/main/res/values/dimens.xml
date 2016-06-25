@@ -18,6 +18,8 @@
     <dimen name="person_text_age_s">20sp</dimen>
     <dimen name="margin_5dip">5dp</dimen>
     <dimen name="margin_10dip">20dp</dimen>
+    <dimen name="margin_edge">10dp</dimen>
+    <dimen name="margin_interval">3dp</dimen>
     <dimen name="personal_photo_wh">86dp</dimen>
     <dimen name="margin_1dp">1dp</dimen>
     <dimen name="personal_authentication_step_line_w">82dp</dimen>
@@ -30,6 +32,7 @@
     <dimen name="abs_figure_answer_height">70dp</dimen>
     <dimen name="abs_figure_item_width">100dp</dimen>
     <dimen name="abs_figure_item_text_height">30dp</dimen>
+    <dimen name="project_name">120dp</dimen>
     <!-- 弹出框默认宽高 -->
     <dimen name="dialog_width">574dip</dimen>
     <dimen name="dialog_height">356dip</dimen>
@@ -48,5 +51,7 @@
     <dimen name="rule_dialog_width">600dip</dimen>
     <dimen name="rule_dialog_height">300dip</dimen>
     <dimen name="history_answer_item_heigth">60dip</dimen>
+    <dimen name="point_navigation_space">20dp</dimen>
+    <dimen name="adver_lunbo_height">300dp</dimen>
 
 </resources>

@@ -566,6 +566,10 @@ public class HIDDialog  extends Dialog
         return false;
     }
 
+    public synchronized static HIDDialog getExistDialog(String id)
+    {
+        return dlgList.get(id);
+    }
     // /////////////////////////提供给外部的方法 end////////////////////////////////
 
     /**

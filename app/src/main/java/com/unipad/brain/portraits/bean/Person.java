@@ -1,8 +1,6 @@
 package com.unipad.brain.portraits.bean;
-
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
-
 /**
  * Created by gongkan on 2016/4/11.人名肖像的实体类
  */

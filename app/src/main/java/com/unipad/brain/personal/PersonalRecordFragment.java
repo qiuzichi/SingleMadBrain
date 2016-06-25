@@ -1,16 +1,31 @@
 package com.unipad.brain.personal;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.home.bean.HisRecord;
+import com.unipad.brain.home.dao.HisRecordService;
+import com.unipad.brain.home.util.CommomAdapter;
 import com.unipad.brain.personal.bean.BrokenLineData;
+import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.personal.view.BrokenLineView;
+import com.unipad.common.Constant;
+import com.unipad.http.HitopHistRecord;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +38,7 @@ import java.util.Random;
  * 个人中心之历史成绩
  * Created by Wbj on 2016/4/27.
  */
-public class PersonalRecordFragment extends PersonalCommonFragment {
+public class PersonalRecordFragment extends PersonalCommonFragment implements IDataObserver{
     private static final String TAG = PersonalRecordFragment.class.getSimpleName();
     private static final String DATE_REGEX = "\\d{4}/\\d{2}/\\d{2}";
     private EditText mEditSearchBeginDate, mEditSearchEndDate;
@@ -34,22 +49,23 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
      */
     private boolean mIsBrokenLine = true;
     private int mRedColor, mBlackColor;
-
+    private ViewGroup pictureView;
+    private TableLayout gridView;
+    private List<HisRecord> hisRecords;
+    private ViewGroup viewParent;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTitleBarRightText = mActivity.getString(R.string.table_graph);
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mBlackColor = mActivity.getResources().getColor(R.color.black);
-
-        mEditSearchBeginDate = (EditText) mActivity.findViewById(R.id.record_search_begin_data);
-        mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data);
+        (mEditSearchBeginDate = (EditText) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
+        (mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data)).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_search).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_delete).setOnClickListener(this);
-
         validateDate();
+        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
     }
-
     @Override
     public int getLayoutId() {
         return R.layout.personal_frg_record;
@@ -73,9 +89,22 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
                 break;
             case R.id.record_text_delete:
                 break;
+            case R.id.record_search_begin_data:
+                startDate();
+                break;
+            case R.id.record_search_end_data:
+                enDate();
+                break;
             default:
                 break;
         }
+    }
+
+    private void enDate() {
+
+    }
+
+    private void startDate() {
     }
 
     @Override
@@ -83,6 +112,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
         super.onStart();
         thisShowView = 3;
     }
+
+
 
     /**
      * 验证查找日期期间的合法性
@@ -137,10 +168,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
             final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
             Date date = sdf.parse(searchBeginDate.substring(searchBeginDate.indexOf("/") + 1, searchBeginDate.length()));
             calendar.setTime(date);
-
             //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
             histogramNameList.add(sdf.format(calendar.getTime()));
-
             final int intervalDays = (int) ((endTimeSeconds - beginTimeSeconds) / (24 * 60 * 60));
             //Log.i(TAG, "intervalDays-->" + intervalDays);
             for (int i = 0; i < intervalDays; ++i) {
@@ -148,26 +177,67 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
                 histogramNameList.add(sdf.format(calendar.getTime()));
                 //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
             }
-
             mViewBrokenLine = new BrokenLineView(mActivity, histogramNameList);
-            ViewGroup viewGroup = (ViewGroup) mActivity.findViewById(R.id.record_histogram_container);
-            viewGroup.addView(mViewBrokenLine);
+            viewParent = (ViewGroup) mActivity.findViewById(R.id.record_histogram_container);
+            viewParent.addView(mViewBrokenLine);
+            ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
+                    .getHistoryRecord(mEditSearchBeginDate.getText().toString().trim(),mEditSearchEndDate.getText().toString().trim());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return true;
     }
+
 
     private List<BrokenLineData> getTestData(int total) {
         List<BrokenLineData> dataList = new ArrayList<>();
         for (int i = 0; i < total; i++) {
             dataList.add(new BrokenLineData("", 0, 98));
         }
-
         return dataList;
     }
 
+
+
+    private View getGridView(){
+        if (gridView == null) {
+            gridView = (TableLayout) LayoutInflater.from(getActivity()).inflate(R.layout.history_answer, null);
+        } else {
+            gridView.removeAllViews();
+        }
+        for (HisRecord record:hisRecords) {
+            gridView.addView(createTableRow(record));
+         };
+
+        return gridView;
+    }
+
+
+    private TableRow createTableRow(HisRecord record){
+        TableRow tableRow = (TableRow) LayoutInflater.from(getActivity()).inflate(R.layout.history_item,null);
+        ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));
+       ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
+        /*((TextView)tableRow.findViewById(R.id.gradeId)).setText(Constant.getGradeId(record.getGradeId()));*/
+        /*((TextView)tableRow.findViewById(R.id.groupId)).setText(record.getGroupId());*/
+        ((TextView)tableRow.findViewById(R.id.startDate)).setText(record.getStartDate());
+        ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getRectime());
+        ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getMemtime());
+        ((TextView)tableRow.findViewById(R.id.score)).setText(record.getScore());
+        ((TextView)tableRow.findViewById(R.id.ranking)).setText(record.getRanking());
+        return  tableRow;
+    }
+
+
+    @Override
+    public boolean getUserVisibleHint() {
+        return super.getUserVisibleHint();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
     /**
      * 切换成绩视图浏览模式
      */
@@ -191,7 +261,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
             mActivity.findViewById(R.id.text_record_world).setVisibility(View.VISIBLE);
 
             if (mViewBrokenLine != null) {
-                mViewBrokenLine.setVisibility(View.VISIBLE);
+                viewParent.removeAllViews();
+                viewParent.addView(mViewBrokenLine);
            }
         }
 
@@ -200,4 +271,26 @@ public class PersonalRecordFragment extends PersonalCommonFragment {
         mActivity.setRightText(mTitleBarRightText);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).unRegisterObserve(HttpConstant.HISRECORD_OK,this);
+    }
+
+    @Override
+    public void update(int key, Object o) {
+        switch (key) {
+            case HttpConstant.HISRECORD_OK:
+                hisRecords = (List<HisRecord>) o;
+                if (mIsBrokenLine) {
+
+                } else {
+                    viewParent.removeAllViews();
+                    viewParent.addView(getGridView());
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

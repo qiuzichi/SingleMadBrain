@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-
-</TableLayout>
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TableRow>
+           <TextView android:text="@string/site_name"
+               android:textSize="30sp"/>
+            <TextView android:text="@string/site_mode"
+                android:textSize="30sp"/>
+            <TextView android:text="@string/site_num"
+                android:textSize="30sp"/>
+            <TextView android:text="@string/site_time"
+                android:textSize="30sp"/>
+            <TextView android:text="@string/recall_time"
+                android:textSize="30sp"/>
+            <TextView android:text="@string/score"
+                android:textSize="30sp"/>
+            <TextView android:text="@string/ranking"
+                android:textSize="30sp"/>
+        </TableRow>
+    </TableLayout>

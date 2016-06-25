@@ -89,4 +89,14 @@ public class ToastUtil {
         });
         return WaitingDialog;
     }
+
+    public static HIDDialog createTipDialog(Context mContext, String id,String contentTip){
+        final HIDDialog WaitingDialog = new HIDDialog(mContext, id);
+        WaitingDialog.setContentView(R.layout.show_tip_dlg);
+
+        // WaitingDialog.setTitle(Constant.getProjectName(rule.getProjectId()) + "规则：");
+        ((TextView)WaitingDialog.findViewById(R.id.dialog_tip_content)).setText(contentTip);
+
+        return WaitingDialog;
+    }
 }

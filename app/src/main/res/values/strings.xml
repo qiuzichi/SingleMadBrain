@@ -215,4 +215,14 @@
     <string name="auth_hint">您还未进行实名认证，请在个人中心里进行实名认证。认证之后才能进行比赛报名,谢谢！</string>
     <string name="auth_fail_hint">您提交的实名认证信息未通过，请重新提交！</string>
 
+    <string name="site_name">项目名称</string>
+    <string name="site_mode">模式</string>
+    <string name="site_num">比赛时间</string>
+    <string name="site_time">记忆时间</string>
+    <string name="recall_time">回忆时间</string>
+    <string name="score">得分</string>
+    <string name="ranking">排名</string>
+    <string name="icon">人名头像记忆</string>
+
+
 </resources>
