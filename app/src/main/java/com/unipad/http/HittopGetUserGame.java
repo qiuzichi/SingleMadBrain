@@ -68,6 +68,7 @@ public class HittopGetUserGame extends HitopRequest<List<CompetitionBean>> {
                         bean.setName(jsonObj2.getString("name"));
                         bean.setGradeId(jsonObj2.getString("gradeId"));
                         bean.setProjectId(jsonObj2.getString("projectId"));
+                        bean.setAttention(jsonObj2.optInt("isAttention") == 0 ? false : true);
                         competitionBeanArrayList.add(bean);
 
                     }
