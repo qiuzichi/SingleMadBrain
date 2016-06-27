@@ -4,25 +4,31 @@ import android.view.View;
 import android.widget.TextView;
 
 
+import com.unipad.brain.R;
+import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.main.MainActivity;
 import com.unipad.common.BaseFragment;
+import com.unipad.observer.IDataObserver;
 
 /**
  * 热点
- * Created by Administrator on 2016/6/20.
+ * Created by jiangLu on 2016/6/20.
  */
-public class HotspotFragment extends BaseTagFragment {
+public class HotspotFragment extends MainBasicFragment implements IDataObserver {
 
-    public HotspotFragment(MainActivity mActivity) {
-        super(mActivity);
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_hotspot;
     }
 
     @Override
-    public View initView() {
-//        View view = View.inflate(mActivity, R.layout.fragment_hotspot, null);
-        TextView view  = new TextView(mActivity);
-        view.setText("热点新闻");
+    public void onClick(View v) {
 
-        return view;
+    }
+
+    @Override
+    public void update(int key, Object o) {
+
     }
 }
