@@ -14,7 +14,8 @@ public class HttpConstant {
     public static String UPLOAD = "/api/file/upload";
     public static String HisRecord="/api/match/history";
     public static String GET_NEWS_LIST = "/api/news/list";
-    public static final String  MY_FOLLOW="/api/user/follow";
+//    我的关注列表
+    public static String  GET_USER_FOLLOW="/api/user/follow";
     //点赞 评论的 url
     public static String GET_NEWS_OPERATE = "/api/news/operate";
     //广告轮播图的 url
@@ -49,6 +50,7 @@ public class HttpConstant {
     public static String GET_CITY_GAME = "/api/match/getMatchByCity";
     // 关注 取消关注
     public static String ATTENTION_HTTP = "/api/match/operate";
+
 
 
     public static int JSON_ERREO = -2;
@@ -95,7 +97,7 @@ public class HttpConstant {
     public static final int MODIFY_FILED = 0x18003;
     public static final int HISRECORD_OK=0x18004;
     public static final int HISRECORD_FILED=0x18005;
-    public static final int MYFOLLOW_OK=0x18006;
+    public static final int USER_FOLLOW = 0x18007;
     // 获取省份列表
     public static final int GET_PROVINCE = 0x10900;
     // 根据城市列表
