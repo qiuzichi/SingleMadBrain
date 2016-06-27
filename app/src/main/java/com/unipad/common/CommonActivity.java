@@ -121,14 +121,14 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
             }
         };
 
-        handler.post(new Runnable() {
+       /** handler.post(new Runnable() {
                          @Override
                          public void run() {
                              dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "签到，等待裁判下发试题");
                              dialog.show();
                          }
                      }
-        );
+        );*/
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
