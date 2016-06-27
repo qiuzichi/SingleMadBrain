@@ -59,15 +59,22 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
         // TODO Auto-generated method stub
         return true;
     }
-    
-      
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        getParent().requestDisallowInterceptTouchEvent(true);
+        return  super.dispatchTouchEvent(ev);
+    }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // the first time ,viewpager send motionEvent to gallery,gallery consume
         // this event, and request motionevent next.
         if (mViewPager != null) {
             mViewPager.requestDisallowInterceptTouchEvent(true);
+
         }
+
         return super.onInterceptTouchEvent(ev);
     }
 

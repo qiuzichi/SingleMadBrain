@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_gray"
+    android:orientation="vertical" >
+
+    <include layout="@layout/title_bar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="4"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dip"
+                    android:layout_marginTop="40dip" >
+
+                    <TextView
+                        android:id="@+id/txt_my"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的排名"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/txt_my" >
+
+                        <TextView
+                            android:id="@+id/txt_editIntegration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dip"
+                            android:textColor="@color/red"
+                            android:textSize="30dip" />
+
+                        <ImageView
+                            android:layout_width="180dp"
+                            android:layout_height="1dp"
+                            android:layout_below="@id/txt_editIntegration"
+                            android:src="@color/red" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dip"
+                    android:layout_marginTop="50dip" >
+
+                    <TextView
+                        android:id="@+id/txt_rule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_rule"
+                        android:layout_marginTop="40dp"
+                        android:paddingRight="100dip" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="我的"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="6"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dip"
+                    android:text="我的"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+
+                <ListView
+                    android:id="@+id/lv_integration"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="40dip"
+                    android:divider="@color/transparent"
+                    android:dividerHeight="30dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
