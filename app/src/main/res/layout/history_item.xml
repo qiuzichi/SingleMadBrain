@@ -8,55 +8,49 @@
     android:orientation="horizontal">
     <TextView
         android:id="@+id/matchId"
-        android:textSize="30sp"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
+        android:textSize="@dimen/hisrecord_text_size"
+        android:layout_width="@dimen/hisrecord_widht_item"
+        android:layout_height="@dimen/hisrecord_height_answer"
         android:layout_gravity="center"
         />
     <TextView
         android:id="@+id/projectId"
-        android:textSize="30sp"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:textSize="@dimen/hisrecord_text_size"
+        android:layout_width="@dimen/hisrecord_widht_answer_mode"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         />
-    <!--<TextView
-        android:id="@+id/groupId"
-        android:textSize="30sp"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        />-->
     <TextView
         android:id="@+id/startDate"
-        android:textSize="30sp"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
+        android:textSize="@dimen/hisrecord_game_date"
+        android:layout_width="@dimen/hisrecord_widht_answer"
+        android:layout_height="wrap_content"
         android:gravity="center"/>
     <TextView
         android:id="@+id/rectime"
-        android:textSize="30sp"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
+        android:textSize="@dimen/hisrecord_text_size"
+        android:layout_width="@dimen/hisrecord_height_answer"
+        android:layout_height="wrap_content"
         android:gravity="center"/>
     <TextView
         android:id="@+id/memtime"
-        android:textSize="30sp"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
+        android:textSize="@dimen/hisrecord_text_size"
+        android:layout_width="@dimen/hisrecord_height_answer"
+        android:layout_height="wrap_content"
         android:gravity="center"
         />
     <TextView
         android:id="@+id/score"
-        android:textSize="30sp"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:textSize="@dimen/hisrecord_text_size"
+        android:layout_width="@dimen/hisrecord_widht_answer_mode"
+        android:layout_height="@dimen/hisrecord_height_answer"
         android:gravity="center"
         />
     <TextView
         android:id="@+id/ranking"
-        android:textSize="30sp"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:textSize="@dimen/hisrecord_text_size"
+        android:layout_width="@dimen/hisrecord_widht_answer_mode"
+        android:layout_height="@dimen/hisrecord_height_answer"
         android:gravity="center"
         />
 

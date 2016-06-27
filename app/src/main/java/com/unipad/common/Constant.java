@@ -79,13 +79,13 @@ public class Constant {
     }
     public static String getGradeId(String gradId) {
         if (CITY_GAME.equals(gradId)) {
-            return "城市赛";
+            return App.getContext().getString(R.string.city_game);
         }
         if (CHIMA_GAME.equals(gradId)){
-            return "中国赛";
+            return App.getContext().getString(R.string.china_game);
         }
         if (WORD_GAME.equals(gradId)){
-            return "世界赛";
+            return App.getContext().getString(R.string.world_game);
         }
         return GradeId.get(gradId);
     }

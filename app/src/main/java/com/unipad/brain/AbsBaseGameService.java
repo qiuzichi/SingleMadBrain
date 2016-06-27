@@ -101,4 +101,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
             operateGame.downloadingQuestion();
         }
     }
+
+    public abstract double getScore();
+    public abstract String getAnswerData();
 }

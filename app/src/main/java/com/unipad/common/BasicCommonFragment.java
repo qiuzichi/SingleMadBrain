@@ -13,7 +13,7 @@ public abstract class BasicCommonFragment extends Fragment implements
         View.OnClickListener, CommonFragment.ICommunicate ,IOperateGame{
     protected CommonActivity mActivity;
     protected ViewGroup mViewParent;
-
+    protected int memoryTime;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewParent = (ViewGroup) inflater.inflate(getLayoutId(), container, false);
@@ -68,5 +68,10 @@ public abstract class BasicCommonFragment extends Fragment implements
     @Override
     public void downloadingQuestion() {
 
+    }
+
+    @Override
+    public void memoryTimeToEnd(int memoryTime) {
+        this.memoryTime = memoryTime;
     }
 }

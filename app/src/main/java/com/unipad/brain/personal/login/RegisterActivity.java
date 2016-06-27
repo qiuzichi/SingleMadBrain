@@ -77,7 +77,8 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
             case R.id.register_day:
                 wheelMainView = new WheelMainView(this);
                 wheelMainView.setChangingListener(this);
-                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,getWindowManager(),0.3f,0.6f);
+                showDialog.showDialog(wheelMainView,ShowDialog.
+                        TYPE_CENTER,getWindowManager(),0.3f,0.6f);
                 break;
             case R.id.radio_men:
             case R.id.radio_women:

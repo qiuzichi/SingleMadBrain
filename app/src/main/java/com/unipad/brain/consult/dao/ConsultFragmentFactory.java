@@ -3,6 +3,7 @@ package com.unipad.brain.consult.dao;
 import android.text.TextUtils;
 
 import com.unipad.brain.consult.entity.ConsultTab;
+import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.common.BaseFragment;
 
 /**
@@ -19,7 +20,7 @@ public class ConsultFragmentFactory {
         return instance;
     }
 
-    public BaseFragment getFragment(ConsultTab consultTab){
+    public MainBasicFragment getFragment(ConsultTab consultTab){
         String name = null;
         switch (consultTab){
             case INTRODUCATION:
@@ -39,11 +40,11 @@ public class ConsultFragmentFactory {
         return getFragmentByClassName(name);
     }
 
-    private BaseFragment getFragmentByClassName(String className){
+    private MainBasicFragment getFragmentByClassName(String className){
         if(TextUtils.isEmpty(className))return null;
         try {
             Class fragmentClass = Class.forName(className);
-            BaseFragment fagment = (BaseFragment)fragmentClass.newInstance();
+           return (MainBasicFragment)fragmentClass.newInstance();
         }catch (Exception e){
 
         }
