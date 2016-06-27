@@ -88,8 +88,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private EditText et_commment;
     private Button btn_commit;
     private NewEntity newEntity;
-       //用于主界面的  接口回调
-    private OnSwitchPagerButtonOnClick switchPagerClickButton;
+    private MyAdapter mNewsAdapter;
     private View mAdvertPager;
     private TextView tv_title;
     private TextView tv_detail;
@@ -108,9 +107,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         service.getNews(contentType,title,page,size );
     }
 
-
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -118,18 +114,19 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         initEvent();
 
        // initPopupWindows();
-       // getNews("00001", null, 1, 10);
+        service.getNews("00001", null, 1, 10);
+        service.getAdverts("00001");
 
         //开发播放
         imageOptions = new ImageOptions.Builder()
 
                         // 加载中或错误图片的ScaleType
                         //.setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setImageScaleType(ImageView.ScaleType.FIT_XY)
                         //设置加载过程中的图片
-                .setLoadingDrawableId(R.drawable.ic_launcher)
+                .setLoadingDrawableId(R.drawable.default_advert_pic)
                         //设置加载失败后的图片
-                .setFailureDrawableId(R.drawable.ic_launcher)
+                .setFailureDrawableId(R.drawable.default_advert_pic)
                         //设置使用缓存
                 .build();
 
@@ -140,20 +137,19 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         //进行bitmap初始化
         bitmapUtils = new BitmapUtils(mActivity);
         mListViewTab = (ListView) getView().findViewById(R.id.lv_introduction_listview);
+
         //广告轮播图;
         mAdvertLuobo = (RecommendGallery) getView().findViewById(R.id.point_gallery);
         //轮播图的点的视图;
         adPotView = (RecommendPot) getView().findViewById(R.id.ad_pot);
         newsAdvertDatas.add(new AdPictureBean());
         newsAdvertDatas.add(new AdPictureBean());
+
         adPotView.setIndicatorChildCount(newsAdvertDatas.size());
         mAdvertLuobo.initSelectePoint(adPotView);
+
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
         mAdvertLuobo.setAdapter(adAdapter);
-//        //广告标题
-//        tv_title = (TextView) mAdvertPager.findViewById(R.id.tv_lunbo_title);
-//        //广告介绍
-//        tv_detail = (TextView) mAdvertPager.findViewById(R.id.tv_lunbo_detail);
 
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
@@ -163,8 +159,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
 
-       // mNewsAdapter = new MyAdapter(mActivity, newsDatas, R.layout.item_listview_introduction);
-        //mListViewTab.setAdapter(mNewsAdapter);
+        mNewsAdapter = new MyAdapter(mActivity, newsDatas, R.layout.item_listview_introduction);
+        mListViewTab.setAdapter(mNewsAdapter);
         //将轮播图放在listview 的头文件
 //        mListViewTab.addHeaderView(mAdvertPager);
 
@@ -248,7 +244,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     public void onClick(View v) {
 
     }
-
+    //listview  的 adapter
     private class MyAdapter extends CommonAdapter<NewEntity> {
         private Boolean isFavorite; //标示每个item 进行操作方式
         private Boolean isZan; //标示每个item 进行点赞方式
@@ -360,7 +356,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     iv_pager_comment.getLocationInWindow(location);
 
                     showPopupWindows(iv_pager_comment, location[0] + 10, location[1]);
-                    setNewEntity(newEntity);
+//                    setNewEntity(newEntity);
                 }
             });
             //查看详情点击
@@ -378,7 +374,96 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     }
     //广告轮播图的  adapter
+
+//    class AdViewPagerAdapter extends CommonAdapter<AdPictureBean>{
+//        private AdPictureBean adPictureBean;
+//        @Override
+//        public int getCount() {
+//            //访问网络失败的时候
+//            if(newsAdvertDatas.size() == 0){
+//               return DEFAULUPAGER;
+//            }
+//            return newsAdvertDatas.size();
+//        }
+//
+//        @Override
+//        public boolean isViewFromObject(View view, Object object) {
+//            return view == object;
+//        }
+//
+//        @Override
+//        public Object instantiateItem(ViewGroup container, int position) {
+//            ImageView iv_lunbo = new ImageView(mActivity);
+//            iv_lunbo.setScaleType(ImageView.ScaleType.FIT_XY);
+//
+//            //如果网络差  默认图片;
+//           adPictureBean =  newsAdvertDatas.get(position);
+//            //图片url path
+//            String imageUrl = adPictureBean.getAdvertPath();
+//            if(TextUtils.isEmpty(imageUrl)){
+//                iv_lunbo.setImageResource(R.drawable.default_advert_pic);
+//            }else {
+//                bitmapUtils.display(iv_lunbo, imageUrl);
+//            }
+//
+//            //由于点下  与松开 状态不同 所以是touch  而不是click
+//            iv_lunbo.setOnTouchListener(new ImageView.OnTouchListener() {
+//
+//                private float downX;
+//                private float downY;
+//                private long starttime;
+//
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//
+//                    switch (event.getAction()) {
+//                        case MotionEvent.ACTION_DOWN:
+//                            //停止轮播;
+//                            downX = event.getX();
+//                            downY = event.getY();
+//                            starttime = System.currentTimeMillis();
+//
+//                            lunTask.stopLunbo();
+//                            break;
+//                        case MotionEvent.ACTION_MOVE:
+//                            //停止轮播;
+//                            lunTask.stopLunbo();
+//                            break;
+//                        case MotionEvent.ACTION_CANCEL:
+//                            //开始轮播;
+//                            lunTask.startLunbo();
+//                            break;
+//                        case MotionEvent.ACTION_UP:
+//
+//                            float upX = event.getX();
+//                            float upY = event.getY();
+//                            if(upX == downX &&  upY == downY){
+//                                long endtime = System.currentTimeMillis();
+//                                if(endtime -starttime < 500){
+//                                    //点击事件;
+//                                    String adPath = adPictureBean.getJumpUrl();
+//
+//System.out.println("被点击到了....." + adPath);
+//                                }
+//                            }
+//                            lunTask.startLunbo();
+//                            break;
+//
+//                        default:
+//                            break;
+//                    }
+//
+//                    return true;
+//                }
+//            });
+//
+//
+//            container.addView(iv_lunbo);
+//
+//            return iv_lunbo;
+//=======
     class AdViewPagerAdapter extends CommonAdapter<AdPictureBean>{
+
 
 
         public AdViewPagerAdapter(Context context, List<AdPictureBean> datas, int layoutId) {
@@ -393,19 +478,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
 
-    public void setOnSwitchPagerClick(OnSwitchPagerButtonOnClick switchPagerClickButton){
-        this.switchPagerClickButton = switchPagerClickButton;
-    }
-    //在activity中  去修改 显示的fragment
-    public interface OnSwitchPagerButtonOnClick{
-        public void switchPagerFragment(String pagerId);
-    }
-
-
-    public void setNewEntity(NewEntity newEntity){
-        //当前的newEntity;
-        this.newEntity = newEntity;
-    }
 
     //用于网络请求数据 key 是网页的id   o是json数据
     @Override
@@ -414,16 +486,18 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             case HttpConstant.NOTIFY_GET_NEWS:
                 //发送网络请求 获取新闻页面数据
                 newsDatas.addAll((List<NewEntity>) o);
-              //  mNewsAdapter.notifyDataSetChanged();
+                mNewsAdapter.notifyDataSetChanged();
                 break;
 
             case HttpConstant.NOTIFY_GET_OPERATE:
                 //发送网络请求  获取喜欢 点赞 评论 信息
-              //  mNewsAdapter.notifyDataSetChanged();
+                mNewsAdapter.notifyDataSetChanged();
                 break;
             case HttpConstant.NOTIFY_GET_ADVERT:
                 //获取轮播图数据
-                newsAdvertDatas.addAll((List<AdPictureBean>)o);
+                newsAdvertDatas.clear();
+                newsAdvertDatas.addAll((List<AdPictureBean>) o);
+
                 //mNewsAdapter.notifyDataSetChanged();
                 break;
         }

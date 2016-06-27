@@ -1,6 +1,7 @@
 package com.unipad.io.mina;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.unipad.AppContext;
 import com.unipad.ICoreService;
@@ -9,6 +10,7 @@ import com.unipad.common.Constant;
 import com.unipad.common.MobileInfo;
 import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.utils.LogUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -76,6 +78,19 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         body.put("SCHEDULEID", id);
         body.put("DEVICE", MobileInfo.getDeviceId());
         Request request = new Request("10001", body);
+        sendMsg(request);
+    }
+    public void finishedGameByUser(String matchId,double score,int memoryTime,int answerTime,String answer){
+        LogUtil.e("","score:"+score+",memory="+memoryTime+",answerTIme :"+answerTime);
+        LogUtil.e("","answer:"+answer);
+        Map<String, String> body = new HashMap<String, String>();
+        body.put("USERID", AppContext.instance().loginUser.getUserId());
+        body.put("SCHEDULEID", matchId);
+        body.put("SCORE", score+"");
+        body.put("MEMTIME",memoryTime+"");
+        body.put("RECTIME",answerTime+"");
+        body.put("CONTENT",answer);
+        Request request = new Request(IOConstant.END_GAME_BY_Client,body);
         sendMsg(request);
     }
     public void downLoadQuestionOK(String id,int progress) {

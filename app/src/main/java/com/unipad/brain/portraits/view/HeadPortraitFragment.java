@@ -59,7 +59,8 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     }
 
     @Override
-    public void memoryTimeToEnd() {
+    public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
         showAnserView();
     }
 
@@ -71,7 +72,14 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
 
     @Override
-    public void rememoryTimeToEnd() {
+    public void rememoryTimeToEnd(final int answerTime) {
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),service.getScore(),memoryTime,answerTime,service.getAnswerData());
+            }
+        }.start();
         service.mode = 2;
         adapter.notifyDataSetChanged();
     }
@@ -124,6 +132,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                     @Override
                     public void afterTextChanged(Editable s) {
                         person.setAnswerFirstName(firstName.getText().toString().trim());
+                        lastName.requestFocus();
                     }
                 });
                 lastName.setOnEditorActionListener(new TextView.OnEditorActionListener() {

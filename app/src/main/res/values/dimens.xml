@@ -58,6 +58,6 @@
     <dimen name="rule_dialog_height">300dip</dimen>
     <dimen name="history_answer_item_heigth">60dip</dimen>
     <dimen name="point_navigation_space">20dp</dimen>
-    <dimen name="adver_lunbo_height">300dp</dimen>
+    <dimen name="adver_lunbo_height">130dp</dimen>
 
 </resources>
