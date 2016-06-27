@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+
+import com.unipad.brain.R;
+import com.unipad.brain.home.MainBasicFragment;
+
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.entity.AdPictureBean;
@@ -24,6 +28,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * 热点
@@ -114,6 +119,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
             ImageView imageView = holder.getView(R.id.ad_gallery_item);
             x.image().bind(imageView, adPictureBean.getAdvertPath(),imageOptions);
         }
+
     }
 
     private void getNews(String contentType,String title,int page,int size ){
