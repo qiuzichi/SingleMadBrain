@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
@@ -15,8 +13,6 @@ import com.unipad.brain.consult.widget.RecommendPot;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.bean.NewEntity;
 import com.unipad.brain.home.dao.NewsService;
-import com.unipad.brain.main.MainActivity;
-import com.unipad.common.BaseFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
@@ -56,10 +52,10 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
 
             case HttpConstant.NOTIFY_GET_ADVERT:
                 //获取轮播图数据
-//                newsLunboDatas.clear();
-//                newsLunboDatas.addAll((List<AdPictureBean>) o);
+                newsLunboDatas.clear();
+                newsLunboDatas.addAll((List<AdPictureBean>) o);
 
-//                newsAdapter.notifyDataSetChanged();
+                newsAdapter.notifyDataSetChanged();
         }
 
         }
@@ -75,7 +71,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         getNews("00003", null, 1, 10);
 
         //获取广告的数据
-//        service.getAdverts("00001");
+        service.getAdverts("00001");
     }
 
 
@@ -87,6 +83,8 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
         //初始化 轮播图
         initNewsLunBo();
+        //播放轮播图；
+        startPlayLunPic();
 
     }
 
