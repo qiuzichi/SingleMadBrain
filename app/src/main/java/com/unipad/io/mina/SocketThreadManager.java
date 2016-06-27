@@ -85,6 +85,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         LogUtil.e("","answer:"+answer);
         Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());
+        body.put("USERNAME", AppContext.instance().loginUser.getUserName());
         body.put("SCHEDULEID", matchId);
         body.put("SCORE", score+"");
         body.put("MEMTIME",memoryTime+"");
