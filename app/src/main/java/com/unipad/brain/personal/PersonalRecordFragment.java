@@ -99,9 +99,15 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
             case R.id.record_search_end_data:
                 selectenDate();
                 break;
+            case R.id.group_historry_list:
+                setHisList();
             default:
                 break;
         }
+    }
+
+    private void setHisList() {
+
     }
 
     private void selectenDate() {
@@ -223,12 +229,13 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     private TableRow createTableRow(HisRecord record){
         TableRow tableRow = (TableRow) LayoutInflater.from(getActivity()).inflate(R.layout.history_item,null);
         ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));
-       ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
+        ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
         ((TextView)tableRow.findViewById(R.id.startDate)).setText(record.getStartDate());
         ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getRectime());
         ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getMemtime());
         ((TextView)tableRow.findViewById(R.id.score)).setText(record.getScore());
         ((TextView)tableRow.findViewById(R.id.ranking)).setText(record.getRanking());
+        ((TableRow)tableRow.findViewById(R.id.group_historry_list)).setOnClickListener(this);
         return  tableRow;
     }
 
