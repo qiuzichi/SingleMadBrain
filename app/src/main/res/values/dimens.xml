@@ -59,5 +59,6 @@
     <dimen name="history_answer_item_heigth">60dip</dimen>
     <dimen name="point_navigation_space">20dp</dimen>
     <dimen name="adver_lunbo_height">130dp</dimen>
-
+    <dimen name="portraits_image_width">176dp</dimen>
+    <dimen name="portraits_image_height">176dp</dimen>
 </resources>

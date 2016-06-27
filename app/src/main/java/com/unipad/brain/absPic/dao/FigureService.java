@@ -7,7 +7,11 @@ import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.App;
 import com.unipad.brain.absPic.bean.Figure;
+import com.unipad.brain.portraits.bean.Person;
+import com.unipad.utils.LogUtil;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,22 +33,10 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public boolean init() {
-        getResourse(App.getContext());
+        //getResourse(App.getContext());
         return true;
     }
 
-    private void getResourse(Context context) {
-        try {
-            String[] fileNames = context.getAssets().list(path);
-            ArrayList<String> randomFileNames = new ArrayList<>(Arrays.asList(fileNames));
-            Collections.shuffle(randomFileNames);
-            for (int i = 0; i < randomFileNames.size(); i++) {
-                allFigures.add(new Figure(headResourse + randomFileNames.get(i), i % 5 +1));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public void shuffle() {
@@ -82,5 +74,36 @@ public class FigureService extends AbsBaseGameService{
     @Override
     public String getAnswerData() {
         return null;
+    }
+
+    @Override
+    public void parseData(String data) {
+        super.parseData(data);
+    }
+
+    @Override
+    public void initResourse(String soursePath) {
+        super.initResourse(soursePath);
+
+        String dir  = soursePath.substring(0, soursePath.lastIndexOf('.'));
+        File fiel = new File(dir);
+        if (fiel.exists() && fiel.isDirectory()) {
+
+            String[] fileList = fiel.list(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String filename) {
+                    LogUtil.e("", "path = " + dir.getAbsolutePath() + ",fileName=" + filename);
+                    return filename.endsWith("jpg") || filename.endsWith("png");
+                }
+            });
+
+            for (int i = 0; i < fileList.length; i++) {
+                    allFigures.add(new Figure(fileList[i], i % 5 +1));
+            }
+        }
+        setIsInitResourseAready(true);
+        if (IsALlAready()) {
+            initDataFinished();
+        }
     }
 }
