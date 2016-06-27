@@ -53,6 +53,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     private String projectId;
 
+    private HIDDialog dialog;
     long startTime;
 
     private static final int STRAT_GAME = 0;
@@ -82,11 +83,23 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         mCommonFragment.startGame();
                         break;
                     case DOWNLOAD_QUESTION:
-                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
+                        if (dialog == null) {
+                            dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中");
+                        }
+                        else {
+                            ((TextView)dialog.findViewById(R.id.dialog_tip_content)).setText("下载试题中");
+                        }
+                        dialog.show();
                         break;
 
                     case PAUSE_GAME:
-                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
+                        if (dialog == null) {
+                            dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停");
+                        }
+                        else {
+                            ((TextView)dialog.findViewById(R.id.dialog_tip_content)).setText("比赛暂停");
+                        }
+                        dialog.show();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
                         break;
@@ -107,12 +120,22 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                 }
             }
         };
+
+        handler.post(new Runnable() {
+                         @Override
+                         public void run() {
+                             dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "签到，等待裁判下发试题");
+                             dialog.show();
+                         }
+                     }
+        );
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
                         SocketThreadManager.sharedInstance().signOK(matchId);
                         SocketThreadManager.sharedInstance().setService(service);
-                        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
+
                     }
                 }).start();
 

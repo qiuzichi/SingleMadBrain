@@ -157,10 +157,12 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
             httpDown.setService(service);
             httpDown.downLoad(filePath);
         }
-        HitopGetQuestion httpGetQuestion = new HitopGetQuestion();
-        httpGetQuestion.buildRequestParams("questionId", data.get("QUESTIONID"));
-        httpGetQuestion.setService(service);
-        httpGetQuestion.post();
+        if (!Constant.GAME_ABS_PICTURE.equals(projectId)) {
+            HitopGetQuestion httpGetQuestion = new HitopGetQuestion();
+            httpGetQuestion.buildRequestParams("questionId", data.get("QUESTIONID"));
+            httpGetQuestion.setService(service);
+            httpGetQuestion.post();
+        }
     }
 
     public void clear() {
