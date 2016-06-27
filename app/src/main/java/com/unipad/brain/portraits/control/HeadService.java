@@ -254,7 +254,7 @@ public class HeadService extends AbsBaseGameService{
                 Person person;
                if (this.data.size() < i+1) {
                    person = new Person();
-                   person.setHeadPortraitPath(fileList[i]);
+                   person.setHeadPortraitPath(dir+File.separator+fileList[i]);
                    this.data.add(person);
                }else {
 
@@ -272,7 +272,7 @@ public class HeadService extends AbsBaseGameService{
 
     @Override
     public double getScore() {
-        return  getPortraitsScor(data,0.5f,0.5f,0.5f)[0];
+        return  getPortraitsScor(data,1.0f,1.0f,0.5f)[0];
     }
 
     @Override

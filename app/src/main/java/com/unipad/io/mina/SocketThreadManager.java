@@ -85,6 +85,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         LogUtil.e("","answer:"+answer);
         Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());
+        body.put("USERNAME", AppContext.instance().loginUser.getUserName());
         body.put("SCHEDULEID", matchId);
         body.put("SCORE", score+"");
         body.put("MEMTIME",memoryTime+"");
@@ -157,10 +158,12 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
             httpDown.setService(service);
             httpDown.downLoad(filePath);
         }
-        HitopGetQuestion httpGetQuestion = new HitopGetQuestion();
-        httpGetQuestion.buildRequestParams("questionId", data.get("QUESTIONID"));
-        httpGetQuestion.setService(service);
-        httpGetQuestion.post();
+        if (!Constant.GAME_ABS_PICTURE.equals(projectId)) {
+            HitopGetQuestion httpGetQuestion = new HitopGetQuestion();
+            httpGetQuestion.buildRequestParams("questionId", data.get("QUESTIONID"));
+            httpGetQuestion.setService(service);
+            httpGetQuestion.post();
+        }
     }
 
     public void clear() {

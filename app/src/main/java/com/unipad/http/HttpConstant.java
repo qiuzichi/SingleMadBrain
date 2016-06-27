@@ -14,7 +14,7 @@ public class HttpConstant {
     public static String UPLOAD = "/api/file/upload";
     public static String HisRecord="/api/match/history";
     public static String GET_NEWS_LIST = "/api/news/list";
-    public static String MY_FOLLOW="/api/user/follow";
+    public static final String  MY_FOLLOW="/api/user/follow";
     //点赞 评论的 url
     public static String GET_NEWS_OPERATE = "/api/news/operate";
     //广告轮播图的 url

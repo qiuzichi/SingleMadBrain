@@ -72,14 +72,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
     }
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1000 && resultCode == 1001) {
-            return;
-        }
-    }
-
-    @Override
     public int getLayoutId() {
         return R.layout.personal_frg_record;
     }

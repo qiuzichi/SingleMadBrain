@@ -1,5 +1,4 @@
 package com.unipad.http;
-
 import android.util.Log;
 
 import com.unipad.AppContext;
@@ -13,9 +12,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
- * Created by Administrator on 2016/6/27 0027.
+ * Created by 深圳冰凌信息科技有限公司 黄祖嘉 on 2016/6/27 0027.
  */
 public class HitopFollow extends HitopRequest<List<MyFollow>>{
 
@@ -41,6 +39,8 @@ public class HitopFollow extends HitopRequest<List<MyFollow>>{
             Log.e("",""+json);
             if (jsObj!=null&&jsObj.toString().length()!=0)
                 if (jsObj.getInt("ret_code")==0){
+                    ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).
+                            noticeDataChange(HttpConstant.MYFOLLOW_OK,null);
                     JSONObject data=new JSONObject(jsObj.getString("date"));
                     JSONArray jsonArray=data.getJSONArray("resultList");
                     int iSize=jsonArray.length();
@@ -51,17 +51,15 @@ public class HitopFollow extends HitopRequest<List<MyFollow>>{
                         JSONObject jsonObject=jsonArray.getJSONObject(i);
                         MyFollow bean=new MyFollow();
                         bean.setMatch(jsonObject.getString("match"));
-                        bean.setNews("news");
+                        bean.setNews(jsonObject.getString("news"));
                         myFollows.add(bean);
+                        Log.e("",""+json);
                     }
+
                 }
         }
         catch (Exception e){
            return null;
-        }
-        if (myFollows!=null){
-            ((PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER)).
-                    noticeDataChange(HttpConstant.MYFOLLOW_OK,myFollows);
         }
         return null;
     }
