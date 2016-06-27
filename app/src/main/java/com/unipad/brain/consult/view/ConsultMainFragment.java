@@ -39,7 +39,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         mViewPager = (CustomViewPager) view.findViewById(R.id.viewPager_consult);
 
         initMyTabWidget();
-       // initViewPager();
+        initViewPager();
     }
 
     private void initMyTabWidget(){
