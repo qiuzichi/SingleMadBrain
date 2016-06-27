@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -18,19 +19,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
-                <action android:name="com.baidu.location.service_v2.2" >
-                </action>
+                <action android:name="com.baidu.location.service_v2.2" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="1E3IWKk5zDAOVMaDBgSzTp7L3krzXFIi" />  <!--http://lbsyun.baidu.com/apiconsole/key-->
+            android:value="1E3IWKk5zDAOVMaDBgSzTp7L3krzXFIi" />
+        <!-- http://lbsyun.baidu.com/apiconsole/key -->
 
         <activity
             android:name=".personal.login.LoginActivity"
@@ -42,17 +43,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".personal.PersonalActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name="com.unipad.common.CommonActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".personal.login.RegisterActivity"
             android:screenOrientation="landscape"
@@ -70,15 +68,16 @@
         <activity
             android:name=".location.LocationActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
-<activity
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
             android:name=".consult.view.PagerDetailActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".location.LocationActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
+        <activity android:name=".personal.PersonalActivity$PersonalIntegration" />
+        <activity android:name=".personal.PersonalInfoActivty"></activity>
     </application>
 
 </manifest>

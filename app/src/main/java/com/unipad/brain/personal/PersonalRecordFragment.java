@@ -1,5 +1,6 @@
 package com.unipad.brain.personal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -55,6 +56,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     private TableLayout gridView;
     private List<HisRecord> hisRecords;
     private ViewGroup viewParent;
+    private LinearLayout hisListView;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -68,7 +71,13 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         validateDate();
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000 && resultCode == 1001) {
+            return;
+        }
+    }
 
     @Override
     public int getLayoutId() {
@@ -97,20 +106,21 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
                 selectstartDate();
                 break;
             case R.id.record_search_end_data:
-                selectenDate();
+                selectendDate();
                 break;
             case R.id.group_historry_list:
-                setHisList();
+               openPersonalIntegration();
             default:
                 break;
         }
     }
 
-    private void setHisList() {
-
+    private void openPersonalIntegration() {
+        Intent intent=new Intent();
+        intent.setClass(getActivity(),PersonalInfoActivty.class);
+        startActivity(intent);
     }
-
-    private void selectenDate() {
+    private void selectendDate() {
 
     }
     private void selectstartDate() {
@@ -224,8 +234,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
 
         return gridView;
     }
-
-
     private TableRow createTableRow(HisRecord record){
         TableRow tableRow = (TableRow) LayoutInflater.from(getActivity()).inflate(R.layout.history_item,null);
         ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));

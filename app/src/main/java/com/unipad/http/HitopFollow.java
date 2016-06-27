@@ -22,11 +22,8 @@ public class HitopFollow extends HitopRequest<List<MyFollow>>{
     public HitopFollow(String path) {
         super(path);
     }
-    public HitopFollow(String match,String news){
+    public HitopFollow(){
         super(HttpConstant.MY_FOLLOW);
-        mParams.addBodyParameter("match",match);
-        mParams.addBodyParameter("news",news);
-
     }
     @Override
     public String buildRequestURL() {
@@ -58,7 +55,6 @@ public class HitopFollow extends HitopRequest<List<MyFollow>>{
                         myFollows.add(bean);
                     }
                 }
-
         }
         catch (Exception e){
            return null;

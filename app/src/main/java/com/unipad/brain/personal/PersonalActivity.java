@@ -1,5 +1,6 @@
 package com.unipad.brain.personal;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -184,6 +184,7 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
             case R.id.personal_favorite:
                 if (mFavoriteFragment == null) {
                     mFavoriteFragment = new PersonalFavoriteFragment();
+
                 }
                 fragment = mFavoriteFragment;
                 break;
@@ -459,4 +460,5 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
                 break;
         }
     }
+
 }
