@@ -225,12 +225,13 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     }
 
     @Override
-    public void memoryTimeToEnd() {
+    public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
         this.inAnswerMode();
     }
 
     @Override
-    public void rememoryTimeToEnd() {
+    public void rememoryTimeToEnd(int answerTime) {
         //mStubShade.setVisibility(View.VISIBLE);
         mNumberRememoryLayout.showAnswer();
     }

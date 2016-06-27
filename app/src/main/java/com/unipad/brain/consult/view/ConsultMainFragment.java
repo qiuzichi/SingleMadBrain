@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultTab;
+import com.unipad.brain.consult.widget.CustomViewPager;
 
 import java.lang.reflect.Field;
 
@@ -22,7 +23,7 @@ import java.lang.reflect.Field;
  */
 public class ConsultMainFragment extends ConsultBaseFragment{
     private TabWidget mTabWidget;
-    private ViewPager mViewPager;
+    private CustomViewPager mViewPager;
     private int mCurrentIndex;
     private ConsultTab[] mConsultTabs;
 
@@ -35,7 +36,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
     protected void initView(View view) {
         super.initView(view);
         mTabWidget = (TabWidget) view.findViewById(R.id.tabwidget_consult_main);
-        mViewPager = (ViewPager) view.findViewById(R.id.viewPager_consult);
+        mViewPager = (CustomViewPager) view.findViewById(R.id.viewPager_consult);
 
         initMyTabWidget();
         initViewPager();

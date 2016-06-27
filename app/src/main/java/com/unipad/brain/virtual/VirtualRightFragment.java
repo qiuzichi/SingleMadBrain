@@ -340,12 +340,13 @@ public class VirtualRightFragment extends BasicCommonFragment {
     }
 
     @Override
-    public void memoryTimeToEnd() {
+    public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
         this.inAnswerMode();
     }
 
     @Override
-    public void rememoryTimeToEnd() {
+    public void rememoryTimeToEnd(int answerTime) {
         endAnswerMode(1);
     }
 

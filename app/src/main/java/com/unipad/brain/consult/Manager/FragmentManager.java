@@ -3,7 +3,7 @@ package com.unipad.brain.consult.manager;
 
 import com.unipad.brain.consult.dao.ConsultFragmentFactory;
 import com.unipad.brain.consult.entity.ConsultTab;
-import com.unipad.common.BaseFragment;
+import com.unipad.brain.home.MainBasicFragment;
 import android.support.v4.app.Fragment;
 
 import java.lang.ref.SoftReference;
@@ -16,7 +16,7 @@ public class FragmentManager {
     public static HashMap<String, SoftReference<Fragment>> maps;
     private static boolean needCache = true;
 
-    public static BaseFragment getFragment(ConsultTab consultTab){
+    public static MainBasicFragment getFragment(ConsultTab consultTab){
         if(!needCache){
             return ConsultFragmentFactory.getInstance().getFragment(consultTab);
         }
@@ -25,24 +25,24 @@ public class FragmentManager {
         }
        SoftReference<Fragment> softReference = maps.get(consultTab.getType());
         if(softReference == null){
-            BaseFragment fragment = creatNewFragment(consultTab);
-            return  (BaseFragment)fragment;
+            MainBasicFragment fragment = creatNewFragment(consultTab);
+            return  (MainBasicFragment)fragment;
         }else{
             Fragment fragment = softReference.get();
             if(fragment == null){
                 return creatNewFragment(consultTab);
             }else{
-                return (BaseFragment)fragment;
+                return (MainBasicFragment)fragment;
             }
         }
     }
 
-    private static BaseFragment creatNewFragment(ConsultTab consultTab) {
+    private static MainBasicFragment creatNewFragment(ConsultTab consultTab) {
         Fragment fragment;
         SoftReference<Fragment> softReference;
         fragment = ConsultFragmentFactory.getInstance().getFragment(consultTab);
         softReference = new SoftReference<Fragment>(fragment);
         maps.put(consultTab.getType(), softReference);
-        return  (BaseFragment)fragment;
+        return  (MainBasicFragment)fragment;
     }
 }

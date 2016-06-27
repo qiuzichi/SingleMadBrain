@@ -78,7 +78,16 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
         }catch (Exception e) {
             return null;
         }
-        ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(HttpConstant.NOTIFY_GET_NEWS,newsList);
+        int key =HttpConstant.NOTIFY_GET_NEWS;
+
+        if ("00001".equals(contenttype)){
+            key = HttpConstant.NOTIFY_GET_NEWS;
+        } else if ("00002".equals(contenttype)){
+            key = HttpConstant.NOTIFY_GET_COMPETITION;
+        }else if ("00003".equals(contenttype)) {
+            key = HttpConstant.NOTIFY_GET_HOTSPOT;
+        }
+        ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(key,newsList);
         return null;
     }
 

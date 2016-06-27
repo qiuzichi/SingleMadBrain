@@ -63,7 +63,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
      *
      */
     @Override
-    public void memoryTimeToEnd() {
+    public void memoryTimeToEnd(int memory) {
 
 
         service.mode = 1;
@@ -74,7 +74,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     }
 
     @Override
-    public void rememoryTimeToEnd() {
+    public void rememoryTimeToEnd(int answerTime) {
         service.mode = 2;
         setButtonArea();
         adapter.notifyDataSetChanged();

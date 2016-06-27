@@ -225,12 +225,13 @@ public class AbsNumFragment extends BasicCommonFragment implements KeyboardDialo
     }
 
     @Override
-    public void memoryTimeToEnd() {
+    public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
         this.inAnswerMode();
     }
 
     @Override
-    public void rememoryTimeToEnd() {
+    public void rememoryTimeToEnd(int anserTime) {
         //mStubShade.setVisibility(View.VISIBLE);
     }
 

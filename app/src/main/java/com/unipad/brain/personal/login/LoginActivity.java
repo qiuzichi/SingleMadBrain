@@ -90,7 +90,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                 AppContext.instance().loginUser.setLoginPwd(MD5Utils.MD5_two(userPwd.getText().toString().trim()));
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
-                */
+                 */
                 this.login();
                 break;
             case R.id.text_new_user:

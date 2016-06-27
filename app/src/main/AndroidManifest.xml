@@ -71,7 +71,7 @@
             android:name=".location.LocationActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
-<activity
+        <activity
             android:name=".consult.view.PagerDetailActivity"
             android:screenOrientation="landscape" />
         <activity

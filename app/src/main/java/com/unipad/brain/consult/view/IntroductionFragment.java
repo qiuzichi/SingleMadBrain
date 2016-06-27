@@ -113,7 +113,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         initData();
         initEvent();
 
-       // initPopupWindows();
+        initPopupWindows();
         service.getNews("00001", null, 1, 10);
         service.getAdverts("00001");
 
@@ -298,15 +298,15 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
 
             //点击收藏
-            iv_pager_favorite.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    //发送网络请求 数据
-
-                    if(!isFavorite){
+//            iv_pager_favorite.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    //发送网络请求 数据
+//
+//                    if(!isFavorite){
                         //更新界面图标
-                        service.getNewsOperate(newEntity.getId(), "0", "true", "0", 0);
+//                        service.getNewsOperate(newEntity.getId(), "0", "true", "0", 0);
 //                        new AsyncTask<String, Void, Boolean>() {
 //
 //                            @Override
@@ -326,19 +326,20 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
 
 //                      iv_pager_favorite.setImageResource(R.drawable.favorite_introduction_check);
-                        isFavorite = true;
+//                        isFavorite = true;
 
-                    }else {
+//                    }else {
 
 //                      iv_pager_favorite.setImageResource(R.drawable.favorite_introduction_normal);
-                        isFavorite = false;
-                    }
-                    postion = holder.getPosition();
+//                        isFavorite = false;
+//                    }
+//                    postion = holder.getPosition();
+//
+//
+//
+//                }
+//            });
 
-
-
-                }
-            });
             //点赞按钮 点击事件
             iv_pager_zan.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -373,95 +374,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }
 
     }
-    //广告轮播图的  adapter
 
-//    class AdViewPagerAdapter extends CommonAdapter<AdPictureBean>{
-//        private AdPictureBean adPictureBean;
-//        @Override
-//        public int getCount() {
-//            //访问网络失败的时候
-//            if(newsAdvertDatas.size() == 0){
-//               return DEFAULUPAGER;
-//            }
-//            return newsAdvertDatas.size();
-//        }
-//
-//        @Override
-//        public boolean isViewFromObject(View view, Object object) {
-//            return view == object;
-//        }
-//
-//        @Override
-//        public Object instantiateItem(ViewGroup container, int position) {
-//            ImageView iv_lunbo = new ImageView(mActivity);
-//            iv_lunbo.setScaleType(ImageView.ScaleType.FIT_XY);
-//
-//            //如果网络差  默认图片;
-//           adPictureBean =  newsAdvertDatas.get(position);
-//            //图片url path
-//            String imageUrl = adPictureBean.getAdvertPath();
-//            if(TextUtils.isEmpty(imageUrl)){
-//                iv_lunbo.setImageResource(R.drawable.default_advert_pic);
-//            }else {
-//                bitmapUtils.display(iv_lunbo, imageUrl);
-//            }
-//
-//            //由于点下  与松开 状态不同 所以是touch  而不是click
-//            iv_lunbo.setOnTouchListener(new ImageView.OnTouchListener() {
-//
-//                private float downX;
-//                private float downY;
-//                private long starttime;
-//
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//
-//                    switch (event.getAction()) {
-//                        case MotionEvent.ACTION_DOWN:
-//                            //停止轮播;
-//                            downX = event.getX();
-//                            downY = event.getY();
-//                            starttime = System.currentTimeMillis();
-//
-//                            lunTask.stopLunbo();
-//                            break;
-//                        case MotionEvent.ACTION_MOVE:
-//                            //停止轮播;
-//                            lunTask.stopLunbo();
-//                            break;
-//                        case MotionEvent.ACTION_CANCEL:
-//                            //开始轮播;
-//                            lunTask.startLunbo();
-//                            break;
-//                        case MotionEvent.ACTION_UP:
-//
-//                            float upX = event.getX();
-//                            float upY = event.getY();
-//                            if(upX == downX &&  upY == downY){
-//                                long endtime = System.currentTimeMillis();
-//                                if(endtime -starttime < 500){
-//                                    //点击事件;
-//                                    String adPath = adPictureBean.getJumpUrl();
-//
-//System.out.println("被点击到了....." + adPath);
-//                                }
-//                            }
-//                            lunTask.startLunbo();
-//                            break;
-//
-//                        default:
-//                            break;
-//                    }
-//
-//                    return true;
-//                }
-//            });
-//
-//
-//            container.addView(iv_lunbo);
-//
-//            return iv_lunbo;
-//=======
     class AdViewPagerAdapter extends CommonAdapter<AdPictureBean>{
 
 
@@ -495,7 +408,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 break;
             case HttpConstant.NOTIFY_GET_ADVERT:
                 //获取轮播图数据
-                newsAdvertDatas.clear();
+                newsAdvertDatas = null;
+                newsAdvertDatas = new ArrayList<AdPictureBean>();
                 newsAdvertDatas.addAll((List<AdPictureBean>) o);
 
                 //mNewsAdapter.notifyDataSetChanged();
