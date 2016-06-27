@@ -42,6 +42,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
 
     private List<AdPictureBean> newsLunboDatas = new ArrayList<AdPictureBean>();
     private ImageOptions imageOptions;
+    private NewsViewPagerAdapter newsAdapter;
 
 
     @Override
@@ -56,8 +57,9 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
             case HttpConstant.NOTIFY_GET_ADVERT:
                 //获取轮播图数据
 //                newsLunboDatas.clear();
-//                newsLunboDa/tas.addAll((List<AdPictureBean>) o);
+//                newsLunboDatas.addAll((List<AdPictureBean>) o);
 
+//                newsAdapter.notifyDataSetChanged();
         }
 
         }
@@ -89,8 +91,8 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
     }
 
     private void initNewsLunBo(){
-        //新闻轮播图;
-        RecommendGallery  mNewsLuobo = (RecommendGallery) getView().findViewById(R.id.point_gallery_hotspot);
+        //轮播图;
+        RecommendGallery mNewsLuobo = (RecommendGallery) getView().findViewById(R.id.point_gallery_hotspot);
         //轮播图的点的视图;
         RecommendPot adPotView = (RecommendPot) getView().findViewById(R.id.hotspot_ad_pot);
         newsLunboDatas.add(new AdPictureBean());
@@ -99,12 +101,11 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         adPotView.setIndicatorChildCount(newsLunboDatas.size());
         mNewsLuobo.initSelectePoint(adPotView);
 
-        NewsViewPagerAdapter newsAdapter = new NewsViewPagerAdapter(getActivity(),newsLunboDatas,R.layout.ad_gallery_item);
+        newsAdapter = new NewsViewPagerAdapter(getActivity(),newsLunboDatas, R.layout.ad_gallery_item);
         mNewsLuobo.setAdapter(newsAdapter);
     }
 
     class NewsViewPagerAdapter extends CommonAdapter<AdPictureBean>{
-
 
         public NewsViewPagerAdapter(Context context, List<AdPictureBean> datas, int layoutId){
             super(context, datas, layoutId);

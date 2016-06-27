@@ -408,11 +408,12 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 break;
             case HttpConstant.NOTIFY_GET_ADVERT:
                 //获取轮播图数据
-                newsAdvertDatas = null;
-                newsAdvertDatas = new ArrayList<AdPictureBean>();
+//                newsAdvertDatas = null;
+//                newsAdvertDatas = new ArrayList<AdPictureBean>();
+                newsAdvertDatas.clear();
                 newsAdvertDatas.addAll((List<AdPictureBean>) o);
 
-                //mNewsAdapter.notifyDataSetChanged();
+                adAdapter.notifyDataSetChanged();
                 break;
         }
     }

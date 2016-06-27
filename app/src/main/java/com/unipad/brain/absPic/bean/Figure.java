@@ -15,7 +15,7 @@ public class Figure {
         this.path = path;
         this.rawId = rawId;
     }
-
+    public Figure(){};
     public String getPath() {
         return path;
     }
