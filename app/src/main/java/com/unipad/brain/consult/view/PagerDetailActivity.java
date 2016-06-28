@@ -29,10 +29,8 @@ public class PagerDetailActivity extends BasicActivity implements IDataObserver 
 //        mActivity.get
         setContentView(R.layout.activity_pagerdetail);
 
-        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
-        service.registerObserver(HttpConstant.NOTIFY_GET_DETAIL, this);
-
-
+//        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
+//        service.registerObserver(HttpConstant.NOTIFY_GET_DETAIL, this);
 
     }
 
