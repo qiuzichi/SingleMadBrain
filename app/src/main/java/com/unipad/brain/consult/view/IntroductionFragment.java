@@ -287,7 +287,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             if (newEntity.getIsLike()) {
                 iv_pager_zan.setImageResource(R.drawable.favorite_introduction_check);
             } else {
-                //默认情况下 
+                //默认情况下
                 iv_pager_zan.setImageResource(R.drawable.favorite_introduction_normal);
             }
 
