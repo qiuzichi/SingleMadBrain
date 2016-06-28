@@ -68,6 +68,7 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public double getScore() {
+
         return 0;
     }
 
@@ -84,11 +85,9 @@ public class FigureService extends AbsBaseGameService{
     @Override
     public void initResourse(String soursePath) {
         super.initResourse(soursePath);
-
         String dir  = soursePath.substring(0, soursePath.lastIndexOf('.'));
         File fiel = new File(dir);
         if (fiel.exists() && fiel.isDirectory()) {
-
             String[] fileList = fiel.list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {
