@@ -15,7 +15,7 @@ import static android.support.v7.widget.ViewUtils.isLayoutRtl;
 
 @SuppressWarnings("deprecation")
 public class RecommendGallery extends Gallery implements OnItemSelectedListener{
-    private static final int DELAY_TIME = 6000;
+    private static final int DELAY_TIME = 5000;
     private static final int SELECTE_MSG = 1;
     private RecommendPot mRecommendPot;
     private ViewPager mViewPager;

@@ -5,6 +5,9 @@ import com.unipad.http.HitopAdList;
 import com.unipad.http.HitopNewsList;
 import com.unipad.http.HitopNewsOperate;
 import com.unipad.observer.GlobleObserService;
+
+import org.xutils.common.Callback;
+
 /**
  * Created by gongkan on 2016/6/13.
  */
@@ -24,7 +27,10 @@ public class NewsService extends GlobleObserService implements ICoreService{
         return newsOperate.getResonse();
     }
 
-
+    public void getNewsOperate(String articleId, String method, String methodType, String content, int contentType,Callback.CommonCallback<String> callback){
+        HitopNewsOperate newsOperate = new HitopNewsOperate(articleId,method,methodType,content, contentType);
+        newsOperate.post(callback);
+    }
 
     @Override
     public boolean init() {

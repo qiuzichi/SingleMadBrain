@@ -58,14 +58,18 @@ import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HttpConstant;
 
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.LogUtil;
 
 
+import org.xutils.common.Callback;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 推荐
@@ -79,7 +83,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private List<NewsOperateBean> newsOperateDatas = new ArrayList<NewsOperateBean>();
     private List<AdPictureBean> newsAdvertDatas = new ArrayList<AdPictureBean>();
     private NewsService service;
-    private View view;
+
 
     private int postion ;
     private PopupWindow mPopupWindows;
@@ -88,18 +92,10 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private EditText et_commment;
     private Button btn_commit;
     private NewEntity newEntity;
-    private MyAdapter mNewsAdapter;
-    private View mAdvertPager;
-    private TextView tv_title;
-    private TextView tv_detail;
+    private NewsListAdapter mNewsAdapter;
     private AdViewPagerAdapter adAdapter;
     private RecommendGallery mAdvertLuobo;
-    //当无网络的时候 默认显示4个 广告轮播图
-    private static final int DEFAULUPAGER = 4;
-    private BitmapUtils bitmapUtils;
-    private LinearLayout ll_point;
-    //记录viewpager上面点击在那个画面;
-    private int selectPicIndex;
+
     private RecommendPot adPotView;
     private ImageOptions imageOptions;
 
@@ -111,33 +107,32 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
-        initEvent();
 
         initPopupWindows();
+
         service.getNews("00001", null, 1, 10);
         service.getAdverts("00001");
-
-        //开发播放
-        imageOptions = new ImageOptions.Builder()
-
-                        // 加载中或错误图片的ScaleType
-                        //.setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                        //设置加载过程中的图片
-                .setLoadingDrawableId(R.drawable.default_advert_pic)
-                        //设置加载失败后的图片
-                .setFailureDrawableId(R.drawable.default_advert_pic)
-                        //设置使用缓存
-                .build();
-
-
+        //播放轮播广告
+        startLunPic();
     }
 
     private void initData() {
-        //进行bitmap初始化
-        bitmapUtils = new BitmapUtils(mActivity);
-        mListViewTab = (ListView) getView().findViewById(R.id.lv_introduction_listview);
+        //初始化轮播图
+        initLunPic();
 
+
+        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
+        service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
+        service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
+        service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
+
+        mListViewTab = (ListView) getView().findViewById(R.id.lv_introduction_listview);
+        mNewsAdapter = new NewsListAdapter(mActivity, newsDatas, R.layout.item_listview_introduction);
+        mListViewTab.setAdapter(mNewsAdapter);
+
+    }
+
+    private void initLunPic(){
         //广告轮播图;
         mAdvertLuobo = (RecommendGallery) getView().findViewById(R.id.point_gallery);
         //轮播图的点的视图;
@@ -150,25 +145,28 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
         mAdvertLuobo.setAdapter(adAdapter);
+    }
 
-        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
-        service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
+    private void startLunPic(){
+        //开始播放
+        imageOptions = new ImageOptions.Builder()
 
-
-        service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
-
-        service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
-
-        mNewsAdapter = new MyAdapter(mActivity, newsDatas, R.layout.item_listview_introduction);
-        mListViewTab.setAdapter(mNewsAdapter);
-        //将轮播图放在listview 的头文件
-//        mListViewTab.addHeaderView(mAdvertPager);
+                // 加载中或错误图片的ScaleType
+                //.setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
+                .setImageScaleType(ImageView.ScaleType.FIT_XY)
+                        //设置加载过程中的图片
+                .setLoadingDrawableId(R.drawable.default_advert_pic)
+                        //设置加载失败后的图片
+                .setFailureDrawableId(R.drawable.default_advert_pic)
+                        //设置使用缓存
+                .build();
 
     }
 
-    private void initEvent(){
-
+    private void setNewEntity(NewEntity newEntity){
+        this.newEntity = newEntity;
     }
+
     private void initPopupWindows(){
         mPopupView = View.inflate(mActivity, R.layout.popup_windows_comment, null);
         //评论内容
@@ -195,7 +193,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }
         });
 
-        mPopupWindows = new PopupWindow(mPopupView, 300, -2, true);
+        mPopupWindows = new PopupWindow(mPopupView, 500, -2, true);
 
         mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //动画效果;
@@ -245,24 +243,18 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     }
     //listview  的 adapter
-    private class MyAdapter extends CommonAdapter<NewEntity> {
-        private Boolean isFavorite; //标示每个item 进行操作方式
-        private Boolean isZan; //标示每个item 进行点赞方式
+    private class NewsListAdapter extends CommonAdapter<NewEntity> {
 
 
-
-        public MyAdapter(Context context, List<NewEntity> datas, int layoutId) {
+        public NewsListAdapter(Context context, List<NewEntity> datas, int layoutId) {
             super(context, datas, layoutId);
         }
 
         @Override
         public void convert(final ViewHolder holder, final NewEntity newEntity) {
             //设置  缩略图
-            final ImageView iv_picture =  (ImageView) holder.getView(R.id.iv_item_introduction_icon);
-
-
-
-//            new HttpUtils().send(HttpRequest.HttpMethod.GET, newEntity.getThumbUrl(), new RequestCallBack<Bitmap>() {
+            final ImageView iv_picture = (ImageView) holder.getView(R.id.iv_item_introduction_icon);
+//            new HttpUtils().send(HttpMethod.GET, newEntity.getThumbUrl(), new RequestCallBack<Bitmap>() {
 //                @Override
 //                public void onSuccess(ResponseInfo<Bitmap> responseInfo) {
 //                    // 请求成功
@@ -276,88 +268,82 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 //                }
 //            });
 
-           //设置标题
+            //设置标题
             ((TextView) holder.getView(R.id.tv_item_introduction_news_title)).setText(newEntity.getTitle());
             //设置更新时间
             ((TextView) holder.getView(R.id.tv_item_introduction_updatetime)).setText(newEntity.getPublishDate());
             //分割线
-             View view_line_split = (View)holder.getView(R.id.view_line_item_introduction);
+            View view_line_split = (View) holder.getView(R.id.view_line_item_introduction);
 
-            //喜欢的imagebutton
-            ImageView iv_pager_favorite  = (ImageView) holder.getView(R.id.iv_item_introduction_favorite);
             //点赞的imagebutton
-            ImageView iv_pager_zan  = (ImageView) holder.getView(R.id.iv_item_introduction_zan);
+            final ImageView iv_pager_zan = (ImageView) holder.getView(R.id.iv_item_introduction_zan);
             //评论
-            final ImageView iv_pager_comment  = (ImageView) holder.getView(R.id.iv_item_introduction_comment);
-            //分享的imagebutton
-            ImageView iv_pager_share  = (ImageView) holder.getView(R.id.iv_item_introduction_share);
-//            //查看详情
+            final ImageView iv_pager_comment = (ImageView) holder.getView(R.id.iv_item_introduction_comment);
+
 //            TextView tv_checkDetail  = (TextView) holder.getView(R.id.tv_item_introduction_detail);
             //查看详情的 relative
-            RelativeLayout rl_checkDetail =  holder.getView(R.id.rl_item_introduction_detail);
+            RelativeLayout rl_checkDetail = holder.getView(R.id.rl_item_introduction_detail);
+
+            if (newEntity.getIsLike()) {
+                iv_pager_zan.setImageResource(R.drawable.favorite_introduction_check);
+            } else {
+                //默认情况下 
+                iv_pager_zan.setImageResource(R.drawable.favorite_introduction_normal);
+            }
 
 
-            //点击收藏
-//            iv_pager_favorite.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    //发送网络请求 数据
-//
-//                    if(!isFavorite){
-                        //更新界面图标
-//                        service.getNewsOperate(newEntity.getId(), "0", "true", "0", 0);
-//                        new AsyncTask<String, Void, Boolean>() {
-//
-//                            @Override
-//                            protected Boolean doInBackground(String... params) {
-//
-//                                return  service.getNewsOperate(newEntity.getId(), "0", "false", "0", 0);
-//                            }
-//
-//                            @Override
-//                            protected void onPostExecute(Boolean success) {
-//                                if (success) {
-//
-//                                }
-//
-//                            }
-//                        }.execute();
-
-
-//                      iv_pager_favorite.setImageResource(R.drawable.favorite_introduction_check);
-//                        isFavorite = true;
-
-//                    }else {
-
-//                      iv_pager_favorite.setImageResource(R.drawable.favorite_introduction_normal);
-//                        isFavorite = false;
-//                    }
-//                    postion = holder.getPosition();
-//
-//
-//
-//                }
-//            });
-
-            //点赞按钮 点击事件
+            //点赞  点击事件
             iv_pager_zan.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
 
+                    Log.e("", "dianzao kai shi !!!!");
+                    service.getNewsOperate(newEntity.getId(), "1", String.valueOf(!newEntity.getIsLike()), "0", 0,
+                            new Callback.CommonCallback<String>() {
+                                @Override
+                                public void onSuccess(String s) {
+                                    newEntity.setIsLike(!newEntity.getIsLike());
+                                    if (newEntity.getIsLike()) {
+                                        //点击之后 变为check
+                                        iv_pager_zan.setImageResource(R.drawable.favorite_introduction_check);
+                                    } else {
+                                        iv_pager_zan.setImageResource(R.drawable.favorite_introduction_normal);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable, boolean b) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(CancelledException e) {
+
+                                }
+
+                                @Override
+                                public void onFinished() {
+
+                                }
+
+                            });
+
                 }
             });
+
+
             //评论的点击事件
             iv_pager_comment.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     //先做弹出窗体  然后 输入文本信息;
-                    int[] location  = new int[2];
+                    int[] location = new int[2];
                     iv_pager_comment.getLocationInWindow(location);
 
-                    showPopupWindows(iv_pager_comment, location[0] + 10, location[1]);
-//                    setNewEntity(newEntity);
+                    showPopupWindows(iv_pager_comment, location[0] + 30, location[1]);
+                    setNewEntity(newEntity);
                 }
             });
             //查看详情点击
@@ -365,14 +351,13 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 @Override
                 public void onClick(View v) {
                     //查看详情的界面
-//                    switchPagerClickButton.switchPagerFragment(newEntity.getId());
                     Intent intent = new Intent(mActivity, PagerDetailActivity.class);
-                    intent.putExtra("pagetId",newEntity.getId());
+                    intent.putExtra("pagetId", newEntity.getId());
                 }
             });
 
-        }
 
+        }
     }
 
     class AdViewPagerAdapter extends CommonAdapter<AdPictureBean>{
@@ -392,12 +377,13 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
 
 
-    //用于网络请求数据 key 是网页的id   o是json数据
+    //用于网络请求数据 key 是网页的id   o是解析后的list数据
     @Override
     public void update(int key, Object o) {
         switch (key) {
             case HttpConstant.NOTIFY_GET_NEWS:
                 //发送网络请求 获取新闻页面数据
+                newsDatas.clear();
                 newsDatas.addAll((List<NewEntity>) o);
                 mNewsAdapter.notifyDataSetChanged();
                 break;
@@ -414,6 +400,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 newsAdvertDatas.addAll((List<AdPictureBean>) o);
 
                 adAdapter.notifyDataSetChanged();
+                break;
+            default:
                 break;
         }
     }

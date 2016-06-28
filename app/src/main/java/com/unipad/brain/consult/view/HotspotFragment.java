@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
 import com.unipad.brain.R;
@@ -43,7 +46,10 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
 
     private List<AdPictureBean> newsLunboDatas = new ArrayList<AdPictureBean>();
     private ImageOptions imageOptions;
+    //广告轮播图adapter
     private NewsViewPagerAdapter newsAdapter;
+    //listview adapter
+    private HotspotAdapter mHotspotAdapter;
 
 
     @Override
@@ -52,18 +58,19 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
             case HttpConstant.NOTIFY_GET_HOTSPOT:
                 //发送网络请求 获取热点页面数据
                 newsDatas.addAll((List<NewEntity>) o);
-//                mNewsAdapter.notifyDataSetChanged();
+                mHotspotAdapter.notifyDataSetChanged();
                 break;
 
-            case HttpConstant.NOTIFY_GET_ADVERT:
+            case HttpConstant.NOTIFY_GET_HOTADVERT:
                 //获取轮播图数据
                 newsLunboDatas.clear();
                 newsLunboDatas.addAll((List<AdPictureBean>) o);
 
                 newsAdapter.notifyDataSetChanged();
+                break;
         }
 
-        }
+    }
     @Override
     public int getLayoutId() {
         return R.layout.fragment_hotspot;
@@ -76,7 +83,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         getNews("00003", null, 1, 10);
 
         //获取广告的数据
-        service.getAdverts("00001");
+        service.getAdverts("00002");
     }
 
 
@@ -85,11 +92,17 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         //注册服务；
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_HOTSPOT, this);
-        service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
+        service.registerObserver(HttpConstant.NOTIFY_GET_HOTADVERT, this);
+
         //初始化 轮播图
         initNewsLunBo();
         //播放轮播图；
         startPlayLunPic();
+
+        //初始化新闻条目；
+        ListView mListView = (ListView) getView().findViewById(R.id.lv_hotspot_listview);
+        mHotspotAdapter = new HotspotAdapter(getActivity(), newsDatas, R.layout.item_listview_hotspot );
+        mListView.setAdapter(mHotspotAdapter);
 
     }
 
@@ -108,7 +121,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         mNewsLuobo.setAdapter(newsAdapter);
     }
 
-    class NewsViewPagerAdapter extends CommonAdapter<AdPictureBean>{
+    private class NewsViewPagerAdapter extends CommonAdapter<AdPictureBean>{
 
         public NewsViewPagerAdapter(Context context, List<AdPictureBean> datas, int layoutId){
             super(context, datas, layoutId);
@@ -121,17 +134,48 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         }
 
     }
+    //热点新闻条目的 adapter
+    private class HotspotAdapter extends CommonAdapter<NewEntity> {
+
+        public HotspotAdapter(Context context, List<NewEntity> datas, int layoutId) {
+            super(context, datas, layoutId);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, NewEntity newEntity) {
+            //图片的
+            ImageView iv_pic = holder.getView(R.id.iv_item_hotspot_icon);
+            //设置标题
+            ((TextView)holder.getView(R.id.tv_item_hotspot_news_title)).setText(newEntity.getTitle());
+            //设置更新时间
+            ((TextView) holder.getView(R.id.tv_item_hotspot_updatetime)).setText(newEntity.getPublishDate());
+            //分割线
+            View view_line_split = (View)holder.getView(R.id.view_line_item_hotspot);
+
+
+            //点赞的imagebutton
+            ImageView iv_pager_zan  = (ImageView) holder.getView(R.id.iv_item_hotspot_zan);
+
+            //评论
+            final ImageView iv_pager_comment  = (ImageView) holder.getView(R.id.iv_item_hotspot_comment);
+
+            //查看详情的 relative
+            RelativeLayout rl_checkDetail =  holder.getView(R.id.rl_item_hotspot_detail);
+
+        }
+    }
 
     private void getNews(String contentType,String title,int page,int size ){
         service.getNews(contentType,title,page,size );
     }
+
     private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_HOTSPOT, this);
 
-        service.unRegisterObserve(HttpConstant.NOTIFY_GET_ADVERT, this);
+        service.unRegisterObserve(HttpConstant.NOTIFY_GET_HOTADVERT, this);
     }
-    //播放轮播图；
 
+    //播放轮播图；
     private void startPlayLunPic(){
 
         imageOptions = new ImageOptions.Builder()
