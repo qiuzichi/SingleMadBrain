@@ -225,5 +225,6 @@
     <string name="ranking">排名</string>
     <string name="icon">人名头像记忆</string>
 
-
+    <string name="consult_present">最新资讯</string>
+    <string name="competition_present">最新赛事</string>
 </resources>

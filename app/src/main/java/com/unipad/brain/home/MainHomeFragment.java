@@ -84,4 +84,5 @@ public class MainHomeFragment extends MainBasicFragment {
         //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
         transaction.commit();
     }
+
 }

@@ -115,6 +115,8 @@ public class HttpConstant {
     public static final int NOTIFY_GET_ADVERT = 0x20003;
     //获取赛事资讯
     public static final int NOTIFY_GET_COMPETITION = 0x20004;
+    //获取热点
+    public static final int NOTIFY_GET_HOTSPOT = 0x20005;
 
 
 }

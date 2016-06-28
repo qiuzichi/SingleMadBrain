@@ -59,7 +59,7 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
                         bean.setAdvertId(jsonObj2.getString("id"));
                         bean.setJumpType(jsonObj2.getString("jumpType"));
                         bean.setJumpUrl(jsonObj2.getString("jumpUrl"));
-                        bean.setAdvertPath("http://192.168.0.104:8090/crazybrain-mng/image/getFile?filePath="+jsonObj2.getString("path"));
+                        bean.setAdvertPath(HttpConstant.PATH_FILE_URL+jsonObj2.getString("path"));
                         adList.add(bean);
         Log.i("hitopadlist", adList.size()+ "  " + bean.getAdvertPath());
                     }
