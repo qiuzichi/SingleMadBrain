@@ -6,9 +6,9 @@ package com.unipad.brain.absPic.bean;
 public class Figure {
 
     private String path;
-
+    // 行号
     private int rawId;
-
+    // 答卷 题目
     private int answerId;
 
     public Figure(String path, int rawId) {
