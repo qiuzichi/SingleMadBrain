@@ -4,6 +4,8 @@ package com.unipad.brain.consult.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,12 +32,11 @@ import java.util.List;
  * Created by Administrator on 2016/6/20.
  */
 public class OccasionsFragment extends MainBasicFragment implements IDataObserver {
-
+        private String TAG;
         private ListView mListViewTab;
         private List<NewEntity> occasionData = new ArrayList<NewEntity>();
         private NewsService service;
-        private View view;
-        private MyAdapter mNewsAdapter;
+        private MyNewsListAdapter mNewsAdapter;
         private int postion ;
         private NewEntity newEntity;
 
@@ -63,7 +64,7 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
             service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
             service.registerObserver(HttpConstant.NOTIFY_GET_COMPETITION, this);
 
-            mNewsAdapter = new MyAdapter(mActivity, occasionData, R.layout.item_listview_occasions);
+            mNewsAdapter = new MyNewsListAdapter(mActivity, occasionData, R.layout.item_listview_occasions);
             mListViewTab.setAdapter(mNewsAdapter);
         }
         private void clear(){
@@ -78,6 +79,7 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
 
         @Override
         public int getLayoutId() {
+            Log.d(tag(), "occasion fragment is run");
             return  R.layout.fragment_occasions;
         }
 
@@ -86,13 +88,13 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
 
         }
 
-        class MyAdapter extends CommonAdapter<NewEntity> {
+        class MyNewsListAdapter extends CommonAdapter<NewEntity> {
             private Boolean isFavorite; //标示每个item 进行操作方式
             private Boolean isZan; //标示每个item 进行点赞方式
 
 
 
-            public MyAdapter(Context context, List<NewEntity> datas, int layoutId) {
+            public MyNewsListAdapter(Context context, List<NewEntity> datas, int layoutId) {
                 super(context, datas, layoutId);
             }
 
@@ -117,16 +119,16 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
                 RelativeLayout rl_checkDetail =  holder.getView(R.id.rl_item_occasion_detail);
 
 
-                //点击收藏
-                iv_pager_favorite.setOnClickListener(new View.OnClickListener() {
+//                //点击收藏
+//                iv_pager_favorite.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        //发送网络请求 数据
 
-                    @Override
-                    public void onClick(View v) {
-                        //发送网络请求 数据
-
-                        if(!isFavorite){
-                            //更新界面图标
-                            service.getNewsOperate(newEntity.getId(), "0", "true", "0", 0);
+//                        if(!isFavorite){
+//                            //更新界面图标
+//                            service.getNewsOperate(newEntity.getId(), "0", "true", "0", 0);
 //                        new AsyncTask<String, Void, Boolean>() {
 //
 //                            @Override
@@ -146,19 +148,19 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
 
 
 //                      iv_pager_favorite.setImageResource(R.drawable.favorite_introduction_check);
-                            isFavorite = true;
+//                            isFavorite = true;
 
-                        }else {
-
-//                      iv_pager_favorite.setImageResource(R.drawable.favorite_introduction_normal);
-                            isFavorite = false;
-                        }
-                        postion = holder.getPosition();
-
-
-
-                    }
-                });
+//                        }else {
+//
+////                      iv_pager_favorite.setImageResource(R.drawable.favorite_introduction_normal);
+//                            isFavorite = false;
+//                        }
+//                        postion = holder.getPosition();
+//
+//
+//
+//                    }
+//                });
                 //点赞按钮 点击事件
                 iv_pager_zan.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -213,5 +215,11 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
 
             }
         }
+    private String tag(){
+        if(TextUtils.isEmpty(TAG)){
+            TAG = this.getClass().getSimpleName();
+        }
+        return TAG;
+    }
 
 }

@@ -17,6 +17,7 @@ import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
 import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopFeedback;
+import com.unipad.http.HitopFollow;
 import com.unipad.http.HitopGetQuestion;
 import com.unipad.http.HitopHistRecord;
 import com.unipad.http.HitopLogin;
@@ -212,6 +213,12 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
     public void getHistoryRecord(String startTime, String endTime) {
         HitopHistRecord hitopRecord = new HitopHistRecord(-1,startTime,endTime,1,20);
         hitopRecord.post();
+    }
+    public void getFollwList(String uid) {
+        HitopFollow hitopFollow=new HitopFollow();
+        hitopFollow.buildRequestParams("userId",uid);
+        hitopFollow.setSevice(this);
+        hitopFollow.post();
     }
 
 }

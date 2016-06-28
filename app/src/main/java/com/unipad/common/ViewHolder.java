@@ -98,6 +98,15 @@ public class ViewHolder
 		return this;
 	}
 
+	public ViewHolder setTextResource(int viewId, int textId){
+		if(mContext == null)return null;
+		String str = mContext.getResources().getString(textId);
+		if(str == null){
+			str = "";
+		}
+		return setText(viewId, str);
+	}
+
 	public ViewHolder setImageResource(int viewId, int resId)
 	{
 		ImageView view = getView(viewId);

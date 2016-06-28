@@ -196,7 +196,7 @@
     <string name="util_pic_notuse_hint">您选择的不是有效的图片</string>
     <string name="util_affirm">确认</string>
     <string name="util_getpicfile_failed">未得到相片路径</string>
-    <string name= "tailor_fail">裁剪失败</string>
+    <string name="tailor_fail">裁剪失败</string>
     <string name="input_day">请选择生日</string>
     <string name="input_nation">请选择国家</string>
     <string name="in_game">进入比赛</string>
@@ -205,6 +205,7 @@
     <string name="error_apply">您没有报名任何赛事</string>
     <string name="not_game">离比赛开始还有30分钟以上，暂时无法进入比赛</string>
     <string name="gameed">赛事已过期，无法进去比赛</string>
+    <string name="error_follow">您没有关注任何赛事</string>
 
     <string name="news_title">新闻标题</string>
     <string name="check_detail">查看详情</string>
@@ -224,5 +225,6 @@
     <string name="ranking">排名</string>
     <string name="icon">人名头像记忆</string>
 
-
+    <string name="consult_present">最新资讯</string>
+    <string name="competition_present">最新赛事</string>
 </resources>

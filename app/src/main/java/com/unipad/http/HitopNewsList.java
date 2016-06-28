@@ -66,7 +66,7 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
                         NewEntity bean = new NewEntity();
                         JSONObject jsonObj2 = jsonArray.getJSONObject(i);
                         bean.setBrief(jsonObj2.getString("brief"));
-                        bean.setThumbUrl(jsonObj2.getString("pictureUrl"));
+                        bean.setThumbUrl(HttpConstant.PATH_FILE_URL + jsonObj2.getString("pictureUrl"));
                         bean.setPublishDate(jsonObj2.getString("createDate"));
                         bean.setTitle(jsonObj2.getString("title"));
                         bean.setId(jsonObj2.getString("id"));
@@ -78,7 +78,16 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
         }catch (Exception e) {
             return null;
         }
-        ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(HttpConstant.NOTIFY_GET_NEWS,newsList);
+        int key =HttpConstant.NOTIFY_GET_NEWS;
+
+        if ("00001".equals(contenttype)){
+            key = HttpConstant.NOTIFY_GET_NEWS;
+        } else if ("00002".equals(contenttype)){
+            key = HttpConstant.NOTIFY_GET_COMPETITION;
+        }else if ("00003".equals(contenttype)) {
+            key = HttpConstant.NOTIFY_GET_HOTSPOT;
+        }
+        ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(key,newsList);
         return null;
     }
 
