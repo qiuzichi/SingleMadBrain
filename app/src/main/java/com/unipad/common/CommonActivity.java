@@ -26,6 +26,8 @@ import com.unipad.observer.IDataObserver;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
+import java.util.Map;
+
 /**
  * Created by Wbj on 2016/4/7.
  */
@@ -199,7 +201,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     }
 
     @Override
-    public void downloadingQuestion() {
+    public void downloadingQuestion(Map<String,String> data) {
         handler.sendEmptyMessage(DOWNLOAD_QUESTION);
 
     }

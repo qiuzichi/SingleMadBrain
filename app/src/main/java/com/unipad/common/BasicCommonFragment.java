@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.unipad.IOperateGame;
 import com.unipad.brain.AbsBaseGameService;
 
+import java.util.Map;
+
 public abstract class BasicCommonFragment extends Fragment implements
         View.OnClickListener, CommonFragment.ICommunicate ,IOperateGame{
     protected CommonActivity mActivity;
@@ -66,7 +68,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     }
 
     @Override
-    public void downloadingQuestion() {
+    public void downloadingQuestion(Map<String,String> map) {
 
     }
 

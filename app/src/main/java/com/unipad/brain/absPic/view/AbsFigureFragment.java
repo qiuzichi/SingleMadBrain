@@ -131,6 +131,12 @@ public class AbsFigureFragment extends BasicCommonFragment {
         }
     }
 
+    @Override
+    public void initDataFinished() {
+        adapter.notifyDataSetChanged();
+
+    }
+
     private class FigureAdapter extends CommonAdapter<Figure> {
         public FigureAdapter(Context context, List<Figure> datas, int layoutId) {
             super(context, datas, layoutId);

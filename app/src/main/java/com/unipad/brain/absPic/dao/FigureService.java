@@ -1,6 +1,7 @@
 package com.unipad.brain.absPic.dao;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.unipad.ICoreService;
@@ -8,6 +9,9 @@ import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.App;
 import com.unipad.brain.absPic.bean.Figure;
 import com.unipad.brain.portraits.bean.Person;
+import com.unipad.common.Constant;
+import com.unipad.http.HitopDownLoad;
+import com.unipad.http.HitopGetQuestion;
 import com.unipad.utils.LogUtil;
 
 import java.io.File;
@@ -18,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -98,12 +103,41 @@ public class FigureService extends AbsBaseGameService{
             });
 
             for (int i = 0; i < fileList.length; i++) {
-                    allFigures.add(new Figure(fileList[i], i % 5 +1));
+                    allFigures.add(new Figure(dir+File.separator+fileList[i], i % 5 +1));
             }
         }
-        setIsInitResourseAready(true);
-        if (IsALlAready()) {
+
+
             initDataFinished();
-        }
+
     }
+
+    @Override
+    public void downloadingQuestion(Map<String, String> data) {
+        super.downloadingQuestion(data);
+        handDownQuestion(data);
+    }
+
+    private void handDownQuestion(Map<String, String> data) {
+            String fileDir = Constant.GAME_FILE_PATH;
+            HitopDownLoad httpDown = new HitopDownLoad();
+            httpDown.setMatchId(data.get("SCHEDULEID"));
+            httpDown.buildRequestParams("questionId", data.get("QUESTIONID"));
+            String filePath;
+            String fileData = data.get("VOICE");
+            if (TextUtils.isEmpty(fileData)) {
+                filePath = fileDir + "/question.zip";
+
+            } else {
+                String taile = fileData.split(".")[1];
+                filePath = fileDir + "/voice" + taile;
+
+            }
+            File file = new File(filePath);
+            if (file.exists()) {
+                file.delete();
+            }
+            httpDown.setService(this);
+            httpDown.downLoad(filePath);
+        }
 }

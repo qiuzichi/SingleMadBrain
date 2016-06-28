@@ -25,6 +25,8 @@ import com.unipad.utils.CountDownTime;
 
 import org.xutils.x;
 
+import java.util.Map;
+
 /**
  * Created by Wbj on 2016/4/7.
  */
@@ -211,7 +213,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     }
 
     @Override
-    public void downloadingQuestion() {
+    public void downloadingQuestion(Map<String,String> data) {
 
     }
 

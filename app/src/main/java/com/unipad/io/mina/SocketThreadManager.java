@@ -111,9 +111,8 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Map<String, String> data = response.getDatas();
         if (IOConstant.SEND_QUESTIONS.equals(data.get("TRXCODE"))) {//收到服务器下发试题的通知
             if (service != null) {
-                service.downloadingQuestion();
+                service.downloadingQuestion(data);
             }
-            handDownQuestion(data);
         }else if(IOConstant.GAME_START.equals(data.get("TRXCODE"))){
             if (service != null) {
                 service.startGame();
@@ -133,38 +132,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         }
     }
 
-    private void handDownQuestion(Map<String, String> data) {
-        String projectId = data.get("PROJECTID");
-        if (Constant.GAME_ABS_PICTURE.equals(projectId) || Constant.GAME_LISTON_AND_MEMORY_WORDS.equals(projectId)
-                || Constant.GAME_PORTRAITS.equals(projectId)) {
-            String fileDir = Constant.GAME_FILE_PATH;
-            HitopDownLoad httpDown = new HitopDownLoad();
-            httpDown.setMatchId(data.get("SCHEDULEID"));
-            httpDown.buildRequestParams("questionId", data.get("QUESTIONID"));
-            String filePath;
-            String fileData = data.get("VOICE");
-            if (TextUtils.isEmpty(fileData)) {
-                filePath = fileDir + "/question.zip";
 
-            } else {
-                String taile = fileData.split(".")[1];
-                filePath = fileDir + "/voice" + taile;
-
-            }
-            File file = new File(filePath);
-            if (file.exists()) {
-                file.delete();
-            }
-            httpDown.setService(service);
-            httpDown.downLoad(filePath);
-        }
-        if (!Constant.GAME_ABS_PICTURE.equals(projectId)) {
-            HitopGetQuestion httpGetQuestion = new HitopGetQuestion();
-            httpGetQuestion.buildRequestParams("questionId", data.get("QUESTIONID"));
-            httpGetQuestion.setService(service);
-            httpGetQuestion.post();
-        }
-    }
 
     public void clear() {
 
