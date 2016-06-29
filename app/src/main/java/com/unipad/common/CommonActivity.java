@@ -196,7 +196,13 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     @Override
     public void initDataFinished() {
-        SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId,100);
+        new Thread(){
+            @Override
+            public void run() {
+                SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId, 100);
+            }
+        }.start();
+
         handler.sendEmptyMessage(INIT_DATA_FINISH);
     }
 

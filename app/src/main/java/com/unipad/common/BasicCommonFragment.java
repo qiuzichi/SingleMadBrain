@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+
 
 import com.unipad.IOperateGame;
-import com.unipad.brain.AbsBaseGameService;
+import com.unipad.brain.R;
+
 
 import java.util.Map;
 
@@ -16,10 +19,12 @@ public abstract class BasicCommonFragment extends Fragment implements
     protected CommonActivity mActivity;
     protected ViewGroup mViewParent;
     protected int memoryTime;
+    private View imageView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewParent = (ViewGroup) inflater.inflate(getLayoutId(), container, false);
-        //mViewParent.setVisibility(View.GONE);
+        imageView = inflater.inflate(R.layout.match_background,null);
+       // mViewParent.addView(imageView);
         return mViewParent;
     }
 
@@ -27,8 +32,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mActivity = (CommonActivity) getActivity();
-        mActivity.getCommonFragment().setICommunicate(this);
-        mViewParent.setVisibility(View.GONE);
+        mActivity.getCommonFragment().setICommunicate(this);;
     }
 
     @Override
@@ -44,17 +48,21 @@ public abstract class BasicCommonFragment extends Fragment implements
     public abstract int getLayoutId();
     @Override
     public void pauseGame() {
-        mViewParent.setVisibility(View.GONE);
+        ViewParent parent = imageView.getParent();
+        if (parent == null) {
+            //mViewParent.addView(imageView);
+        }
+
     }
 
     @Override
     public void startGame() {
-        mViewParent.setVisibility(View.VISIBLE);
+        //mViewParent.removeView(imageView);
     }
 
     @Override
     public void reStartGame() {
-        mViewParent.setVisibility(View.VISIBLE);
+        //mViewParent.removeView(imageView);
     }
 
     @Override

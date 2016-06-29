@@ -3,23 +3,11 @@
     android:layout_height="match_parent"
     android:background="@color/right_frg">
 
-    <ViewStub
-        android:id="@+id/view_stub_complex_item_scroll_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/number_v_memory_binary_random_marathon" />
-
-    <ViewStub
-        android:id="@+id/view_stub_listen_frg_right_memory"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/listen_frg_right_memory" />
 
     <RelativeLayout
         android:id="@+id/answer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:layout_margin="@dimen/binary_line_layout_padding">
 
         <ScrollView
@@ -44,10 +32,6 @@
             android:paddingTop="@dimen/binary_line_layout_padding" />
     </RelativeLayout>
 
-    <ViewStub
-        android:id="@+id/view_shade"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/shade_v" />
+
 
 </RelativeLayout>
