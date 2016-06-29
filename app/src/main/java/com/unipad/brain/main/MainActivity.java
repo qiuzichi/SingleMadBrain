@@ -14,6 +14,7 @@ import com.unipad.baiduservice.LocationUtils;
 import com.unipad.brain.BasicActivity;
 
 import com.unipad.brain.R;
+import com.unipad.brain.absPic.bean.Figure;
 import com.unipad.brain.consult.view.IntroductionFragment;
 import com.unipad.brain.consult.view.OccasionsFragment;
 import com.unipad.brain.dialog.ShowDialog;
@@ -77,6 +78,7 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
             showDialog.setOnShowDialogClick(this);
             showDialog.bindOnClickListener(dialogView,new int[]{R.id.img_close});
         }
+
        // mHandler.sendEmptyMessageDelayed(MSG_LOCATION, 5000);
         LocationUtils locationUtils = new LocationUtils(this);
         locationUtils.setOnLocationListener(this);

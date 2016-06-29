@@ -70,7 +70,7 @@ public class FigureService extends AbsBaseGameService{
     @Override
     public double getScore() {
 
-        return 0;
+        return absScore(1f,1f);
     }
 
 
