@@ -161,7 +161,9 @@ public abstract class HitopRequest<T>{
 
         mParams.addQueryStringParameter(key, value);
     }
-
+    public  <T> Callback.Cancelable post(Callback.CommonCallback<T> callback){
+        return x.http().post(mParams,callback);
+    }
     /*
      添加文件
      */
