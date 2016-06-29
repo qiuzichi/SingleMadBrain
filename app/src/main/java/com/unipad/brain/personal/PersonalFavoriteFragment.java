@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.unipad.AppContext;
@@ -37,8 +38,7 @@ public class PersonalFavoriteFragment extends PersonalCommonFragment implements 
         lv_follow =(ListView) mActivity.findViewById(R.id.lv_follow);
         competitionBeans = new ArrayList<CompetitionBean>();
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
-        service.registerObserver(HttpConstant.FOLLOW_OK,this);
-
+        service.registerObserver(HttpConstant.USER_FOLLOW,this);
         LogUtil.e("","onCreate");
 
     }
@@ -95,7 +95,7 @@ public class PersonalFavoriteFragment extends PersonalCommonFragment implements 
         if (competitionBeans.size() == 0){
             service.getFollwList(AppContext.instance().loginUser.getUserId());
         }
-        thisShowView = 4;
+        thisShowView = 6;
     }
 
     /*列表清空*/
@@ -107,13 +107,12 @@ public class PersonalFavoriteFragment extends PersonalCommonFragment implements 
     public void update(int key, Object o) {
         switch (key){
             case HttpConstant.USER_FOLLOW:
-
                competitionBeans.addAll((List<CompetitionBean>)o);
-               lv_follow.setAdapter(new CommonAdapter<CompetitionBean>(mActivity, competitionBeans, R.layout.personal_msg_item_layout) {
+               lv_follow.setAdapter(new CommonAdapter<CompetitionBean>(mActivity, competitionBeans, R.layout.personal_my_favorite) {
                    @Override
                    public void convert(ViewHolder holder, CompetitionBean competitionBean) {
                        holder.setText(R.id.txt_year,competitionBean.getCompetitionDate());
-                         holder.setText(R.id.txt_name,competitionBean.getName()+ "/" + competitionBean.getProjecNname());
+                         holder.setText(R.id.txt_name,competitionBean.getName());
                        holder.setText(R.id.txt_addr,competitionBean.getAddr());
                        holder.setText(R.id.txt_cost,competitionBean.getCost());
                    }

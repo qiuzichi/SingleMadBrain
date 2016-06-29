@@ -57,6 +57,7 @@ public class HitopFollow extends  HitopRequest<List<CompetitionBean>>{
                             competitionBean.setProjectId(jsonObject.getString("projectId"));
                             competitionBean.setCompetitionDate(jsonObject.getString("startDate"));
                             competitionBean.setAddr(jsonObject.getString("city"));
+                            competitionBean.setCost(jsonObject.getString("applyMoney"));
                             myFollows.add(competitionBean);
                         }
                     }
@@ -70,7 +71,7 @@ public class HitopFollow extends  HitopRequest<List<CompetitionBean>>{
 
         if (myFollows!=null){
             ((PersonCenterService)AppContext.instance().getService
-                    (Constant.PERSONCENTER)).noticeDataChange(HttpConstant.FOLLOW_OK,myFollows);
+                    (Constant.PERSONCENTER)).noticeDataChange(HttpConstant.USER_FOLLOW,myFollows);
 
         }
         return null;

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="match_parent" >
+    <LinearLayout
+        android:layout_height="140dp"
+        android:layout_width="fill_parent"
+        android:background="@color/competition"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
+            <RelativeLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="5">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:layout_centerInParent="true"
+                    android:text="@string/competition_date"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="5" >
+                <TextView
+                    android:id="@+id/txt_year"
+                    android:textColor="@color/competition_txt"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="2016"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
+            <RelativeLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="5">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:layout_centerInParent="true"
+                    android:text="@string/competition_project"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="5" >
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:textColor="@color/competition_txt"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="深圳脑王大赛/二进制数字"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
+            <RelativeLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="5">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:layout_centerInParent="true"
+                    android:text="@string/competition_addr"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="5" >
+                <TextView
+                    android:id="@+id/txt_addr"
+                    android:textColor="@color/competition_txt"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="深圳市科技园高新南一道赋安科技大厦"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
+            <RelativeLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="5">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:layout_centerInParent="true"
+                    android:text="@string/apply_cost"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_weight="5" >
+                <TextView
+                    android:id="@+id/txt_cost"
+                    android:textColor="@color/competition_txt"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="￥5.00"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:gravity="right|bottom"
+                android:layout_weight="5" >
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

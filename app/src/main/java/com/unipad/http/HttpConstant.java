@@ -97,7 +97,6 @@ public class HttpConstant {
     public static final int MODIFY_FILED = 0x18003;
     public static final int HISRECORD_OK=0x18004;
     public static final int USER_FOLLOW = 0x18007;
-    public static final int FOLLOW_OK=0x18008;
     // 获取省份列表
     public static final int GET_PROVINCE = 0x10900;
     // 根据城市列表
