@@ -2,7 +2,7 @@ package com.unipad.brain.home.bean;
 /**
  * Created by Administrator on 2016/6/23 0023.
  */
-public class HisRecord {
+public class HisRecord extends MyFollow {
     private String matchId;
     /*历史战绩*/
     private String projectId;

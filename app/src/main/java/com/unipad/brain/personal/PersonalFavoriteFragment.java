@@ -1,7 +1,10 @@
 package com.unipad.brain.personal;
-
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.unipad.AppContext;
@@ -9,8 +12,11 @@ import com.unipad.brain.R;
 import com.unipad.brain.personal.bean.CompetitionBean;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
+import com.unipad.common.ViewHolder;
+import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -27,12 +33,28 @@ public class PersonalFavoriteFragment extends PersonalCommonFragment implements 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mTitleBarRightText = mActivity.getString(R.string.clear);
-        lv_follow =(ListView) mActivity.findViewById(R.id.lv_apple);
+        mTitleBarRightText = mActivity.getString(R.string.my_follow);
+        lv_follow =(ListView) mActivity.findViewById(R.id.lv_follow);
         competitionBeans = new ArrayList<CompetitionBean>();
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
-        service.registerObserver(HttpConstant.USER_FOLLOW,this);
-        service.getFollwList(AppContext.instance().loginUser.getUserId());
+        service.registerObserver(HttpConstant.FOLLOW_OK,this);
+
+        LogUtil.e("","onCreate");
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        int i = 0;
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        LogUtil.e("","onAttach");
+
     }
 
     @Override
@@ -56,20 +78,51 @@ public class PersonalFavoriteFragment extends PersonalCommonFragment implements 
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        thisShowView = 4;
-    }
+    public void onDestroy() {
+        super.onDestroy();
 
-    /**
-     * 清空关注列表
-     */
-    private void clearFavoriteList() {
-        ToastUtil.showToast(mTitleBarRightText);
     }
 
     @Override
-    public void update(int key, Object o) {
+    public void onDestroyView() {
+        super.onDestroyView();
+        service.unregistDataChangeListenerObj(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (competitionBeans.size() == 0){
+            service.getFollwList(AppContext.instance().loginUser.getUserId());
+        }
+        thisShowView = 4;
+    }
+
+    /*列表清空*/
+    private void clearFavoriteList() {
 
     }
-}
+    /*更新UI*/
+    @Override
+    public void update(int key, Object o) {
+        switch (key){
+            case HttpConstant.USER_FOLLOW:
+
+               competitionBeans.addAll((List<CompetitionBean>)o);
+               lv_follow.setAdapter(new CommonAdapter<CompetitionBean>(mActivity, competitionBeans, R.layout.personal_msg_item_layout) {
+                   @Override
+                   public void convert(ViewHolder holder, CompetitionBean competitionBean) {
+                       holder.setText(R.id.txt_year,competitionBean.getCompetitionDate());
+                         holder.setText(R.id.txt_name,competitionBean.getName()+ "/" + competitionBean.getProjecNname());
+                       holder.setText(R.id.txt_addr,competitionBean.getAddr());
+                       holder.setText(R.id.txt_cost,competitionBean.getCost());
+                   }
+               });
+                break;
+
+           }
+
+        }
+
+    }
+

@@ -72,6 +72,10 @@
         <activity
             android:name=".consult.view.PagerDetailActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".location.LocationActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
             android:name=".personal.PersonalInfoActivty"

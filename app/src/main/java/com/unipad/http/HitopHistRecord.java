@@ -78,7 +78,8 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
             return null;
         }
         if (hisRecords != null) {
-            ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).noticeDataChange(HttpConstant.HISRECORD_OK,hisRecords);
+            ((PersonCenterService)AppContext.instance().getService
+                    (Constant.PERSONCENTER)).noticeDataChange(HttpConstant.HISRECORD_OK,hisRecords);
         }
         return null;
     }
