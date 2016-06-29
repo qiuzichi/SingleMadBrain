@@ -12,6 +12,7 @@ public class NewEntity {
      thumb	string	缩略图url
      text	string	资讯内容
      publishDate	string	发布时间		格式：yyyy-MM-dd
+
      follow_num	number	关注人数
      praise_num	number	点赞人数
      review_num	number	评论人数
@@ -34,6 +35,10 @@ public class NewEntity {
     private int praise_num;
 
     private int review_num;
+
+
+    // 0是为 点赞   1 是点赞过；
+    private  boolean isLike;
 
     public String getId() {
         return id;
@@ -98,4 +103,12 @@ public class NewEntity {
     public void setReview_num(int review_num) {
         this.review_num = review_num;
     }
+    public boolean getIsLike() {
+        return isLike;
+    }
+
+    public void setIsLike(boolean isLike) {
+        this.isLike = isLike;
+    }
+
 }

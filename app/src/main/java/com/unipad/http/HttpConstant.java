@@ -111,12 +111,14 @@ public class HttpConstant {
     public static final int NOTIFY_GET_OPERATE = 0x20001;
     //获取新闻详情
     public static final int NOTIFY_GET_DETAIL = 0x20002;
-    //获取广告轮播图
+    //获取推荐广告轮播图
     public static final int NOTIFY_GET_ADVERT = 0x20003;
     //获取赛事资讯
     public static final int NOTIFY_GET_COMPETITION = 0x20004;
     //获取热点
     public static final int NOTIFY_GET_HOTSPOT = 0x20005;
+    //获取热点广告轮播图
+    public static final int NOTIFY_GET_HOTADVERT = 0x20006;
 
 
 }
