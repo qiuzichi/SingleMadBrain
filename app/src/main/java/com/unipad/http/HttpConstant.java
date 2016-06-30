@@ -20,6 +20,9 @@ public class HttpConstant {
     public static String GET_NEWS_OPERATE = "/api/news/operate";
     //广告轮播图的 url
     public static String GET_NEWS_ADVERTPIC = "//api/advert/get";
+
+    //页面详情 url
+    public static String GET_NEWS_DETAIL = "/api/news/articles";
     // 实名认证
     public static String AUTH_PATH = "/api/user/auth";
     // 调取实名认证信息 ----在用户已经实名认证之后 调取。

@@ -51,19 +51,24 @@
     <!-- 收藏/点赞/评论/分析默认宽高 -->
     <dimen name="favorite_width">20dip</dimen>
     <dimen name="favorite_height">20dip</dimen>
+    <dimen name="comment_width">30dip</dimen>
+
 
 
     <dimen name="rule_dialog_width">600dip</dimen>
     <dimen name="rule_dialog_height">300dip</dimen>
     <dimen name="history_answer_item_heigth">60dip</dimen>
     <dimen name="point_navigation_space">20dp</dimen>
-    <dimen name="adver_lunbo_height">130dp</dimen>
+    //轮播图的高度
+    <dimen name="adver_lunbo_height">230dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="portraits_image_width">176dp</dimen>
     <dimen name="portraits_image_height">176dp</dimen>
+    <dimen name="news_title_size">30sp</dimen>
+    <dimen name="news_title_height">50dip</dimen>
 
 
 
