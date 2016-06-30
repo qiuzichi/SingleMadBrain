@@ -69,7 +69,6 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public double getScore() {
-
         return absScore(1f,1f);
     }
 
@@ -121,12 +120,12 @@ public class FigureService extends AbsBaseGameService{
                 // 已经填写了答案但是 答案当中出现了错误
                 count = count - mistakeScore;
             } else {
-                // 一行完全没有作答 不扣分
+                // 一行完全没有作答 不扣分 不计分
             }
         }
         // 总分为负数者将以 0 分计
         if(count < 0){
-            count = 0;
+            count = 0.0f;
         }
         return count;
     }

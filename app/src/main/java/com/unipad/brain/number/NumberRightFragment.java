@@ -133,7 +133,6 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
                 mLayoutBottom.findViewById(id).setOnClickListener(this);
             }
         }
-
     }
 
     @Override
