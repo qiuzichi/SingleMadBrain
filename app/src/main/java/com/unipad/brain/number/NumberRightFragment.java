@@ -23,6 +23,7 @@ import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
+import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -90,7 +91,6 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
 
     @Override
     public void initDataFinished() {
-        super.initDataFinished();
         if (null != service.lineNumbers && service.lineNumbers.size()!=0){
             mRows = service.lineNumbers.size();
             mLines = service.lineNumbers.valueAt(0).length();
@@ -98,6 +98,7 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
                 mTotalNumbers += service.lineNumbers.valueAt(i).length();
             }
             frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+            mStubShade.setVisibility(View.VISIBLE);
         }
     }
 
@@ -109,11 +110,17 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     @Override
     public void pauseGame() {
         mStubShade.setVisibility(View.VISIBLE);
+        if (mKeyboardDialog != null && mKeyboardDialog.isShowing()){
+            mKeyboardDialog.dismiss();;
+        }
     }
 
     @Override
     public void reStartGame() {
         mStubShade.setVisibility(View.GONE);
+        if (mKeyboardDialog != null && !mKeyboardDialog.isShowing()){
+            mKeyboardDialog.show();
+        }
     }
 
     @Override
@@ -255,9 +262,19 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     }
 
     @Override
-    public void rememoryTimeToEnd(int answerTime) {
+    public void rememoryTimeToEnd(final int answerTime) {
+        if (mKeyboardDialog != null && mKeyboardDialog.isShowing()) {
+            mKeyboardDialog.dismiss();
+        }
         //mStubShade.setVisibility(View.VISIBLE);
         mNumberRememoryLayout.showAnswer(service.lineNumbers,service.answer);
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),service.getScore(),memoryTime,answerTime,service.getAnswerData());
+            }
+        }.start();
     }
 
     @Override

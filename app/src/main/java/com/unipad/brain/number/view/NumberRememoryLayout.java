@@ -270,7 +270,9 @@ public class NumberRememoryLayout extends LinearLayout implements
         mTextDiffBg = textNumber;
     }
 
+    public void cleanCursor(){
 
+    }
     public void showAnswer(SparseArray<String> data,SparseArray<String> answer) {
         for (int i = 0; i < mLines; i++) {
             String orgin = data.valueAt(i);
@@ -286,7 +288,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                     o = " ";
                 }
                 answerLine.append(o);
-                textNumber.setText(o+"/n"+userAnswer);
+                textNumber.setText(o+"\n"+userAnswer);
                 if (!o.equals(userAnswer)) {
                     textNumber.setTextColor(getResources().getColor(R.color.red));
                 }

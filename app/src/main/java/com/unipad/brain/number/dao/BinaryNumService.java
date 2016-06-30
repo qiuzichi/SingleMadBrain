@@ -83,6 +83,16 @@ public class BinaryNumService extends AbsBaseGameService {
 
     @Override
     public String getAnswerData() {
-        return null;
+        StringBuilder answerData = new StringBuilder();
+        for (int i = 0;i<answer.size();i++){
+            answerData.append(answer.keyAt(i))
+                    .append("\\^")
+                    .append(answer.valueAt(i))
+                    .append(",");
+        }
+        int length = answerData.length();
+        if (length > 0)
+        answerData.deleteCharAt(length-1);
+        return answerData.toString();
     }
 }
