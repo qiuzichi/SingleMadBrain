@@ -48,7 +48,8 @@ public class HitopApplyed extends  HitopRequest<Object> {
             if(ret_code == 0){
                 JSONArray jsonArray = jsonObject.optJSONArray("data");
                 if(null == jsonArray){
-                    this.sevice.noticeDataChange(HttpConstant.USER_APPLYED, App.getContext().getString(R.string.error_apply));
+                    this.sevice.noticeDataChange(HttpConstant.USER_APPLYED,
+                            App.getContext().getString(R.string.error_apply));
                     return null;
                 }
                 int length = jsonArray.length();

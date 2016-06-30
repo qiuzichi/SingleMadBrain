@@ -8,6 +8,14 @@ public class MyFollow {
     private String match;
     /*资讯列表*/
     private String news;
+    /*比赛列表*/
+    private String name;
+    public String getName(){
+        return name;
+    }
+    public void setName(String name){
+        this.name=name;
+    }
 
     public String getMatch(){
         return match;
@@ -21,4 +29,5 @@ public class MyFollow {
     public void setNews(String news) {
         this.news = news;
     }
+
 }

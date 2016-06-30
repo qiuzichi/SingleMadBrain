@@ -13,8 +13,8 @@ import com.unipad.brain.absPic.dao.FigureService;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.brain.location.dao.LocationService;
-import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.number.dao.BinaryNumService;
+import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.portraits.control.HeadService;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.Constant;
@@ -72,6 +72,8 @@ public class AppContext {
 
     private AppContext() {
     }
+
+    public boolean isDebug = true;
 
     private void init() {
         globleHandle = new GlobleHandle();
@@ -164,7 +166,7 @@ public class AppContext {
         } else if (Constant.GAME_BINARY_NUM.endsWith(projectId)){
 
         }else if (Constant.GAME_LONG_NUM.endsWith(projectId)){
-
+            key = Constant.BINARYNUMSERVICE;
         }else if (Constant.GAME_ABS_PICTURE.endsWith(projectId)){
             key = Constant.ABS_FIGURE;
         }else if (Constant.GAME_RANDOM_NUM.endsWith(projectId)){
