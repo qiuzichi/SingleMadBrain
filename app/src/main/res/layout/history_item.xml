@@ -53,6 +53,5 @@
         android:layout_height="@dimen/hisrecord_height_answer"
         android:gravity="center"
         />
-
 </TableRow>
 

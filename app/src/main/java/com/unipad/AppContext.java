@@ -73,6 +73,8 @@ public class AppContext {
     private AppContext() {
     }
 
+    public boolean isDebug = true;
+
     private void init() {
         globleHandle = new GlobleHandle();
         daoConfig = new DbManager.DaoConfig()

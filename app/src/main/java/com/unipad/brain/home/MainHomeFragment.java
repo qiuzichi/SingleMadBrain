@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.consult.entity.ConsultClassBean;
+import com.unipad.brain.consult.view.CompititionMainFragment;
 import com.unipad.brain.consult.view.ConsultMainFragment;
 import com.unipad.brain.consult.view.InfoListFragment;
 import com.unipad.brain.consult.view.IntroductionFragment;
@@ -21,14 +23,15 @@ import com.unipad.brain.main.MainActivity;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopNewsList;
 
-public class MainHomeFragment extends MainBasicFragment {
+public class MainHomeFragment extends MainBasicFragment implements InfoListFragment.OnHomePageChangeListener{
 
     private FrameLayout mLayoutHome;
 
     //    private IntroductionFragment introductionFragment;
-    private Fragment mLeftFragment;
+    private InfoListFragment mLeftFragment;
 
     private MainBasicFragment mRightFragment;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class MainHomeFragment extends MainBasicFragment {
             mLeftFragment = new InfoListFragment();
         }
         getTransaction().replace(R.id.fl_mainpager_left, mLeftFragment);
+        mLeftFragment.setOnHomePageChangeListener(this);
     }
 
     // 1.获取FragmentManager对象
@@ -79,6 +83,25 @@ public class MainHomeFragment extends MainBasicFragment {
     public void initHomeFragment() {
         mLayoutHome = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
         mRightFragment = new ConsultMainFragment();
+        FragmentTransaction transaction = getTransaction();
+        transaction.add(R.id.fl_mainpager_info, mRightFragment);
+        //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
+        transaction.commit();
+    }
+
+    public void onNeedConsultPageShow(){
+        if(mRightFragment instanceof ConsultMainFragment)return;
+        mRightFragment = new ConsultMainFragment();
+        FragmentTransaction transaction = getTransaction();
+        transaction.add(R.id.fl_mainpager_info, mRightFragment);
+        //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
+        transaction.commit();
+    }
+
+    @Override
+    public void onNeedCompetitionPageShow() {
+        if(mRightFragment instanceof CompititionMainFragment)return;
+        mRightFragment = new CompititionMainFragment();
         FragmentTransaction transaction = getTransaction();
         transaction.add(R.id.fl_mainpager_info, mRightFragment);
         //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效

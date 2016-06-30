@@ -24,7 +24,7 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
     private int size;
 
     private String title;
-
+    private  String userId;
     private String contenttype;
 
     public HitopNewsList(String path) {
@@ -35,6 +35,7 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
         this.size = size;
         this.page= page;
         this.title = title;
+        this.userId = AppContext.instance().loginUser.getUserId();
         this.contenttype = contentType;
 
     }
@@ -44,6 +45,7 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
         if (null != title) {
             mParams.addQueryStringParameter("title", title);
         }
+        mParams.addQueryStringParameter("userId",""+ userId);
         mParams.addQueryStringParameter("page",""+page);
         mParams.addQueryStringParameter("size",""+size);
         return null;
@@ -70,7 +72,7 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
                         bean.setPublishDate(jsonObj2.getString("createDate"));
                         bean.setTitle(jsonObj2.getString("title"));
                         bean.setId(jsonObj2.getString("id"));
-
+                        bean.setIsLike(jsonObj2.getInt("isLike")==1?true:false);
                         newsList.add(bean);
                     }
                 }

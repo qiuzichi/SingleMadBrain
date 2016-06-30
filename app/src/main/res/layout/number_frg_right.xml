@@ -31,7 +31,11 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/binary_line_layout_padding" />
     </RelativeLayout>
-
+    <ViewStub
+        android:id="@+id/view_shade"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/shade_v"/>
 
 
 </RelativeLayout>

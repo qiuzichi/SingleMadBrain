@@ -18,11 +18,11 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+
 import java.util.Map;
+
+import java.util.List;
+
 import java.util.Random;
 
 /**
@@ -73,7 +73,66 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public double getScore() {
-        return 0;
+
+        return absScore(1f,1f);
+    }
+
+
+    /**
+     * @描述： 抽象图形记分方法
+     * @param correctScore   一行正确所得分数
+     * @param mistakeScore   一行出现错误所扣分数
+     */
+    private float absScore(float correctScore,float mistakeScore){
+        float count = 0.0f;
+        if(null == allFigures)
+            return count;
+
+        //  将比赛答题按照每行抽象图形的个数进行分组
+        //List<List<Figure>> answers = new ArrayList<>();
+        // 得到总行数（每一行为一组）
+        int countGroup= 0;
+        if(allFigures.size() % VOLUM == 0){
+            countGroup = allFigures.size() / VOLUM;
+        } else {
+            countGroup = (allFigures.size() / VOLUM) + 1;
+        }
+        for (int i = 0; i < countGroup; i++) {
+            List<Figure> figures = null;
+            if( (countGroup-1) == i){
+                // 最后一行
+                figures = allFigures.subList(i * VOLUM,allFigures.size());
+            } else {
+                figures = allFigures.subList(i * VOLUM, VOLUM * (i + 1));
+            }
+           // List<Figure> figures = allFigures.subList(i * VOLUM, VOLUM * (i + 1));
+            int index = 0;
+            for (int j = 0; j < figures.size(); j ++ ) {
+                // 开始计分
+                Figure ures = figures.get(j);
+                if(ures.getAnswerId() == 0)
+                    continue;
+                if(ures.getRawId() == ures.getAnswerId()){
+                    //
+                    index ++;
+                }
+            }
+
+            if(index == figures.size()){
+                // 一组完全正确
+                count = count + correctScore;
+            } else if(index < figures.size() && index > 0){
+                // 已经填写了答案但是 答案当中出现了错误
+                count = count - mistakeScore;
+            } else {
+                // 一行完全没有作答 不扣分
+            }
+        }
+        // 总分为负数者将以 0 分计
+        if(count < 0){
+            count = 0;
+        }
+        return count;
     }
 
     @Override
@@ -89,11 +148,9 @@ public class FigureService extends AbsBaseGameService{
     @Override
     public void initResourse(String soursePath) {
         super.initResourse(soursePath);
-
         String dir  = soursePath.substring(0, soursePath.lastIndexOf('.'));
         File fiel = new File(dir);
         if (fiel.exists() && fiel.isDirectory()) {
-
             String[] fileList = fiel.list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String filename) {

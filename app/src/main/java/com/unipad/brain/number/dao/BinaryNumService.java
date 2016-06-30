@@ -54,6 +54,7 @@ public class BinaryNumService extends AbsBaseGameService {
      */
     public static final int LINE_ONE_ERROR_SCORE = 15;
 
+    public SparseArray<String> answer = new SparseArray<>();
     @Override
     public void downloadingQuestion(Map<String, String> mData) {
         super.downloadingQuestion(mData);

@@ -89,15 +89,14 @@ public class NumberMemoryLayout extends LinearLayout {
      */
     private void addNumText(LinearLayout parent, int index) {
         String numList = lineNumbers.get(index);
-        TextView textNum;
         LayoutParams params;
-
+        params = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+        params.weight = 1;
+        params.gravity = Gravity.CENTER;
         for (int i = 0; i < numList.length(); i++) {
-            params = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT);
-            params.weight = 1;
-            params.gravity = Gravity.CENTER;
-            textNum = new TextView(mContext);
+
+            TextView textNum = new TextView(mContext);
             textNum.setLayoutParams(params);
             textNum.setText(String.valueOf(numList.charAt(i)));
             textNum.setTextSize(26.0f);

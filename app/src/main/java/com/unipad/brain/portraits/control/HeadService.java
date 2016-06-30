@@ -140,6 +140,7 @@ public class HeadService extends AbsBaseGameService{
         float surDeduct = getRepeatName(surs,repeatLength,repeatScore);
         //得到名 扣除分数
         float nameDeduct = getRepeatName(names,repeatLength,repeatScore);
+        Log.e(this.getClass().getSimpleName(),"姓扣" + surDeduct +"\t" + "名扣" + nameDeduct + "\t总得分" + score);
         // 得到最后得分
         BigDecimal bigDecimal =  new BigDecimal(score-(surDeduct + nameDeduct)).setScale(0, BigDecimal.ROUND_HALF_UP);
         //int lastScore = bigDecimal.
@@ -186,7 +187,7 @@ public class HeadService extends AbsBaseGameService{
         Iterator it = set.iterator();
         while (it.hasNext()){
             java.util.Map.Entry <String, Integer> entry = (Map.Entry<String, Integer>)it.next();
-            Log.e(this.getClass().getSimpleName(),"姓或者名" + entry.getKey() + " 出现次数 " + entry.getValue());
+            //Log.e(this.getClass().getSimpleName(),"姓或者名" + entry.getKey() + " 出现次数 " + entry.getValue());
             //  -- 当一个名字出现超过既定次数，则判定错误一次
             if(entry.getValue() >  repeatLength){
                 errorNumber ++;

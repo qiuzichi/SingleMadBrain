@@ -22,6 +22,7 @@ import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -50,7 +51,7 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     /**
      * 遮罩层
      */
-   // private ViewStub mStubShade;
+   private ViewStub mStubShade;
     /**
      * 记录mScrollAnswerView滑动了多少次
      */
@@ -66,6 +67,7 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     private String mCompeteItem = "";
     private BinaryNumService service;
     private  FrameLayout frameLayout;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -83,7 +85,7 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
         frameLayout = (FrameLayout) mViewParent.findViewById(R.id.binary_rememory_layout);
 
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
-       // mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+       mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
     }
 
     @Override
@@ -100,6 +102,21 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     }
 
     @Override
+    public void startGame() {
+        mStubShade.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void pauseGame() {
+        mStubShade.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void reStartGame() {
+        mStubShade.setVisibility(View.GONE);
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.number_frg_right;
     }
@@ -110,12 +127,11 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     public void inAnswerMode() {
        // mViewParent.removeView(mMemoryLayout);// 先移除记忆界面
        // mStubShade.setVisibility(View.GONE);// 隐藏遮罩层
-
         // 再加载回忆界面
         mScrollAnswerView = (ScrollView) mRememoryLayout
                 .findViewById(R.id.scroll_rememory_layout);
-        mNumberRememoryLayout = new NumberRememoryLayout(mActivity, mCompeteItem,mRows,mLines,mTotalNumbers);
         frameLayout.removeAllViews();
+        mNumberRememoryLayout = new NumberRememoryLayout(mActivity, mCompeteItem,mRows,mLines,mTotalNumbers);
         frameLayout.addView(mNumberRememoryLayout);
 
         if (mCompeteItem.equals(getString(R.string.project_3))
@@ -142,7 +158,6 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
                 mLayoutBottom.findViewById(id).setOnClickListener(this);
             }
         }
-
     }
 
     @Override
@@ -242,7 +257,7 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     @Override
     public void rememoryTimeToEnd(int answerTime) {
         //mStubShade.setVisibility(View.VISIBLE);
-        mNumberRememoryLayout.showAnswer(service.lineNumbers);
+        mNumberRememoryLayout.showAnswer(service.lineNumbers,service.answer);
     }
 
     @Override

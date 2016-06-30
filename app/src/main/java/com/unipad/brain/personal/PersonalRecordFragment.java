@@ -1,5 +1,6 @@
 package com.unipad.brain.personal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -55,6 +56,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     private TableLayout gridView;
     private List<HisRecord> hisRecords;
     private ViewGroup viewParent;
+    private LinearLayout hisListView;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -68,8 +71,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         validateDate();
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
     }
-
-
     @Override
     public int getLayoutId() {
         return R.layout.personal_frg_record;
@@ -97,14 +98,21 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
                 selectstartDate();
                 break;
             case R.id.record_search_end_data:
-                selectenDate();
+                selectendDate();
                 break;
+            case R.id.group_historry_list:
+               openPersonalIntegration();
             default:
                 break;
         }
     }
 
-    private void selectenDate() {
+    private void openPersonalIntegration() {
+        Intent intent=new Intent();
+        intent.setClass(getActivity(),PersonalInfoActivty.class);
+        startActivity(intent);
+    }
+    private void selectendDate() {
 
     }
     private void selectstartDate() {
@@ -218,17 +226,16 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
 
         return gridView;
     }
-
-
     private TableRow createTableRow(HisRecord record){
         TableRow tableRow = (TableRow) LayoutInflater.from(getActivity()).inflate(R.layout.history_item,null);
         ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));
-       ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
+        ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
         ((TextView)tableRow.findViewById(R.id.startDate)).setText(record.getStartDate());
         ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getRectime());
         ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getMemtime());
         ((TextView)tableRow.findViewById(R.id.score)).setText(record.getScore());
         ((TextView)tableRow.findViewById(R.id.ranking)).setText(record.getRanking());
+        ((TableRow)tableRow.findViewById(R.id.group_historry_list)).setOnClickListener(this);
         return  tableRow;
     }
 
@@ -249,13 +256,16 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     private void switchBrowse() {
 //        mViewBrokenLine.setVisibility(View.VISIBLE);
         if (mIsBrokenLine) {
-            viewParent.addView(getGridView());
+
             mTitleBarRightText = mActivity.getString(R.string.broken_line_graph);
 
             mActivity.findViewById(R.id.text_record_city).setVisibility(View.GONE);
             mActivity.findViewById(R.id.text_record_china).setVisibility(View.GONE);
             mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
             viewParent.removeAllViews();
+            if (getGridView()!=null){
+                viewParent.addView(getGridView());
+            }
 
         } else {
             mTitleBarRightText = mActivity.getString(R.string.table_graph);

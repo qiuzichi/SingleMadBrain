@@ -118,6 +118,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
                         ((TextView) HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE).findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
+                        SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId, 100);
                         break;
                 }
             }
@@ -196,12 +197,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     @Override
     public void initDataFinished() {
-        new Thread(){
-            @Override
-            public void run() {
-                SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId, 100);
-            }
-        }.start();
+
 
         handler.sendEmptyMessage(INIT_DATA_FINISH);
     }
