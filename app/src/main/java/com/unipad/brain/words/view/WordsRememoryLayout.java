@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
-import com.unipad.brain.number.bean.BinaryNumberEntity;
+import com.unipad.brain.number.dao.BinaryNumService;
 
 /**
  * 随机词语回忆界面
@@ -14,8 +14,8 @@ public class WordsRememoryLayout extends LinearLayout {
     public static final int ID = 0x3333333;
     private Context mContext;
     private LayoutInflater mInflater;
-    private int mRows = BinaryNumberEntity.rows;
-    private int mLines = BinaryNumberEntity.lines;
+    private int mRows ;
+    private int mLines ;
 
     public WordsRememoryLayout(Context context) {
         super(context);

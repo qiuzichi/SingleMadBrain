@@ -26,6 +26,8 @@ import com.unipad.observer.IDataObserver;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
+import java.util.Map;
+
 /**
  * Created by Wbj on 2016/4/7.
  */
@@ -116,6 +118,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
                         ((TextView) HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE).findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
+                        SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId, 100);
                         break;
                 }
             }
@@ -194,12 +197,13 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     @Override
     public void initDataFinished() {
-        SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId,100);
+
+
         handler.sendEmptyMessage(INIT_DATA_FINISH);
     }
 
     @Override
-    public void downloadingQuestion() {
+    public void downloadingQuestion(Map<String,String> data) {
         handler.sendEmptyMessage(DOWNLOAD_QUESTION);
 
     }

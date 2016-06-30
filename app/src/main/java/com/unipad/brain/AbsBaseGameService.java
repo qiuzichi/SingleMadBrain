@@ -5,6 +5,8 @@ import com.unipad.IOperateGame;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.observer.GlobleObserService;
 
+import java.util.Map;
+
 /**
  * Created by gongkan on 2016/6/22.
  */
@@ -96,9 +98,9 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
             operateGame.finishGame();
         }
     }
-    public void downloadingQuestion(){
+    public void downloadingQuestion(Map<String,String> data){
         if (operateGame != null) {
-            operateGame.downloadingQuestion();
+            operateGame.downloadingQuestion(data);
         }
     }
 
