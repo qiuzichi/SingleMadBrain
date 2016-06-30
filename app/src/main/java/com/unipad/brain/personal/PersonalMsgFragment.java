@@ -103,7 +103,7 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                             holder.setText(R.id.txt_name, competitionBean.getName() + "/" + competitionBean.getProjecNname());
                             holder.setText(R.id.txt_addr,competitionBean.getAddr());
                             holder.setText(R.id.txt_cost, competitionBean.getCost());
-                            holder.getView(R.id.in_game).setVisibility(competitionBean.getApplyState() == 0 ? View.VISIBLE : View.GONE);
+                           // holder.getView(R.id.in_game).setVisibility(competitionBean.getApplyState() == 0 ? View.VISIBLE : View.GONE);
 
                             //holder.setImageResource(R.id.img_photo, homeBean.isSelect ? homeBean.selImgId : homeBean.norImgId);
                             //holder.setTextColor(R.id.txt_name, homeBean.isSelect ? iHome.getContext().getResources().getColor(R.color.main_1) : iHome.getContext().getResources().getColor(R.color.black));

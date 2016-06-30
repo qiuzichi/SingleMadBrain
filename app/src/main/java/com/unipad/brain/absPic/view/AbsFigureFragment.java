@@ -17,6 +17,7 @@ import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.io.mina.SocketThreadManager;
 
 import org.xutils.x;
 
@@ -64,7 +65,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
      */
     @Override
     public void memoryTimeToEnd(int memory) {
-
 
         service.mode = 1;
         current = 0;
