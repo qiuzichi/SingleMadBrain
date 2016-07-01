@@ -53,15 +53,16 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
             userPwd.setText(Pwd);
             return;
         }else {
-            if (requestCode==1002&&requestCode==1003){
-                String Modify_name=data.getStringExtra("modify_name");
-                String Modify_pwd=data.getStringExtra("modify_pwd");
+            if(requestCode == 1002 && resultCode == 1003) {
+                String Modify_name = data.getStringExtra("modify_name");
+                String Modify_pwd = data.getStringExtra("modify_pwd");
                 userName.setText(Modify_name);
                 userPwd.setText(Modify_pwd);
                 return;
             }
         }
         }
+
     @Override
     public void initData() {
         showDialog = new ShowDialog(this);
@@ -131,7 +132,6 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     private void openForgetPwdActivity() {
         Intent intent = new Intent(this, ForgetPwdActivity.class);
         this.startActivityForResult(intent,1002);
-        finish();
     }
 
     private void openRegisterActivity() {

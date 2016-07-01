@@ -56,7 +56,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     private TableLayout gridView;
     private List<HisRecord> hisRecords;
     private ViewGroup viewParent;
-    private LinearLayout hisListView;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -254,7 +253,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
      * 切换成绩视图浏览模式
      */
     private void switchBrowse() {
-//        mViewBrokenLine.setVisibility(View.VISIBLE);
         if (mIsBrokenLine) {
 
             mTitleBarRightText = mActivity.getString(R.string.broken_line_graph);

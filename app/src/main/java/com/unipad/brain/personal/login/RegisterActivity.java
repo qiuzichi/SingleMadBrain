@@ -97,6 +97,8 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                 break;
         }
     }
+
+
     private void regist() {
         name = registName.getText().toString().trim();
         pwd = registPwd.getText().toString().trim();
@@ -138,6 +140,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         httpRegist.buildRequestParams("user_password", MD5Utils.MD5_two(pwd));
         httpRegist.post();
     }
+
     @Override
     public void onChanging(String changStr) {
        registBirthday.setText(changStr);
@@ -148,6 +151,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         service.unregistDataChangeListenerObj(this);
         super.onDestroy();
     }
+
     @Override
     public void update(int key, Object o) {
         switch (key){
@@ -164,8 +168,10 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         }
 
     }
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
 
     }
 
@@ -176,7 +182,6 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
 
     @Override
     public void afterTextChanged(Editable s) {
-
 
     }
 }

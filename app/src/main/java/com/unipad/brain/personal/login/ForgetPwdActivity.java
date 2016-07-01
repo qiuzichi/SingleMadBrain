@@ -67,8 +67,8 @@ public class ForgetPwdActivity extends BasicActivity implements View.OnClickList
             showDialog.getDialog().setCanceledOnTouchOutside(true);
         }
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
-        service.registerObserver(HttpConstant.REGIST_FILED, this);
-        service.registerObserver(HttpConstant.REGIST_OK, this);
+        service.registerObserver(HttpConstant.MODIFY_FILED, this);
+        service.registerObserver(HttpConstant.MODIFY_OK, this);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class ForgetPwdActivity extends BasicActivity implements View.OnClickList
     public void update(int key, Object o) {
         switch (key){
             case HttpConstant.MODIFY_OK:
-                        Intent intent=new Intent();
+                       Intent intent=new Intent();
                         intent.putExtra("modify_name",modify_name);
                         intent.putExtra("modify_pwd",modify_pwd);
                         this.setResult(1003,intent);
