@@ -116,6 +116,39 @@
 
         </ListView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="@dimen/comment_commit_height"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1dp"
+                android:background="@color/line"
+                />
+
+            <TextView
+                android:id="@+id/tv_input_comment_text"
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:layout_height="@dimen/margin_10dip"
+                android:layout_centerVertical="true"
+                android:hint="@string/say_somethting"
+                android:text="zdfafsdfasfsdfdsa"
+                android:background="@color/comment_popwindows_bg"
+                android:layout_marginLeft="@dimen/margin_10dip"
+                android:textColor="@color/red"/>
+
+            <ImageView
+                android:id="@+id/iv_biaoqing_icon_comment"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:src="@drawable/help"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 

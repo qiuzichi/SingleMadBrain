@@ -190,6 +190,7 @@
     <string name="updata_userinfo">资料上传成功</string>
     <string name="submit_sussue">"提交成功</string>
     <string name="submit_fail">提交失败</string>
+    <string name="say_somethting">我也说两句...</string>
 
     <string name="util_camera_not_enable">相机不可用</string>
     <string name="util_hint">提示</string>
@@ -213,6 +214,7 @@
     <string name="current_time">11:44am</string>
     <string name="input_comment">请输入评论内容          </string>
     <string name="button_commit">提交</string>
+    <string name="button_report">发表</string>
     <string name="detail_commont">评论</string>
 
     <string name="pager_detail">详情</string>
