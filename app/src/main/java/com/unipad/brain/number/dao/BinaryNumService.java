@@ -1,6 +1,8 @@
 package com.unipad.brain.number.dao;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +57,7 @@ public class BinaryNumService extends AbsBaseGameService {
     public static final int LINE_ONE_ERROR_SCORE = 15;
 
     public SparseArray<String> answer = new SparseArray<>();
+
     @Override
     public void downloadingQuestion(Map<String, String> mData) {
         super.downloadingQuestion(mData);
@@ -78,11 +81,108 @@ public class BinaryNumService extends AbsBaseGameService {
 
     @Override
     public double getScore() {
-        return 0;
+        return getNumberScore(40f,20f,2f,1f,1)[0];
     }
+
+
+    /**
+     * 马拉松数字计分
+     *
+     * 一行如果出现两处错误这一行将不计分
+     *
+     * 最后一行的处理如下：
+     * 如果数字刚好能铺满并且完全正确，按照正常计分。 （40分）
+     * 如果数字没有铺满，但是所填答案完全正确 所得分数是最后一行的正确的个数 * lastCorrectScore.
+     * 如果数字没有铺满，所填答案出现了一处错误，所得分数为正确答案的个数 / lastErrorScore
+     *
+     *
+     * @param fullCorrectScore 一行铺满正确所得分数
+     * @param fullErrorScore  一行铺满但是只出现了一处错误或者一处露空所得分数
+     * @param lastErrorScore  最后一行没有写满并且出现错误时所扣分数的倍数
+     * @param lastCorrectScore 最后一行完全正确但是没有铺满 一个数字所得分数
+     * @param outRangeScore   一行如果出现两个错误的情况这一行将不得分。 累积不得分行中正确答案的个数。 此参数为不得分行中一个正确答案所得分数（用于服务器区分相同得分的情况）
+     * @return [0]为总得分  [1]不得分行中正确答案总计
+     */
+    public int[] getNumberScore(float fullCorrectScore, float fullErrorScore, float lastErrorScore,float lastCorrectScore,int outRangeScore){
+        float countScore = 0;
+        int outRangeNum = 0; // 累积不得分行中的正确数字的个数
+        if(answer != null && answer.size() > 0){
+            if(answer.size() != lineNumbers.size()){
+                 return new int[]{0,0};  // 答题卷与试卷数目行数不对
+            } else {
+                for(int i = 0 ; i < lineNumbers.size(); i ++ ){
+                    // 取出试卷（正确的答案）
+                    String lineStr = lineNumbers.valueAt(i);
+                    // 取出选手所做答案
+                    String answerStr = answer.valueAt(i);
+                    if(lineStr.equals(answerStr)){
+                         // 一行完全正确
+                        if((lineNumbers.size() - 1) == i){
+                            // 如果是最后一行 计分方法有不同
+                            countScore = countScore + (answerStr.trim().length() * lastCorrectScore);
+                        } else {
+                            countScore = countScore + fullCorrectScore;
+                        }
+                    } else {
+                        // 出现错误，分别进行分割成char数组
+                        char[] lineCs = lineStr.toCharArray();
+                        char[] answerCs = answerStr.toCharArray();
+                        int errorNum = 0; // 累积错误次数
+                        int correctNum =0;  // 累积正确次数
+                        int recordBlank = 0; // 纪录用户这一行所填空格
+                        for(int j = 0 ; j < lineCs.length; j ++ ){
+                            if(lineCs[j] != answerCs[j]){
+                                if(' ' == answerCs[j]){
+                                    recordBlank ++;
+                                }
+                                errorNum ++;
+                            } else {
+                                correctNum ++;
+                            }
+                        }
+                          if(answerCs.length == recordBlank){
+                              // 本行全部没有写，将不计分。
+                            continue;
+                          }
+                          if(errorNum == 1){
+                              //  本行只出现了一次错
+                              if((lineNumbers.size() - 1) == i){
+                                  // 最后一行计分方法
+                                  countScore = countScore + (answerStr.trim().length() / lastErrorScore);
+                              } else {
+                                  countScore = countScore + fullErrorScore;
+                              }
+                          } else {
+                              // 本行出现多次错误 不计分，但是需要将正确次数累积
+                              outRangeNum = outRangeNum + correctNum;
+                          }
+                    }
+                }
+            }
+        } else
+        //选手未作答 得0分
+            return new int[]{0,0};
+
+        // 得到最后得分
+        BigDecimal bigDecimal =  new BigDecimal(countScore).setScale(0, BigDecimal.ROUND_HALF_UP);
+        //int lastScore = bigDecimal. 四舍五入
+        Integer lastScore = bigDecimal.intValue();
+        return new int[]{lastScore,outRangeNum * outRangeScore};
+    }
+
 
     @Override
     public String getAnswerData() {
-        return null;
+        StringBuilder answerData = new StringBuilder();
+        for (int i = 0;i<answer.size();i++){
+            answerData.append(answer.keyAt(i))
+                    .append("\\^")
+                    .append(answer.valueAt(i))
+                    .append(",");
+        }
+        int length = answerData.length();
+        if (length > 0)
+        answerData.deleteCharAt(length-1);
+        return answerData.toString();
     }
 }

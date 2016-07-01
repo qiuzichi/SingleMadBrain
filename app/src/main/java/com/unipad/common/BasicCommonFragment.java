@@ -23,17 +23,21 @@ public abstract class BasicCommonFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewParent = (ViewGroup) inflater.inflate(getLayoutId(), container, false);
-        imageView = inflater.inflate(R.layout.match_background,null);
-       // mViewParent.addView(imageView);
         return mViewParent;
     }
-
+    public void setShadeView(View view){
+        imageView = view;
+    }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mActivity = (CommonActivity) getActivity();
         mActivity.getCommonFragment().setICommunicate(this);;
+        if (imageView != null) {
+            imageView.setVisibility(View.VISIBLE);
+        }
     }
+
 
     @Override
     public void changeBg(int color) {
@@ -48,21 +52,23 @@ public abstract class BasicCommonFragment extends Fragment implements
     public abstract int getLayoutId();
     @Override
     public void pauseGame() {
-        ViewParent parent = imageView.getParent();
-        if (parent == null) {
-            //mViewParent.addView(imageView);
+        if (imageView != null) {
+            imageView.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
     public void startGame() {
-        //mViewParent.removeView(imageView);
+        if (imageView != null) {
+            imageView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void reStartGame() {
-        //mViewParent.removeView(imageView);
+        if (imageView != null) {
+            imageView.setVisibility(View.GONE);
+        }
     }
 
     @Override
