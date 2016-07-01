@@ -146,4 +146,5 @@ public abstract class PersonalCommonFragment extends Fragment implements View.On
         mParentLayout.findViewById(R.id.personal_info_layout).setVisibility(View.GONE);
     }
 
+
 }

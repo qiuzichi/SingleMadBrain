@@ -50,6 +50,7 @@
     <string name="personal_setting">设置中心</string>
     <string name="save">保存</string>
     <string name="personal_center">个人中心</string>
+    <string name="game_center">赛事中心</string>
     <string name="back">返回</string>
     <string name="next_step">下一步</string>
     <string name="personal_select_identity">身份选择</string>

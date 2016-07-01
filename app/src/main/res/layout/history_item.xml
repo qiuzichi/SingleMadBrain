@@ -9,14 +9,14 @@
     <TextView
         android:id="@+id/matchId"
         android:textSize="@dimen/hisrecord_text_size"
-        android:layout_width="@dimen/hisrecord_height_answer"
+        android:layout_width="180dp"
         android:layout_height="match_parent"
         android:background="@drawable/number_text_bg"
         android:gravity="center"/>
     <TextView
         android:id="@+id/projectId"
         android:textSize="@dimen/hisrecord_text_size"
-        android:layout_width="@dimen/hisrecord_height_answer"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
         android:background="@drawable/number_text_bg"
         android:gravity="center"/>
@@ -30,14 +30,14 @@
     <TextView
         android:id="@+id/rectime"
         android:textSize="@dimen/hisrecord_text_size"
-        android:layout_width="@dimen/hisrecord_height_answer"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/number_text_bg"
         android:gravity="center"/>
     <TextView
         android:id="@+id/memtime"
         android:textSize="@dimen/hisrecord_text_size"
-        android:layout_width="@dimen/hisrecord_height_answer"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/number_text_bg"
         android:gravity="center"
