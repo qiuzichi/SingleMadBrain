@@ -6,7 +6,9 @@
     android:paddingTop="30dp"
     android:divider="@color/white" >
     
-    <ListView 
+
+7
+    <ListView
         android:id="@+id/lv_competition"
         android:layout_height="match_parent"
         android:layout_width="match_parent"

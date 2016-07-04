@@ -2,6 +2,9 @@ package com.unipad.brain.consult.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.unipad.brain.R;
 import com.unipad.brain.consult.entity.ConsultClassBean;
@@ -21,9 +24,15 @@ public class MyInfoListAdapter extends CommonAdapter<ConsultClassBean>{
 
     @Override
     public void convert(ViewHolder holder, ConsultClassBean consultClassBean) {
-        holder.setImageResource(R.id.iv_info_label, consultClassBean.getLabelResId());
-        holder.setTextResource(R.id.tv_info_name, consultClassBean.getNameResId());
-        holder.setVisible(R.id.iv_item_selected_label, consultClassBean.isSelected());
+
+        ((ImageView)holder.getView(R.id.iv_info_label)).setImageResource(consultClassBean.getLabelResId());
+        ((TextView)holder.getView(R.id.tv_info_name)).setText(consultClassBean.getNameResId());
+        ImageView isSelected = (ImageView) holder.getView(R.id.iv_item_selected_label);
+        if(consultClassBean.isSelected()){
+            isSelected.setVisibility(View.VISIBLE);
+        }else {
+            isSelected.setVisibility(View.GONE);
+        }
     }
 }
 

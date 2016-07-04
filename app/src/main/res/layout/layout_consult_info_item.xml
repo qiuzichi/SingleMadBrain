@@ -4,9 +4,10 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/compitition_entry_fee"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:layout_toRightOf="@+id/iv_header"
         android:orientation="vertical">
         

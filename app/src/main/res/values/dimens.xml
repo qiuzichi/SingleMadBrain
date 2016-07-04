@@ -52,9 +52,10 @@
     <dimen name="favorite_width">20dip</dimen>
     <dimen name="favorite_height">20dip</dimen>
     <dimen name="comment_width">30dip</dimen>
+    <dimen name="head_portrait_width">80dip</dimen>
 
 
-
+    <dimen name="person_name_size">20sp</dimen>
     <dimen name="rule_dialog_width">600dip</dimen>
     <dimen name="rule_dialog_height">300dip</dimen>
     <dimen name="history_answer_item_heigth">60dip</dimen>
@@ -64,11 +65,13 @@
     //轮播图的高度
     <dimen name="adver_lunbo_height">230dp</dimen>
     <dimen name="newlist_height">100dp</dimen>
+    <dimen name="compitition_entry_fee">150dp</dimen>
 
     <dimen name="comment_use_height">100dp</dimen>
     <dimen name="comment_commit_height">30dp</dimen>
 
     <dimen name="popopwindows_height">250dp</dimen>
+    <dimen name="drawablePadding_icon">20dp</dimen>
 
 
 
