@@ -49,7 +49,11 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     @Override
     public void clear() {
-
+        rule = null;
+        mode = 0;
+        isInitResourseAready = false;
+        isInitQuestionAready = false;
+        operateGame = null;
     }
 
     @Override

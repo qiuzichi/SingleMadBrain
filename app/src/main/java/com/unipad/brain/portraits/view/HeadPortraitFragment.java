@@ -96,7 +96,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        AppContext.instance().clear(Constant.HEADSERVICE);
+        AppContext.instance().clearService(service);
     }
 
     private class HeadAdapter extends CommonAdapter<Person> {

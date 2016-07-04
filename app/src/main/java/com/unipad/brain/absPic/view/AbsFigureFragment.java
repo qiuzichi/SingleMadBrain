@@ -83,7 +83,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        AppContext.instance().clear(Constant.ABS_FIGURE);
+        AppContext.instance().clearService(service);
     }
 
     @Override

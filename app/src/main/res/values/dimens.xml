@@ -84,7 +84,7 @@
     <dimen name="news_title_size">30sp</dimen>
     <dimen name="news_title_height">50dip</dimen>
 
-
+    <dimen name="random_word_item_width">130dp</dimen>
 
 
 

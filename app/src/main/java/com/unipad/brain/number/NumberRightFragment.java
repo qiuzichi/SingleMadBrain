@@ -16,13 +16,12 @@ import android.widget.ScrollView;
 
 import com.unipad.brain.App;
 import com.unipad.brain.R;
-import com.unipad.brain.number.dao.BinaryNumService;
+import com.unipad.brain.number.dao.NumService;
 import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
-import com.unipad.common.widget.HIDDialog;
 import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
@@ -66,13 +65,13 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     private SparseArray<String> mNumberArray = new SparseArray<>();
     private KeyboardDialog mKeyboardDialog;
     private String mCompeteItem = "";
-    private BinaryNumService service;
+    private NumService service;
     private  FrameLayout frameLayout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        service = (BinaryNumService) mActivity.getService();
+        service = (NumService) mActivity.getService();
         mCompeteItem = Constant.getProjectName(mActivity.getProjectId());
         if (mCompeteItem.equals(getString(R.string.project_9))) {
            // ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.view_stub_listen_frg_right_memory);
@@ -172,9 +171,9 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
         switch (view.getId()) {
             case R.id.ibtn_binary_0:
             case R.id.ibtn_binary_1:
-                String text = BinaryNumService.TEXT_ONE;
+                String text = NumService.TEXT_ONE;
                 if (R.id.ibtn_binary_0 == view.getId()) {
-                    text = BinaryNumService.TEXT_ZERO;
+                    text = NumService.TEXT_ZERO;
                 }
                 this.setGridText(text);
                 break;

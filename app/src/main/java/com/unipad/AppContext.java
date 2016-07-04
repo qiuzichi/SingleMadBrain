@@ -13,9 +13,11 @@ import com.unipad.brain.absPic.dao.FigureService;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.brain.location.dao.LocationService;
-import com.unipad.brain.number.dao.BinaryNumService;
+import com.unipad.brain.number.dao.BinaryService;
+import com.unipad.brain.number.dao.NumService;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.portraits.control.HeadService;
+import com.unipad.brain.virtual.dao.VirtualTimeService;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.Constant;
 import com.unipad.observer.GlobleHandle;
@@ -135,7 +137,7 @@ public class AppContext {
                 service.init();
                 serviceList.put(key, service);
             } else if (key.equals(Constant.BINARYNUMSERVICE)) {
-                service = new BinaryNumService();
+                service = new NumService();
                 service.init();
                 serviceList.put(key, service);
             } else if (key.equals(Constant.PERSONCENTER)) {
@@ -154,6 +156,14 @@ public class AppContext {
                 service = new LocationService();
                 service.init();
                 serviceList.put(key, service);
+            }else if (key.equals(Constant.LONG_SERVICE)) {
+                service = new NumService();
+                service.init();
+                serviceList.put(key, service);
+            }else if (key.equals(Constant.VIRTUAL_TIME_SERVICE)) {
+                service = new VirtualTimeService();
+                service.init();
+                serviceList.put(key, service);
             }
         }
         return service;
@@ -164,19 +174,19 @@ public class AppContext {
         if (Constant.GAME_PORTRAITS.endsWith(projectId)) {
             key = Constant.HEADSERVICE;
         } else if (Constant.GAME_BINARY_NUM.endsWith(projectId)){
-
-        }else if (Constant.GAME_LONG_NUM.endsWith(projectId)){
             key = Constant.BINARYNUMSERVICE;
+        }else if (Constant.GAME_LONG_NUM.endsWith(projectId)){
+            key = Constant.LONG_SERVICE;
         }else if (Constant.GAME_ABS_PICTURE.endsWith(projectId)){
             key = Constant.ABS_FIGURE;
         }else if (Constant.GAME_RANDOM_NUM.endsWith(projectId)){
 
         }else if (Constant.GAME_VIRTUAL_DATE.endsWith(projectId)){
-
+            key = Constant.VIRTUAL_TIME_SERVICE;
         }else if (Constant.GAME_LONG_POCKER.endsWith(projectId)){
 
         }else if (Constant.GAME_RANDOM_WORDS.endsWith(projectId)){
-
+            key = Constant.WORDS_SERVICE;
         }else if (Constant.GAME_LISTON_AND_MEMORY_WORDS.endsWith(projectId)){
 
         }else if (Constant.GAME_QUICKIY_POCKER.endsWith(projectId)){
@@ -204,7 +214,7 @@ public class AppContext {
         return true;
     }
 
-    public void clear(String key) {
+    public void clearService(String key) {
         if (!TextUtils.isEmpty(key)) {
             ICoreService service = serviceList.get(key);
             if (service != null) {
@@ -214,6 +224,12 @@ public class AppContext {
         }
     }
 
+    public void clearService(ICoreService service){
+        if (serviceList.containsValue(service)) {
+            service.clear();
+            serviceList.remove(service);
+        }
+    }
     /**
      * 销毁该全局处理器
      */
