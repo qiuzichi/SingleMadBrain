@@ -36,9 +36,11 @@ public class NewEntity {
 
     private int review_num;
 
-
     // 0是为 点赞   1 是点赞过；
     private  boolean isLike;
+
+
+
 
     public String getId() {
         return id;
@@ -110,5 +112,6 @@ public class NewEntity {
     public void setIsLike(boolean isLike) {
         this.isLike = isLike;
     }
+
 
 }

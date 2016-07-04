@@ -6,6 +6,9 @@ import android.util.Log;
 
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.portraits.bean.Person;
+import com.unipad.common.Constant;
+import com.unipad.http.HitopDownLoad;
+import com.unipad.http.HitopGetQuestion;
 import com.unipad.utils.LogUtil;
 
 import org.xutils.DbManager;
@@ -207,7 +210,7 @@ public class HeadService extends AbsBaseGameService{
 
     @Override
     public void parseData(String data) {
-        LogUtil.e("",data);
+        LogUtil.e("", data);
         super.parseData(data);
         String [] persData = data.split(",");
         for (int i = 0; i <persData.length ; i++) {
@@ -281,5 +284,40 @@ public class HeadService extends AbsBaseGameService{
         return data.toString();
     }
 
+    @Override
+    public void downloadingQuestion(Map<String, String> data) {
+        super.downloadingQuestion(data);
+
+
+    }
+
+    private void handDownQuestion(Map<String, String> mData) {
+            String fileDir = Constant.GAME_FILE_PATH;
+            HitopDownLoad httpDown = new HitopDownLoad();
+            httpDown.setMatchId( mData.get("SCHEDULEID"));
+            httpDown.buildRequestParams("questionId",  mData.get("QUESTIONID"));
+            String filePath;
+            String fileData =  mData.get("VOICE");
+            if (TextUtils.isEmpty(fileData)) {
+                filePath = fileDir + "/question.zip";
+
+            } else {
+                String taile = fileData.split(".")[1];
+                filePath = fileDir + "/voice" + taile;
+
+            }
+            File file = new File(filePath);
+            if (file.exists()) {
+                file.delete();
+            }
+            httpDown.setService(this);
+            httpDown.downLoad(filePath);
+
+            HitopGetQuestion httpGetQuestion = new HitopGetQuestion();
+            httpGetQuestion.buildRequestParams("questionId",  mData.get("QUESTIONID"));
+            httpGetQuestion.setService(this);
+            httpGetQuestion.post();
+
+    }
 
 }

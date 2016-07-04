@@ -16,13 +16,15 @@ import android.widget.ScrollView;
 
 import com.unipad.brain.App;
 import com.unipad.brain.R;
-import com.unipad.brain.number.bean.BinaryNumberEntity;
-import com.unipad.brain.number.bean.RandomNumberEntity;
+import com.unipad.brain.number.dao.BinaryNumService;
 import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
-import com.unipad.common.bean.CompeteItemEntity;
+import com.unipad.common.Constant;
+import com.unipad.common.widget.HIDDialog;
+import com.unipad.io.mina.SocketThreadManager;
+import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
 public class NumberRightFragment extends BasicCommonFragment implements KeyboardDialog.KeyboardClickListener {
@@ -50,40 +52,75 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     /**
      * 遮罩层
      */
-    private ViewStub mStubShade;
+   private ViewStub mStubShade;
     /**
      * 记录mScrollAnswerView滑动了多少次
      */
     private int mScrollCount = 1;
-    private int mRows = BinaryNumberEntity.rows;
-    private int mLines = BinaryNumberEntity.lines;
+    private int mRows ;
+    private int mLines ;
     /**
      * 数字总数
      */
-    private int mTotalNumbers = mLines * mRows;
+    private int mTotalNumbers ;
     private SparseArray<String> mNumberArray = new SparseArray<>();
     private KeyboardDialog mKeyboardDialog;
     private String mCompeteItem = "";
+    private BinaryNumService service;
+    private  FrameLayout frameLayout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCompeteItem = CompeteItemEntity.getInstance().getCompeteItem();
+        service = (BinaryNumService) mActivity.getService();
+        mCompeteItem = Constant.getProjectName(mActivity.getProjectId());
         if (mCompeteItem.equals(getString(R.string.project_9))) {
-            ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.view_stub_listen_frg_right_memory);
-            mMemoryLayout = viewStub.inflate();
+           // ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.view_stub_listen_frg_right_memory);
+           // mMemoryLayout = viewStub.inflate();
             AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
             animationDrawable.start();
         } else {
-            ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.view_stub_complex_item_scroll_layout);
-            mMemoryLayout = viewStub.inflate();
-            FrameLayout layout = (FrameLayout) mMemoryLayout.findViewById(R.id.memory_container);
-            layout.addView(new NumberMemoryLayout(mActivity, mCompeteItem));
-        }
 
+        }
         mRememoryLayout = (RelativeLayout) mViewParent.findViewById(R.id.answer_layout);
+        frameLayout = (FrameLayout) mViewParent.findViewById(R.id.binary_rememory_layout);
+
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
-        mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+       mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+    }
+
+    @Override
+    public void initDataFinished() {
+        if (null != service.lineNumbers && service.lineNumbers.size()!=0){
+            mRows = service.lineNumbers.size();
+            mLines = service.lineNumbers.valueAt(0).length();
+            for (int i =0;i<mRows;i++) {
+                mTotalNumbers += service.lineNumbers.valueAt(i).length();
+            }
+            frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+            mStubShade.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void startGame() {
+        mStubShade.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void pauseGame() {
+        mStubShade.setVisibility(View.VISIBLE);
+        if (mKeyboardDialog != null && mKeyboardDialog.isShowing()){
+            mKeyboardDialog.dismiss();;
+        }
+    }
+
+    @Override
+    public void reStartGame() {
+        mStubShade.setVisibility(View.GONE);
+        if (mKeyboardDialog != null && !mKeyboardDialog.isShowing()){
+            mKeyboardDialog.show();
+        }
     }
 
     @Override
@@ -95,26 +132,21 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
      * 开始答题
      */
     public void inAnswerMode() {
-        mViewParent.removeView(mMemoryLayout);// 先移除记忆界面
-        mStubShade.setVisibility(View.GONE);// 隐藏遮罩层
-
+       // mViewParent.removeView(mMemoryLayout);// 先移除记忆界面
+       // mStubShade.setVisibility(View.GONE);// 隐藏遮罩层
         // 再加载回忆界面
-        mRememoryLayout.setVisibility(View.VISIBLE);
         mScrollAnswerView = (ScrollView) mRememoryLayout
                 .findViewById(R.id.scroll_rememory_layout);
-        mNumberRememoryLayout = new NumberRememoryLayout(mActivity, mCompeteItem);
-        FrameLayout frameLayout = (FrameLayout) mRememoryLayout.findViewById(R.id.binary_rememory_layout);
+        frameLayout.removeAllViews();
+        mNumberRememoryLayout = new NumberRememoryLayout(mActivity, mCompeteItem,mRows,mLines,mTotalNumbers);
         frameLayout.addView(mNumberRememoryLayout);
 
         if (mCompeteItem.equals(getString(R.string.project_3))
                 || mCompeteItem.equals(getString(R.string.project_5))) {
+            LogUtil.e("--","");
             mKeyboardDialog = new KeyboardDialog(mActivity);
             mKeyboardDialog.show();
             mKeyboardDialog.setKeyboardClickListener(this);
-
-            mRows = RandomNumberEntity.rows;
-            mLines = RandomNumberEntity.lines;
-            mTotalNumbers = mLines * mRows;
         } else if (mCompeteItem.equals(getString(R.string.project_2))) {
             View.inflate(mActivity, R.layout.binary_v_bottom, mLayoutBottom);
             mLayoutBottom.findViewById(R.id.ibtn_binary_0).setOnClickListener(this);
@@ -133,7 +165,6 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
                 mLayoutBottom.findViewById(id).setOnClickListener(this);
             }
         }
-
     }
 
     @Override
@@ -141,9 +172,9 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
         switch (view.getId()) {
             case R.id.ibtn_binary_0:
             case R.id.ibtn_binary_1:
-                String text = BinaryNumberEntity.TEXT_ONE;
+                String text = BinaryNumService.TEXT_ONE;
                 if (R.id.ibtn_binary_0 == view.getId()) {
-                    text = BinaryNumberEntity.TEXT_ZERO;
+                    text = BinaryNumService.TEXT_ZERO;
                 }
                 this.setGridText(text);
                 break;
@@ -231,9 +262,19 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     }
 
     @Override
-    public void rememoryTimeToEnd(int answerTime) {
+    public void rememoryTimeToEnd(final int answerTime) {
+        if (mKeyboardDialog != null && mKeyboardDialog.isShowing()) {
+            mKeyboardDialog.dismiss();
+        }
         //mStubShade.setVisibility(View.VISIBLE);
-        mNumberRememoryLayout.showAnswer();
+        mNumberRememoryLayout.showAnswer(service.lineNumbers,service.answer);
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),service.getScore(),memoryTime,answerTime,service.getAnswerData());
+            }
+        }.start();
     }
 
     @Override
@@ -298,12 +339,18 @@ public class NumberRightFragment extends BasicCommonFragment implements Keyboard
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BinaryNumberEntity.lineNumbers.clear();
+
         if (mKeyboardDialog != null) {
             if (mKeyboardDialog.isShowing()) {
                 mKeyboardDialog.dismiss();
             }
             mKeyboardDialog = null;
+        }
+        if( null != mRememoryLayout){
+            mRememoryLayout.removeAllViews();
+        }
+        if (null != mMemoryLayout){
+
         }
     }
 

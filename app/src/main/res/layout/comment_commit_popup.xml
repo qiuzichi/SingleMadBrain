@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/popopwindows_height"
+    android:background="@color/comment_popwindows_bg"
+    android:orientation="vertical"
+    >
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:hint="@string/input_comment"
+        android:layout_marginRight="@dimen/margin_10dip"
+        android:layout_marginLeft="@dimen/margin_10dip"
+        android:textSize="@dimen/common_text_22"
+        android:id="@+id/et_popup_comment_input"
+        />
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="3">
+
+        <Button
+            android:id="@+id/btn_comment_commit"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/margin_10dip"
+            android:paddingRight="@dimen/margin_10dip"
+            android:layout_marginRight="@dimen/margin_10dip"
+            android:layout_weight="2"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:text="@string/button_report"
+            android:textSize="@dimen/text_size_18"
+            />
+
+   </RelativeLayout>
+
+</LinearLayout>

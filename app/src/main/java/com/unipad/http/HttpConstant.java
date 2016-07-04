@@ -22,6 +22,11 @@ public class HttpConstant {
     public static String GET_NEWS_OPERATE = "/api/news/operate";
     //广告轮播图的 url
     public static String GET_NEWS_ADVERTPIC = "//api/advert/get";
+
+    //页面详情 url
+    public static String GET_NEWS_DETAIL = "/api/news/articles";
+    //评论详情 url
+    public static String GET_NEWS_COMMENT = "/api/news/review";
     // 实名认证
     public static String AUTH_PATH = "/api/user/auth";
     // 调取实名认证信息 ----在用户已经实名认证之后 调取。
@@ -122,5 +127,7 @@ public class HttpConstant {
     //获取热点广告轮播图
     public static final int NOTIFY_GET_HOTADVERT = 0x20006;
 
+    //获取评论列表
+    public static final int NOTIFY_GET_COMMENT = 0x20007;
 
 }

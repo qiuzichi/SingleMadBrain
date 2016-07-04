@@ -46,6 +46,8 @@
 
     <color name="introduction_redline">#FFE3E3</color>
     <color name="introduction_blueline">#D8E9FE</color>
+    <color name="comment_popwindows_input">#EAF3FE</color>
+    <color name="comment_popwindows_bg">#EFEDED</color>
 
     <color name="introduction_checkdetail_bg_blue">#D7E8FD</color>
     <color name="introduction_checkdetail_bg_red">#FFEAEA</color>

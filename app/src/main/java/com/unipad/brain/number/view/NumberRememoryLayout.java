@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 import com.unipad.brain.App;
 import com.unipad.brain.R;
-import com.unipad.brain.number.bean.BinaryNumberEntity;
 import com.unipad.brain.number.bean.RandomNumberEntity;
+import com.unipad.brain.number.dao.BinaryNumService;
 import com.unipad.utils.StringUtil;
 
 /**
@@ -34,8 +34,8 @@ public class NumberRememoryLayout extends LinearLayout implements
     private Context mContext;
     private LayoutInflater mInflater;
     private App.AppHandler mHandler = new App.AppHandler(this);
-    private int mRows = BinaryNumberEntity.rows;
-    private int mLines = BinaryNumberEntity.lines;
+    private int mRows ;
+    private int mLines ;
     /**
      * 数字总数
      */
@@ -71,10 +71,13 @@ public class NumberRememoryLayout extends LinearLayout implements
         super(context);
     }
 
-    public NumberRememoryLayout(Context context, String competeType) {
+    public NumberRememoryLayout(Context context, String competeType,int rows,int lines,int mTotalNumbers) {
         super(context);
         mContext = context;
         mCompeteType = competeType;
+        this.mRows = rows;
+        this.mLines = lines;
+        this.mTotalNumbers = mTotalNumbers;
         this.initData();
     }
 
@@ -97,7 +100,7 @@ public class NumberRememoryLayout extends LinearLayout implements
             mRightCursorAnim = (AnimationDrawable) mRightCursorBg;
         }
 
-        mHandler.sendEmptyMessage(BinaryNumberEntity.MSG_OPEN_THREAD);
+        mHandler.sendEmptyMessage(BinaryNumService.MSG_OPEN_THREAD);
     }
 
     private void addLineLayout(int index) {
@@ -146,12 +149,12 @@ public class NumberRememoryLayout extends LinearLayout implements
     @Override
     public void dispatchMessage(Message msg) {
         switch (msg.what) {
-            case BinaryNumberEntity.MSG_OPEN_THREAD:
+            case BinaryNumService.MSG_OPEN_THREAD:
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         Message msg = mHandler.obtainMessage();
-                        msg.what = BinaryNumberEntity.MSG_REFRESH_UI;
+                        msg.what =BinaryNumService.MSG_REFRESH_UI;
                         msg.arg1 = mLoadedItem;
 
                         mLoadedItem += 5;// 每次加载五行
@@ -163,14 +166,14 @@ public class NumberRememoryLayout extends LinearLayout implements
                     }
                 }).start();
                 break;
-            case BinaryNumberEntity.MSG_REFRESH_UI:
+            case BinaryNumService.MSG_REFRESH_UI:
                 for (int index = msg.arg1; index < mLoadedItem; index++) {
                     this.addLineLayout(index);
                 }
 
                 if (mLoadedItem >= mLines) {
-                    mHandler.removeMessages(BinaryNumberEntity.MSG_OPEN_THREAD);
-                    mHandler.removeMessages(BinaryNumberEntity.MSG_REFRESH_UI);
+                    mHandler.removeMessages(BinaryNumService.MSG_OPEN_THREAD);
+                    mHandler.removeMessages(BinaryNumService.MSG_REFRESH_UI);
 
                     //快速随机、马拉松数字项目的回忆界面需要显示光标
                     if (mCompeteType.equals(mContext.getString(R.string.project_3))
@@ -185,7 +188,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                         mTextDiffBg = textNumber;
                     }
                 } else {
-                    mHandler.sendEmptyMessage(BinaryNumberEntity.MSG_OPEN_THREAD);
+                    mHandler.sendEmptyMessage(BinaryNumService.MSG_OPEN_THREAD);
                 }
                 break;
             default:
@@ -197,10 +200,10 @@ public class NumberRememoryLayout extends LinearLayout implements
     public void onClick(View view) {
         TextView textNumber = (TextView) view;
         String number = textNumber.getText().toString().trim();
-        if (TextUtils.isEmpty(number) || BinaryNumberEntity.TEXT_ZERO.equals(number)) {
-            textNumber.setText(BinaryNumberEntity.TEXT_ONE);
+        if (TextUtils.isEmpty(number) || BinaryNumService.TEXT_ZERO.equals(number)) {
+            textNumber.setText(BinaryNumService.TEXT_ONE);
         } else {
-            textNumber.setText(BinaryNumberEntity.TEXT_ZERO);
+            textNumber.setText(BinaryNumService.TEXT_ZERO);
         }
     }
 
@@ -267,49 +270,30 @@ public class NumberRememoryLayout extends LinearLayout implements
         mTextDiffBg = textNumber;
     }
 
-    /**
-     * 获取选手答题答案
-     *
-     * @return 以行号为key值保存的每一行数字
-     */
-    public SparseArray<List<String>> getAnswer() {
-        try {
-            SparseArray<List<String>> linesAnswer = new SparseArray<>();
-            List<String> lineNumbers;
+    public void cleanCursor(){
 
-            for (int i = 0; i < mLines; i++) {
-                lineNumbers = new ArrayList<>();
-                ViewGroup viewGroup = (ViewGroup) getChildAt(i);
-                viewGroup = (ViewGroup) viewGroup.getChildAt(0);
-
-                for (int j = 0; j < mRows; j++) {
-                    TextView textNumber = (TextView) viewGroup.getChildAt(j);
-                    lineNumbers.add(textNumber.getText().toString());
-                }
-                linesAnswer.put(i, lineNumbers);
-            }
-            return linesAnswer;
-        } catch (Exception e) {
-            Log.e(TAG, e.toString(), new Exception());
-        }
-        return null;
     }
-
-    public void showAnswer() {
+    public void showAnswer(SparseArray<String> data,SparseArray<String> answer) {
         for (int i = 0; i < mLines; i++) {
-            List<String> orgin = BinaryNumberEntity.lineNumbers.get(i);
-
+            String orgin = data.valueAt(i);
+            int key = data.keyAt(i);
             ViewGroup viewGroup = (ViewGroup) getChildAt(i);
             viewGroup = (ViewGroup) viewGroup.getChildAt(0);
-
-            for (int j = 0; j < mRows; j++) {
+            StringBuilder answerLine = new StringBuilder();
+            for (int j = 0; j <viewGroup.getChildCount(); j++) {
                 TextView textNumber = (TextView) viewGroup.getChildAt(j);
                 String userAnswer  = textNumber.getText().toString();
-                if (!orgin.get(j).equals(userAnswer)) {
+                String o = String.valueOf(orgin.charAt(j));
+                if (TextUtils.isEmpty(o)){
+                    o = " ";
+                }
+                answerLine.append(o);
+                textNumber.setText(o+"\n"+userAnswer);
+                if (!o.equals(userAnswer)) {
                     textNumber.setTextColor(getResources().getColor(R.color.red));
-                    textNumber.setText(userAnswer+"/"+orgin.get(i));
                 }
             }
+            answer.put(key,answerLine.toString());
         }
     }
 }

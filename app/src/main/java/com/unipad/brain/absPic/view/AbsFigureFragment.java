@@ -17,6 +17,7 @@ import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.io.mina.SocketThreadManager;
 
 import org.xutils.x;
 
@@ -64,7 +65,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
      */
     @Override
     public void memoryTimeToEnd(int memory) {
-
 
         service.mode = 1;
         current = 0;
@@ -129,6 +129,12 @@ public class AbsFigureFragment extends BasicCommonFragment {
             TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
             currTv.setBackgroundColor(getResources().getColor(R.color.blue));
         }
+    }
+
+    @Override
+    public void initDataFinished() {
+        adapter.notifyDataSetChanged();
+
     }
 
     private class FigureAdapter extends CommonAdapter<Figure> {

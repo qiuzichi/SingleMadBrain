@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
@@ -26,11 +27,14 @@ import com.unipad.observer.IDataObserver;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
+import java.util.Map;
+
 /**
  * Created by Wbj on 2016/4/7.
  */
 public class CommonActivity extends BasicActivity implements IDataObserver,IOperateGame{
     private CommonFragment mCommonFragment = new CommonFragment();
+
     private AbsBaseGameService service;
     public String getMatchId() {
         return matchId;
@@ -83,22 +87,13 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         mCommonFragment.startGame();
                         break;
                     case DOWNLOAD_QUESTION:
-                        if (dialog == null) {
-                            dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中");
-                        }
-                        else {
-                            ((TextView)dialog.findViewById(R.id.dialog_tip_content)).setText("下载试题中");
-                        }
+                        dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中");
                         dialog.show();
                         break;
 
                     case PAUSE_GAME:
-                        if (dialog == null) {
-                            dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停");
-                        }
-                        else {
-                            ((TextView)dialog.findViewById(R.id.dialog_tip_content)).setText("比赛暂停");
-                        }
+                        HIDDialog.dismissAll();
+                        dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停");
                         dialog.show();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
@@ -116,6 +111,13 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
                         ((TextView) HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE).findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
+                       new Thread() {
+                           @Override
+                           public void run() {
+                               SocketThreadManager.sharedInstance().
+                                       downLoadQuestionOK(matchId, 100);
+                           }
+                       }.start();;
                         break;
                 }
             }
@@ -154,6 +156,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     }
     @Override
     public void initData() {
+        FrameLayout view = (FrameLayout) findViewById(R.id.common_rfg_container);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.common_lfg_container, mCommonFragment);
@@ -161,16 +164,21 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         if (competeItem.equals(getString(R.string.project_2)) || competeItem.equals(getString(R.string.project_3))
                 || competeItem.equals(getString(R.string.project_5)) || competeItem.equals(getString(R.string.project_9))) {
             gameFragment = new NumberRightFragment();
+
         } else if (competeItem.equals(getString(R.string.project_6))) {
             gameFragment = new VirtualRightFragment();
+            gameFragment.setShadeView(view);
         } else if (competeItem.equals(getString(R.string.project_8))) {
             gameFragment = new WordRightFragment();
+            gameFragment.setShadeView(view);
         } else if (competeItem.equals(getString(R.string.project_1))) {
             gameFragment = new HeadPortraitFragment();
-
+            gameFragment.setShadeView(view);
         } else if (competeItem.equals(getString(R.string.project_4))) {
             gameFragment = new AbsFigureFragment();
+            gameFragment.setShadeView(view);
         }
+
         fragmentTransaction.replace(R.id.common_rfg_container, gameFragment);
         fragmentTransaction.commit();
         fragmentManager.executePendingTransactions();
@@ -194,12 +202,13 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     @Override
     public void initDataFinished() {
-        SocketThreadManager.sharedInstance().downLoadQuestionOK(matchId,100);
+
+
         handler.sendEmptyMessage(INIT_DATA_FINISH);
     }
 
     @Override
-    public void downloadingQuestion() {
+    public void downloadingQuestion(Map<String,String> data) {
         handler.sendEmptyMessage(DOWNLOAD_QUESTION);
 
     }

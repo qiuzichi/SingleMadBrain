@@ -17,6 +17,7 @@
         android:id="@+id/btn_popup_window_commit"
         android:layout_width="0dip"
         android:layout_weight="2"
+        android:singleLine="true"
         android:layout_height="wrap_content"
         android:text="@string/button_commit"
         android:textSize="@dimen/text_size_18"
