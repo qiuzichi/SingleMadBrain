@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unipad.AppContext;
 import com.unipad.brain.BasicActivity;
@@ -27,7 +28,7 @@ import com.unipad.utils.MD5Utils;
 import com.unipad.utils.ToastUtil;
 
 public class RegisterActivity extends BasicActivity implements View.OnClickListener ,
-        WheelMainView.OnChangingListener,IDataObserver, TextWatcher {
+        WheelMainView.OnChangingListener,IDataObserver {
     private EditText registName;
     private View mTextSelectedSex;
     private TextView radio_men;
@@ -43,31 +44,34 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
     private PersonCenterService service;
     private String name;
     private String pwd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_aty);
     }
+
     @Override
     public void initData() {
-         registNation = (Spinner) findViewById(R.id.register_nation);
-        (radio_men=(TextView) findViewById(R.id.radio_men)).setOnClickListener(this);
-        (radio_women=(TextView) findViewById(R.id.radio_women)).setOnClickListener(this);
-        (register=(Button) findViewById(R.id.btn_register)).setOnClickListener(this);
-        (registBirthday=(TextView) findViewById(R.id.register_day)).setOnClickListener(this);
-        (registName = (EditText) findViewById(R.id.register_name)).addTextChangedListener(this);
-        (registPwd = (EditText) findViewById(R.id.register_pwd)).addTextChangedListener(this);
+        registNation = (Spinner) findViewById(R.id.register_nation);
+        (radio_men = (TextView) findViewById(R.id.radio_men)).setOnClickListener(this);
+        (radio_women = (TextView) findViewById(R.id.radio_women)).setOnClickListener(this);
+        (register = (Button) findViewById(R.id.btn_register)).setOnClickListener(this);
+        (registBirthday = (TextView) findViewById(R.id.register_day)).setOnClickListener(this);
+        (registName = (EditText) findViewById(R.id.register_name)).addTextChangedListener(mTextWatcher);
+        (registPwd = (EditText) findViewById(R.id.register_pwd)).addTextChangedListener(mTextWatcher);
         registTel = (EditText) findViewById(R.id.register_phone);
 
         showDialog = new ShowDialog(this);
-        if (showDialog.getDialog()!=null) {
+        if (showDialog.getDialog() != null) {
             showDialog.getDialog().setCanceledOnTouchOutside(true);
         }
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
-        service.registerObserver(HttpConstant.REGIST_FILED,this);
-        service.registerObserver(HttpConstant.REGIST_OK,this);
+        service.registerObserver(HttpConstant.REGIST_FILED, this);
+        service.registerObserver(HttpConstant.REGIST_OK, this);
 
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -77,8 +81,8 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
             case R.id.register_day:
                 wheelMainView = new WheelMainView(this);
                 wheelMainView.setChangingListener(this);
-                showDialog.showDialog(wheelMainView,ShowDialog.
-                        TYPE_CENTER,getWindowManager(),0.3f,0.6f);
+                showDialog.showDialog(wheelMainView, ShowDialog.
+                        TYPE_CENTER, getWindowManager(), 0.3f, 0.6f);
                 break;
             case R.id.radio_men:
             case R.id.radio_women:
@@ -87,7 +91,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                 }
                 v.setSelected(true);
                 mTextSelectedSex = v;
-                if(v.getId() == R.id.radio_men){
+                if (v.getId() == R.id.radio_men) {
                     intSex = 0;
                 } else {
                     intSex = 1;
@@ -97,50 +101,53 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                 break;
         }
     }
+
+
     private void regist() {
         name = registName.getText().toString().trim();
         pwd = registPwd.getText().toString().trim();
-        String sex=String.valueOf(intSex).trim();
-        String nation=registNation.getSelectedItem().toString().trim();
-        String birthday=registBirthday.getText().toString().trim();
+        String sex = String.valueOf(intSex).trim();
+        String nation = registNation.getSelectedItem().toString().trim();
+        String birthday = registBirthday.getText().toString().trim();
         String tel = registTel.getText().toString().trim();
 
-        if (TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
             ToastUtil.showToast("用户名不能为空");
             return;
         }
-        if (TextUtils.isEmpty(sex)){
+        if (TextUtils.isEmpty(sex)) {
             ToastUtil.showToast("性别不能为空");
             return;
         }
-        if (TextUtils.isEmpty(birthday)){
+        if (TextUtils.isEmpty(birthday)) {
             ToastUtil.showToast("出身日期不能为空");
             return;
         }
-        if (TextUtils.isEmpty(nation)){
+        if (TextUtils.isEmpty(nation)) {
             ToastUtil.showToast("国籍不能为空");
             return;
         }
-        if (TextUtils.isEmpty(tel)){
-           ToastUtil.showToast("联系方式不能为空");
+        if (TextUtils.isEmpty(tel)) {
+            ToastUtil.showToast("联系方式不能为空");
             return;
         }
-        if (TextUtils.isEmpty(pwd)){
+        if (TextUtils.isEmpty(pwd)) {
             ToastUtil.showToast("密码不能为空");
             return;
         }
         HitopRegist httpRegist = new HitopRegist();
         httpRegist.buildRequestParams("user_name", name);
-        httpRegist.buildRequestParams("user_country",nation);
-        httpRegist.buildRequestParams("user_sex",sex);
-        httpRegist.buildRequestParams("user_contact",tel);
-        httpRegist.buildRequestParams("user_born",birthday);
+        httpRegist.buildRequestParams("user_country", nation);
+        httpRegist.buildRequestParams("user_sex", sex);
+        httpRegist.buildRequestParams("user_contact", tel);
+        httpRegist.buildRequestParams("user_born", birthday);
         httpRegist.buildRequestParams("user_password", MD5Utils.MD5_two(pwd));
         httpRegist.post();
     }
+
     @Override
     public void onChanging(String changStr) {
-       registBirthday.setText(changStr);
+        registBirthday.setText(changStr);
     }
 
     @Override
@@ -148,15 +155,16 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         service.unregistDataChangeListenerObj(this);
         super.onDestroy();
     }
+
     @Override
     public void update(int key, Object o) {
-        switch (key){
+        switch (key) {
             case HttpConstant.REGIST_OK:
-                        Intent intent=new Intent();
-                        intent.putExtra("user_name",name);
-                        intent.putExtra("user_pwd", pwd);
-                        this.setResult(1001,intent);
-                        this.finish();
+                Intent intent = new Intent();
+                intent.putExtra("user_name", name);
+                intent.putExtra("user_pwd", pwd);
+                this.setResult(1001, intent);
+                this.finish();
                 break;
             case HttpConstant.REGIST_FILED:
             default:
@@ -164,20 +172,23 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         }
 
     }
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+    TextWatcher mTextWatcher = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
     }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-
-    }
-}
 

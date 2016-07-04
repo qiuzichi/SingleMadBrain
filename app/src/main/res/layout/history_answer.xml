@@ -6,48 +6,54 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="@dimen/hisrecord_height_answer"
-
             >
            <TextView android:text="@string/site_name"
                android:textSize="@dimen/hisrecord_text_size"
                android:layout_width="@dimen/hisrecord_widht_answer"
                android:layout_height="match_parent"
                android:gravity="center"
+               android:background="@drawable/number_text_bg"
                />
             <TextView android:text="@string/site_mode"
+                android:background="@drawable/number_text_bg"
                 android:textSize="@dimen/hisrecord_text_size"
                 android:layout_width="@dimen/hisrecord_widht_answer_mode"
-                android:layout_height="@dimen/hisrecord_height_answer"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 />
             <TextView android:text="@string/site_num"
+                android:background="@drawable/number_text_bg"
                 android:textSize="@dimen/hisrecord_text_size"
                 android:layout_width="@dimen/hisrecord_widht_answer"
-                android:layout_height="@dimen/hisrecord_height_answer"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 />
             <TextView android:text="@string/site_time"
+                android:background="@drawable/number_text_bg"
                 android:textSize="@dimen/hisrecord_text_size"
                 android:layout_width="@dimen/hisrecord_widht_answer"
-                android:height="@dimen/hisrecord_height_answer"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 />
             <TextView android:text="@string/recall_time"
+                android:background="@drawable/number_text_bg"
                 android:textSize="@dimen/hisrecord_text_size"
                 android:layout_width="@dimen/hisrecord_widht_answer"
-                android:layout_height="@dimen/hisrecord_height_answer"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 />
             <TextView android:text="@string/score"
+                android:background="@drawable/number_text_bg"
                 android:textSize="@dimen/hisrecord_text_size"
                 android:layout_width="@dimen/hisrecord_widht_answer_mode"
-                android:layout_height="@dimen/hisrecord_height_answer"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 />
             <TextView android:text="@string/ranking"
+                android:background="@drawable/number_text_bg"
                 android:textSize="@dimen/hisrecord_text_size"
                 android:layout_width="@dimen/hisrecord_widht_answer_mode"
-                android:layout_height="@dimen/hisrecord_height_answer"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 />
         </TableRow>

@@ -2,6 +2,7 @@ package com.unipad.brain.home.dao;
 
 import com.unipad.ICoreService;
 import com.unipad.http.HitopAdList;
+import com.unipad.http.HitopNewsComment;
 import com.unipad.http.HitopNewsList;
 import com.unipad.http.HitopNewsOperate;
 import com.unipad.observer.GlobleObserService;
@@ -30,6 +31,11 @@ public class NewsService extends GlobleObserService implements ICoreService{
     public void getNewsOperate(String articleId, String method, String methodType, String content, int contentType,Callback.CommonCallback<String> callback){
         HitopNewsOperate newsOperate = new HitopNewsOperate(articleId,method,methodType,content, contentType);
         newsOperate.post(callback);
+    }
+
+    public void getComment(String pagerId, int page, int size){
+        HitopNewsComment advertList = new HitopNewsComment(pagerId, page, size);
+        advertList.get();
     }
 
     @Override

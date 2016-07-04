@@ -84,6 +84,7 @@ public class HitopApplyed extends  HitopRequest<Object> {
     }
 
     public void setSevice(GlobleObserService sevice) {
+
         this.sevice = sevice;
     }
 }
