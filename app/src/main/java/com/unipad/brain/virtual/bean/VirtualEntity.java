@@ -64,5 +64,13 @@ public class VirtualEntity {
      */
     public static double scoreError = 0.5;
 
+    private String answerDate;
 
+    public String getAnswerDate() {
+        return answerDate;
+    }
+
+    public void setAnswerDate(String answerDate) {
+        this.answerDate = answerDate;
+    }
 }

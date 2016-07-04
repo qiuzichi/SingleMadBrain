@@ -16,7 +16,7 @@ import com.unipad.http.HitopGetQuestion;
 /**
  * 二进制数字项目实体
  */
-public class BinaryNumService extends AbsBaseGameService {
+public class NumService extends AbsBaseGameService {
     /**
      * 文字0
      */

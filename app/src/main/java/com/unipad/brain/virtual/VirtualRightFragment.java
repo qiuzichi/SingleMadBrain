@@ -12,9 +12,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.virtual.bean.DividerGridItemDecoration;
 import com.unipad.brain.virtual.bean.VirtualEntity;
+import com.unipad.brain.virtual.dao.VirtualTimeService;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.utils.ToastUtil;
 
@@ -38,25 +40,19 @@ public class VirtualRightFragment extends BasicCommonFragment {
      * 最小年份
      */
     private int minYear=1000;
-    /**
-     * 存储记忆界面的数据
-     */
-    Map<Integer,VirtualEntity> memoryMap=new HashMap<>();
+
     /**
      * 存储回忆界面的数据
      */
-    Map<Integer,VirtualEntity> memoriesMap=new HashMap<>(memoryMap.size());
-    List<VirtualEntity> virtualList=new ArrayList<>();
+    private VirtualTimeService service;
+
     private VirtualMemoryAdapter memoryAdapter;
-    private VirtualMemoriesAdapter memoriesAapter;
+
     /**
      * 记忆界面
      */
     private RecyclerView memoryRv;
-    /**
-     * 回忆界面
-     */
-    private RecyclerView memoriesRv;
+
     /**
      * 回忆界面底部按钮
      */
@@ -67,6 +63,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
      * 回忆界面下方的数字布局
      */
     private LinearLayout jianpan_linlayout;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -100,19 +97,21 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
         memoryRv = (RecyclerView) mViewParent.findViewById(R.id.memoryRv);
         memoryRv.setLayoutManager(new LinearLayoutManager(mActivity));
-        memoryRv.setAdapter(memoryAdapter = new VirtualMemoryAdapter());
+        memoryRv.setAdapter(memoryAdapter = new VirtualMemoryAdapter(service.virtualList));
         memoryRv.setLayoutManager(new GridLayoutManager(mActivity, 2));
         //添加分割线
         memoryRv.addItemDecoration(new DividerGridItemDecoration(mActivity));
 
-        memoriesRv = (RecyclerView) mViewParent.findViewById(R.id.memoriesRv);
-        memoriesRv.setLayoutManager(new LinearLayoutManager(mActivity));
-        memoriesRv.setAdapter(memoriesAapter = new VirtualMemoriesAdapter());
-        memoriesRv.setLayoutManager(new GridLayoutManager(mActivity, 2));
 
-        memoriesRv.setVisibility(View.GONE);
 
-        this.getdata();
+        service = (VirtualTimeService) AppContext.instance().getGameServiceByProject(mActivity.getProjectId());
+
+    }
+
+    @Override
+    public void initDataFinished() {
+        super.initDataFinished();
+
     }
 
     /**
@@ -120,19 +119,34 @@ public class VirtualRightFragment extends BasicCommonFragment {
      */
     class VirtualMemoryAdapter extends RecyclerView.Adapter<VirtualMemoryAdapter.MyViewHolder> {
 
+        private List<VirtualEntity> virtualList;
+        public VirtualMemoryAdapter (List<VirtualEntity> virtualList) {
+            if (virtualList  == null){
+                this.virtualList =  new ArrayList<>();
+            }else {
+                this.virtualList = virtualList;
+            }
+        }
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
                     mActivity).inflate(R.layout.virtual_memory_line, parent,
                     false));
+
             return holder;
         }
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.tv_num.setText(virtualList.get(position).getNumber()+"");
-            holder.tv_date.setText(virtualList.get(position).getDate());
-            holder.tv_event.setText(virtualList.get(position).getEvent());
+            if (service.mode == 0) {//记忆模式
+                holder.tv_num.setText(virtualList.get(position).getNumber() + "");
+                holder.tv_date.setText(virtualList.get(position).getDate());
+                holder.tv_event.setText(virtualList.get(position).getEvent());
+            } else if (service.mode == 1) {
+
+            }else if (service.mode == 2) {
+
+            }
         }
 
         @Override
@@ -152,78 +166,11 @@ public class VirtualRightFragment extends BasicCommonFragment {
         }
     }
 
-    /**
-     * 回忆的adapter
-     */
-    class VirtualMemoriesAdapter extends RecyclerView.Adapter<VirtualMemoriesAdapter.MyViewHolder> {
-        MyViewHolder holders;
 
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-           View view = View.inflate(mActivity,R.layout.virtual_memories_line,null);
-            holders = new MyViewHolder(view);
 
-            return holders;
-        }
 
-        @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position) {
-            holder.tv_num.setText(virtualList.get(position).getNumber() + "");
-            holder.tv_event.setText(virtualList.get(position).getEvent());
-            holder.edit_date.setId(position);
 
-            editList.add(holder.edit_date);
-        }
 
-        @Override
-        public int getItemCount() {
-            return virtualList.size();
-        }
-
-        class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv_num,tv_event;
-            EditText edit_date;
-
-            public MyViewHolder(View view) {
-                super(view);
-                tv_num=(TextView) view.findViewById(R.id.id_num);
-                tv_event=(TextView)view.findViewById(R.id.event_txt);
-                edit_date= (EditText) view.findViewById(R.id.editText);
-            }
-        }
-    }
-
-    /**
-     * 初始化数据
-     */
-    public void getdata(){
-        VirtualEntity virtual;
-        for (int i=0;i<40;i++){
-            virtual=new VirtualEntity(i+1,getDate(),"耳朵可以再生"+i);
-            virtualList.add(virtual);
-            memoryMap.put(i,virtual);
-        }
-    }
-
-    /**
-     * 随机生成不同的年份
-     */
-    Random  virtualRandom=new Random();
-    String s="";
-    public String getDate(){
-
-        s = (virtualRandom.nextInt(maxYear)%(maxYear-minYear+1) + minYear)+"";
-
-        if(virtualList!=null&&virtualList.size()>0){
-            for(int i=0;i<virtualList.size();i++){
-                if(virtualList.get(i).getDate().equals(s)){
-                    s = (virtualRandom.nextInt(maxYear)%(maxYear-minYear+1) + minYear)+"";
-                    i=0;
-                }
-            }
-        }
-        return s;
-    }
 
     /**
      * 开始答题
@@ -233,7 +180,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
         memoryRv.setVisibility(View.GONE);
 
         jianpan_linlayout.setVisibility(View.VISIBLE);
-        memoriesRv.setVisibility(View.VISIBLE);
+
     }
 
     /**
@@ -242,19 +189,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
      * @param takeTime 答题耗时
      */
     public void endAnswerMode(int takeTime) {
-        double totalScore = 0;// 总得分，总分需要四舍五入
-        for(int i=0;i<memoryMap.size();i++){
-            if(memoriesMap.get(i)!=null){//判断是否有空白
-                if(memoryMap.get(i).getDate().equals(memoriesMap.get(i).getDate())){//答对加1分
-                    totalScore=totalScore+1;
-                }else{
-                    totalScore=totalScore-0.5;//打错扣0.5分
-                }
-            }
-        }
 
-        if(totalScore<0){
-        }
     }
 
     /**
@@ -264,7 +199,8 @@ public class VirtualRightFragment extends BasicCommonFragment {
     /**
      * 输入的年份
      */
-    String text = "";
+   private  String text = "";
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -301,8 +237,10 @@ public class VirtualRightFragment extends BasicCommonFragment {
                 }
                 editList.get(index).setText(text);
                 if(text.trim().length()==4){//输入了4位数字之后，自动跳到下一个，index加1
-                    memoriesMap.put(index, new VirtualEntity(index, text, virtualList.get(index).getEvent()));
-                    text="";
+                   // memoriesMap.put(index, new VirtualEntity(index, text, virtualList.get(index).getEvent()));
+                    service.virtualList.get(index).setAnswerDate(text);
+                    //
+                    text ="";
                     index++;
                 }
                 break;
@@ -313,7 +251,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
                         text=text.substring(0,editList.get(index).getText().length()-1);
                         editList.get(index).setText(text);
                     }else if(editList.get(index).getText().length()==0){//如果格子中没有数字，清除全部集合
-                        memoriesMap.clear();
+                       // memoriesMap.clear();
                     }
                     break;
                 }
@@ -322,7 +260,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     text=text.substring(0,editList.get(index).getText().length()-1);//清除格子中的一个数字
                     editList.get(index).setText(text);
                 }else if(editList.get(index).getText().length()==0){
-                    memoriesMap.remove(index);//整个格子中的数字都清除完之后在map集合移除这个item
+                    //memoriesMap.remove(index);//整个格子中的数字都清除完之后在map集合移除这个item
                     index--;//索引减1
                     text=editList.get(index).getText().toString();
                     text=text.substring(0,editList.get(index).getText().length()-1);

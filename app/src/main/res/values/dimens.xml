@@ -65,7 +65,7 @@
     <dimen name="portraits_image_width">176dp</dimen>
     <dimen name="portraits_image_height">176dp</dimen>
 
-
+    <dimen name="random_word_item_width">130dp</dimen>
 
 
 

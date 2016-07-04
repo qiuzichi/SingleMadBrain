@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
-import com.unipad.brain.number.dao.BinaryNumService;
-
 /**
  * 随机词语回忆界面
  */

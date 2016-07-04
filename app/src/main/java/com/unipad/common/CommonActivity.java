@@ -164,19 +164,14 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         if (competeItem.equals(getString(R.string.project_2)) || competeItem.equals(getString(R.string.project_3))
                 || competeItem.equals(getString(R.string.project_5)) || competeItem.equals(getString(R.string.project_9))) {
             gameFragment = new NumberRightFragment();
-
         } else if (competeItem.equals(getString(R.string.project_6))) {
             gameFragment = new VirtualRightFragment();
-            gameFragment.setShadeView(view);
         } else if (competeItem.equals(getString(R.string.project_8))) {
             gameFragment = new WordRightFragment();
-            gameFragment.setShadeView(view);
         } else if (competeItem.equals(getString(R.string.project_1))) {
             gameFragment = new HeadPortraitFragment();
-            gameFragment.setShadeView(view);
         } else if (competeItem.equals(getString(R.string.project_4))) {
             gameFragment = new AbsFigureFragment();
-            gameFragment.setShadeView(view);
         }
 
         fragmentTransaction.replace(R.id.common_rfg_container, gameFragment);
@@ -187,7 +182,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        AppContext.instance().clearService(service);
         SocketThreadManager.sharedInstance().releaseInstance();
     }
 
