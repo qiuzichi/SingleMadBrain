@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,7 +16,7 @@ import static android.support.v7.widget.ViewUtils.isLayoutRtl;
 
 @SuppressWarnings("deprecation")
 public class RecommendGallery extends Gallery implements OnItemSelectedListener{
-    private static final int DELAY_TIME = 5000;
+    private static final int DELAY_TIME = 1000;
     private static final int SELECTE_MSG = 1;
     private RecommendPot mRecommendPot;
     private ViewPager mViewPager;
@@ -141,6 +142,20 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:   //按下的时候
+                //按下 停止播放
+                mUIHander.removeMessages(SELECTE_MSG);
+
+                break;
+            case MotionEvent.ACTION_UP:  //松开
+    Log.d("gallery", "执行点击事件");
+                break;
+        }
+
+
+
+
         return true;
     }
 

@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class PagerDetailActivity extends BasicActivity implements IDataObserver, View.OnClickListener {
 
-    private NewsService service;
+
 
     private List<CommentBean> mCommentDatas =  new ArrayList<CommentBean>();
 //    private CommentAdapter mCommentAdapter;
@@ -61,17 +61,17 @@ public class PagerDetailActivity extends BasicActivity implements IDataObserver,
         setContentView(R.layout.activity_pagerdetail);
         articleId = getIntent().getStringExtra("pagerId");
 
-        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
+//        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
 //        service.registerObserver(HttpConstant.NOTIFY_GET_COMMENT, this);
 //        service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
 //        //获取数据
 ////        getComment(articleId, 1, 10);
 
     }
-
-    private void getComment(String pagerId, int page, int size) {
-        service.getComment(pagerId, 1, 10);
-}
+//
+//    private void getComment(String pagerId, int page, int size) {
+//        service.getComment(pagerId, 1, 10);
+//}
 
 
     public void initData() {

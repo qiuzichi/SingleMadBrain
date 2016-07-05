@@ -9,13 +9,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7"
+        android:layout_weight="6"
         android:hint="@string/input_comment"
         android:inputType="textMultiLine"
         android:gravity="left"
         android:paddingTop="@dimen/margin_edge"
         android:paddingLeft="@dimen/margin_5dip"
-        android:layout_marginTop="@dimen/login_margin_top"
+        android:layout_marginTop="@dimen/margin_5dip"
         android:minLines="6"
         android:layout_marginRight="@dimen/margin_10dip"
         android:layout_marginLeft="@dimen/margin_10dip"
@@ -27,11 +27,11 @@
    <RelativeLayout
        android:layout_width="match_parent"
        android:layout_height="0dp"
-       android:layout_weight="3">
+       android:layout_weight="4">
 
         <Button
             android:id="@+id/btn_comment_commit"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/popopwindows_report_weight"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:paddingLeft="@dimen/popwindows_report"

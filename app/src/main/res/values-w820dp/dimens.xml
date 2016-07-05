@@ -76,6 +76,7 @@
     <dimen name="compitition_entry_fee">150dp</dimen>
     <dimen name="popopwindows_height">250dp</dimen>
     <dimen name="popwindows_report">50dp</dimen>
+    <dimen name="popwindows_report_weight">50dp</dimen>
 
 
     <!-- Default screen margins, per the Android Design guidelines. -->

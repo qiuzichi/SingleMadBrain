@@ -1,14 +1,17 @@
 package com.unipad.brain.consult.view;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
+import com.unipad.brain.consult.entity.ListAreaEnum;
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
@@ -62,12 +65,15 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         public void convert(ViewHolder holder, CompetitionBean competitionBean) {
             //比赛模式
             TextView race_model = (TextView) holder.getView(R.id.tv_competion_info_model_item);
-            race_model.setText(Constant.getProjectId(competitionBean.getProjectId()));
+            race_model.setText(Constant.getProjectName(competitionBean.getProjectId()));
 
             //比赛区域
             TextView race_gradle = (TextView) holder.getView(R.id.tv_competion_info_area_item);
-
-            race_gradle.setText(Constant.getGradeId(competitionBean.getGradeId()));
+            ListAreaEnum areaEnum = ListAreaEnum.values()[Integer.parseInt(competitionBean.getGradeId().substring(competitionBean.getGradeId().lastIndexOf("0") + 1)) - 1];
+            Drawable drawable = getResources().getDrawable(areaEnum.getLabelResId());
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            race_gradle.setText(areaEnum.getNameResId());
+            race_gradle.setCompoundDrawables(null, drawable, null, null);
             //设置参赛日期
             ((TextView) holder.getView(R.id.tv_competion_info_date_item)).setText(competitionBean.getCompetitionDate());
             //参赛时间
@@ -106,6 +112,5 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
     }
     private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWCOMPETITION, this);
-
     }
 }
