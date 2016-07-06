@@ -53,4 +53,10 @@
             android:text="5"
             android:layout_weight="1"/>
     </LinearLayout>
+    <ViewStub
+        android:id="@+id/view_shade"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout="@layout/shade_v"/>
 </RelativeLayout>

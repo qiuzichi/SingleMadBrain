@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -34,6 +35,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     private int current;
     private int preAnswer;
     private View buttonArea;
+    private ViewStub mStubShade;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
         mViewParent.findViewById(R.id.answer_3).setOnClickListener(this);
         mViewParent.findViewById(R.id.answer_4).setOnClickListener(this);
         mViewParent.findViewById(R.id.answer_5).setOnClickListener(this);
+        mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
         service = (FigureService) (AppContext.instance().getService(Constant.ABS_FIGURE));
         adapter = new FigureAdapter(mActivity, service.allFigures, R.layout.list_item_abs_figure);
         gridView.setAdapter(adapter);
@@ -75,10 +78,17 @@ public class AbsFigureFragment extends BasicCommonFragment {
     }
 
     @Override
-    public void rememoryTimeToEnd(int answerTime) {
+    public void rememoryTimeToEnd(final int answerTime) {
         service.mode = 2;
         setButtonArea();
         adapter.notifyDataSetChanged();
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),service.getScore(),memoryTime,answerTime,service.getAnswerData());
+            }
+        }.start();
     }
 
     @Override
@@ -135,7 +145,25 @@ public class AbsFigureFragment extends BasicCommonFragment {
     @Override
     public void initDataFinished() {
         adapter.notifyDataSetChanged();
+        mStubShade.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void startGame() {
+        super.startGame();
+        mStubShade.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void pauseGame() {
+        super.pauseGame();
+        mStubShade.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void reStartGame() {
+        super.reStartGame();
+        mStubShade.setVisibility(View.GONE);
     }
 
     private class FigureAdapter extends CommonAdapter<Figure> {
@@ -154,7 +182,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
             ImageView headView = (ImageView) holder.getView(R.id.icon_absfigure);
 
             x.image().bind(headView, figure.getPath());
-            Log.e("", "path:" + figure.getPath());
             //Log.e("---", "path = " + person.getHeadPortraitPath() + ",name=" + person.getFirstName() + person.getLastName());
             final TextView orginNum = (TextView) holder.getView(R.id.orgin_num);
             final TextView answerNum = (TextView) holder.getView(R.id.answer_num);
@@ -172,7 +199,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
                             TextView tv = (TextView) Preview.findViewById(R.id.answer_num);
                             tv.setBackgroundColor(getResources().getColor(R.color.white));
                         }
-                       answerNum.setBackgroundColor(getResources().getColor(R.color.blue));
+                       v.findViewById(R.id.answer_num).setBackgroundColor(getResources().getColor(R.color.blue));
                         preAnswer = current;
                         current = holder.getPosition();
 

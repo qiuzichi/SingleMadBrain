@@ -80,7 +80,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Request request = new Request("10001", body);
         sendMsg(request);
     }
-    public void finishedGameByUser(String matchId,double score,int memoryTime,int answerTime,String answer){
+    public void finishedGameByUser(String matchId,double score,int memoryTime,int answerTime,String answer,int round){
         LogUtil.e("","score:"+score+",memory="+memoryTime+",answerTIme :"+answerTime);
         LogUtil.e("","answer:"+answer);
         Map<String, String> body = new HashMap<String, String>();
@@ -88,11 +88,15 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         body.put("USERNAME", AppContext.instance().loginUser.getUserName());
         body.put("SCHEDULEID", matchId);
         body.put("SCORE", score+"");
+        body.put("ROUND",round+"");
         body.put("MEMTIME",memoryTime+"");
         body.put("RECTIME",answerTime+"");
         body.put("CONTENT",answer);
         Request request = new Request(IOConstant.END_GAME_BY_Client,body);
         sendMsg(request);
+    }
+    public void finishedGameByUser(String matchId,double score,int memoryTime,int answerTime,String answer){
+        finishedGameByUser(matchId,score,memoryTime,answerTime,answer,1);
     }
     public void downLoadQuestionOK(String id,int progress) {
         Map<String, String> body = new HashMap<String, String>();
