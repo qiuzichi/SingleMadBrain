@@ -36,6 +36,8 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
 
     // 个人中心模块 服务器交互 服务
     private PersonCenterService service;
+
+    // 获取规则
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
