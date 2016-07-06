@@ -2,19 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/yj_login_dialog"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp" >
+            android:layout_height="60dp">
 
             <TextView
+                android:id="@+id/dialog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -36,36 +37,43 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/yj_login_dialog_bg"
-                android:gravity="center"
-                android:orientation="vertical" >
+                android:background="@drawable/yj_login_dialog_bg">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/plaint"
-                    android:gravity="center"
-                    android:text=" 亲爱的用户!"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txt_msg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="如果您是老用户，可用原始密码登录，之后在个人信息修改密码即可哦~"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            
-              <LinearLayout
+                    <TextView
+                        android:id="@+id/txt_pname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/plaint"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:text=" 亲爱的用户!"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_msg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:text="如果您是老用户，可用原始密码登录，之后在个人信息修改密码即可哦~"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </ScrollView>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="11dp"
                 android:background="@color/white"

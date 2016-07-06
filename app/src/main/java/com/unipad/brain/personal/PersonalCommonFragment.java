@@ -70,6 +70,8 @@ public abstract class PersonalCommonFragment extends Fragment implements View.On
     }
     TextView txtName;
 
+    TextView txtLevel;
+
     // 当前显示的页面
     public int thisShowView;
 
@@ -80,6 +82,7 @@ public abstract class PersonalCommonFragment extends Fragment implements View.On
         mParentLayout.addView(inflater.inflate(this.getLayoutId(), null), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         txtName = (TextView)mParentLayout.findViewById(R.id.user_name);
         user_photo = (ImageView)mParentLayout.findViewById(R.id.user_photo);
+
         user_photo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

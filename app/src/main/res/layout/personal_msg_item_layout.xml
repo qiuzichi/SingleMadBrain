@@ -148,11 +148,12 @@
                 android:layout_width="match_parent"
                 android:gravity="right|bottom"
                 android:layout_weight="5" >
-                <Button
+                <TextView
                     android:id="@+id/in_game"
                     android:layout_height="55dp"
                     android:layout_width="180dp"
                     android:layout_marginRight="10dp"
+                    android:gravity="center"
                     android:layout_marginBottom="3dp"
                     android:textColor="@color/main_1"
                     android:background="@drawable/my_apply_bg"

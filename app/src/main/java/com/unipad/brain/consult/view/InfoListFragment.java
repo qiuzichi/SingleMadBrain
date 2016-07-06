@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
@@ -42,6 +43,9 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
     protected void initView(View view) {
         super.initView(view);
         mLvInfos = (ListView)view.findViewById(R.id.lv_info_list);
+
+        ((TextView)view.findViewById(R.id.tv_name)).setText(AppContext.instance().loginUser.getUserName());
+
         final ImageView user_photo = (ImageView)view.findViewById(R.id.iv_header);
 
         if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
@@ -54,7 +58,8 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
 
                 @Override
                 public void onError(Throwable throwable, boolean b) {
-
+                    //当错误的时候  显示默认图片；
+                    user_photo.setImageResource(R.drawable.user_default_photo);
                 }
 
                 @Override

@@ -32,9 +32,9 @@ public class ConsultFragmentFactory {
             case HOTSPOT:
                 name = "com.unipad.brain.consult.view.HotspotFragment";
                 break;
-            case SUBSCRIBE:
-                name = "com.unipad.brain.consult.view.SubscribeFragment";
-                break;
+//            case SUBSCRIBE:
+//                name = "com.unipad.brain.consult.view.SubscribeFragment";
+//                break;
         }
 
         return getFragmentByClassName(name);

@@ -5,6 +5,7 @@ import com.unipad.UserDetailEntity;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.common.Constant;
+import com.unipad.observer.GlobleObserService;
 
 import org.json.JSONObject;
 
@@ -13,13 +14,15 @@ import org.json.JSONObject;
  */
 public class HitopGetRule extends HitopRequest<RuleGame> {
 
+    private GlobleObserService sevice;
 
     public HitopGetRule(String path) {
         super(path);
     }
 
-    public HitopGetRule(String matchId, String path) {
+    public HitopGetRule(String matchId, String path,GlobleObserService service) {
         super(HttpConstant.GET_RULE);
+        this.sevice = service;
         mParams.addQueryStringParameter("matchId", matchId);
     }
 
@@ -63,7 +66,7 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
             e.printStackTrace();
         }
         if (rule != null) {
-            ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).noticeDataChange(HttpConstant.GET_RULE_NOTIFY,rule);
+            sevice.noticeDataChange(HttpConstant.GET_RULE_NOTIFY, rule);
         }
         return rule;
     }
@@ -72,5 +75,4 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
     public void buildRequestParams() {
 
     }
-
 }
