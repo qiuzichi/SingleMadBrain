@@ -45,6 +45,7 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
         mLvInfos = (ListView)view.findViewById(R.id.lv_info_list);
 
         ((TextView)view.findViewById(R.id.tv_name)).setText(AppContext.instance().loginUser.getUserName());
+//        ((TextView)view.findViewById(R.id.tv_address)).setText(AppContext.instance().loginUser.get);
 
         final ImageView user_photo = (ImageView)view.findViewById(R.id.iv_header);
 

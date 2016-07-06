@@ -51,7 +51,7 @@
     <!-- 收藏/点赞/评论/分析默认宽高 -->
     <dimen name="favorite_width">20dip</dimen>
     <dimen name="favorite_height">20dip</dimen>
-    <dimen name="comment_width">30dip</dimen>
+    <dimen name="view_margin_height">30dip</dimen>
     <dimen name="head_portrait_width">80dip</dimen>
 
 

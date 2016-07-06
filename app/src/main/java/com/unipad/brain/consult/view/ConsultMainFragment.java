@@ -105,7 +105,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
 
     private void setTabSelectedChanged(int index, boolean selected){
         View itemView = mTabWidget.getChildTabViewAt(index);
-        itemView.setBackgroundColor(selected ? Color.RED : Color.BLUE);
+        itemView.setBackgroundResource(selected ? R.color.red : R.color.main_1);
     }
 
     public void onDetach() {

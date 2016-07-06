@@ -166,6 +166,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         public void convert(ViewHolder holder, NewEntity newEntity) {
             //图片的
             ImageView iv_pic = holder.getView(R.id.iv_item_hotspot_icon);
+            new BitmapUtils(mActivity).display(iv_pic, newEntity.getThumbUrl());
             //设置标题
             ((TextView)holder.getView(R.id.tv_item_hotspot_news_title)).setText(newEntity.getTitle());
             //设置更新时间
