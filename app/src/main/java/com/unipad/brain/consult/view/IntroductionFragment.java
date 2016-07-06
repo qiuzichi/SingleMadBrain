@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -392,9 +393,37 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }
 
         @Override
-        public void convert(ViewHolder holder, AdPictureBean adPictureBean) {
+        public void convert(ViewHolder holder, final AdPictureBean adPictureBean) {
             ImageView imageView = holder.getView(R.id.ad_gallery_item);
+
+
             x.image().bind(imageView, adPictureBean.getAdvertPath(),imageOptions);
+
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+
+                    if(adPictureBean.getAdvertPath() != null){
+                        if(adPictureBean.getJumpType().equals("0")){
+                            //本页面打开 发送意图
+                            Intent intent = new Intent(mActivity, PagerDetailActivity.class);
+                            intent.putExtra("pagerId", adPictureBean.getAdvertPath());
+                            startActivity(intent);
+                        }else {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory("android.intent.category.DEFAULT");
+                            intent.addCategory("android.intent.category.BROWSABLE");
+                            intent.setData(Uri.parse(adPictureBean.getAdvertPath()));
+                            startActivity(intent);
+                        }
+                    }
+
+                    return true;
+                }
+            });
+
         }
     }
 

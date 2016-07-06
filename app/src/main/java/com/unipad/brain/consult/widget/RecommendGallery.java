@@ -20,7 +20,9 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
     private static final int SELECTE_MSG = 1;
     private RecommendPot mRecommendPot;
     private ViewPager mViewPager;
-    
+    private Boolean mOnFling = true;
+    private float startX;
+
     public RecommendGallery(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnItemSelectedListener(this);
@@ -75,6 +77,24 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
             mViewPager.requestDisallowInterceptTouchEvent(true);
 
         }
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:   //按下的时候
+                //按下 停止播放
+                startX = ev.getX();
+                mUIHander.removeMessages(SELECTE_MSG);
+                return mOnFling;
+
+            case MotionEvent.ACTION_UP:  //松开
+                Log.d("gallery", "执行点击事件" +startX + "======,   e2     =" +  ev.getX());
+
+                float endX = ev.getX();
+                if(Math.abs(endX - startX) <= 5){
+                    mOnFling = false;
+                }
+                mUIHander.sendEmptyMessageDelayed(SELECTE_MSG, DELAY_TIME);
+                break;
+        }
+
 
         return super.onInterceptTouchEvent(ev);
     }
@@ -113,7 +133,9 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
         //do not slip circularly,because it is bad performance.
         int count = getCount();
         int position = getSelectedItemPosition();
-       if(e1.getX() > e2.getX()) {
+
+
+        if(e1.getX() > e2.getX()) {
            if(position == count -1) {
                position = 0;
 
@@ -130,7 +152,7 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
             }
         }
         setSelection(position);
-     return true; 
+     return  mOnFling;
 
     }
 
@@ -142,16 +164,7 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:   //按下的时候
-                //按下 停止播放
-                mUIHander.removeMessages(SELECTE_MSG);
 
-                break;
-            case MotionEvent.ACTION_UP:  //松开
-    Log.d("gallery", "执行点击事件");
-                break;
-        }
 
 
 
