@@ -28,7 +28,7 @@ public class HomeGameHandService extends GlobleObserService implements ICoreServ
     }
 
     public void getRule(String id){
-        HitopGetRule httpGetRule = new HitopGetRule(id,null);
+        HitopGetRule httpGetRule = new HitopGetRule(id,null,this);
         httpGetRule.post();
     }
 

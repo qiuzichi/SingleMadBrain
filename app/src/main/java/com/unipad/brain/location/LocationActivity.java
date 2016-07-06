@@ -148,7 +148,7 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
                             holder.setText(R.id.txt_name, competitionBean.getName() + "/" + competitionBean.getProjecNname());
                             holder.setText(R.id.txt_addr, competitionBean.getAddr());
                             holder.setText(R.id.txt_cost, competitionBean.getCost());
-                            Button in_game = (Button)holder.getView(R.id.in_game);
+                            TextView in_game = (TextView)holder.getView(R.id.in_game);
                             in_game.setText(competitionBean.getIsApply() == 0 ? getString(R.string.my_apply) : getString(R.string.applied) );
                            // holder.getView(R.id.in_game).setVisibility(competitionBean.getApplyState() == 0 ? View.VISIBLE : View.GONE);
                             //holder.setImageResource(R.id.img_photo, homeBean.isSelect ? homeBean.selImgId : homeBean.norImgId);

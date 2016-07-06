@@ -19,6 +19,7 @@ import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopFeedback;
 import com.unipad.http.HitopFollow;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.http.HitopGetRule;
 import com.unipad.http.HitopHistRecord;
 import com.unipad.http.HitopLogin;
 
@@ -194,6 +195,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         updataPwd.setSevice(this);
         updataPwd.post();
     }
+
     /**
      * @param uid
      * @param send_text
@@ -206,6 +208,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopFeedback.setSevice(this);
         hitopFeedback.post();
     }
+
     /**
      * @param
      * @param
@@ -215,6 +218,8 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         HitopHistRecord hitopRecord = new HitopHistRecord(-1,startTime,endTime,1,20);
         hitopRecord.post();
     }
+
+
     public void getFollwList(String uid) {
         HitopFollow hitopFollow=new HitopFollow();
         hitopFollow.buildRequestParams("userId",uid);
@@ -228,5 +233,13 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopTopList.post();
     }
 
+    /**
+     * 获取赛事规则
+     * @param id
+     */
+    public void getRule(String id){
+        HitopGetRule httpGetRule = new HitopGetRule(id,null,this);
+        httpGetRule.post();
+    }
 }
 

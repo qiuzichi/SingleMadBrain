@@ -1,6 +1,7 @@
 package com.unipad.brain.portraits.control;
 
 
+import android.content.pm.ActivityInfo;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -265,7 +266,6 @@ public class HeadService extends AbsBaseGameService{
                    person = data.get(i);
                    person.setHeadPortraitPath(dir+File.separator+fileList[i]);
                }
-
             }
         }
         setIsInitResourseAready(true);

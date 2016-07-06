@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,14 +75,17 @@ public class ToastUtil {
 
     public static HIDDialog createRuleDialog(Context mContext, String id,RuleGame rule)
     {
-       final HIDDialog WaitingDialog = new HIDDialog(mContext, id);
-        WaitingDialog.setContentView(R.layout.show_rule_dlg);
+       final HIDDialog WaitingDialog = new HIDDialog(mContext,R.style.DialogTheme, id);
+        WaitingDialog.setContentView(R.layout.first_login_dialog,480,600);
+
 
        // WaitingDialog.setTitle(Constant.getProjectName(rule.getProjectId()) + "规则：");
         String tip = "记忆规则：\n\n"+rule.getMemeryTip()+"\n\n回忆规则：\n\n"+rule.getReCallTip()+"\n\n计分规则：\n\n"+rule.getCountRule()+"\n";
-        ((TextView)WaitingDialog.findViewById(R.id.msg_text)).setText(tip);
+        ((TextView)WaitingDialog.findViewById(R.id.txt_msg)).setGravity(Gravity.LEFT);
+        ((TextView)WaitingDialog.findViewById(R.id.txt_msg)).setText(tip);
         ((TextView)WaitingDialog.findViewById(R.id.dialog_title)).setText(Constant.getProjectName(rule.getProjectId()) + "规则：");
-        ((Button)WaitingDialog.findViewById(R.id.dialog_close)).setOnClickListener(new View.OnClickListener() {
+        ((TextView)WaitingDialog.findViewById(R.id.txt_pname)).setVisibility(View.GONE);
+        ((ImageView)WaitingDialog.findViewById(R.id.img_close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 WaitingDialog.dismiss();

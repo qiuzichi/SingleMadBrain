@@ -98,7 +98,8 @@ public class HttpConstant {
     public static final int UOLOAD_PHOTO_FILE=0x10900;
     // 关注比赛
     public static final int ATTENTION = 0x11000;
-
+    // 获取规则
+    public static final int GETRULE = 0x11100;
 
     public static final int REGIST_OK = 0x18000;
     public static final int REGIST_FILED = 0x18001;
