@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/popopwindows_height"
     android:background="@color/comment_popwindows_bg"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     >
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="9"
         android:hint="@string/input_comment"
         android:inputType="textMultiLine"
         android:gravity="left"
@@ -17,33 +17,28 @@
         android:paddingLeft="@dimen/margin_5dip"
         android:layout_marginTop="@dimen/margin_5dip"
         android:minLines="6"
-        android:layout_marginRight="@dimen/margin_10dip"
         android:layout_marginLeft="@dimen/margin_10dip"
         android:textSize="@dimen/common_text_22"
         android:textColor="@color/black"
         android:background="@drawable/edit_block"
         android:id="@+id/et_popup_comment_input"
         />
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="4">
+
 
         <Button
             android:id="@+id/btn_comment_commit"
             android:layout_width="@dimen/popopwindows_report_weight"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/popwindows_report"
-            android:paddingRight="@dimen/popwindows_report"
+            android:layout_marginTop="@dimen/margin_5dip"
+            android:paddingLeft="@dimen/margin_10dip"
+            android:paddingRight="@dimen/margin_10dip"
             android:layout_marginRight="@dimen/margin_10dip"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:singleLine="true"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/button_report"
-            android:textSize="@dimen/text_size_18"
+            android:textSize="@dimen/common_text_22"
             />
-
-   </RelativeLayout>
 
 </LinearLayout>
