@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="@color/white"
+    android:keepScreenOn="true"
     android:weightSum="5.8">
 
     <FrameLayout
