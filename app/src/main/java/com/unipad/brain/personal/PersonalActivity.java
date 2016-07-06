@@ -86,6 +86,8 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
         user_photo = (ImageView) findViewById(R.id.user_photo);
         mFragmentManager = getFragmentManager();
         this.setTextViewSelected((TextView) findViewById(R.id.personal_info));
+        TextView txtLevel = (TextView)findViewById(R.id.user_age_ads);
+        txtLevel.setText(AppContext.instance().loginUser.getLevel());
         setTxtName();
         if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
             x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {

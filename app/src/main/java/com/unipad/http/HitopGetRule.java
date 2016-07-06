@@ -16,9 +16,6 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
 
     private GlobleObserService sevice;
 
-
-
-
     public HitopGetRule(String path) {
         super(path);
     }
@@ -78,8 +75,4 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
     public void buildRequestParams() {
 
     }
-
-
-
-
 }

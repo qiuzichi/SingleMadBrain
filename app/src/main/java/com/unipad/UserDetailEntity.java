@@ -31,6 +31,16 @@ public class UserDetailEntity {
 
     private String loginPwd; // 登录密码
 
+    private String level;   // 等级
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     public String getLoginPwd() {
         return loginPwd;
     }
