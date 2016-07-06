@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultClassBean;
 import com.unipad.brain.consult.view.CompititionMainFragment;
 import com.unipad.brain.consult.view.ConsultMainFragment;
@@ -27,19 +28,19 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
 
     private FrameLayout mLayoutHome;
 
-    //    private IntroductionFragment introductionFragment;
+
     private InfoListFragment mLeftFragment;
 
     private MainBasicFragment mRightFragment;
 
+    CompititionMainFragment mCompititionMainFragment;
+    ConsultMainFragment mConsultMainFragment;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //初始化界面;
         initView();
-//        introductionFragment = new IntroductionFragment();
-//        fl_homepager.addView(introductionFragment.getRoot());
 
     }
 
@@ -51,13 +52,9 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
     //界面的初始化
     private void initView() {
 
-        //左侧组件
-//        fl_hmepage_left = (FrameLayout)mActivity.findViewById(R.id.fl_mainpager_left);
         initLeftFragment();
-        //frame 组件
-//        fl_homepager = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
-        initHomeFragment();
 
+        initHomeFragment();
     }
 
     @Override
@@ -69,7 +66,11 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
         if (mLeftFragment == null) {
             mLeftFragment = new InfoListFragment();
         }
-        getTransaction().replace(R.id.fl_mainpager_left, mLeftFragment);
+        FragmentTransaction transaction = getTransaction();
+        transaction.replace(R.id.fl_mainpager_left, mLeftFragment);
+
+        transaction.commit();
+        //监听事件
         mLeftFragment.setOnHomePageChangeListener(this);
     }
 
@@ -82,30 +83,66 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
 
     public void initHomeFragment() {
         mLayoutHome = (FrameLayout) mActivity.findViewById(R.id.fl_mainpager_info);
-        mRightFragment = new ConsultMainFragment();
         FragmentTransaction transaction = getTransaction();
+        if(mConsultMainFragment == null) {
+            mConsultMainFragment = new ConsultMainFragment();
+            mRightFragment = mConsultMainFragment;
+        }
         transaction.add(R.id.fl_mainpager_info, mRightFragment);
         //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
         transaction.commit();
     }
 
     public void onNeedConsultPageShow(){
-        if(mRightFragment instanceof ConsultMainFragment)return;
-        mRightFragment = new ConsultMainFragment();
+//        if(mRightFragment instanceof ConsultMainFragment)return;
+//        mRightFragment = new ConsultMainFragment();
+//        FragmentTransaction transaction = getTransaction();
+//        transaction.add(R.id.fl_mainpager_info, mRightFragment);
         FragmentTransaction transaction = getTransaction();
-        transaction.add(R.id.fl_mainpager_info, mRightFragment);
+        transaction.hide(mRightFragment);
+
+        mRightFragment = mConsultMainFragment;
+        if(mConsultMainFragment == null){
+            mConsultMainFragment = new ConsultMainFragment();
+            mRightFragment = mConsultMainFragment;
+            transaction.add(R.id.fl_mainpager_info, mRightFragment);
+        }else {
+            transaction.show(mRightFragment);
+        }
+
         //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
         transaction.commit();
     }
 
     @Override
     public void onNeedCompetitionPageShow() {
-        if(mRightFragment instanceof CompititionMainFragment)return;
-        mRightFragment = new CompititionMainFragment();
+//        if(mRightFragment instanceof CompititionMainFragment){
+//            return;
+//        }
         FragmentTransaction transaction = getTransaction();
-        transaction.add(R.id.fl_mainpager_info, mRightFragment);
+        transaction.hide(mRightFragment);
+
+        mRightFragment = mCompititionMainFragment;
+        if(mCompititionMainFragment == null){
+            mCompititionMainFragment = new CompititionMainFragment();
+            mRightFragment = mCompititionMainFragment;
+            transaction.add(R.id.fl_mainpager_info, mRightFragment);
+        }else {
+            transaction.show(mRightFragment);
+        }
+
+
         //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
         transaction.commit();
     }
 
+    private void hideAll(){
+        FragmentTransaction transaction = getTransaction();
+        if(mConsultMainFragment != null && mConsultMainFragment.isAdded()){
+            transaction.hide(mConsultMainFragment);
+        }
+        if(mCompititionMainFragment != null && !mCompititionMainFragment.isAdded()){
+            transaction.hide(mCompititionMainFragment);
+        }
+    }
 }

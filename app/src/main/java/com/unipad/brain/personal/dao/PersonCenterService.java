@@ -24,6 +24,7 @@ import com.unipad.http.HitopHistRecord;
 import com.unipad.http.HitopLogin;
 
 import com.unipad.http.HitopMatchStart;
+import com.unipad.http.HitopTopList;
 import com.unipad.http.HitopUpPhoto;
 import com.unipad.http.HitopUpdataPwd;
 import com.unipad.http.HitopUserInfoUpdate;
@@ -224,6 +225,12 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
         hitopFollow.buildRequestParams("userId",uid);
         hitopFollow.setSevice(this);
         hitopFollow.post();
+    }
+    public void getTopList(String uid){
+        HitopTopList hitopTopList=new HitopTopList();
+        hitopTopList.buildRequestParams("matchId",uid);
+        hitopTopList.setSevice(this);
+        hitopTopList.post();
     }
 
     /**

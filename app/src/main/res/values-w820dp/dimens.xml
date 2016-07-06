@@ -1,6 +1,96 @@
 <resources>
-    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
-         (such as screen margins) for screens with more than 820dp of available width. This
-         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
-    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="main_lf_padding">12dp</dimen>
+    <dimen name="main_lf_margin">40dp</dimen>
+    <dimen name="main_lf_image_wh">26dp</dimen>
+    <dimen name="bg_wh">52dp</dimen>
+    <dimen name="common_lf_margin">16dp</dimen>
+    <dimen name="common_text_24">24sp</dimen>
+    <dimen name="common_text_22">22sp</dimen>
+    <dimen name="binary_line_h">50dp</dimen>
+    <dimen name="binary_line_layout_padding">8dp</dimen>
+    <dimen name="quick_poker_right_w">26dp</dimen>
+    <dimen name="stroke_width">0.6dip</dimen>
+    <dimen name="radius_4dip">4dp</dimen>
+    <dimen name="shadow_width">5dp</dimen>
+    <dimen name="login_margin_top">20dp</dimen>
+    <dimen name="edit_layout_width">350dp</dimen>
+    <dimen name="personal_title_h">200dp</dimen>
+    <dimen name="person_text_age_s">20sp</dimen>
+    <dimen name="margin_5dip">5dp</dimen>
+    <dimen name="margin_10dip">20dp</dimen>
+    <dimen name="margin_edge">10dp</dimen>
+    <dimen name="margin_interval">3dp</dimen>
+    <dimen name="personal_photo_wh">86dp</dimen>
+    <dimen name="margin_1dp">1dp</dimen>
+    <dimen name="personal_authentication_step_line_w">82dp</dimen>
+    <dimen name="personal_authentication_photo_wh">76dp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="setting_text_padding_30">30dp</dimen>
+    <dimen name="setting_text_18sp">18sp</dimen>
+    <dimen name="set_login_pwd_pic_h">40dp</dimen>
+    <dimen name="hv_container_height">220dp</dimen>
+    <dimen name="abs_figure_answer_height">70dp</dimen>
+    <dimen name="abs_figure_item_width">100dp</dimen>
+    <dimen name="abs_figure_item_text_height">30dp</dimen>
+    <dimen name="project_name">120dp</dimen>
+    <dimen name="hisrecord_widht_answer">150dp</dimen>
+    <dimen name="hisrecord_widht_item">180dp</dimen>
+    <dimen name="hisrecord_height_answer">40dp</dimen>
+    <dimen name="hisrecord_widht_answer_mode">100dp</dimen>
+    <dimen name="hisrecord_text_size">30sp</dimen>
+    <dimen name="hisrecord_game_date">20sp</dimen>
+    <!-- 弹出框默认宽高 -->
+    <dimen name="dialog_width">574dip</dimen>
+    <dimen name="dialog_height">356dip</dimen>
+    <!-- 等待框默认宽高 -->
+    <dimen name="wait_dialog_width">569dip</dimen>
+    <dimen name="wait_dialog_height">180dip</dimen>
+    <!-- TOAST弹出的Y轴偏移 -->
+    <dimen name="toast_gravity_yoffset">-67dip</dimen>
+
+    <!-- 收藏/点赞/评论/分析默认宽高 -->
+    <dimen name="favorite_width">20dip</dimen>
+    <dimen name="favorite_height">20dip</dimen>
+    <dimen name="comment_width">30dip</dimen>
+    <dimen name="comment_margin">10dip</dimen>
+
+
+    <dimen name="user_love_width">30dip</dimen>
+    <dimen name="user_icon_width">70dip</dimen>
+    <dimen name="rule_dialog_width">600dip</dimen>
+    <dimen name="rule_dialog_height">300dip</dimen>
+    <dimen name="history_answer_item_heigth">60dip</dimen>
+    <dimen name="point_navigation_space">20dp</dimen>
+    <dimen name="Thumb_height">150dp</dimen>
+    <dimen name="Thumb_weight">150dp</dimen>
+    //轮播图的高度
+    <dimen name="adver_lunbo_height">230dp</dimen>
+    <dimen name="newlist_height">100dp</dimen>
+    //label的高度  选中框的高度
+    <dimen name="newlabel_height">200dp</dimen>
+
+    <dimen name="comment_use_height">70dp</dimen>
+    <dimen name="comment_use_icon">50dp</dimen>
+    <dimen name="comment_commit_height">50dp</dimen>
+    <dimen name="newlist_title">100dp</dimen>
+    <dimen name="compitition_entry_fee">150dp</dimen>
+    <dimen name="popopwindows_height">250dp</dimen>
+    <dimen name="popwindows_report">50dp</dimen>
+    <dimen name="popwindows_report_weight">50dp</dimen>
+
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="portraits_image_width">176dp</dimen>
+    <dimen name="portraits_image_height">176dp</dimen>
+    <dimen name="news_title_size">30sp</dimen>
+    <dimen name="news_title_height">50dip</dimen>
+
+
+
+
+
+
 </resources>

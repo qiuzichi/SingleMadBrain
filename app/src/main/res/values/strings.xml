@@ -50,6 +50,7 @@
     <string name="personal_setting">设置中心</string>
     <string name="save">保存</string>
     <string name="personal_center">个人中心</string>
+    <string name="game_center">赛事中心</string>
     <string name="back">返回</string>
     <string name="next_step">下一步</string>
     <string name="personal_select_identity">身份选择</string>
@@ -190,6 +191,7 @@
     <string name="updata_userinfo">资料上传成功</string>
     <string name="submit_sussue">"提交成功</string>
     <string name="submit_fail">提交失败</string>
+    <string name="say_somethting">我也说两句...</string>
 
     <string name="util_camera_not_enable">相机不可用</string>
     <string name="util_hint">提示</string>
@@ -212,7 +214,17 @@
     <string name="check_detail">查看详情</string>
     <string name="current_time">11:44am</string>
     <string name="input_comment">请输入评论内容          </string>
-    <string name="button_commit">提交评论</string>
+    <string name="button_commit">提交</string>
+    <string name="button_report">发表</string>
+    <string name="detail_commont">评论</string>
+    <string name="project_name">项目名称</string>
+    <string name="race_mode">比赛模式</string>
+    <string name="race_date">比赛日期</string>
+    <string name="race_time">比赛时间</string>
+    <string name="race_pay">比赛费用</string>
+    <string name="person_entry_fee">选手报名</string>
+
+    <string name="pager_detail">详情</string>
 
     <string name="auth_hint">您还未进行实名认证，请在个人中心里进行实名认证。认证之后才能进行比赛报名,谢谢！</string>
     <string name="auth_fail_hint">您提交的实名认证信息未通过，请重新提交！</string>

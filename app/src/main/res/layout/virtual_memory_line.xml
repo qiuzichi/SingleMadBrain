@@ -22,7 +22,16 @@
         android:layout_marginLeft="50dp"
         android:text="1998"
         android:textSize="20dp" />
-
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:text=""
+        android:editable="false"
+        android:textSize="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/Line"
+        android:layout_alignStart="@+id/Line" />
     <TextView
         android:id="@+id/event_txt"
         android:layout_width="match_parent"
@@ -40,7 +49,7 @@
         android:id="@+id/Line"
         android:layout_width="1dp"
         android:layout_height="fill_parent"
-        android:layout_alignRight="@+id/id_txt"
+
         android:src="@color/black" />
 
 

@@ -6,14 +6,14 @@
     <LinearLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/newlist_height"
         android:orientation="horizontal">
 
         <TabWidget
             android:id="@+id/tabwidget_consult_main"
             android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/newlist_height"
             android:layout_centerVertical="true"
             ></TabWidget>
 
@@ -21,24 +21,24 @@
             android:id="@+id/layout_search_input"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/newlist_height"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/margin_10dip"
 
             >
 
             <EditText
                 android:id="@+id/et_search"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/margin_5dip"
+                android:layout_marginRight="@dimen/margin_edge"
                 android:layout_toLeftOf="@+id/iv_delete_account"
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:hint="根据内容搜索"
-                android:paddingRight="10dp"
+                android:paddingRight="@dimen/margin_10dip"
                 android:textColor="#BEBEBE"
                 android:singleLine="true"
                 android:imeOptions="actionSearch"
@@ -46,11 +46,11 @@
 
             <ImageView
                 android:id="@id/iv_delete_account"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="@dimen/margin_10dip"
+                android:layout_height="@dimen/margin_10dip"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/margin_10dip"
                 android:src="@drawable/icon_close"
                 />
         </RelativeLayout>

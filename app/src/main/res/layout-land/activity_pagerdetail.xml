@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:id="@+id/rl_title_home"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/binary_line_h"
+        android:background="@color/main_lf_bg"
+        >
+        <TextView
+            android:id="@+id/title_back_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:drawableLeft="@drawable/back"
+            android:drawablePadding="@dimen/radius_4dip"
+            android:gravity="center"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_text_22" />
+
+        />
+
+
+
+        <TextView
+            android:id="@+id/current_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/pager_detail"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_text_24"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_addlike_icon"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/key_addlike"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:layout_marginRight="@dimen/margin_10dip"
+            android:drawablePadding="@dimen/radius_4dip"
+            />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <WebView
+            android:id="@+id/pager_detail_webview"
+            android:layout_width="match_parent"
+            android:background="@color/light_blue"
+
+            android:layout_height="match_parent" />
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

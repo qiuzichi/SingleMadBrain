@@ -33,7 +33,7 @@ public class WordEntity {
     }
 
     public void setWord(String word) {
-        word = word;
+        this.word = word;
     }
 
 
@@ -41,7 +41,9 @@ public class WordEntity {
         this.number = number;
         word = word;
     }
+    public WordEntity(){
 
+    }
     public String getAnswer() {
         return answer;
     }

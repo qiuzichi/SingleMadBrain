@@ -94,18 +94,6 @@
         android:layout_alignBottom="@+id/jianpan_linlayout" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/memoriesRv"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:divider="#ffff0000"
-        android:paddingTop="20dp"
-        android:dividerHeight="5dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/jianpan_linlayout" />
-
 
 
 

@@ -1,14 +1,10 @@
 package com.unipad.brain.number.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,7 +17,7 @@ import android.widget.TextView;
 import com.unipad.brain.App;
 import com.unipad.brain.R;
 import com.unipad.brain.number.bean.RandomNumberEntity;
-import com.unipad.brain.number.dao.BinaryNumService;
+import com.unipad.brain.number.dao.NumService;
 import com.unipad.utils.StringUtil;
 
 /**
@@ -100,7 +96,7 @@ public class NumberRememoryLayout extends LinearLayout implements
             mRightCursorAnim = (AnimationDrawable) mRightCursorBg;
         }
 
-        mHandler.sendEmptyMessage(BinaryNumService.MSG_OPEN_THREAD);
+        mHandler.sendEmptyMessage(NumService.MSG_OPEN_THREAD);
     }
 
     private void addLineLayout(int index) {
@@ -149,12 +145,12 @@ public class NumberRememoryLayout extends LinearLayout implements
     @Override
     public void dispatchMessage(Message msg) {
         switch (msg.what) {
-            case BinaryNumService.MSG_OPEN_THREAD:
+            case NumService.MSG_OPEN_THREAD:
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         Message msg = mHandler.obtainMessage();
-                        msg.what =BinaryNumService.MSG_REFRESH_UI;
+                        msg.what = NumService.MSG_REFRESH_UI;
                         msg.arg1 = mLoadedItem;
 
                         mLoadedItem += 5;// 每次加载五行
@@ -166,14 +162,14 @@ public class NumberRememoryLayout extends LinearLayout implements
                     }
                 }).start();
                 break;
-            case BinaryNumService.MSG_REFRESH_UI:
+            case NumService.MSG_REFRESH_UI:
                 for (int index = msg.arg1; index < mLoadedItem; index++) {
                     this.addLineLayout(index);
                 }
 
                 if (mLoadedItem >= mLines) {
-                    mHandler.removeMessages(BinaryNumService.MSG_OPEN_THREAD);
-                    mHandler.removeMessages(BinaryNumService.MSG_REFRESH_UI);
+                    mHandler.removeMessages(NumService.MSG_OPEN_THREAD);
+                    mHandler.removeMessages(NumService.MSG_REFRESH_UI);
 
                     //快速随机、马拉松数字项目的回忆界面需要显示光标
                     if (mCompeteType.equals(mContext.getString(R.string.project_3))
@@ -188,7 +184,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                         mTextDiffBg = textNumber;
                     }
                 } else {
-                    mHandler.sendEmptyMessage(BinaryNumService.MSG_OPEN_THREAD);
+                    mHandler.sendEmptyMessage(NumService.MSG_OPEN_THREAD);
                 }
                 break;
             default:
@@ -200,10 +196,10 @@ public class NumberRememoryLayout extends LinearLayout implements
     public void onClick(View view) {
         TextView textNumber = (TextView) view;
         String number = textNumber.getText().toString().trim();
-        if (TextUtils.isEmpty(number) || BinaryNumService.TEXT_ZERO.equals(number)) {
-            textNumber.setText(BinaryNumService.TEXT_ONE);
+        if (TextUtils.isEmpty(number) || NumService.TEXT_ZERO.equals(number)) {
+            textNumber.setText(NumService.TEXT_ONE);
         } else {
-            textNumber.setText(BinaryNumService.TEXT_ZERO);
+            textNumber.setText(NumService.TEXT_ZERO);
         }
     }
 

@@ -288,7 +288,7 @@ public class HeadService extends AbsBaseGameService{
     public void downloadingQuestion(Map<String, String> data) {
         super.downloadingQuestion(data);
 
-
+        handDownQuestion(data);
     }
 
     private void handDownQuestion(Map<String, String> mData) {

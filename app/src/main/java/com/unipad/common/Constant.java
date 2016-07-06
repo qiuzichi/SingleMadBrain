@@ -30,12 +30,14 @@ public class Constant {
     public static final String SHOW_RULE_DIG = "com.unipad.SHOW_RULE_DLG";
     public static final String SHOW_GAME_PAUSE = "com.unipad.SHOW_GAME_PAUSE";
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
+    public static final String LONG_SERVICE = "com.unipad.brain.number.dao.NumService";
 
     public static final String CITY_GAME = "00001";
 
     public static final String CHIMA_GAME = "00002";
 
     public static final String WORD_GAME = "00003";
+    public static final String VIRTUAL_TIME_SERVICE = "virtual_time_service";
 
     private static Map<String, String> projectNames;
     private static Map<String,String> GradeId;

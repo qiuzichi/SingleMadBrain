@@ -18,15 +18,6 @@ import java.util.List;
  */
 public class HitopNewsOperate extends HitopRequest<List<NewsOperateBean>>{
 
-
-
-//    private String title;
-//    private String articleId;
-//    private String method;
-//    private String methodType;
-//    private String content;
-//
-//    private String contentType;
     private boolean isOK;
     public HitopNewsOperate(String path) {
         super(path);

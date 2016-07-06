@@ -36,7 +36,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
 /**
  * 个人中心之历史成绩
  * Created by Wbj on 2016/4/27.
@@ -51,34 +50,37 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     /**
      * 默认以以折线图的形式显示成绩视图
      */
-    private boolean mIsBrokenLine = true;
+    private boolean mIsBrokenLine = false;
     private int mRedColor, mBlackColor;
     private TableLayout gridView;
     private List<HisRecord> hisRecords;
     private ViewGroup viewParent;
-    private LinearLayout hisListView;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mTitleBarRightText = mActivity.getString(R.string.table_graph);
+//        mTitleBarRightText = mActivity.getString(R.string.table_graph);
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mBlackColor = mActivity.getResources().getColor(R.color.black);
         (mEditSearchBeginDate = (EditText) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
         (mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data)).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_search).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_delete).setOnClickListener(this);
+        mActivity.findViewById(R.id.text_record_city).setVisibility(View.GONE);
+        mActivity.findViewById(R.id.text_record_china).setVisibility(View.GONE);
+        mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
         validateDate();
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
     }
     @Override
     public int getLayoutId() {
-        return R.layout.personal_frg_record;
+       return R.layout.personal_frg_record;
+//        return R.layout.history_answer;
     }
 
     @Override
     public void clickTitleBarRightText() {
-        this.switchBrowse();
+//       this.switchBrowse();
     }
 
     @Override
@@ -95,10 +97,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
             case R.id.record_text_delete:
                 break;
             case R.id.record_search_begin_data:
-                selectstartDate();
                 break;
             case R.id.record_search_end_data:
-                selectendDate();
                 break;
             case R.id.group_historry_list:
                openPersonalIntegration();
@@ -111,12 +111,9 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         Intent intent=new Intent();
         intent.setClass(getActivity(),PersonalInfoActivty.class);
         startActivity(intent);
-    }
-    private void selectendDate() {
 
     }
-    private void selectstartDate() {
-        }
+
 
     @Override
     public void onStart() {
@@ -192,11 +189,13 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
                 mViewBrokenLine = new BrokenLineView(mActivity, histogramNameList);
                 viewParent.addView(mViewBrokenLine);
             }
+
             ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
                     .getHistoryRecord(mEditSearchBeginDate.getText().toString().trim(),mEditSearchEndDate.getText().toString().trim());
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         return true;
     }
 
@@ -210,22 +209,24 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     }
 
 
-
     private View getGridView(){
+
         if (gridView == null) {
             gridView = (TableLayout) LayoutInflater.from(getActivity()).inflate(R.layout.history_answer, null);
         } else {
             View child = gridView.getChildAt(0);
             gridView.removeAllViews();
             gridView.addView(child);
-        }
 
+        }
         for (HisRecord record:hisRecords) {
             gridView.addView(createTableRow(record));
          };
 
         return gridView;
     }
+
+
     private TableRow createTableRow(HisRecord record){
         TableRow tableRow = (TableRow) LayoutInflater.from(getActivity()).inflate(R.layout.history_item,null);
         ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));
@@ -253,8 +254,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     /**
      * 切换成绩视图浏览模式
      */
-    private void switchBrowse() {
-//        mViewBrokenLine.setVisibility(View.VISIBLE);
+    /*private void switchBrowse() {
         if (mIsBrokenLine) {
 
             mTitleBarRightText = mActivity.getString(R.string.broken_line_graph);
@@ -283,7 +283,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
 
         mActivity.setRightText(mTitleBarRightText);
     }
-
+*/
     @Override
     public void onDestroy() {
         super.onDestroy();

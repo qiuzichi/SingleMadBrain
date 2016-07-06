@@ -14,12 +14,21 @@ public class HttpConstant {
     public static String UPLOAD = "/api/file/upload";
     public static String HisRecord="/api/match/history";
     public static String GET_NEWS_LIST = "/api/news/list";
-//    我的关注
+    //赛事排名
+    public static String  GAME_TOP="/api/match/getResult";
+    //    我的关注
     public static String  GET_USER_FOLLOW="/api/user/follow";
     //点赞 评论的 url
     public static String GET_NEWS_OPERATE = "/api/news/operate";
     //广告轮播图的 url
     public static String GET_NEWS_ADVERTPIC = "//api/advert/get";
+
+    //页面详情 url
+    public static String GET_NEWS_DETAIL = "/api/news/articles";
+    //评论详情 url
+    public static String GET_NEWS_COMMENT = "/api/news/review";
+    //最新赛事 url
+    public static String GET_NEW_COMPETITION = "/api/match/newmatch";
     // 实名认证
     public static String AUTH_PATH = "/api/user/auth";
     // 调取实名认证信息 ----在用户已经实名认证之后 调取。
@@ -97,6 +106,7 @@ public class HttpConstant {
     public static final int MODIFY_FILED = 0x18003;
     public static final int HISRECORD_OK=0x18004;
     public static final int USER_FOLLOW = 0x18007;
+    public static final int LIST_TOP = 0x18008;
     // 获取省份列表
     public static final int GET_PROVINCE = 0x10900;
     // 根据城市列表
@@ -119,5 +129,9 @@ public class HttpConstant {
     //获取热点广告轮播图
     public static final int NOTIFY_GET_HOTADVERT = 0x20006;
 
+    //获取评论列表
+    public static final int NOTIFY_GET_COMMENT = 0x20007;
+    //最新赛事
+    public static final int NOTIFY_GET_NEWCOMPETITION = 0x20008;
 
 }

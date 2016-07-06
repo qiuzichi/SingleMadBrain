@@ -2,6 +2,7 @@ package com.unipad.brain.consult.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.lidroid.xutils.BitmapUtils;
 import com.unipad.brain.R;
 import com.unipad.brain.home.MainBasicFragment;
 
@@ -50,6 +52,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
     private NewsViewPagerAdapter newsAdapter;
     //listview adapter
     private HotspotAdapter mHotspotAdapter;
+    private boolean isGetData;
 
 
     @Override
@@ -80,10 +83,6 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
-        getNews("00003", null, 1, 10);
-
-        //获取广告的数据
-        service.getAdverts("00002");
     }
 
 
@@ -119,6 +118,28 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
 
         newsAdapter = new NewsViewPagerAdapter(getActivity(),newsLunboDatas, R.layout.ad_gallery_item);
         mNewsLuobo.setAdapter(newsAdapter);
+    }
+
+    //对于用户不可见 与 不可见  会被调用；
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if ((isVisibleToUser && isResumed())) {
+
+            if(!isGetData){
+                getNews("00003", null, 1, 10);
+
+                //获取广告的数据
+                service.getAdverts("00002");
+
+
+                Log.d("hotspot visit ", "获取消息 界面可见");
+                isGetData = true;
+            }
+
+        } else if (!isVisibleToUser) {
+            super.onPause();
+        }
     }
 
     private class NewsViewPagerAdapter extends CommonAdapter<AdPictureBean>{

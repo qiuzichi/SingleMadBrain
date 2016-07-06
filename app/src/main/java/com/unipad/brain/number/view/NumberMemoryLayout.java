@@ -1,11 +1,6 @@
 package com.unipad.brain.number.view;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import android.content.Context;
-import android.os.Message;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,10 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.unipad.brain.App;
 import com.unipad.brain.R;
-import com.unipad.brain.number.dao.BinaryNumService;
-import com.unipad.brain.number.bean.RandomNumberEntity;
 import com.unipad.utils.StringUtil;
 
 /**

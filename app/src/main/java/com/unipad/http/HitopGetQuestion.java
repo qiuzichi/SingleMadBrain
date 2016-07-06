@@ -42,7 +42,7 @@ public class HitopGetQuestion extends HitopRequest<String>{
                 }
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         return null;
     }
