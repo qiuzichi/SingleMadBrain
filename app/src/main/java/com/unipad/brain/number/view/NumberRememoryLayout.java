@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.unipad.brain.App;
 import com.unipad.brain.R;
+import com.unipad.brain.number.IInitRememoryCallBack;
 import com.unipad.brain.number.bean.RandomNumberEntity;
 import com.unipad.brain.number.dao.NumService;
 import com.unipad.utils.StringUtil;
@@ -66,15 +67,17 @@ public class NumberRememoryLayout extends LinearLayout implements
     public NumberRememoryLayout(Context context) {
         super(context);
     }
-
-    public NumberRememoryLayout(Context context, String competeType,int rows,int lines,int mTotalNumbers) {
+    private IInitRememoryCallBack callback;
+    public NumberRememoryLayout(Context context, String competeType,int rows,int lines,int mTotalNumbers,IInitRememoryCallBack callback) {
         super(context);
         mContext = context;
         mCompeteType = competeType;
         this.mRows = rows;
         this.mLines = lines;
         this.mTotalNumbers = mTotalNumbers;
+        this.callback = callback;
         this.initData();
+
     }
 
     private void initData() {
@@ -95,7 +98,9 @@ public class NumberRememoryLayout extends LinearLayout implements
             mLeftCursorAnim = (AnimationDrawable) mLeftCursorBg;
             mRightCursorAnim = (AnimationDrawable) mRightCursorBg;
         }
-
+        if (callback != null) {
+            callback.begin();
+        }
         mHandler.sendEmptyMessage(NumService.MSG_OPEN_THREAD);
     }
 
@@ -165,6 +170,9 @@ public class NumberRememoryLayout extends LinearLayout implements
             case NumService.MSG_REFRESH_UI:
                 for (int index = msg.arg1; index < mLoadedItem; index++) {
                     this.addLineLayout(index);
+                    if (callback != null) {
+                        callback.loading(mLoadedItem*100/mLines);
+                    }
                 }
 
                 if (mLoadedItem >= mLines) {
@@ -182,6 +190,9 @@ public class NumberRememoryLayout extends LinearLayout implements
                         textNumber.setBackground(mLeftCursorBg);
                         mLeftCursorAnim.start();
                         mTextDiffBg = textNumber;
+                    }
+                    if (callback != null) {
+                        callback.finish();
                     }
                 } else {
                     mHandler.sendEmptyMessage(NumService.MSG_OPEN_THREAD);
@@ -267,7 +278,13 @@ public class NumberRememoryLayout extends LinearLayout implements
     }
 
     public void cleanCursor(){
+        if (mLeftCursorAnim.isRunning()) {
+            mLeftCursorAnim.stop();
+        }
 
+        if (mRightCursorAnim.isRunning()) {
+            mRightCursorAnim.stop();
+        }
     }
     public void showAnswer(SparseArray<String> data,SparseArray<String> answer) {
         for (int i = 0; i < mLines; i++) {
@@ -278,12 +295,12 @@ public class NumberRememoryLayout extends LinearLayout implements
             StringBuilder answerLine = new StringBuilder();
             for (int j = 0; j <viewGroup.getChildCount(); j++) {
                 TextView textNumber = (TextView) viewGroup.getChildAt(j);
-                String userAnswer  = textNumber.getText().toString();
+                String userAnswer  = textNumber.getText().toString().trim();
                 String o = String.valueOf(orgin.charAt(j));
-                if (TextUtils.isEmpty(o)){
-                    o = " ";
+                if (TextUtils.isEmpty(userAnswer)){
+                    userAnswer = " ";
                 }
-                answerLine.append(o);
+                answerLine.append(userAnswer);
                 textNumber.setText(o+"\n"+userAnswer);
                 if (!o.equals(userAnswer)) {
                     textNumber.setTextColor(getResources().getColor(R.color.red));

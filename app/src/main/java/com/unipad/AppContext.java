@@ -14,6 +14,7 @@ import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.brain.location.dao.LocationService;
 import com.unipad.brain.number.dao.BinaryService;
+import com.unipad.brain.number.dao.LongNumService;
 import com.unipad.brain.number.dao.NumService;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.portraits.control.HeadService;
@@ -137,7 +138,7 @@ public class AppContext {
                 service.init();
                 serviceList.put(key, service);
             } else if (key.equals(Constant.BINARYNUMSERVICE)) {
-                service = new NumService();
+                service = new BinaryService();
                 service.init();
                 serviceList.put(key, service);
             } else if (key.equals(Constant.PERSONCENTER)) {
@@ -157,7 +158,7 @@ public class AppContext {
                 service.init();
                 serviceList.put(key, service);
             }else if (key.equals(Constant.LONG_SERVICE)) {
-                service = new NumService();
+                service = new LongNumService();
                 service.init();
                 serviceList.put(key, service);
             }else if (key.equals(Constant.VIRTUAL_TIME_SERVICE)) {

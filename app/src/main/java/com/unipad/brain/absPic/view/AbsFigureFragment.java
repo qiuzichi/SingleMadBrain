@@ -71,6 +71,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
         service.shuffle();
         setButtonArea();
         adapter.notifyDataSetChanged();
+        mActivity.getCommonFragment().startRememoryTimeCount();
     }
 
     @Override
