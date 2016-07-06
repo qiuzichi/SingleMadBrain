@@ -16,6 +16,7 @@ import com.unipad.brain.AbsBaseGameService;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.utils.LogUtil;
 
 /**
  * 二进制数字项目实体
@@ -29,6 +30,15 @@ public class NumService extends AbsBaseGameService {
      * 文字1
      */
     public static String TEXT_ONE = "1";
+    public static String TEXT_TWO = "2";
+    public static String TEXT_THREE = "3";
+    public static String TEXT_FOUR = "4";
+    public static String TEXT_FIVE = "5";
+    public static String TEXT_SIX = "6";
+    public static String TEXT_SEVEN = "7";
+    public static String TEXT_EIGHT = "8";
+    public static String TEXT_NINE = "9";
+
     /**
      * 发消息开启线程准备加载界面
      */
@@ -49,14 +59,7 @@ public class NumService extends AbsBaseGameService {
      * 以行号为key值保存题目的每一行数字的出现顺序
      */
     public  SparseArray<String> lineNumbers = new SparseArray<>();
-    /**
-     * 评分：完全写满并正确的一行得30分
-     */
-    public static final int LINE_FULL_SCORE = 30;
-    /**
-     * 评分：完全写满但有一个错处（或漏空）的一行得15分
-     */
-    public static final int LINE_ONE_ERROR_SCORE = 15;
+
 
     public SparseArray<String> answer = new SparseArray<>();
 
@@ -74,6 +77,7 @@ public class NumService extends AbsBaseGameService {
     @Override
     public void parseData(String data) {
         super.parseData(data);
+        LogUtil.e("","data == "+data);
         String [] persData = data.split(",");
         lines = persData.length;
         for (int i = 0;i<lines;i++){

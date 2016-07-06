@@ -16,6 +16,8 @@ import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
 import com.unipad.brain.absPic.view.AbsFigureFragment;
 import com.unipad.brain.home.dao.HomeGameHandService;
+import com.unipad.brain.number.BinaryRightFragment;
+import com.unipad.brain.number.LongNumFragment;
 import com.unipad.brain.number.NumberRightFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
@@ -160,9 +162,8 @@ public class PractiseGameActivity extends BasicActivity implements IDataObserver
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.common_lfg_container, mCommonFragment);
             String competeItem = Constant.getProjectName(projectId);
-            if (competeItem.equals(getString(R.string.project_2)) || competeItem.equals(getString(R.string.project_3))
-                    || competeItem.equals(getString(R.string.project_5)) || competeItem.equals(getString(R.string.project_9))) {
-                gameFragment = new NumberRightFragment();
+            if (competeItem.equals(getString(R.string.project_2))) {
+                gameFragment = new BinaryRightFragment();
             } else if (competeItem.equals(getString(R.string.project_6))) {
                 gameFragment = new VirtualRightFragment();
             } else if (competeItem.equals(getString(R.string.project_8))) {
@@ -172,6 +173,12 @@ public class PractiseGameActivity extends BasicActivity implements IDataObserver
 
             } else if (competeItem.equals(getString(R.string.project_4))) {
                 gameFragment = new AbsFigureFragment();
+            } else if (competeItem.equals(getString(R.string.project_3))) {
+                gameFragment = new LongNumFragment();
+            } else if (competeItem.equals(getString(R.string.project_5))){
+
+            } else if (competeItem.equals(getString(R.string.project_9))) {
+
             }
             fragmentTransaction.replace(R.id.common_rfg_container, gameFragment);
             fragmentTransaction.commit();

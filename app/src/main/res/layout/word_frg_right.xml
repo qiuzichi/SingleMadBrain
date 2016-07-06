@@ -3,22 +3,14 @@
     android:layout_height="match_parent"
     android:background="@color/right_frg"
     android:padding="@dimen/binary_line_layout_padding">
-    <HorizontalScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none" >
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+
+
             <GridView
                 android:id="@+id/word_listview"
-                android:columnWidth="@dimen/random_word_item_width"
                 android:verticalSpacing="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-        </LinearLayout>
-    </HorizontalScrollView>
+
 
     <ViewStub
         android:id="@+id/view_shade"

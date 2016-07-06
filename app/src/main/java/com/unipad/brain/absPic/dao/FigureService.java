@@ -136,7 +136,7 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public String getAnswerData() {
-        return null;
+        return allFigures.toString();
     }
 
     @Override

@@ -238,7 +238,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
      * @param id
      */
     public void getRule(String id){
-        HitopGetRule httpGetRule = new HitopGetRule(id,null);
+        HitopGetRule httpGetRule = new HitopGetRule(id,null,this);
         httpGetRule.post();
     }
 }
