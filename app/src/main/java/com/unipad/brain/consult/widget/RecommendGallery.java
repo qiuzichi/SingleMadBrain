@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Gallery;
@@ -16,11 +17,13 @@ import static android.support.v7.widget.ViewUtils.isLayoutRtl;
 
 @SuppressWarnings("deprecation")
 public class RecommendGallery extends Gallery implements OnItemSelectedListener{
-    private static final int DELAY_TIME = 1000;
+    private static final int DELAY_TIME = 3000;
     private static final int SELECTE_MSG = 1;
     private RecommendPot mRecommendPot;
     private ViewPager mViewPager;
-    
+    private float startX;
+
+
     public RecommendGallery(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnItemSelectedListener(this);
@@ -111,9 +114,13 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
         }
         */
         //do not slip circularly,because it is bad performance.
+//        e1 = startEvent;+v
         int count = getCount();
         int position = getSelectedItemPosition();
-       if(e1.getX() > e2.getX()) {
+Log.d("onfiling",  "运行onfiling  滑动事件");
+
+
+        if(e1.getX() > e2.getX()) {
            if(position == count -1) {
                position = 0;
 
@@ -130,7 +137,7 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
             }
         }
         setSelection(position);
-     return true; 
+     return true;
 
     }
 
@@ -142,19 +149,24 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
+
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:   //按下的时候
                 //按下 停止播放
+                startX = event.getX();
                 mUIHander.removeMessages(SELECTE_MSG);
 
+            case MotionEvent.ACTION_MOVE:
+
+
+                Log.d("gallery", "移动 " + event.getX() + "==={" +startX   );
                 break;
+
             case MotionEvent.ACTION_UP:  //松开
-    Log.d("gallery", "执行点击事件");
+
+                mUIHander.sendEmptyMessageDelayed(SELECTE_MSG, DELAY_TIME);
                 break;
         }
-
-
-
 
         return true;
     }
