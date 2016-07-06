@@ -57,7 +57,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
                 if(i == 0){
                     tabWidgetItem.setBackgroundColor(Color.RED);
                 }else{
-                    tabWidgetItem.setBackgroundColor(Color.BLUE);
+                    tabWidgetItem.setBackgroundResource(R.color.main_1);
                 }
 
                 tabWidgetItem.setTag(i);

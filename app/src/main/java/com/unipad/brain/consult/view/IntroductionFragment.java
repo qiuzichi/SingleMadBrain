@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -121,6 +122,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
         mAdvertLuobo.setAdapter(adAdapter);
+        //点击监听事件
+        mAdvertLuobo.setOnItemClickListener(mOnItemClickListener);
 
     }
 
@@ -165,6 +168,29 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                         //设置使用缓存
                 .build();
     }
+    //轮播图的点击；
+    private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener(){
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            AdPictureBean bean = newsAdvertDatas.get(position);
+            if (bean.getAdvertPath() != null) {
+                if (bean.getJumpType().equals("0")) {
+                    //本页面打开 发送意图
+                    Intent intent = new Intent(mActivity, PagerDetailActivity.class);
+                    intent.putExtra("pagerId", bean.getJumpUrl());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory("android.intent.category.DEFAULT");
+                    intent.addCategory("android.intent.category.BROWSABLE");
+                    intent.setData(Uri.parse(bean.getJumpUrl()));
+                    startActivity(intent);
+                }
+            }
+        }
+    };
 
     private void initPopupWindows(final NewEntity newEntity ){
         mPopupView = View.inflate(mActivity, R.layout.comment_commit_popup, null);
@@ -397,32 +423,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             ImageView imageView = holder.getView(R.id.ad_gallery_item);
 
 
-            x.image().bind(imageView, adPictureBean.getAdvertPath(),imageOptions);
-
-            imageView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-
-
-                    if(adPictureBean.getAdvertPath() != null){
-                        if(adPictureBean.getJumpType().equals("0")){
-                            //本页面打开 发送意图
-                            Intent intent = new Intent(mActivity, PagerDetailActivity.class);
-                            intent.putExtra("pagerId", adPictureBean.getAdvertPath());
-                            startActivity(intent);
-                        }else {
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_VIEW);
-                            intent.addCategory("android.intent.category.DEFAULT");
-                            intent.addCategory("android.intent.category.BROWSABLE");
-                            intent.setData(Uri.parse(adPictureBean.getAdvertPath()));
-                            startActivity(intent);
-                        }
-                    }
-
-                    return true;
-                }
-            });
+            x.image().bind(imageView, adPictureBean.getAdvertPath(), imageOptions);
 
         }
     }

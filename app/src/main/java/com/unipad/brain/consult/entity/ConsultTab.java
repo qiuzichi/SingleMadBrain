@@ -6,8 +6,7 @@ package com.unipad.brain.consult.entity;
 public enum ConsultTab {
     INTRODUCATION("推荐"),
     OCCASIONS("赛事"),
-    HOTSPOT("热点"),
-    SUBSCRIBE("订阅");
+    HOTSPOT("热点");
 
     private String type;
 
