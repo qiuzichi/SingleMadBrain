@@ -209,6 +209,8 @@ public class AbsFigureFragment extends BasicCommonFragment {
                 answerNum.setVisibility(View.VISIBLE);
                 if (holder.getPosition() == current) {
                     answerNum.setBackgroundColor(getResources().getColor(R.color.blue));
+                }else {
+                    answerNum.setBackgroundColor(getResources().getColor(R.color.white));
                 }
             } else if (service.mode == 2) {
                 orginNum.setVisibility(View.VISIBLE);
