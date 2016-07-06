@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.personal.bean.CompetitionBean;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.CommonActivity;
@@ -42,12 +44,21 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTitleBarRightText = mActivity.getString(R.string.clear);
-        lv_apple =(ListView) mActivity.findViewById(R.id.lv_apple);
+        lv_apple =(ListView) mActivity.findViewById(R.id.lv_competition);
         competitionBeans = new ArrayList<CompetitionBean>();
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         service.registerObserver(HttpConstant.USER_APPLYED,this);
-        service.registerObserver(HttpConstant.USER_IN_GAEM,this);
+        service.registerObserver(HttpConstant.USER_IN_GAEM, this);
+        service.registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
         service.getApplyList(AppContext.instance().loginUser.getUserId());
+
+        lv_apple.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (null != competitionBeans)
+                    service.getRule(competitionBeans.get(position).getComId());
+            }
+        });
     }
 
     @Override
@@ -146,8 +157,12 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                     e.printStackTrace();
                 }
                 break;
+            case HttpConstant.GET_RULE_NOTIFY:
+                ToastUtil.createRuleDialog(mActivity,"1001",(RuleGame)o).show();
+                break;
         }
     }
+
 
     /**
      *  进入比赛
