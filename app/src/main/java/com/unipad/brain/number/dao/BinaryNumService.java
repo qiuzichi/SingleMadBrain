@@ -8,6 +8,8 @@ import java.util.Map;
 
 import android.text.TextUtils;
 import android.util.SparseArray;
+import android.view.View;
+import android.widget.ListView;
 
 import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
@@ -58,6 +60,8 @@ public class BinaryNumService extends AbsBaseGameService {
 
     public SparseArray<String> answer = new SparseArray<>();
 
+    ListView ls;
+
     @Override
     public void downloadingQuestion(Map<String, String> mData) {
         super.downloadingQuestion(mData);
@@ -65,7 +69,7 @@ public class BinaryNumService extends AbsBaseGameService {
         httpGetQuestion.buildRequestParams("questionId",  mData.get("QUESTIONID"));
         httpGetQuestion.setService(this);
         httpGetQuestion.post();
-    }
+    };
 
     @Override
     public void parseData(String data) {
@@ -174,7 +178,7 @@ public class BinaryNumService extends AbsBaseGameService {
     @Override
     public String getAnswerData() {
         StringBuilder answerData = new StringBuilder();
-        for (int i = 0;i<answer.size();i++){
+        for (int i = 0;i<answer.size();i++) {
             answerData.append(answer.keyAt(i))
                     .append("\\^")
                     .append(answer.valueAt(i))
