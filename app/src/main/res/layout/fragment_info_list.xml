@@ -35,7 +35,7 @@
                     android:textSize="@dimen/common_text_24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lisa 丽莎"/>
+                    android:text="@string/about_us"/>
             </RelativeLayout>
 
             <View
@@ -64,7 +64,7 @@
                     android:textSize="@dimen/person_name_size"
                     android:layout_marginLeft="@dimen/margin_interval"
                     android:layout_toRightOf="@id/iv_heart"
-                    android:text="23·纽约"/>
+                    android:text="@string/person_level"/>
             </RelativeLayout>
         </LinearLayout>
 

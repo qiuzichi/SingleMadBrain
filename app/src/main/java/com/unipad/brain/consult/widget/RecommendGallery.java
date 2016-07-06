@@ -155,7 +155,7 @@ Log.d("onfiling",  "运行onfiling  滑动事件");
                 //按下 停止播放
                 startX = event.getX();
                 mUIHander.removeMessages(SELECTE_MSG);
-
+                break;
             case MotionEvent.ACTION_MOVE:
 
 

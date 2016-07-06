@@ -1,5 +1,4 @@
-package com.unipad.brain.consult.view;
-
+package com.unipad.brain.consult.widget;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,14 +7,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -34,8 +29,7 @@ import com.lidroid.xutils.BitmapUtils;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.entity.AdPictureBean;
-import com.unipad.brain.consult.widget.RecommendGallery;
-import com.unipad.brain.consult.widget.RecommendPot;
+import com.unipad.brain.consult.view.PagerDetailActivity;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.bean.NewEntity;
 import com.unipad.brain.home.bean.NewsOperateBean;
@@ -54,15 +48,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 推荐
- * Created by jianglu on 2016/6/20.
+ * Created by hasee on 2016/7/6.
  */
-public class IntroductionFragment extends MainBasicFragment implements IDataObserver {
-
+public class TabConsultBaseFragment extends MainBasicFragment implements IDataObserver {
 
     private ListView mListViewTab;
     private List<NewEntity> newsDatas = new ArrayList<NewEntity>();
-    private List<NewsOperateBean> newsOperateDatas = new ArrayList<NewsOperateBean>();
+
     private List<AdPictureBean> newsAdvertDatas = new ArrayList<AdPictureBean>();
     private NewsService service;
     private PopupWindow mPopupWindows;
@@ -77,15 +69,11 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private BitmapUtils biutmapUtils;
     private EditText et_commment;
 
-    private void getNews(String contentType,String title,int page,int size ){
-        service.getNews(contentType, title, page, size);
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
-
 
         //播放轮播广告
         startLunPic();
@@ -119,7 +107,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         adPotView.setIndicatorChildCount(newsAdvertDatas.size());
         mAdvertLuobo.initSelectePoint(adPotView);
-
         mAdvertLuobo.setOnItemClickListener(mOnItemClickListener);
 
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
@@ -282,7 +269,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }, 0);
     }
 
-   private void clear(){
+    private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWS, this);
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE, this);
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_ADVERT, this);
@@ -314,7 +301,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         @Override
         public void convert(final ViewHolder holder, final NewEntity newEntity) {
             //设置  缩略图
-           final ImageView iv_picture = (ImageView) holder.getView(R.id.iv_item_introduction_icon);
+            final ImageView iv_picture = (ImageView) holder.getView(R.id.iv_item_introduction_icon);
             biutmapUtils.display(iv_picture, newEntity.getThumbUrl());
 
             //设置标题
@@ -347,36 +334,36 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 @Override
                 public void onClick(View v) {
 
-    Log.e("", "dianzao kai shi !!!!");
-                service.getNewsOperate(newEntity.getId(), "1", String.valueOf(!newEntity.getIsLike()), "0", 0,
-                        new Callback.CommonCallback<String>() {
-                            @Override
-                            public void onSuccess(String s) {
-                                newEntity.setIsLike(!newEntity.getIsLike());
-                                if (newEntity.getIsLike()) {
-                                    //点击之后 变为check
-                                    iv_pager_zan.setImageResource(R.drawable.favorite_introduction_check);
-                                } else {
-                                    iv_pager_zan.setImageResource(R.drawable.favorite_introduction_normal);
+                    Log.e("", "dianzao kai shi !!!!");
+                    service.getNewsOperate(newEntity.getId(), "1", String.valueOf(!newEntity.getIsLike()), "0", 0,
+                            new Callback.CommonCallback<String>() {
+                                @Override
+                                public void onSuccess(String s) {
+                                    newEntity.setIsLike(!newEntity.getIsLike());
+                                    if (newEntity.getIsLike()) {
+                                        //点击之后 变为check
+                                        iv_pager_zan.setImageResource(R.drawable.favorite_introduction_check);
+                                    } else {
+                                        iv_pager_zan.setImageResource(R.drawable.favorite_introduction_normal);
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onError(Throwable throwable, boolean b) {
+                                @Override
+                                public void onError(Throwable throwable, boolean b) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onCancelled(CancelledException e) {
+                                @Override
+                                public void onCancelled(CancelledException e) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onFinished() {
+                                @Override
+                                public void onFinished() {
 
-                            }
+                                }
 
-                        });
+                            });
                 }
             });
 
@@ -420,10 +407,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         @Override
         public void convert(ViewHolder holder, final AdPictureBean adPictureBean) {
             ImageView imageView = holder.getView(R.id.ad_gallery_item);
-
-
             x.image().bind(imageView, adPictureBean.getAdvertPath(), imageOptions);
-
         }
     }
 
@@ -432,27 +416,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     //用于网络请求数据 key 是网页的id   o是解析后的list数据
     @Override
     public void update(int key, Object o) {
-        switch (key) {
-            case HttpConstant.NOTIFY_GET_NEWS:
-                //获取新闻页面数据
-                newsDatas.addAll((List<NewEntity>) o);
-                mNewsAdapter.notifyDataSetChanged();
-                break;
 
-            case HttpConstant.NOTIFY_GET_OPERATE:
-                //获取喜欢 点赞 评论 信息
-                mNewsAdapter.notifyDataSetChanged();
-                break;
-            case HttpConstant.NOTIFY_GET_ADVERT:
-                //获取轮播图数据
-                newsAdvertDatas.clear();
-                newsAdvertDatas.addAll((List<AdPictureBean>) o);
-
-                adAdapter.notifyDataSetChanged();
-                break;
-            default:
-                break;
-        }
     }
 
 }

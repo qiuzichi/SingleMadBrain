@@ -35,6 +35,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/news_title"
+                        android:clickable="false"
+                        android:textSize="@dimen/common_text_24"
                         android:singleLine="true"
                         android:layout_marginTop="@dimen/login_margin_top"
                         android:paddingLeft="@dimen/margin_10dip"
@@ -44,7 +46,11 @@
                         android:layout_height="@dimen/margin_1dp"
                         android:layout_width="match_parent"
                         android:background="@color/introduction_blueline"
-                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/margin_10dip"
+                        android:layout_marginRight="@dimen/margin_10dip"
+                        android:layout_below="@+id/tv_item_introduction_news_title"
+                        android:layout_marginTop="@dimen/view_margin_height"
+
                         />
 
                     <RelativeLayout
@@ -80,6 +86,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
+                            android:clickable="false"
+                            android:layout_marginRight="@dimen/margin_10dip"
                             android:layout_centerVertical="true"
                             android:text="2016-06-20 14:01"
                             />
