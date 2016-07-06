@@ -72,6 +72,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
         service.mode = 1;
         ((HeadService) service).shuffData();
         adapter.notifyDataSetChanged();
+        mActivity.getCommonFragment().startRememoryTimeCount();
     }
 
 

@@ -26,9 +26,11 @@ public class Constant {
     public static final String HISRECORD_SERVICE="hisrecord_service";
 
 
-    public static final String LOGIN_WAIT_DLG = "com.unipad.LOGIN_WAIT_DLG";
-    public static final String SHOW_RULE_DIG = "com.unipad.SHOW_RULE_DLG";
-    public static final String SHOW_GAME_PAUSE = "com.unipad.SHOW_GAME_PAUSE";
+    public static final String LOGIN_WAIT_DLG = "com.unipad.login_wait_dlg";
+    public static final String SHOW_RULE_DIG = "com.unipad.show_rule_dlg";
+    public static final String SHOW_GAME_PAUSE = "com.unipad.show_game_pause";
+    public static final String INIT_REMEMORY_DLG = "com.unipad.init_rememory_dlg";
+
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
     public static final String LONG_SERVICE = "com.unipad.brain.number.dao.NumService";
 
@@ -70,7 +72,7 @@ public class Constant {
             projectNames.put(GAME_BINARY_NUM, App.getContext().getString(R.string.project_2));
             projectNames.put(GAME_LONG_NUM, App.getContext().getString(R.string.project_3));
             projectNames.put(GAME_ABS_PICTURE,App.getContext().getString(R.string.project_4));
-            projectNames.put(GAME_BINARY_NUM, App.getContext().getString(R.string.project_5));
+            projectNames.put(GAME_RANDOM_NUM, App.getContext().getString(R.string.project_5));
             projectNames.put(GAME_VIRTUAL_DATE, App.getContext().getString(R.string.project_6));
             projectNames.put(GAME_LONG_POCKER, App.getContext().getString(R.string.project_7));
             projectNames.put(GAME_RANDOM_WORDS, App.getContext().getString(R.string.project_8));

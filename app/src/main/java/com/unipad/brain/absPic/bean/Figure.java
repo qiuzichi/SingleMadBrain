@@ -39,4 +39,9 @@ public class Figure {
     public void setAnswerId(int answerId) {
         this.answerId = answerId;
     }
+
+    @Override
+    public String toString() {
+        return rawId+"^"+answerId;
+    }
 }
