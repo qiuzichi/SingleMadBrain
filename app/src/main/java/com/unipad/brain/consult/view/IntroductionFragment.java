@@ -6,12 +6,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,17 +63,17 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private List<NewsOperateBean> newsOperateDatas = new ArrayList<NewsOperateBean>();
     private List<AdPictureBean> newsAdvertDatas = new ArrayList<AdPictureBean>();
     private NewsService service;
-
     private PopupWindow mPopupWindows;
     private ScaleAnimation sa;
     private View mPopupView;
     private NewsListAdapter mNewsAdapter;
     private AdViewPagerAdapter adAdapter;
     private RecommendGallery mAdvertLuobo;
-
+    private boolean isGetData;
     private RecommendPot adPotView;
     private ImageOptions imageOptions;
     private BitmapUtils biutmapUtils;
+    private EditText et_commment;
 
     private void getNews(String contentType,String title,int page,int size ){
         service.getNews(contentType, title, page, size);
@@ -76,8 +83,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
-        service.getNews("00001", null, 1, 10);
-        service.getAdverts("00001");
+
+
         //播放轮播广告
         startLunPic();
     }
@@ -93,6 +100,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
 
         mListViewTab = (ListView) getView().findViewById(R.id.lv_introduction_listview);
+        mListViewTab.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+
         mNewsAdapter = new NewsListAdapter(mActivity, newsDatas, R.layout.item_listview_introduction);
         mListViewTab.setAdapter(mNewsAdapter);
 
@@ -111,6 +120,34 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
         mAdvertLuobo.setAdapter(adAdapter);
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //默认加载第一个页面的时候 设置可见
+        setUserVisibleHint(true);
+    }
+
+    //对于用户不可见 与 不可见  会被调用；
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if ((isVisibleToUser && isResumed())) {
+
+            if(!isGetData){
+                service.getNews("00001", null, 1, 10);
+                service.getAdverts("00001");
+                Log.d("introduction visit ", "获取消息 界面可见");
+
+                isGetData = true;
+            }
+
+        } else if (!isVisibleToUser) {
+            super.onPause();
+        }
     }
 
     private void startLunPic(){
@@ -126,29 +163,27 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 .setFailureDrawableId(R.drawable.default_advert_pic)
                         //设置使用缓存
                 .build();
-
     }
 
     private void initPopupWindows(final NewEntity newEntity ){
-        mPopupView = View.inflate(mActivity, R.layout.popup_windows_comment, null);
+        mPopupView = View.inflate(mActivity, R.layout.comment_commit_popup, null);
         //评论内容
-        final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_windows_input);
+        et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
         //提交评论按钮
-        Button btn_commit = (Button) mPopupView.findViewById(R.id.btn_popup_window_commit);
+        Button btn_commit = (Button) mPopupView.findViewById(R.id.btn_comment_commit);
 
         btn_commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //点击提交关闭窗体  用户评论内容
-
-                String user_comment = et_commment.getText().toString().trim();
+                final String user_comment = et_commment.getText().toString().trim();
                 if(TextUtils.isEmpty(user_comment)){
                     Toast.makeText(mActivity, "内容为空 请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //提交评论内容到服务器
-                service.getNewsOperate(newEntity.getId(), "3", null, user_comment, 0, new Callback.CommonCallback<String>(){
+                service.getNewsOperate(newEntity.getId(), "2", null, user_comment, 0, new Callback.CommonCallback<String>(){
 
                     @Override
                     public void onSuccess(String s) {
@@ -174,24 +209,27 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 et_commment.setText("");
                 //关闭弹出窗体
                 closePopup();
-        }
+            }
         });
 
-        mPopupWindows = new PopupWindow(mPopupView, 600, -2, true);
-
+        mPopupWindows = new PopupWindow(mPopupView, -1, 100, true);
+        mPopupWindows.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        mPopupWindows.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //动画效果;
         sa = new ScaleAnimation(0f, 1f, 0.5f, 1f,
                 Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0.5f);
         sa.setDuration(300);
+
     }
 
     private void showPopupWindows(View parent , int x, int y){
         closePopup();
 
+        popupInputMethodWindow();
         mPopupView.startAnimation(sa);
-        mPopupWindows.showAtLocation(parent, Gravity.LEFT | Gravity.TOP, x, y);
 
+        mPopupWindows.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
 
     }
 
@@ -201,6 +239,21 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         if(mPopupWindows != null && mPopupWindows.isShowing()){
             mPopupWindows.dismiss();
         }
+    }
+    //同时弹出 隐藏键盘 弹出框
+    private void popupInputMethodWindow() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) getActivity()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm.isActive()) {
+                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+        }, 0);
     }
 
    private void clear(){
@@ -324,7 +377,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     //查看详情的界面
                     Intent intent = new Intent(mActivity, PagerDetailActivity.class);
                     intent.putExtra("pagerId", newEntity.getId());
-                    intent.putExtra("contentType", "00001");
                     startActivity(intent);
                 }
             });

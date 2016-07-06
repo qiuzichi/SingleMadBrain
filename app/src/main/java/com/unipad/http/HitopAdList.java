@@ -19,20 +19,16 @@ import java.util.List;
  */
 public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
 
-
+    private String path;
     public HitopAdList(String path) {
         super(HttpConstant.GET_NEWS_ADVERTPIC);
+        this.path = path;
         mParams.addBodyParameter("positionId", path);
     }
 
     @Override
     public String buildRequestURL() {
-//        mParams.addQueryStringParameter("contenttype_id",contenttype);
-//        if (null != title) {
-//            mParams.addQueryStringParameter("title", title);
-//        }
-//        mParams.addQueryStringParameter("page",""+page);
-//        mParams.addQueryStringParameter("size",""+size);
+
         return null;
     }
 
@@ -42,12 +38,10 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
         JSONObject jsObj = null;
 
         try {
-
             jsObj = new JSONObject(json);
             if (jsObj != null && jsObj.toString().length() != 0) {
-//                    JSONObject data = new JSONObject(jsObj.getString("list"));
                 if( jsObj.getInt("ret_code") == 0) {
-                    Log.i("hitopadlist", json);
+    Log.i("hitopadlist", json);
 
                     JSONArray jsonArray = jsObj.getJSONArray("lists");
                     int iSize = jsonArray.length();
@@ -62,13 +56,19 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
                         bean.setAdvertPath(HttpConstant.PATH_FILE_URL+jsonObj2.getString("path"));
                         adList.add(bean);
         Log.i("hitopadlist", adList.size()+ "  " + bean.getAdvertPath());
-                    }
+                }
                 }
             }
         }catch (Exception e) {
             return null;
         }
-        ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(HttpConstant.NOTIFY_GET_ADVERT,adList);
+        int key =HttpConstant.NOTIFY_GET_ADVERT;
+        if ("00001".equals(path)){
+            key = HttpConstant.NOTIFY_GET_ADVERT;
+        } else if ("00002".equals(path)) {
+            key = HttpConstant.NOTIFY_GET_HOTADVERT;
+        }
+        ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(key,adList);
         return null;
     }
 

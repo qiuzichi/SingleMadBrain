@@ -1,14 +1,24 @@
 package com.unipad.brain.consult.view;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.adapter.MyInfoListAdapter;
 import com.unipad.brain.consult.entity.ConsultClassBean;
 import com.unipad.brain.consult.entity.ListEnum;
+import com.unipad.http.HttpConstant;
+import com.unipad.utils.PicUtil;
+
+import org.xutils.common.Callback;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +42,31 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
     protected void initView(View view) {
         super.initView(view);
         mLvInfos = (ListView)view.findViewById(R.id.lv_info_list);
+        final ImageView user_photo = (ImageView)view.findViewById(R.id.iv_header);
+
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
+            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map = PicUtil.drawableToBitmap(drawable);
+                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
     }
 
     @Override
@@ -57,6 +92,9 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
             }else{
                 bean.setSelected(false);
             }
+
+            mList.add(bean);
+            bean = null;
         }
     }
 
@@ -80,6 +118,8 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
         mList.get(mCurrentSelectedPosition).setSelected(false);
         mCurrentSelectedPosition = position;
         item.setSelected(true);
+
+
         mInfoListAdapter.notifyDataSetChanged();
         if(mOnHomePageChangeListener != null) {
             switch (item.getNameResId()) {
