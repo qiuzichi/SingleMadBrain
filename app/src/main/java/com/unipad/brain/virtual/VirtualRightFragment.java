@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,9 +98,8 @@ public class VirtualRightFragment extends BasicCommonFragment {
         numButton_clear.setOnClickListener(this);
 
         memoryRv = (RecyclerView) mViewParent.findViewById(R.id.memoryRv);
-        memoryRv.setLayoutManager(new LinearLayoutManager(mActivity));
-        memoryRv.setAdapter(memoryAdapter = new VirtualMemoryAdapter(service.virtualList));
-        memoryRv.setLayoutManager(new GridLayoutManager(mActivity, 2));
+
+        memoryRv.setLayoutManager(new GridLayoutManager(mActivity,2));
         //添加分割线
         memoryRv.addItemDecoration(new DividerGridItemDecoration(mActivity));
 
@@ -111,6 +112,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
     @Override
     public void initDataFinished() {
         super.initDataFinished();
+        memoryRv.setAdapter(memoryAdapter = new VirtualMemoryAdapter(service.virtualList));
 
     }
 
@@ -138,14 +140,28 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            if (service.mode == 0) {//记忆模式
-                holder.tv_num.setText(virtualList.get(position).getNumber() + "");
-                holder.tv_date.setText(virtualList.get(position).getDate());
-                holder.tv_event.setText(virtualList.get(position).getEvent());
+            VirtualEntity entity = virtualList.get(position);
+            holder.tv_num.setText(entity.getNumber()+"" );
+            holder.tv_event.setText(entity.getEvent()+"");
+            if (service.mode == 0) {
+                //记忆模式
+
+                holder.tv_date.setText(virtualList.get(position).getDate()+"");
+
+                 holder.editNUmView.setVisibility(View.GONE);
+
+
             } else if (service.mode == 1) {
+                holder.editNUmView.setVisibility(View.VISIBLE);
+                holder.tv_date.setVisibility(View.GONE);
 
             }else if (service.mode == 2) {
-
+                holder.editNUmView.setVisibility(View.GONE);
+                holder.tv_date.setVisibility(View.VISIBLE);
+                if(!entity.getAnswerDate().equals(entity.getDate())) {
+                    holder.tv_date.setTextColor(getResources().getColor(R.color.red));
+                    holder.tv_date.setText(entity.getDate()+"/"+entity.getAnswerDate());
+                }
             }
         }
 
@@ -155,21 +171,19 @@ public class VirtualRightFragment extends BasicCommonFragment {
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv_num,tv_date,tv_event;
-
+           public TextView tv_num,tv_date,tv_event;
+            public  EditText editNUmView;
             public MyViewHolder(View view) {
                 super(view);
                 tv_num=(TextView) view.findViewById(R.id.id_num);
                 tv_date = (TextView) view.findViewById(R.id.id_datetxt);
                 tv_event=(TextView)view.findViewById(R.id.event_txt);
+                editNUmView=(EditText)view.findViewById(R.id.editText);
+
             }
+
         }
     }
-
-
-
-
-
 
 
     /**

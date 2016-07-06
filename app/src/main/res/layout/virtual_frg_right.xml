@@ -10,8 +10,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
     android:paddingTop="16dp">
-
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -53,7 +51,7 @@
             android:layout_gravity="center"
             android:textSize="20dp"
             android:textColor="@color/black"
-            android:paddingLeft="220dp"
+            android:paddingLeft="280dp"
             android:text="序号"
             android:id="@+id/textView4" />
 
@@ -80,17 +78,14 @@
 
 
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/memoryRv"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:divider="#ffff0000"
         android:dividerHeight="5dp"
         android:layout_below="@+id/linearLayout"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/jianpan_linlayout" />
 
 
@@ -108,10 +103,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"></LinearLayout>
 
         <ImageButton
             android:layout_width="20dp"
