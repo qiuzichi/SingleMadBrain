@@ -18,6 +18,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     public RuleGame rule;
 
+    public int gameMode;//0为比赛模式，1为练习模式
     public boolean isInitResourseAready() {
         return isInitResourseAready;
     }
