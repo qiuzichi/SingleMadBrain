@@ -5,8 +5,9 @@
     android:background="@color/introduction_single_bg"
     >
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/Thumb_weight"
         android:layout_height="wrap_content"
+        android:padding="@dimen/margin_5dip"
         android:src="@drawable/set_headportrait"
         android:scaleType="fitXY"
         android:layout_centerVertical="true"
