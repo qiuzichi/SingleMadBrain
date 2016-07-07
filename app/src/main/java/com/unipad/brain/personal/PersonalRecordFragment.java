@@ -70,6 +70,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mBlackColor = mActivity.getResources().getColor(R.color.black);
         (mEditSearchBeginDate = (EditText) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
         (mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data)).setOnClickListener(this);
+        service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         mActivity.findViewById(R.id.record_text_search).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_delete).setOnClickListener(this);
         mActivity.findViewById(R.id.text_record_city).setVisibility(View.GONE);
@@ -302,9 +303,10 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     }
 */
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         super.onDestroy();
-       service.unregistDataChangeListenerObj(this);
+        if(null != service)
+          service.unregistDataChangeListenerObj(this);
     }
 
     @Override
