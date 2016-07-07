@@ -60,7 +60,7 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
                 @Override
                 public void onError(Throwable throwable, boolean b) {
                     //当错误的时候  显示默认图片；
-                    user_photo.setImageResource(R.drawable.user_default_photo);
+                    user_photo.setImageResource(R.drawable.set_headportrait);
                 }
 
                 @Override
