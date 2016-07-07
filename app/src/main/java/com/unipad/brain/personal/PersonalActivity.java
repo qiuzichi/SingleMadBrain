@@ -68,12 +68,14 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
+        service.registerObserver(HttpConstant.UOLOAD_PHOTO_FILE, this);
         if (null != savedInstanceState) {
             filePath = savedInstanceState.getString("path");
             ToastUtil.createWaitingDlg(this, null, Constant.LOGIN_WAIT_DLG).show(15);
             service.uploadAuthFile(filePath,1);
         }
+
         setContentView(R.layout.personal_aty);
     }
 
@@ -112,9 +114,9 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
 
                 }
             });
-        service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
+
         // 上传文件
-        service.registerObserver(HttpConstant.UOLOAD_PHOTO_FILE, this);
+
     }
 
 
