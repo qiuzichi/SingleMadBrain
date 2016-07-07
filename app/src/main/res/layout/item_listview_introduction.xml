@@ -17,6 +17,7 @@
         <RelativeLayout
             android:layout_toRightOf="@+id/iv_item_introduction_icon"
             android:layout_width="match_parent"
+            android:clickable="false"
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,8 +35,8 @@
                         android:id="@+id/tv_item_introduction_news_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:text="@string/news_title"
-                        android:clickable="false"
                         android:textSize="@dimen/common_text_24"
                         android:singleLine="true"
                         android:layout_marginTop="@dimen/login_margin_top"
@@ -89,13 +90,10 @@
                             android:clickable="false"
                             android:layout_marginRight="@dimen/margin_10dip"
                             android:layout_centerVertical="true"
-                            android:text="2016-06-20 14:01"
+                            android:text="@string/hint_begin_data"
                             />
 
                     </RelativeLayout>
-
-
-
 
                 </RelativeLayout>
 

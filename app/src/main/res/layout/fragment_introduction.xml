@@ -6,7 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/adver_lunbo_height">
+        android:layout_height="@dimen/adver_lunbo_height"
+        android:id="@+id/rl_advert_view">
         <com.unipad.brain.consult.widget.RecommendGallery
             android:id="@+id/point_gallery"
             android:layout_centerHorizontal="true"
