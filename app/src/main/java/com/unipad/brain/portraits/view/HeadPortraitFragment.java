@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -36,7 +37,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     private HeadAdapter adapter;
     private GridView mListView;
     private HeadService service;
-
+    private ViewStub mStubShade;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -46,15 +47,31 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
         adapter = new HeadAdapter(mActivity, ((HeadService) service).data, R.layout.list_portrait);
         mListView.setAdapter(adapter);
-
+        mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
     }
 
     @Override
     public void initDataFinished() {
         super.initDataFinished();
         adapter.notifyDataSetChanged();
+    mStubShade.setVisibility(View.VISIBLE);
 
+    }
 
+    @Override
+    public void pauseGame() {
+
+        mStubShade.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void startGame() {
+        mStubShade.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void reStartGame() {
+        mStubShade.setVisibility(View.GONE);
     }
 
     @Override
