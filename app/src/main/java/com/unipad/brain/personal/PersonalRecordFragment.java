@@ -249,9 +249,9 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));
         ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
         ((TextView)tableRow.findViewById(R.id.startDate)).setText(record.getStartDate());
-        ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getRectime());
-        ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getScore());
-        ((TextView)tableRow.findViewById(R.id.score)).setText(record.getMemtime());
+        ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getMemtime());
+        ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getRectime());
+        ((TextView)tableRow.findViewById(R.id.score)).setText(record.getScore());
         ((TextView)tableRow.findViewById(R.id.ranking)).setText(record.getRanking());
         ((TableRow)tableRow.findViewById(R.id.group_historry_list)).setOnClickListener(this);
         return  tableRow;
