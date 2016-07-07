@@ -1,8 +1,12 @@
 package com.unipad.brain.virtual.dao;
 
+import android.util.Log;
+import android.util.SparseArray;
+
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.virtual.bean.VirtualEntity;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.Map;
  * Created by gongkan on 2016/7/4.
  */
 public class VirtualTimeService extends AbsBaseGameService {
+
 
     public List<VirtualEntity> virtualList = new ArrayList<>();
     @Override
@@ -26,7 +31,19 @@ public class VirtualTimeService extends AbsBaseGameService {
     @Override
     public void parseData(String data) {
         super.parseData(data);
-        //
+        String [] entity = data.split(",");
+
+
+        for(int i=0;i<entity.length;i++){
+            String[] word=entity[i].split("\\^");
+            VirtualEntity virtualEntity=new VirtualEntity();
+            virtualEntity.setDate(word[1]);
+            virtualEntity.setNumber(Integer.valueOf(word[0]));
+            virtualEntity.setEvent(word[2]);
+            virtualList.add(virtualEntity);
+
+
+        }
 
         initDataFinished();
     }

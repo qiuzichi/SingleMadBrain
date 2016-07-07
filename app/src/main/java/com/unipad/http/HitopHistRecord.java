@@ -24,17 +24,20 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
     }
     public HitopHistRecord(int status ,String startTime,String endDate,int page,int size) {
         super(HttpConstant.HisRecord);
-        if (status == 0 || status == 1||status == 2||status == 3){
-            mParams.addBodyParameter("status",""+status);
+        mParams.addBodyParameter("userId", AppContext.instance().loginUser.getUserId());
+
+        if (status == 0 || status == 1||status == 2||status == 3) {
+            mParams.addBodyParameter("status", "" + status);
         }
-        mParams.addBodyParameter("user_id",AppContext.instance().loginUser.getUserId());
-        if (null != startTime){
-        mParams.addBodyParameter("startDate",startTime);}
-        if (null != endDate) {
-            mParams.addBodyParameter("endDate", endDate);
-        }
-        mParams.addBodyParameter("page",""+page);
-        mParams.addBodyParameter("size",""+size);
+            if (null != startTime) {
+                mParams.addBodyParameter("startDate", startTime);
+            }
+            if (null != endDate) {
+                mParams.addBodyParameter("endDate", endDate);
+            }
+            mParams.addBodyParameter("page", "" + page);
+            mParams.addBodyParameter("size", "" + size);
+
     }
     @Override
     public String buildRequestURL() {
@@ -70,11 +73,12 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
                         bean.setRectime(jsonObject.getString("rectime"));
                         bean.setMemtime(jsonObject.getString("memtime"));
                         bean.setScore(jsonObject.getString("score"));
-                        bean.setRanking(jsonObject.getString("ranking"));
+                        bean.setRanking(jsonObject.optString("ranking"));
                         hisRecords.add(bean);
                     }
                 }
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
         if (hisRecords != null) {

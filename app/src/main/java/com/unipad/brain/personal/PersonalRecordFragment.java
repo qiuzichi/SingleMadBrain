@@ -1,12 +1,15 @@
 package com.unipad.brain.personal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -40,13 +43,16 @@ import java.util.Random;
  * 个人中心之历史成绩
  * Created by Wbj on 2016/4/27.
  */
-public class PersonalRecordFragment extends PersonalCommonFragment implements IDataObserver
-,WheelMainView.OnChangingListener{
+public class PersonalRecordFragment extends PersonalCommonFragment implements View.OnClickListener
+,WheelMainView.OnChangingListener,IDataObserver {
     private static final String TAG = PersonalRecordFragment.class.getSimpleName();
     private static final String DATE_REGEX = "\\d{4}/\\d{2}/\\d{2}";
     private EditText mEditSearchBeginDate, mEditSearchEndDate;
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy/MM/dd");
     private BrokenLineView mViewBrokenLine;
+    private ShowDialog showDialog;
+    private PersonCenterService service;
+    private WheelMainView wheelMainView;
     /**
      * 默认以以折线图的形式显示成绩视图
      */
@@ -64,6 +70,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         mBlackColor = mActivity.getResources().getColor(R.color.black);
         (mEditSearchBeginDate = (EditText) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
         (mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data)).setOnClickListener(this);
+        service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         mActivity.findViewById(R.id.record_text_search).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_delete).setOnClickListener(this);
         mActivity.findViewById(R.id.text_record_city).setVisibility(View.GONE);
@@ -71,6 +78,10 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
         validateDate();
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
+        showDialog = new ShowDialog(this);
+        if (showDialog.getDialog()!=null) {
+            showDialog.getDialog().setCanceledOnTouchOutside(true);
+        }
     }
     @Override
     public int getLayoutId() {
@@ -92,13 +103,19 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.record_text_search:
-                this.validateDate();
+               this.validateDate();
                 break;
             case R.id.record_text_delete:
                 break;
             case R.id.record_search_begin_data:
+               /* wheelMainView=new WheelMainView(this.getActivity());
+                wheelMainView.setChangingListener(this);
+                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,getFragmentManager(),0.3f,0.6f);*/
                 break;
             case R.id.record_search_end_data:
+              /*  wheelMainView=new WheelMainView(this.getActivity());
+                wheelMainView.setChangingListener(this);
+                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,getFragmentManager(),0.3f,0.6f);*/
                 break;
             case R.id.group_historry_list:
                openPersonalIntegration();
@@ -191,7 +208,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
             }
 
             ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
-                    .getHistoryRecord(mEditSearchBeginDate.getText().toString().trim(),mEditSearchEndDate.getText().toString().trim());
+                    .getHistoryRecord(mEditSearchBeginDate.getText().toString().trim(),mEditSearchEndDate.getText().toString().trim()
+                    ,AppContext.instance().loginUser.getUserId());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -232,8 +250,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
         ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));
         ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
         ((TextView)tableRow.findViewById(R.id.startDate)).setText(record.getStartDate());
-        ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getRectime());
-        ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getMemtime());
+        ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getMemtime());
+        ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getRectime());
         ((TextView)tableRow.findViewById(R.id.score)).setText(record.getScore());
         ((TextView)tableRow.findViewById(R.id.ranking)).setText(record.getRanking());
         ((TableRow)tableRow.findViewById(R.id.group_historry_list)).setOnClickListener(this);
@@ -285,9 +303,10 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements ID
     }
 */
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         super.onDestroy();
-        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).unRegisterObserve(HttpConstant.HISRECORD_OK,this);
+        if(null != service)
+          service.unregistDataChangeListenerObj(this);
     }
 
     @Override
