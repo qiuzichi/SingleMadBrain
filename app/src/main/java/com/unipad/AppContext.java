@@ -32,6 +32,7 @@ import org.xutils.DbManager;
  * @2011-8-24
  */
 public class AppContext {
+
     /**
      * The logging tag used by this class with com.huawei.hid.util.log.HLog.
      */
