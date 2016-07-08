@@ -306,7 +306,7 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
         // 上传图片文件
         if(isFourPic()) {
             // 上传第一张图片
-            ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(25);
+            ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show(50);
             indexUpLoadFile = 0;
             service.uploadAuthFile(mPhotoFileList.get(R.id.grade_certificate_pic1),0);
         } else {
