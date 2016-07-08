@@ -78,10 +78,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
         validateDate();
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
-        showDialog = new ShowDialog(this);
-        if (showDialog.getDialog()!=null) {
-            showDialog.getDialog().setCanceledOnTouchOutside(true);
-        }
+
     }
     @Override
     public int getLayoutId() {
@@ -108,14 +105,14 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             case R.id.record_text_delete:
                 break;
             case R.id.record_search_begin_data:
-               /* wheelMainView=new WheelMainView(this.getActivity());
-                wheelMainView.setChangingListener(this);
-                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,getFragmentManager(),0.3f,0.6f);*/
+                wheelMainView=new WheelMainView(mActivity);
+                wheelMainView.setChangingListener(PersonalRecordFragment.this);
+                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
                 break;
             case R.id.record_search_end_data:
-              /*  wheelMainView=new WheelMainView(this.getActivity());
-                wheelMainView.setChangingListener(this);
-                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,getFragmentManager(),0.3f,0.6f);*/
+                wheelMainView=new WheelMainView(mActivity);
+                wheelMainView.setChangingListener(PersonalRecordFragment.this);
+                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
                 break;
             case R.id.group_historry_list:
                openPersonalIntegration();
@@ -328,6 +325,9 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 
     @Override
     public void onChanging(String changStr) {
+
+        mEditSearchBeginDate.setText(changStr);
+        mEditSearchEndDate.setText(changStr);
 
     }
 }
