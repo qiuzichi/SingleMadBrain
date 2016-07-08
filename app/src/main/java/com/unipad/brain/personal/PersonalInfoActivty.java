@@ -78,6 +78,9 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
 
     @Override
     public void initData() {
+        Intent intent=new Intent();
+        String ranking=intent.getStringExtra("ranking");
+        text_myranking.setText(ranking);
 
     }
 

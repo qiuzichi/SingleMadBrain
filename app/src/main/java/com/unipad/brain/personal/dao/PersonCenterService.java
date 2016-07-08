@@ -216,15 +216,20 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
      */
     public void getHistoryRecord(String startTime, String endTime, String uid) {
         HitopHistRecord hitopRecord = new HitopHistRecord(-1,startTime,endTime,1,20);
-
         hitopRecord.post();
     }
+    /*
+    * 1.赛事关注列表
+    */
     public void getFollwList(String uid) {
         HitopFollow hitopFollow=new HitopFollow();
         hitopFollow.buildRequestParams("user_id",uid);
         hitopFollow.setSevice(this);
         hitopFollow.post();
     }
+    /*
+    *排名列表
+    */
     public void getTopList(String uid){
         HitopTopList hitopTopList=new HitopTopList();
         hitopTopList.buildRequestParams("matchId",uid);

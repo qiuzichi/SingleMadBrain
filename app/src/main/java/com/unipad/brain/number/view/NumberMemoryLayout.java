@@ -47,7 +47,6 @@ public class NumberMemoryLayout extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         initChidView();
 
-
     }
     private void initChidView(){
         if (null != lineNumbers && lineNumbers.size()!=0){
