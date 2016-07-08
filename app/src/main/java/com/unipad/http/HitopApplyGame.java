@@ -67,8 +67,9 @@ public class HitopApplyGame extends HitopRequest<CompetitionBean> {
             } else if (Constant.WORD_GAME.equals(competitionBean.getGradeId())) {
                 key = HttpConstant.WORD_APPLY_GAME;
             }
+            ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).noticeDataChange(key, competitionBean);
         }
-        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).noticeDataChange(key, competitionBean);
+
         return null;
     }
 
