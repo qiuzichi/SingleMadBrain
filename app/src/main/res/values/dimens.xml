@@ -8,7 +8,6 @@
     <dimen name="common_text_22">22sp</dimen>
     <dimen name="binary_line_h">50dp</dimen>
     <dimen name="binary_line_layout_padding">8dp</dimen>
-    <dimen name="quick_poker_right_w">26dp</dimen>
     <dimen name="stroke_width">0.6dip</dimen>
     <dimen name="radius_4dip">4dp</dimen>
     <dimen name="shadow_width">5dp</dimen>
@@ -86,8 +85,10 @@
     <dimen name="news_title_height">50dip</dimen>
 
     <dimen name="random_word_item_width">130dp</dimen>
-
-
-
-
+    <dimen name="poker_line_magin">22dp</dimen>
+    <dimen name="binary_line_layout_pading">12dp</dimen>
+    <dimen name="quick_poker_magin">8dp</dimen>
+    <dimen name="quick_poker_top_h">26dp</dimen>
+    <dimen name="quick_poker_right_w">40dp</dimen>
+    <dimen name="memory_text">24sp</dimen>
 </resources>

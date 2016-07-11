@@ -241,4 +241,8 @@
 
     <string name="consult_present">最新资讯</string>
     <string name="competition_present">最新赛事</string>
+    <string name="memory_order">记忆顺序</string>
+    <string name="single_browse_note">您可以左右滑动扑克牌进行浏览</string>
+    <string name="remain_pokers_left">还剩</string>
+    <string name="remain_pokers_right">张扑克牌</string>
 </resources>

@@ -57,4 +57,5 @@
 
     <!-- 咨询相关颜色-->
     <color name="cosult_bg_light_blue">#d2e9ff</color>
+    <color name="memory_order">#666666</color>
 </resources>

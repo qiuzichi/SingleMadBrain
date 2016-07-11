@@ -21,6 +21,7 @@ import com.unipad.brain.number.BinaryRightFragment;
 import com.unipad.brain.number.LongNumFragment;
 import com.unipad.brain.number.NumberRightFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
+import com.unipad.brain.quickPoker.view.QuickPokerRightFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
 import com.unipad.brain.words.view.WordRightFragment;
 import com.unipad.common.widget.HIDDialog;
@@ -169,6 +170,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         } else if (competeItem.equals(getString(R.string.project_6))) {
             gameFragment = new VirtualRightFragment();
         } else if (competeItem.equals(getString(R.string.project_8))) {
+
             gameFragment = new WordRightFragment();
         } else if (competeItem.equals(getString(R.string.project_1))) {
             gameFragment = new HeadPortraitFragment();
@@ -180,6 +182,8 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
         }  else if (competeItem.equals(getString(R.string.project_9))) {
 
+        } else if (competeItem.equals(getResources().getString(R.string.project_10))){
+            gameFragment = new QuickPokerRightFragment();
         }
 
         fragmentTransaction.replace(R.id.common_rfg_container, gameFragment);
@@ -190,6 +194,8 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gameFragment = null;
+        mCommonFragment = null;
         AppContext.instance().clearService(service);
         SocketThreadManager.sharedInstance().releaseInstance();
     }
