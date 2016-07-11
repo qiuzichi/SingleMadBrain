@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ListAreaEnum;
+import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
@@ -74,7 +77,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             race_gradle.setText(areaEnum.getNameResId());
             race_gradle.setCompoundDrawables(null, drawable, null, null);
-            //设置参赛日期
+            //设置参赛日期  2016.07.08
             ((TextView) holder.getView(R.id.tv_competion_info_date_item)).setText(competitionBean.getCompetitionDate());
             //参赛时间
             ((TextView) holder.getView(R.id.tv_competion_info_time_item)).setText(competitionBean.getCompetitionTime());
@@ -105,6 +108,9 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
                 break;
         }
     }
+    // 单击搜索按钮时激发该方法
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();

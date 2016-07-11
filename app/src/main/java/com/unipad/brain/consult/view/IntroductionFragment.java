@@ -75,7 +75,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private RecommendPot adPotView;
     private ImageOptions imageOptions;
     private BitmapUtils biutmapUtils;
-    private EditText et_commment;
 
     private void getNews(String contentType,String title,int page,int size ){
         service.getNews(contentType, title, page, size);
@@ -194,7 +193,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private void initPopupWindows(final NewEntity newEntity ){
         mPopupView = View.inflate(mActivity, R.layout.comment_commit_popup, null);
         //评论内容
-        et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
+        final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
         //提交评论按钮
         Button btn_commit = (Button) mPopupView.findViewById(R.id.btn_comment_commit);
 
