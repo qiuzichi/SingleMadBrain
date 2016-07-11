@@ -20,7 +20,7 @@ public abstract class HitopRequest<T>{
     //the default over due  is one hour; 
     public static final String TAG = "HitopRequest";
 
-    protected String url = "http://192.168.0.104:8090/crazybrain-mng";
+    protected String url = HttpConstant.url;
 
     protected RequestParams mParams = null;
 

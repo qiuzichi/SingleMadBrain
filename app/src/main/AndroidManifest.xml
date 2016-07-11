@@ -74,6 +74,10 @@
             android:screenOrientation="landscape" />
 
         <activity
+            android:name=".consult.view.SearchResultActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
             android:name=".personal.PersonalInfoActivty"
             android:screenOrientation="landscape"/>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
