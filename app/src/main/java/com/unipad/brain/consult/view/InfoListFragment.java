@@ -49,7 +49,7 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
 
         final ImageView user_photo = (ImageView)view.findViewById(R.id.iv_header);
 
-        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto()))
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())){
             x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
                 @Override
                 public void onSuccess(Drawable drawable) {
@@ -59,8 +59,7 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
 
                 @Override
                 public void onError(Throwable throwable, boolean b) {
-                    //当错误的时候  显示默认图片；
-                    user_photo.setImageResource(R.drawable.set_headportrait);
+
                 }
 
                 @Override
@@ -73,6 +72,13 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
 
                 }
             });
+
+        }else {
+            user_photo.setImageResource(R.drawable.set_headportrait);
+        }
+
+
+
     }
 
     @Override

@@ -42,7 +42,7 @@ import java.util.List;
 /**
  * Created by jiangLu on 2016/6/23.
  */
-public class PagerDetailActivity extends BasicActivity implements IDataObserver, View.OnClickListener {
+public class PagerDetailActivity extends BasicActivity implements IDataObserver{
 
 
 
@@ -61,22 +61,12 @@ public class PagerDetailActivity extends BasicActivity implements IDataObserver,
         setContentView(R.layout.activity_pagerdetail);
         articleId = getIntent().getStringExtra("pagerId");
 
-//        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
-//        service.registerObserver(HttpConstant.NOTIFY_GET_COMMENT, this);
-//        service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
-//        //获取数据
-////        getComment(articleId, 1, 10);
-
     }
-//
-//    private void getComment(String pagerId, int page, int size) {
-//        service.getComment(pagerId, 1, 10);
-//}
 
 
     public void initData() {
         String  id = getIntent().getStringExtra("pagerId");
-        String htmlDatas = "http://192.168.0.104:8090/crazybrain-mng" +HttpConstant.GET_NEWS_DETAIL + "?id=" +
+        String htmlDatas = HttpConstant.url +HttpConstant.GET_NEWS_DETAIL + "?id=" +
                 getIntent().getStringExtra("pagerId") + "&userId=" + AppContext.instance().loginUser.getUserId();
         Log.d("pager" , htmlDatas);
         //新闻部分的 webview

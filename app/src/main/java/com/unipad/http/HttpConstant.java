@@ -25,6 +25,7 @@ public class HttpConstant {
 
     //页面详情 url
     public static String GET_NEWS_DETAIL = "/api/news/articles";
+
     //评论详情 url
     public static String GET_NEWS_COMMENT = "/api/news/review";
     //最新赛事 url
@@ -40,7 +41,9 @@ public class HttpConstant {
      */
     public static String APPLY_GAME = "/api/match/apply";
     // 获取图片路径 http://192.168.0.104:8090/crazybrain-mng
-    public static String PATH_FILE_URL = "http://192.168.0.104:8090/crazybrain-mng/image/getFile?filePath=";
+    public static final String url = "http://192.168.0.104:8090/crazybrain-mng";
+
+    public static String PATH_FILE_URL  = url +  "/image/getFile?filePath=";
     // 更新用户信息
     public static String UPDATE_USERINFO = "/api/user/modify";
     // 得到用户已经报名列表

@@ -73,6 +73,7 @@
     <dimen name="popopwindows_height">50dp</dimen>
     <dimen name="popopwindows_report_weight">40dp</dimen>
     <dimen name="drawablePadding_icon">20dp</dimen>
+    <dimen name="listview_empty_size">100sp</dimen>
 
 
 
