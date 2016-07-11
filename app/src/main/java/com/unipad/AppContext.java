@@ -32,6 +32,7 @@ import org.xutils.DbManager;
  * @2011-8-24
  */
 public class AppContext {
+
     /**
      * The logging tag used by this class with com.huawei.hid.util.log.HLog.
      */
@@ -54,6 +55,7 @@ public class AppContext {
      */
     public String updateVersion = "";
 
+
     /**
      * 是否该类已经实例化完成
      */
@@ -62,6 +64,7 @@ public class AppContext {
     /**
      * 屏的像素宽和高
      */
+
     public int[] disPlay = {1280, 800};
 
     /**
