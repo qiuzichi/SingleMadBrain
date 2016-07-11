@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.brain.App;
 import com.unipad.brain.R;
 import com.unipad.brain.virtual.bean.DividerGridItemDecoration;
 import com.unipad.brain.virtual.bean.VirtualEntity;
 import com.unipad.brain.virtual.dao.VirtualTimeService;
 import com.unipad.common.BasicCommonFragment;
+import com.unipad.common.Constant;
+import com.unipad.http.HttpConstant;
 import com.unipad.utils.ToastUtil;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,7 +120,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
         memoryRv.setAdapter(memoryAdapter = new VirtualMemoryAdapter(service.virtualList));
 
     }
-
     /**
      * 记忆的adapter
      */
@@ -190,10 +194,14 @@ public class VirtualRightFragment extends BasicCommonFragment {
      * 开始答题
      */
     public void inAnswerMode() {
+        int key=HttpConstant.VIRTUAL_RIGHT;
         ToastUtil.showToast("开始");
-        memoryRv.setVisibility(View.GONE);
+        if (service.mode==0) {
+            key=HttpConstant.STRAT_MEMORY;
+            memoryRv.setVisibility(View.GONE);
+            jianpan_linlayout.setVisibility(View.VISIBLE);
 
-        jianpan_linlayout.setVisibility(View.VISIBLE);
+        }
 
     }
 
