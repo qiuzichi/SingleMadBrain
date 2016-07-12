@@ -29,8 +29,8 @@ import org.xutils.DbManager;
 /**
  * 整个应用的全局上下文
  *
- * @author y42579
- * @2011-8-24
+ * Created by gongkan on 2016/3/11
+ *
  */
 public class AppContext {
 

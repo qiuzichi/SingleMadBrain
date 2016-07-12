@@ -49,7 +49,8 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
 
     private ImageButton mIBtnBrowseMode;
     private View mRightLayout, mHorizontalLayout, mBrowseLayout;
-    private ViewStub mStubMutiBrowse, mStubAnswer, mStubAnswerShade;
+    private ViewStub mStubMutiBrowse, mStubAnswer;
+            private View mStubAnswerShade;
     private QuickPokerBrowseHorizontalView mSingleLineLayout;// 单行浏览模式
     private QuickPokerBrowseVerticalView mMUtiLineLayout;// 多行浏览模式
     /**
@@ -111,7 +112,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         mStubMutiBrowse = (ViewStub) mViewParent
                 .findViewById(R.id.browse_proker_muti_stub);
         mStubAnswer = (ViewStub) mViewParent.findViewById(R.id.answer_layout);
-        mStubAnswerShade = (ViewStub) mViewParent.findViewById(R.id.view_shade_answer);
+        mStubAnswerShade = mViewParent.findViewById(R.id.view_shade_answer);
         mSingleLineLayout = (QuickPokerBrowseHorizontalView) mViewParent
                 .findViewById(R.id.browse_proker_single_mode);
         service = (QuickCardService) AppContext.instance().getGameServiceByProject(Constant.GAME_QUICKIY_POCKER);

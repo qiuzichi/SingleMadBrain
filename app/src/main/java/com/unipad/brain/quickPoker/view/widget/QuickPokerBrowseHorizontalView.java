@@ -115,7 +115,7 @@ public class QuickPokerBrowseHorizontalView extends HorizontalScrollView
 			pokerImage.setLayoutParams(pokerLayoutParams);
 			pokerLayoutParams.leftMargin = margin;
 			margin += basicMargin;
-			pokerImage.setImageResource(R.drawable.bg_poker);
+			//pokerImage.setImageResource(R.drawable.bg_poker);
 			mPokerLayout.addView(pokerImage);
 		}
 
@@ -197,7 +197,7 @@ public class QuickPokerBrowseHorizontalView extends HorizontalScrollView
 					&& pokerSortArray.size() == PokerEntity.pairNums) {
 				for (int index = 0; index < PokerEntity.pairNums; index++) {
 					imageView = (ImageView) mPokerLayout.getChildAt(index);
-					imageView.setImageDrawable(null);
+					//imageView.setImageDrawable(null);
 					imageView.setImageResource(pokerSortArray.get(index).resId);
 				}
 			}
