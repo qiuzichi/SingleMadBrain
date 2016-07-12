@@ -231,6 +231,7 @@
     <string name="hotspot_result">热点搜索结果</string>
 
     <string name="pager_detail">详情</string>
+    <string name="start_search">搜索</string>
 
     <string name="auth_hint">您还未进行实名认证，请在个人中心里进行实名认证。认证之后才能进行比赛报名,谢谢！</string>
     <string name="auth_fail_hint">您提交的实名认证信息未通过，请重新提交！</string>

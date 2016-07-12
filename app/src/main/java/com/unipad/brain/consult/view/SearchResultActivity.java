@@ -52,10 +52,8 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
     private NewsService service;
     private SearchAdapter mSearchAdapter;
     private ListView mListView;
-    private View mPopupView;
-
     private PopupWindow mPopupWindows;
-    private ScaleAnimation sa;
+
 
 
     @Override
@@ -111,8 +109,6 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
             final ImageView iv_pager_zan = (ImageView) holder.getView(R.id.iv_item_introduction_zan);
             //评论
             final ImageView iv_pager_comment = (ImageView) holder.getView(R.id.iv_item_introduction_comment);
-
-//            TextView tv_checkDetail  = (TextView) holder.getView(R.id.tv_item_introduction_detail);
             //查看详情的 relative
             RelativeLayout rl_checkDetail = holder.getView(R.id.rl_item_introduction_detail);
 
@@ -123,14 +119,12 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
                 iv_pager_zan.setImageResource(R.drawable.favorite_introduction_normal);
             }
 
-
             //点赞  点击事件
             iv_pager_zan.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
-                    Log.e("", "dianzao kai shi !!!!");
                     service.getNewsOperate(newEntity.getId(), "1", String.valueOf(!newEntity.getIsLike()), "0", 0,
                             new Callback.CommonCallback<String>() {
                                 @Override
@@ -190,7 +184,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
 
     }
     private void initPopupWindows(final NewEntity newEntity ){
-        mPopupView = View.inflate(this, R.layout.comment_commit_popup, null);
+        View mPopupView = View.inflate(this, R.layout.comment_commit_popup, null);
         //评论内容
         final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
         //提交评论按钮
@@ -236,21 +230,22 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
             }
         });
 
-        mPopupWindows = new PopupWindow(mPopupView, -1, 100, true);
+        mPopupWindows = new PopupWindow(mPopupView, -1, 50, true);
         mPopupWindows.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
         mPopupWindows.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //动画效果;
-        sa = new ScaleAnimation(0f, 1f, 0.5f, 1f,
-                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
         sa.setDuration(300);
+        mPopupView.startAnimation(sa);
 
     }
 
     private void showPopupWindows(View parent){
         closePopup();
         popupInputMethodWindow();
-        mPopupView.startAnimation(sa);
+
         mPopupWindows.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
 
     }

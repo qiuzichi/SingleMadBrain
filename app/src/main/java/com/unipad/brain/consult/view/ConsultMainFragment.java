@@ -3,20 +3,25 @@ package com.unipad.brain.consult.view;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,9 +34,11 @@ import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultTab;
 import com.unipad.brain.consult.widget.CustomViewPager;
+import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.utils.ToastUtil;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +53,9 @@ public class ConsultMainFragment extends ConsultBaseFragment{
     private int mCurrentIndex;
     private ConsultTab[] mConsultTabs;
     private SearchView mSearchView;
-    private ListView mListSearchTips;
     private PopupWindow mPopupWindows;
-
+    private List<String> titleTip;
+    private ArrayAdapter  adapter;
 
     @Override
     public  int getLayoutId(){
@@ -61,9 +68,11 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         mTabWidget = (TabWidget) view.findViewById(R.id.tabwidget_consult_main);
         mViewPager = (CustomViewPager) view.findViewById(R.id.viewPager_consult);
         mSearchView = (SearchView) view.findViewById(R.id.searchview_search_bar);
+        titleTip = new ArrayList<>();
 
         initMyTabWidget();
         initViewPager();
+        initSearchView();
     }
 
     private void initMyTabWidget(){
@@ -92,6 +101,9 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         }
         mTabWidget.setCurrentTab(0);
 
+    }
+
+    private void initSearchView(){
         //初始化搜索栏；
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setSubmitButtonEnabled(true);
@@ -101,11 +113,21 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             field.setAccessible(true);
             ImageView mSearchButton = (ImageView) field.get(mSearchView);
             //设置搜索的 button 背景图片
-            mSearchButton.setImageDrawable(this.getResources().getDrawable(R.drawable.personal_frg_record_search));
+            mSearchButton.setImageDrawable(getResources().getDrawable(R.drawable.personal_frg_record_search));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        mSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+            }
+        });
+
         mSearchView.setOnQueryTextListener(mOnQueryTextListener);
+
     }
 
     private void initViewPager(){
@@ -119,10 +141,10 @@ public class ConsultMainFragment extends ConsultBaseFragment{
 
     private ViewPager.SimpleOnPageChangeListener mSimpleOnPageChangeListener = new ViewPager.SimpleOnPageChangeListener(){
         public void onPageSelected(int position) {
-            if(position == mCurrentIndex)return;
-            setTabSelectedChanged(mCurrentIndex, false);
-            mCurrentIndex = position;
-            setTabSelectedChanged(mCurrentIndex, true);
+        if(position == mCurrentIndex)return;
+        setTabSelectedChanged(mCurrentIndex, false);
+        mCurrentIndex = position;
+        setTabSelectedChanged(mCurrentIndex, true);
         }
     };
 
@@ -151,35 +173,78 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         //提交按钮之后  调用该方法
         @Override
         public boolean onQueryTextSubmit(String query) {
-
             //强制隐藏软键盘；
-            InputMethodManager imm = (InputMethodManager) getActivity(). getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mViewPager.getWindowToken(), 0);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
             //发送意图到activity
             Intent intent = new Intent(getmContext(), SearchResultActivity.class);
             intent.putExtra("queryContent", query);
             int contentId = mCurrentIndex + 1;
-            intent.putExtra("contentId", "0000"+ contentId);
+            intent.putExtra("contentId", "0000" + contentId);
             startActivity(intent);
 
             return false;
         }
+
         //当有文字输入的时候调用该方法；
         @Override
         public boolean onQueryTextChange(String newText) {
+            if(TextUtils.isEmpty(newText)){
+                closePopup();
+                return false;
+            }
             IntroductionFragment currentFragment = (IntroductionFragment) com.unipad.brain.consult.manager.FragmentManager.getFragment(mConsultTabs[mCurrentIndex]);
+            titleTip = currentFragment.getNewsDatas();
+            adapter = new ArrayAdapter(getmContext(), R.layout.list_item_searchlist,titleTip);
+            showSelectDDialog(adapter);
+            return true;
+        }
+    } ;
 
-            List<String> titleTip = currentFragment.getNewsDatas();
-            initPopupWindows(titleTip);
+    /**
+     * 弹出选择
+     */
+    private void showSelectDDialog(BaseAdapter baseAdapter) {
+        ListView lv = new ListView(getmContext());
+        lv.setBackgroundResource(R.drawable.icon_spinner_listview_background);
+        // 隐藏滚动条
+        lv.setVerticalScrollBarEnabled(false);
 
-            int[] location = new int[2];
-            mSearchView.getLocationInWindow(location);
-
-            showPopupWindows(mSearchView, 0, location[1] + 30);
-            return false;
+        lv.setCacheColorHint(Color.parseColor("#00000000"));
+        // 让listView没有分割线
+        lv.setDividerHeight(0);
+        lv.setDivider(null);
+        //lv.setId(10001);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mPopupWindows.setFocusable(true);
+                mOnQueryTextListener.onQueryTextSubmit(titleTip.get(position).toString());
+            }
+        });
+        if(lv.getAdapter() != null){
+            baseAdapter.notifyDataSetChanged();
+        } else {
+            lv.setAdapter(baseAdapter);
         }
 
-    } ;
+        ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
+        sa.setDuration(300);
+        lv.startAnimation(sa);
+
+
+        mPopupWindows = new PopupWindow(lv, mSearchView.getWidth() - 4, 235);
+        // 设置点击外部可以被关闭
+        mPopupWindows.setOutsideTouchable(true);
+        mPopupWindows.setBackgroundDrawable(new BitmapDrawable());
+
+        // 设置popupWindow可以得到焦点
+        mPopupWindows.setFocusable(false);
+        mPopupWindows.showAsDropDown(mSearchView, 2, -5);		// 显示
+        mSearchView.setFocusable(true);
+    }
+
 
     public void onDetach() {
         super.onDetach();
@@ -227,43 +292,10 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         }
     }
 
-    private void initPopupWindows(final List<String> titleTip){
-        View mPopupView =  View.inflate(getmContext(), R.layout.search_popup_list, null);
-
-        ListView mListView = (ListView) mPopupView.findViewById(R.id.search_popup_listview);
-        ArrayAdapter  adapter = new ArrayAdapter(getmContext(), android.R.layout.simple_list_item_1,titleTip);
-
-        mListView.setAdapter(adapter);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    Log.d(getTag(), titleTip.get(position).toString());
-                mOnQueryTextListener.onQueryTextSubmit(titleTip.get(position).toString());
-                closePopup();
-            }
-        });
-
-        mPopupWindows = new PopupWindow(mPopupView,-2,-2, true);
-
-        mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
-                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
-        sa.setDuration(300);
-        mPopupView.startAnimation(sa);
-    }
-
-    private void showPopupWindows(View parent , int x, int y){
-        closePopup();
-        mPopupWindows.showAtLocation(parent, Gravity.BOTTOM, x, y);
-    }
-
     //关闭弹出窗体
     private void closePopup(){
-
         if(mPopupWindows != null && mPopupWindows.isShowing()){
             mPopupWindows.dismiss();
-            mPopupWindows = null;
         }
     }
 }

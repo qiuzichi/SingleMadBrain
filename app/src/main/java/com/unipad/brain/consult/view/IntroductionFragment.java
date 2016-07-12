@@ -60,7 +60,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     private ListView mListViewTab;
     private List<NewEntity> newsDatas = new ArrayList<NewEntity>();
-    private List<NewsOperateBean> newsOperateDatas = new ArrayList<NewsOperateBean>();
     private List<AdPictureBean> newsAdvertDatas = new ArrayList<AdPictureBean>();
     private NewsService service;
     private PopupWindow mPopupWindows;
@@ -83,16 +82,15 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //初始化轮播图
+        initLunPic();
         initData();
         //播放轮播广告
         startLunPic();
     }
 
     private void initData() {
-        //初始化轮播图
-        initLunPic();
         biutmapUtils = new BitmapUtils(mActivity);
-
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
