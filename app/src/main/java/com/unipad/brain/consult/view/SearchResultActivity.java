@@ -327,4 +327,10 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_SEARCH_RUSULT,this);
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE,this);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        closePopup();
+    }
 }

@@ -18,7 +18,7 @@ public class WordEntity {
     private String word;
 
 
-    private String answer;
+    private String answer = "";
 
     public int getNumber() {
         return number;

@@ -30,6 +30,7 @@ public class Constant {
     public static final String SHOW_RULE_DIG = "com.unipad.show_rule_dlg";
     public static final String SHOW_GAME_PAUSE = "com.unipad.show_game_pause";
     public static final String INIT_REMEMORY_DLG = "com.unipad.init_rememory_dlg";
+    public static final String COMMIT_POCKER_GAME_DLG = "commit_pocker_game_dlg";
 
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
     public static final String LONG_SERVICE = "com.unipad.brain.number.dao.NumService";
@@ -40,6 +41,8 @@ public class Constant {
 
     public static final String WORD_GAME = "00003";
     public static final String VIRTUAL_TIME_SERVICE = "virtual_time_service";
+    public static final String QUICK_POKER_SERVICE = "quick_poker_service";
+
 
     private static Map<String, String> projectNames;
     private static Map<String,String> GradeId;
@@ -64,6 +67,7 @@ public class Constant {
     public static final String GAME_LISTON_AND_MEMORY_WORDS = "00009";
 
     public static final String GAME_QUICKIY_POCKER = "00010";
+    public static final int POKER_NUM = 52;
 
     public static String getProjectName(String projectId) {
         if (null == projectNames) {
@@ -91,9 +95,10 @@ public class Constant {
         if (WORD_GAME.equals(gradId)){
             return App.getContext().getString(R.string.world_game);
         }
-        return GradeId.get(gradId);
+        return gradId;
     }
-
+    public static final float LEFT_RATIO = 1.0f / 5.8f;
+    public static final float RIGHT_RATIO = 1 - LEFT_RATIO;
     public static String getProjectId(String projectName) {
         if (null == projectIds) {
             projectIds = new HashMap<String, String>();

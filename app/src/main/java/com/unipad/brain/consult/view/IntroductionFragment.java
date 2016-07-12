@@ -11,10 +11,12 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -126,6 +128,21 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         super.onResume();
         //默认加载第一个页面的时候 设置可见
         setUserVisibleHint(true);
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    if (mPopupWindows != null && mPopupWindows.isShowing()) {
+                        mPopupWindows.dismiss();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     //对于用户不可见 与 不可见  会被调用；
@@ -189,21 +206,30 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         //评论内容
         final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
 
-        //提交评论按钮
-        Button btn_commit = (Button) mPopupView.findViewById(R.id.btn_comment_commit);
+        et_commment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+               if (event.getAction() == KeyEvent.KEYCODE_BACK ) {
+                   if (mPopupWindows != null && mPopupWindows.isShowing()) {
+                       mPopupWindows.dismiss();
+                   }
+               }
+                return true;
+            }
+        });
 
-        btn_commit.setOnClickListener(new View.OnClickListener() {
+        //提交评论按钮
+        ((Button) mPopupView.findViewById(R.id.btn_comment_commit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //点击提交关闭窗体  用户评论内容
                 final String user_comment = et_commment.getText().toString().trim();
-                if(TextUtils.isEmpty(user_comment)){
+                if (TextUtils.isEmpty(user_comment)) {
                     Toast.makeText(mActivity, "内容为空 请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 //提交评论内容到服务器
-                service.getNewsOperate(newEntity.getId(), "2", null, user_comment, 0, new Callback.CommonCallback<String>(){
+                service.getNewsOperate(newEntity.getId(), "2", null, user_comment, 0, new Callback.CommonCallback<String>() {
 
                     @Override
                     public void onSuccess(String s) {
@@ -415,10 +441,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         @Override
         public void convert(ViewHolder holder, final AdPictureBean adPictureBean) {
             ImageView imageView = holder.getView(R.id.ad_gallery_item);
-
-
             x.image().bind(imageView, adPictureBean.getAdvertPath(), imageOptions);
-
         }
     }
 
@@ -459,10 +482,9 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                mTipList.add(title);
            }
            return  mTipList;
-       }else {
-
        }
        return null;
     }
+
 
 }

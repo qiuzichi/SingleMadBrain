@@ -6,10 +6,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,6 +40,7 @@ public class WordRightFragment extends BasicCommonFragment {
     private WordAdapter adapter;
     private WordsService service;
     private ViewStub mStubShade;
+    private HorizontalScrollView scrollView;
 
     @Override
     public void onClick(View view) {
@@ -97,27 +100,24 @@ public class WordRightFragment extends BasicCommonFragment {
     @Override
     public void memoryTimeToEnd(int memoryTime) {
         super.memoryTimeToEnd(memoryTime);
-        if (service.gameMode == 0) {
-            service.mode = 1;
-            adapter.notifyDataSetChanged();
-        } else {
-            mStubShade.setVisibility(View.VISIBLE);
-        }
+
+        service.mode = 1;
+        adapter.notifyDataSetChanged();
         mActivity.getCommonFragment().startRememoryTimeCount();
     }
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-        if (service.gameMode == 1) {
-            service.mode = 2;
-            adapter.notifyDataSetChanged();
-            new Thread() {
-                @Override
-                public void run() {
-                    SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(), service.getScore(), memoryTime, answerTime, service.getAnswerData());
-                }
-            }.start();
-        }
+
+        service.mode = 2;
+        adapter.notifyDataSetChanged();
+        new Thread() {
+            @Override
+            public void run() {
+                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(), service.getScore(), memoryTime, answerTime, service.getAnswerData());
+            }
+        }.start();
+ 
     }
 
     private class WordAdapter extends CommonAdapter<WordEntity> {
@@ -143,6 +143,12 @@ public class WordRightFragment extends BasicCommonFragment {
                     case 1:
                         textWord.setVisibility(View.GONE);
                         userAnswerEdit.setVisibility(View.VISIBLE);
+                        userAnswerEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            @Override
+                            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                                return false;
+                            }
+                        });
                         userAnswerEdit.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

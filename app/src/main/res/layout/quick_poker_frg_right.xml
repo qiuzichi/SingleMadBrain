@@ -1,0 +1,129 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/right_frg"
+    android:padding="@dimen/binary_line_layout_pading" >
+
+    <RelativeLayout
+        android:id="@+id/browse_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/quick_poker_top_h"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" >
+
+            <TextView
+                android:id="@+id/tv_browse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="10dp"
+                android:text="@string/memory_order"
+                android:textColor="@color/memory_order"
+                android:textSize="@dimen/memory_text" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/ibtn_browse_mode"
+                android:layout_toRightOf="@id/tv_browse"
+                android:background="@drawable/lone_line_hori" />
+
+            <ImageButton
+                android:id="@+id/ibtn_browse_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/quick_poker_top_h"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@null"
+                android:src="@drawable/ibtn_browse_muti_line" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/right_layout"
+            android:layout_width="@dimen/quick_poker_right_w"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/top_layout"
+            android:layout_marginBottom="@dimen/binary_line_layout_pading"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/tv_browse_ver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:ems="1"
+                android:text="@string/memory_order"
+                android:textColor="@color/memory_order"
+                android:textSize="@dimen/memory_text" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_browse_ver"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/lone_line_vertical" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/browse_proker_hlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/top_layout"
+            android:layout_toLeftOf="@id/right_layout"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="6dp" >
+
+            <com.unipad.brain.quickPoker.view.widget.QuickPokerBrowseHorizontalView
+                android:id="@+id/browse_proker_single_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:text="@string/single_browse_note"
+                android:textColor="#CCCCCC"
+                android:textSize="32sp" />
+        </LinearLayout>
+
+        <ViewStub
+            android:id="@+id/browse_proker_muti_stub"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/top_layout"
+            android:layout_toLeftOf="@id/right_layout"
+            android:layout="@layout/quick_poker_v_vertical_browse" />
+    </RelativeLayout>
+
+    <ViewStub
+        android:id="@+id/answer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout="@layout/quick_poker_v_answer" />
+
+    <RelativeLayout
+        android:id="@+id/view_shade_answer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white" />
+
+</RelativeLayout>
