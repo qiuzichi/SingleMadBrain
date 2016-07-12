@@ -226,6 +226,9 @@
     <string name="person_level">等级·</string>
     <string name="search_conment">输入关键字搜索</string>
     <string name="listitem_empty">搜索不到内容</string>
+    <string name="info_result">资讯搜索结果</string>
+    <string name="competetion_result">赛事搜索结果</string>
+    <string name="hotspot_result">热点搜索结果</string>
 
     <string name="pager_detail">详情</string>
 

@@ -4,9 +4,10 @@
     android:layout_height="@dimen/popopwindows_height"
     android:background="@color/comment_popwindows_bg"
     android:orientation="horizontal"
+    android:id="@+id/popup_windows_linearLayout"
     >
 
-    <EditText
+    <com.unipad.brain.consult.view.EditTextSpuer
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="9"

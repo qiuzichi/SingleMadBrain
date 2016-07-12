@@ -19,6 +19,11 @@ public class NewsService extends GlobleObserService implements ICoreService{
         HitopNewsList newsList = new HitopNewsList(contentType,title,page,size);
         newsList.post();
     }
+
+    public void getSearchNews(String key , String contentType,String title,int page,int size ){
+        HitopNewsList newsList = new HitopNewsList(key ,contentType,title,page,size);
+        newsList.post();
+    }
     public void getNewCompetition(String userId, String projectId,String gradeId,int page,int size ){
         HittopGetUserGame  newsList = new HittopGetUserGame(userId, projectId,gradeId,page,size);
         newsList.get();

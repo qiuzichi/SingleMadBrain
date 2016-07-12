@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -23,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lidroid.xutils.BitmapUtils;
 import com.unipad.AppContext;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
@@ -61,9 +63,10 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
-        service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
+        service.registerObserver(HttpConstant.NOTIFY_GET_SEARCH_RUSULT, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
-        service.getNews(getIntent().getStringExtra("contentId"), getIntent().getStringExtra("queryContent"), 1, 10);
+        String contentId = getIntent().getStringExtra("contentId");
+        service.getSearchNews(contentId, contentId, getIntent().getStringExtra("queryContent"), 1, 10);
     }
 
     @Override
@@ -72,7 +75,16 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         //返回键点击事件
         ((TextView)findViewById(R.id.title_back_text_search)).setOnClickListener(this);
 
-
+        String title = null;
+        if("00001".equals(getIntent().getStringExtra("contentId"))){
+            title = getString(R.string.info_result);
+        }else if("00002".equals(getIntent().getStringExtra("contentId"))) {
+            title = getString(R.string.competetion_result);
+        }else if("00003".equals(getIntent().getStringExtra("contentId"))) {
+            title = getString(R.string.hotspot_result);
+        }
+       //设置搜索结果的标题
+        ((TextView)findViewById(R.id.title_detail_text_search)).setText(title);
         mSearchAdapter = new SearchAdapter(this, mSearchDatas, R.layout.item_listview_introduction );
         mListView.setAdapter(mSearchAdapter);
     }
@@ -87,7 +99,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         public void convert(ViewHolder holder, final NewEntity newEntity) {
             //设置  缩略图
             ImageView iv_picture = (ImageView) holder.getView(R.id.iv_item_introduction_icon);
-            iv_picture.setImageBitmap(PicUtil.getbitmap(newEntity.getThumbUrl()));
+            new BitmapUtils(mContext).display(iv_picture, newEntity.getThumbUrl());
             //设置标题
              ((TextView) holder.getView(R.id.tv_item_introduction_news_title)).setText(newEntity.getTitle());
             //设置更新时间
@@ -257,7 +269,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm.isActive()) {
                     imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
                             InputMethodManager.HIDE_NOT_ALWAYS);
@@ -266,11 +278,22 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         }, 0);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(mPopupWindows !=null && mPopupWindows.isShowing())
+                mPopupWindows.dismiss();
+
+
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
 
     @Override
     public void update(int key, Object o) {
         switch (key) {
-            case HttpConstant.NOTIFY_GET_NEWS:
+            case HttpConstant.NOTIFY_GET_SEARCH_RUSULT:
 
                 mSearchDatas.clear();
                 //获取新闻页面数据
@@ -281,8 +304,10 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
                     mListView.setVisibility(View.GONE);
                     ((TextView)findViewById(R.id.tv_listview_empty)).setVisibility(View.VISIBLE);
                     return;
+                }else {
+                    mSearchAdapter.notifyDataSetChanged();
                 }
-                mSearchAdapter.notifyDataSetChanged();
+
                 break;
             case HttpConstant.NOTIFY_GET_OPERATE:
                 break;
@@ -304,7 +329,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         clear();
     }
     private void clear(){
-        service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWS,this);
+        service.unRegisterObserve(HttpConstant.NOTIFY_GET_SEARCH_RUSULT,this);
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE,this);
     }
 }

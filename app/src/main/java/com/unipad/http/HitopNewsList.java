@@ -1,5 +1,6 @@
 package com.unipad.http;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.unipad.AppContext;
@@ -22,6 +23,7 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
     private int page;
 
     private int size;
+    private String  keyId;
 
     private String title;
     private  String userId;
@@ -33,6 +35,16 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
     public HitopNewsList(String contentType,String title,int page,int size) {
         super(HttpConstant.GET_NEWS_LIST);
         this.size = size;
+        this.page= page;
+        this.title = title;
+        this.userId = AppContext.instance().loginUser.getUserId();
+        this.contenttype = contentType;
+
+    }
+    public HitopNewsList(String keyId, String contentType,String title,int page,int size) {
+        super(HttpConstant.GET_NEWS_LIST);
+        this.size = size;
+        this.keyId = keyId;
         this.page= page;
         this.title = title;
         this.userId = AppContext.instance().loginUser.getUserId();
@@ -89,7 +101,13 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
         }else if ("00003".equals(contenttype)) {
             key = HttpConstant.NOTIFY_GET_HOTSPOT;
         }
+        if("00001".equals(keyId)){
+            key =HttpConstant.NOTIFY_GET_SEARCH_RUSULT;
+        }
+
+
         ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(key,newsList);
+        keyId = null;
         return null;
     }
 

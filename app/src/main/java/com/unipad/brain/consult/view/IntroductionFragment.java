@@ -8,14 +8,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -51,7 +47,9 @@ import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 推荐
@@ -76,6 +74,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private ImageOptions imageOptions;
     private BitmapUtils biutmapUtils;
 
+
+
     private void getNews(String contentType,String title,int page,int size ){
         service.getNews(contentType, title, page, size);
     }
@@ -84,8 +84,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
-
-
         //播放轮播广告
         startLunPic();
     }
@@ -115,10 +113,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         adPotView = (RecommendPot) getView().findViewById(R.id.ad_pot);
         newsAdvertDatas.add(new AdPictureBean());
         newsAdvertDatas.add(new AdPictureBean());
-
         adPotView.setIndicatorChildCount(newsAdvertDatas.size());
         mAdvertLuobo.initSelectePoint(adPotView);
-
         mAdvertLuobo.setOnItemClickListener(mOnItemClickListener);
 
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
@@ -194,6 +190,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mPopupView = View.inflate(mActivity, R.layout.comment_commit_popup, null);
         //评论内容
         final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
+
         //提交评论按钮
         Button btn_commit = (Button) mPopupView.findViewById(R.id.btn_comment_commit);
 
@@ -250,7 +247,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     private void showPopupWindows(View parent , int x, int y){
         closePopup();
-
         popupInputMethodWindow();
         mPopupView.startAnimation(sa);
 
@@ -280,6 +276,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             }
         }, 0);
     }
+
+
 
    private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWS, this);
@@ -436,6 +434,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 //获取新闻页面数据
                 newsDatas.addAll((List<NewEntity>) o);
                 mNewsAdapter.notifyDataSetChanged();
+
                 break;
 
             case HttpConstant.NOTIFY_GET_OPERATE:
@@ -452,6 +451,20 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             default:
                 break;
         }
+    }
+
+    public List<String> getNewsDatas(){
+       if(newsDatas.size() != 0){
+           List<String> mTipList= new ArrayList<String>();
+           for(int i=0; i<newsDatas.size(); i++){
+              String title =  newsDatas.get(i).getTitle();
+               mTipList.add(title);
+           }
+           return  mTipList;
+       }else {
+
+       }
+       return null;
     }
 
 }
