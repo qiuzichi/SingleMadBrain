@@ -41,6 +41,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        LogUtil.e(" HeadPortraitFragment", "--..--onActivityCreated--");
         mListView = (GridView) mViewParent.findViewById(R.id.gridview);
 
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));

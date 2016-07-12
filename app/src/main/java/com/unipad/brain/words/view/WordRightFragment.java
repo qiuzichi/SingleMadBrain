@@ -6,10 +6,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,7 +40,7 @@ public class WordRightFragment extends BasicCommonFragment {
     private WordAdapter adapter;
     private WordsService service;
     private ViewStub mStubShade;
-
+    private HorizontalScrollView scrollView;
     @Override
     public void onClick(View view) {
     }
@@ -143,6 +145,12 @@ public class WordRightFragment extends BasicCommonFragment {
                     case 1:
                         textWord.setVisibility(View.GONE);
                         userAnswerEdit.setVisibility(View.VISIBLE);
+                        userAnswerEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            @Override
+                            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                                return false;
+                            }
+                        });
                         userAnswerEdit.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

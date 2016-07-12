@@ -103,4 +103,22 @@ public class ToastUtil {
 
         return WaitingDialog;
     }
+
+    public static HIDDialog createOkAndCancelDialog(Context mContext, String id,String contentTip,View.OnClickListener confirmListener){
+        final HIDDialog dialog =  new HIDDialog(mContext,R.style.DialogStyle, id);
+        dialog.setContentView(HIDDialog.ENUM_DIALOG_VIEW.TWO_BUTTON_VIEW);
+        dialog.setTitle("");
+        dialog.setText(contentTip);
+        dialog.setFirstBTText(mContext.getString(R.string.cancel));
+        dialog.setFirstBTListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setSecondBTText(mContext.getString(R.string.confirm));
+        dialog.setSecondBTListener(confirmListener);
+        return dialog;
+    }
 }

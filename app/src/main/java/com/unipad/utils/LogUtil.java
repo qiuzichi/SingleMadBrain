@@ -110,7 +110,9 @@ public class LogUtil {
             logList.add(msg);
         }
     }
-
+    public static void e(String tag, String msg, Exception exception) {
+            Log.e(tag, msg, exception);
+    }
     public static void setState(boolean flag) {
         if (flag) {
             if (logList == null) {
