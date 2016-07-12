@@ -243,4 +243,5 @@
 
     <string name="consult_present">最新资讯</string>
     <string name="competition_present">最新赛事</string>
+    <string name="com_name">赛事名称</string>
 </resources>

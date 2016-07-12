@@ -252,6 +252,4 @@ public class AppContext {
         }
         isInstanceed = false;
     }
-
-    ;
 }
