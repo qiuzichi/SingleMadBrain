@@ -105,6 +105,7 @@
 
         <ViewStub
             android:id="@+id/browse_proker_muti_stub"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/top_layout"
@@ -116,13 +117,13 @@
         android:id="@+id/answer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:layout="@layout/quick_poker_v_answer" />
 
-    <ViewStub
+    <RelativeLayout
         android:id="@+id/view_shade_answer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:layout="@layout/shade_v" />
+        android:background="@color/white" />
 
 </RelativeLayout>
