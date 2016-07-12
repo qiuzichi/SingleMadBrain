@@ -8,17 +8,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -51,7 +49,9 @@ import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 推荐
@@ -62,7 +62,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     private ListView mListViewTab;
     private List<NewEntity> newsDatas = new ArrayList<NewEntity>();
-    private List<NewsOperateBean> newsOperateDatas = new ArrayList<NewsOperateBean>();
     private List<AdPictureBean> newsAdvertDatas = new ArrayList<AdPictureBean>();
     private NewsService service;
     private PopupWindow mPopupWindows;
@@ -76,6 +75,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private ImageOptions imageOptions;
     private BitmapUtils biutmapUtils;
 
+
+
     private void getNews(String contentType,String title,int page,int size ){
         service.getNews(contentType, title, page, size);
     }
@@ -83,18 +84,15 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //初始化轮播图
+        initLunPic();
         initData();
-
-
         //播放轮播广告
         startLunPic();
     }
 
     private void initData() {
-        //初始化轮播图
-        initLunPic();
         biutmapUtils = new BitmapUtils(mActivity);
-
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
@@ -115,10 +113,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         adPotView = (RecommendPot) getView().findViewById(R.id.ad_pot);
         newsAdvertDatas.add(new AdPictureBean());
         newsAdvertDatas.add(new AdPictureBean());
-
         adPotView.setIndicatorChildCount(newsAdvertDatas.size());
         mAdvertLuobo.initSelectePoint(adPotView);
-
         mAdvertLuobo.setOnItemClickListener(mOnItemClickListener);
 
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
@@ -194,21 +190,19 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mPopupView = View.inflate(mActivity, R.layout.comment_commit_popup, null);
         //评论内容
         final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
-        //提交评论按钮
-        Button btn_commit = (Button) mPopupView.findViewById(R.id.btn_comment_commit);
 
-        btn_commit.setOnClickListener(new View.OnClickListener() {
+        //提交评论按钮
+        ((Button) mPopupView.findViewById(R.id.btn_comment_commit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //点击提交关闭窗体  用户评论内容
                 final String user_comment = et_commment.getText().toString().trim();
-                if(TextUtils.isEmpty(user_comment)){
+                if (TextUtils.isEmpty(user_comment)) {
                     Toast.makeText(mActivity, "内容为空 请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 //提交评论内容到服务器
-                service.getNewsOperate(newEntity.getId(), "2", null, user_comment, 0, new Callback.CommonCallback<String>(){
+                service.getNewsOperate(newEntity.getId(), "2", null, user_comment, 0, new Callback.CommonCallback<String>() {
 
                     @Override
                     public void onSuccess(String s) {
@@ -250,7 +244,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     private void showPopupWindows(View parent , int x, int y){
         closePopup();
-
         popupInputMethodWindow();
         mPopupView.startAnimation(sa);
 
@@ -280,6 +273,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             }
         }, 0);
     }
+
+
 
    private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWS, this);
@@ -419,10 +414,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         @Override
         public void convert(ViewHolder holder, final AdPictureBean adPictureBean) {
             ImageView imageView = holder.getView(R.id.ad_gallery_item);
-
-
             x.image().bind(imageView, adPictureBean.getAdvertPath(), imageOptions);
-
         }
     }
 
@@ -436,6 +428,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 //获取新闻页面数据
                 newsDatas.addAll((List<NewEntity>) o);
                 mNewsAdapter.notifyDataSetChanged();
+
                 break;
 
             case HttpConstant.NOTIFY_GET_OPERATE:
@@ -453,5 +446,18 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 break;
         }
     }
+
+    public List<String> getNewsDatas(){
+       if(newsDatas.size() != 0){
+           List<String> mTipList= new ArrayList<String>();
+           for(int i=0; i<newsDatas.size(); i++){
+              String title =  newsDatas.get(i).getTitle();
+               mTipList.add(title);
+           }
+           return  mTipList;
+       }
+       return null;
+    }
+
 
 }

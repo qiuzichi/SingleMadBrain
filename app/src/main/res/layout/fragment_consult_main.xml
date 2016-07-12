@@ -24,13 +24,12 @@
             android:layout_height="@dimen/newlist_height"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_10dip"
-
             >
 
             <SearchView
                 android:id="@+id/searchview_search_bar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/newlist_height"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/margin_5dip"
                 android:layout_marginRight="@dimen/margin_edge"
@@ -38,9 +37,9 @@
                 android:gravity="center_vertical"
                 android:hint="根据内容搜索"
                 android:paddingRight="@dimen/margin_10dip"
-                android:textColor="#BEBEBE"
+                android:textColor="@color/black"
                 android:singleLine="true"
-                android:imeOptions="actionGo"
+                android:imeOptions="actionSearch"
                  />
 
         </RelativeLayout>

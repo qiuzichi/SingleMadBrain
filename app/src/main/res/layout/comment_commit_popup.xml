@@ -4,6 +4,7 @@
     android:layout_height="@dimen/popopwindows_height"
     android:background="@color/comment_popwindows_bg"
     android:orientation="horizontal"
+    android:id="@+id/popup_windows_linearLayout"
     >
 
     <EditText
