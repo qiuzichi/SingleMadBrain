@@ -128,21 +128,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         super.onResume();
         //默认加载第一个页面的时候 设置可见
         setUserVisibleHint(true);
-
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    if (mPopupWindows != null && mPopupWindows.isShowing()) {
-                        mPopupWindows.dismiss();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
     }
 
     //对于用户不可见 与 不可见  会被调用；
@@ -205,18 +190,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mPopupView = View.inflate(mActivity, R.layout.comment_commit_popup, null);
         //评论内容
         final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
-
-        et_commment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-               if (event.getAction() == KeyEvent.KEYCODE_BACK ) {
-                   if (mPopupWindows != null && mPopupWindows.isShowing()) {
-                       mPopupWindows.dismiss();
-                   }
-               }
-                return true;
-            }
-        });
 
         //提交评论按钮
         ((Button) mPopupView.findViewById(R.id.btn_comment_commit)).setOnClickListener(new View.OnClickListener() {
