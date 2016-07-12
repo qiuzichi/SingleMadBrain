@@ -18,6 +18,7 @@ import com.unipad.brain.number.dao.LongNumService;
 import com.unipad.brain.number.dao.NumService;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.portraits.control.HeadService;
+import com.unipad.brain.quickPoker.dao.QuickCardService;
 import com.unipad.brain.virtual.dao.VirtualTimeService;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.Constant;
@@ -28,8 +29,8 @@ import org.xutils.DbManager;
 /**
  * 整个应用的全局上下文
  *
- * @author y42579
- * @2011-8-24
+ * Created by gongkan on 2016/3/11
+ *
  */
 public class AppContext {
 
@@ -168,6 +169,10 @@ public class AppContext {
                 service = new VirtualTimeService();
                 service.init();
                 serviceList.put(key, service);
+            }else if (key.equals(Constant.QUICK_POKER_SERVICE)) {
+                service = new QuickCardService();
+                service.init();
+                serviceList.put(key, service);
             }
         }
         return service;
@@ -194,7 +199,7 @@ public class AppContext {
         }else if (Constant.GAME_LISTON_AND_MEMORY_WORDS.endsWith(projectId)){
 
         }else if (Constant.GAME_QUICKIY_POCKER.endsWith(projectId)){
-
+            key = Constant.QUICK_POKER_SERVICE;
         }
 
         return getService(key);

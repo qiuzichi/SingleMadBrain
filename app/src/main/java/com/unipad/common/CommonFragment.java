@@ -22,6 +22,7 @@ import com.unipad.common.bean.CompeteItemEntity;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
+import com.unipad.utils.LogUtil;
 
 import org.xutils.x;
 
@@ -56,6 +57,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        LogUtil.e("CommonFragment", "----onActivityCreated--");
         mActivity = (CommonActivity) getActivity();
 
         mTextName = (TextView) mParentLayout.findViewById(R.id.user_name);

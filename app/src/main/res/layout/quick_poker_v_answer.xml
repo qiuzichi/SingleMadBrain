@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.unipad.brain.quickPoker.view.widget.DragGrid
+        android:id="@+id/userGridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/remain_poker_nums_layout"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:horizontalSpacing="-70dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="13"
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="-120dp" />
+
+    <LinearLayout
+        android:id="@+id/remain_poker_nums_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/otherGridView"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/remain_pokers_left"
+            android:textColor="#CCCCCC"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/remain_poker_nums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:textColor="#323232"
+            android:textSize="32sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/remain_pokers_right"
+            android:textColor="#CCCCCC"
+            android:textSize="26sp" />
+    </LinearLayout>
+
+    <com.unipad.brain.quickPoker.view.widget.OtherGridView
+        android:id="@+id/otherGridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#E6E6E6"
+        android:horizontalSpacing="-70dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="13"
+        android:paddingBottom="10dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="10dp"
+        android:verticalSpacing="-120dp" />
+
+</RelativeLayout>
