@@ -1,13 +1,17 @@
 package com.unipad.brain.virtual.dao;
 
+import android.app.Service;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.unipad.AppContext;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.virtual.bean.VirtualEntity;
+import com.unipad.common.Constant;
 import com.unipad.http.HitopGetQuestion;
 import com.unipad.utils.LogUtil;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +21,7 @@ import java.util.Map;
  */
 public class VirtualTimeService extends AbsBaseGameService {
 
-
-    public List<VirtualEntity> virtualList = new ArrayList<>();
+   public List<VirtualEntity> virtualList = new ArrayList<>();
     @Override
     public void downloadingQuestion(Map<String, String> data) {
         super.downloadingQuestion(data);
@@ -31,9 +34,8 @@ public class VirtualTimeService extends AbsBaseGameService {
     @Override
     public void parseData(String data) {
         super.parseData(data);
+        data = data+","+data+","+data;
         String [] entity = data.split(",");
-
-
         for(int i=0;i<entity.length;i++){
             String[] word=entity[i].split("\\^");
             VirtualEntity virtualEntity=new VirtualEntity();
@@ -44,9 +46,9 @@ public class VirtualTimeService extends AbsBaseGameService {
 
 
         }
-
         initDataFinished();
     }
+
 
     @Override
     public double getScore() {

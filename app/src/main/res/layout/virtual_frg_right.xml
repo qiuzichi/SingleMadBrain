@@ -76,8 +76,6 @@
             android:id="@+id/textView6" />
     </LinearLayout>
 
-
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/memoryRv"
         android:layout_width="match_parent"
@@ -86,12 +84,8 @@
         android:divider="#ffff0000"
         android:dividerHeight="5dp"
         android:layout_below="@+id/linearLayout"
-        android:layout_alignBottom="@+id/jianpan_linlayout" />
-
-
-
-
-
+        android:layout_above="@+id/jianpan_linlayout"
+        />
 
     <LinearLayout
         android:id="@+id/jianpan_linlayout"
