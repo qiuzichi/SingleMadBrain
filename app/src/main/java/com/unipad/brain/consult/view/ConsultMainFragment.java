@@ -4,26 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SearchView;
@@ -34,14 +28,11 @@ import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultTab;
 import com.unipad.brain.consult.widget.CustomViewPager;
-import com.unipad.brain.home.MainBasicFragment;
-import com.unipad.utils.ToastUtil;
+import com.unipad.utils.DensityUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -176,14 +167,14 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             //强制隐藏软键盘；
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+            mSearchView.setFocusable(false);
             //发送意图到activity
             Intent intent = new Intent(getmContext(), SearchResultActivity.class);
             intent.putExtra("queryContent", query);
             int contentId = mCurrentIndex + 1;
             intent.putExtra("contentId", "0000" + contentId);
             startActivity(intent);
-
-            return false;
+            return true;
         }
 
         //当有文字输入的时候调用该方法；
@@ -193,7 +184,8 @@ public class ConsultMainFragment extends ConsultBaseFragment{
                 closePopup();
                 return false;
             }
-            IntroductionFragment currentFragment = (IntroductionFragment) com.unipad.brain.consult.manager.FragmentManager.getFragment(mConsultTabs[mCurrentIndex]);
+            IntroductionFragment currentFragment = (IntroductionFragment) com.unipad.brain.consult.manager.
+                    FragmentManager.getFragment(mConsultTabs[mCurrentIndex]);
             titleTip = currentFragment.getNewsDatas();
             adapter = new ArrayAdapter(getmContext(), R.layout.list_item_searchlist,titleTip);
             showSelectDDialog(adapter);
@@ -234,14 +226,14 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         lv.startAnimation(sa);
 
 
-        mPopupWindows = new PopupWindow(lv, mSearchView.getWidth() - 4, 235);
+        mPopupWindows = new PopupWindow(lv, mSearchView.getWidth() - DensityUtil.dip2px(getmContext(),40), DensityUtil.dip2px(getmContext(),240));
         // 设置点击外部可以被关闭
         mPopupWindows.setOutsideTouchable(true);
         mPopupWindows.setBackgroundDrawable(new BitmapDrawable());
 
         // 设置popupWindow可以得到焦点
         mPopupWindows.setFocusable(false);
-        mPopupWindows.showAsDropDown(mSearchView, 2, -5);		// 显示
+        mPopupWindows.showAsDropDown(mSearchView, DensityUtil.dip2px(getmContext(),20), DensityUtil.dip2px(getmContext(),-5));		// 显示
         mSearchView.setFocusable(true);
     }
 

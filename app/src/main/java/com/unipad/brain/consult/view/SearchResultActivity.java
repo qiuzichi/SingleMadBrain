@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,7 +22,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.lidroid.xutils.BitmapUtils;
 import com.unipad.AppContext;
 import com.unipad.brain.BasicActivity;
@@ -35,11 +33,8 @@ import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
-import com.unipad.utils.PicUtil;
 import com.unipad.utils.ToastUtil;
-
 import org.xutils.common.Callback;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +65,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
     @Override
     public void initData() {
         mListView = (ListView) findViewById(R.id.listview_search_result);
+
         //返回键点击事件
         ((TextView)findViewById(R.id.title_back_text_search)).setOnClickListener(this);
 
@@ -83,6 +79,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         }
        //设置搜索结果的标题
         ((TextView)findViewById(R.id.title_detail_text_search)).setText(title);
+
         mSearchAdapter = new SearchAdapter(this, mSearchDatas, R.layout.item_listview_introduction );
         mListView.setAdapter(mSearchAdapter);
     }
@@ -157,7 +154,6 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
                 }
             });
 
-
             //评论的点击事件
             iv_pager_comment.setOnClickListener(new View.OnClickListener() {
 
@@ -187,6 +183,21 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         View mPopupView = View.inflate(this, R.layout.comment_commit_popup, null);
         //评论内容
         final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
+
+        //监听返回键事件
+        et_commment.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if(mPopupWindows !=null && mPopupWindows.isShowing()){
+                        mPopupWindows.dismiss();
+                    }
+                    return true;
+                }
+                return false;
+
+            }
+        });
         //提交评论按钮
         Button btn_commit = (Button) mPopupView.findViewById(R.id.btn_comment_commit);
 
@@ -233,6 +244,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         mPopupWindows = new PopupWindow(mPopupView, -1, 50, true);
         mPopupWindows.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
         mPopupWindows.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mPopupWindows.setOutsideTouchable(true);
         mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //动画效果;
         ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
@@ -245,7 +257,6 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
     private void showPopupWindows(View parent){
         closePopup();
         popupInputMethodWindow();
-
         mPopupWindows.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
 
     }
@@ -276,10 +287,9 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            if(mPopupWindows !=null && mPopupWindows.isShowing())
+            if(mPopupWindows !=null && mPopupWindows.isShowing()){
                 mPopupWindows.dismiss();
-
-
+            }
         }
         return super.onKeyDown(keyCode, event);
 
@@ -307,9 +317,10 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
             case HttpConstant.NOTIFY_GET_OPERATE:
                 break;
             default:
-                 break;
+                break;
         }
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){

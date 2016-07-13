@@ -191,6 +191,19 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         //评论内容
         final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
 
+        //监听返回键事件
+        et_commment.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if(mPopupWindows !=null && mPopupWindows.isShowing()){
+                        mPopupWindows.dismiss();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         //提交评论按钮
         ((Button) mPopupView.findViewById(R.id.btn_comment_commit)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,16 +259,15 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         closePopup();
         popupInputMethodWindow();
         mPopupView.startAnimation(sa);
-
         mPopupWindows.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
 
     }
 
     //关闭弹出窗体
     private void closePopup(){
-
         if(mPopupWindows != null && mPopupWindows.isShowing()){
             mPopupWindows.dismiss();
+            popupInputMethodWindow();
         }
     }
     //同时弹出 隐藏键盘 弹出框
@@ -274,8 +286,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }, 0);
     }
 
-
-
    private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWS, this);
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE, this);
@@ -293,9 +303,21 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         return  R.layout.fragment_introduction;
     }
 
+
+    public List<String> getNewsDatas() {
+        if(newsDatas.size() != 0){
+            List<String> mTipList= new ArrayList<String>();
+            for(int i=0; i<newsDatas.size(); i++){
+                String title =  newsDatas.get(i).getTitle();
+                mTipList.add(title);
+            }
+            return  mTipList;
+        }
+        return null;
+    }
+
     @Override
     public void onClick(View v) {
-
     }
     //listview  的 adapter
     private class NewsListAdapter extends CommonAdapter<NewEntity> {
@@ -322,7 +344,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             final ImageView iv_pager_zan = (ImageView) holder.getView(R.id.iv_item_introduction_zan);
             //评论
             final ImageView iv_pager_comment = (ImageView) holder.getView(R.id.iv_item_introduction_comment);
-
 //            TextView tv_checkDetail  = (TextView) holder.getView(R.id.tv_item_introduction_detail);
             //查看详情的 relative
             RelativeLayout rl_checkDetail = holder.getView(R.id.rl_item_introduction_detail);
@@ -333,8 +354,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 //默认情况下
                 iv_pager_zan.setImageResource(R.drawable.favorite_introduction_normal);
             }
-
-
             //点赞  点击事件
             iv_pager_zan.setOnClickListener(new View.OnClickListener() {
 
@@ -373,7 +392,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                         });
                 }
             });
-
 
             //评论的点击事件
             iv_pager_comment.setOnClickListener(new View.OnClickListener() {
@@ -447,17 +465,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }
     }
 
-    public List<String> getNewsDatas(){
-       if(newsDatas.size() != 0){
-           List<String> mTipList= new ArrayList<String>();
-           for(int i=0; i<newsDatas.size(); i++){
-              String title =  newsDatas.get(i).getTitle();
-               mTipList.add(title);
-           }
-           return  mTipList;
-       }
-       return null;
-    }
 
 
 }

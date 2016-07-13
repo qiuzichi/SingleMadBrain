@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import com.unipad.brain.R;
 import com.unipad.brain.main.MainActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class MainBasicFragment extends Fragment implements View.OnClickListener {
     protected Activity mActivity;
 
@@ -29,4 +32,6 @@ public abstract class MainBasicFragment extends Fragment implements View.OnClick
     }
 
     public abstract int getLayoutId();
+
+
 }
