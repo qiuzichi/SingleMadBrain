@@ -137,5 +137,7 @@ public class HttpConstant {
     public static final int NOTIFY_GET_COMMENT = 0x20007;
     //最新赛事
     public static final int NOTIFY_GET_NEWCOMPETITION = 0x20008;
+    //获取搜索页面的结果
+    public static final int NOTIFY_GET_SEARCH_RUSULT = 0x20009;
 
 }
