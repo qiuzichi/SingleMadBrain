@@ -12,30 +12,32 @@ import android.widget.ImageView;
 
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
+import com.unipad.brain.quickPoker.entity.PokerEntity;
+import com.unipad.common.ViewHolder;
+import com.unipad.common.adapter.CommonAdapter;
 
-public class OtherAdapter extends BaseAdapter {
-	private Context context;
-	public List<ChannelItem> channelList;
+public class OtherAdapter extends CommonAdapter<ChannelItem> {
+
 	private ImageView item_text;
 	/** 是否可见 */
 	boolean isVisible = true;
 	/** 要删除的position */
 	public int remove_position = -1;
 
-	public OtherAdapter(Context context, List<ChannelItem> channelList) {
-		this.context = context;
-		this.channelList = channelList;
+	public OtherAdapter(Context context, List<ChannelItem> datas, int layoutId) {
+		super(context, datas, layoutId);
 	}
+
 
 	@Override
 	public int getCount() {
-		return channelList == null ? 0 : channelList.size();
+		return mDatas == null ? 0 : mDatas.size();
 	}
 
 	@Override
 	public ChannelItem getItem(int position) {
-		if (channelList != null && channelList.size() != 0) {
-			return channelList.get(position);
+		if (mDatas != null && mDatas.size() != 0) {
+			return mDatas.get(position);
 		}
 		return null;
 	}
@@ -46,33 +48,29 @@ public class OtherAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = LayoutInflater.from(context).inflate(
-				R.layout.quick_poker_v_answer_item, null);
-		item_text = (ImageView) view.findViewById(R.id.text_item);
-
-		item_text.setImageResource(getItem(position).resId);
-
-		return view;
+	public void convert(ViewHolder holder, ChannelItem channelItem) {
+		item_text = (ImageView)holder.getView(R.id.text_item);
+		item_text.setImageBitmap(PokerEntity.getInstance().getBitmap(channelItem.resId));
 	}
+
 
 	/** 获取频道列表 */
 	public List<ChannelItem> getChannnelLst() {
-		return channelList;
+		return mDatas;
 	}
 
 	/** 添加频道列表 */
 	public void addItem(ChannelItem channel) {
 		boolean  isAddsuccess = false;
-		for (int i = 0; i < channelList.size(); i++) {
-			if (channel.id < channelList.get(i).resId) {
-				channelList.add(i,channel);
+		for (int i = 0; i < mDatas.size(); i++) {
+			if (channel.id < mDatas.get(i).resId) {
+				mDatas.add(i,channel);
 				isAddsuccess = true;
 				break;
 			}
 		}
 		if (!isAddsuccess) {
-			channelList.add(channel);
+			mDatas.add(channel);
 		}
 		notifyDataSetChanged();
 	}
@@ -86,7 +84,7 @@ public class OtherAdapter extends BaseAdapter {
 	/** 删除频道列表 */
 	public void remove() {
 		if (remove_position != -1) {
-			channelList.remove(remove_position);
+			mDatas.remove(remove_position);
 			remove_position = -1;
 			notifyDataSetChanged();
 		}
@@ -94,7 +92,7 @@ public class OtherAdapter extends BaseAdapter {
 
 	/** 设置频道列表 */
 	public void setListDate(List<ChannelItem> list) {
-		channelList = list;
+		mDatas = list;
 	}
 
 	/** 获取是否可见 */

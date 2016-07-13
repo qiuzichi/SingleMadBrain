@@ -11,6 +11,7 @@ import com.unipad.brain.quickPoker.entity.ChannelItem;
 import com.unipad.brain.quickPoker.entity.PokerEntity;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.utils.LogUtil;
 
 
 /**
@@ -30,12 +31,13 @@ public class QuickCardService extends AbsBaseGameService{
 	private String [] huaSe = new String []{"方块","黑桃","红桃","梅花"};
 	private String [] dian = new String []{"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 	private ArrayList<ChannelItem> bottomCards = new ArrayList<ChannelItem>();
-	private String testDefault = "26_28_25_24_46_29_52_3_39_36_20_11_4_40_49_31_5_32_38_37_9_44_18_2_7_47_23_41_21_12_22_1_43_10_33_45_34_42_16_17_27_30_8_50_6_51_35_14_13_19_15_48";
+	private String round1 = "26_28_25_24_46_29_52_3_39_36_20_11_4_40_49_31_5_32_38_37_9_44_18_2_7_47_23_41_21_12_22_1_43_10_33_45_34_42_16_17_27_30_8_50_6_51_35_14_13_19_15_48";
+	private String round2 = round1;
 	@Override
 	public boolean init() {
 		bindPokerImageRes();
 		initCards();
-		parseData(testDefault);
+		parseDataByRound(1);
 		return true;
 	}
 
@@ -47,15 +49,33 @@ public class QuickCardService extends AbsBaseGameService{
 	@Override
 	public void parseData(String data) {
 		super.parseData(data);
-		ArrayList<ChannelItem> orgin = PokerEntity.getInstance().getPokerSortArray();
-		orgin.clear();
-		String[] allCard = data.split("_");
-		for (int i = 0; i < allCard.length; i++) {
-			orgin.add(bottomCards.get(Integer.valueOf(allCard[i])-1));
-		}
-		initDataFinished();
+		String[] allCard = data.split(",");
+		round1 = allCard[0];
+		round2 = allCard[1];
+		parseDataByRound(1);
 	}
 
+	public void parseDataByRound(int round) {
+		ArrayList<ChannelItem> orgin = PokerEntity.getInstance().getPokerSortArray();
+		orgin.clear();
+		String data = round1;
+		 if (round == 2){
+			data = round2;
+		}
+		try {
+			String[] allCard = data.split("_");
+			for (int i = 0; i < allCard.length; i++) {
+				orgin.add(bottomCards.get(Integer.valueOf(allCard[i]) - 1));
+			}
+		}catch (Exception e) {
+			LogUtil.e(TAG,"服务器数据错误："+round1+","+round2);
+			e.printStackTrace();
+		}
+		finally {
+			initDataFinished();
+		}
+
+	}
 	@Override
 	public void downloadingQuestion(Map<String, String> data) {
 		super.downloadingQuestion(data);
