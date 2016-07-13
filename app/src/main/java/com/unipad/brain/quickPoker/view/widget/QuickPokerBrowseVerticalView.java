@@ -101,7 +101,7 @@ public class QuickPokerBrowseVerticalView extends LinearLayout {
 				pokerImage.setLayoutParams(pokerLayoutParams);
 				pokerLayoutParams.leftMargin = pokerMargin;
 				pokerMargin += basicMargin;
-				pokerImage.setImageResource(R.drawable.bg_poker);
+				//pokerImage.setImageResource(R.drawable.bg_poker);
 				rLayout.addView(pokerImage);
 			}
 		}
@@ -125,9 +125,8 @@ public class QuickPokerBrowseVerticalView extends LinearLayout {
 
 					for (int i = 0; i < childCount; i++) {
 						imageView = (ImageView) rLayout.getChildAt(i);
-						imageView.setImageDrawable(null);
-						imageView.setImageResource(pokerSortArray.get(i
-								+ LayoutedTotal).resId);
+						imageView.setImageBitmap(PokerEntity.getInstance().getBitmap(pokerSortArray.get(i
+								+ LayoutedTotal).resId));
 					}
 
 					LayoutedTotal += childCount;
