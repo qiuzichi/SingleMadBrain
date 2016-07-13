@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
@@ -20,7 +22,11 @@ import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
 import com.unipad.brain.quickPoker.entity.PokerEntity;
 import com.unipad.common.Constant;
+import com.unipad.utils.DataTools;
 import com.unipad.utils.LogUtil;
+
+import org.xutils.image.ImageOptions;
+import org.xutils.x;
 
 
 public class QuickPokerBrowseHorizontalView extends HorizontalScrollView
@@ -33,7 +39,6 @@ public class QuickPokerBrowseHorizontalView extends HorizontalScrollView
 	/** 扑克牌所在的父布局 */
 	private RelativeLayout mPokerLayout;
 	/** 临时的View，用于计算扑克牌的宽度 */
-	private ImageView mTempPokerIV;
 	private float mScaleFactor = 1.0f;
 	private ScaleGestureDetector mScaleGestureDetector;
 	private boolean isFirst = true;
@@ -58,23 +63,16 @@ public class QuickPokerBrowseHorizontalView extends HorizontalScrollView
 		mPokerLayout = new RelativeLayout(context);
 		addView(mPokerLayout);
 
-		mTempPokerIV = new ImageView(context);
-		RelativeLayout.LayoutParams pokerLayoutParams = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		mTempPokerIV.setLayoutParams(pokerLayoutParams);
-		mTempPokerIV.setVisibility(View.INVISIBLE);
-		mTempPokerIV.setImageResource(R.drawable.poker_fangkuai_01);
-
-		mPokerLayout.addView(mTempPokerIV);
-
+		Bitmap bimap = BitmapFactory.decodeResource(this.getResources(), R.drawable.poker_fangkuai_01);
+		LogUtil.e("",""+bimap.getWidth());
+		PokerEntity.getInstance().setPokerWith(bimap.getWidth());
+		PokerEntity.getInstance().setPokerHeigth(bimap.getHeight());
 		post(new Runnable() {
 			@Override
 			public void run() {
-				int pokerWidth = mTempPokerIV.getWidth();
 
-				PokerEntity.getInstance().setPokerWith(pokerWidth);
 				Message msg = mHandler.obtainMessage();
-				msg.arg1 = pokerWidth;
+				msg.arg1 = PokerEntity.getInstance().getPokerWith();
 				mHandler.sendEmptyMessage(MSG_LAYOUT_POKER);
 			}
 		});
@@ -88,21 +86,19 @@ public class QuickPokerBrowseHorizontalView extends HorizontalScrollView
 	public void dispatchMessage(Message msg) {
 		switch (msg.what) {
 		case MSG_LAYOUT_POKER:
-			mPokerLayout.removeView(mTempPokerIV);// 先移除临时的View
-
-			this.layoutPokerView(msg.arg1);
+			this.layoutPokerView();
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void layoutPokerView(int pokerWidth) {
+	private void layoutPokerView() {
 // 用于排布扑克后，保存扑克的顺序
 
 		int availableWidth = (int) (App.screenWidth * Constant.RIGHT_RATIO)
 				- getPaddingLeft() - getPaddingRight();
-		int basicMargin = (availableWidth - pokerWidth) / 20;
+		int basicMargin = (availableWidth - PokerEntity.getInstance().getPokerWith()) / 20;
 
 		int margin = 0;
 		ImageView pokerImage = null;
@@ -111,7 +107,7 @@ public class QuickPokerBrowseHorizontalView extends HorizontalScrollView
 
 			pokerImage = new ImageView(mContext);
 			pokerLayoutParams = new RelativeLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+					PokerEntity.getInstance().getPokerWith(), PokerEntity.getInstance().getPokerHeigth());
 			pokerImage.setLayoutParams(pokerLayoutParams);
 			pokerLayoutParams.leftMargin = margin;
 			margin += basicMargin;
@@ -198,7 +194,12 @@ public class QuickPokerBrowseHorizontalView extends HorizontalScrollView
 				for (int index = 0; index < PokerEntity.pairNums; index++) {
 					imageView = (ImageView) mPokerLayout.getChildAt(index);
 					//imageView.setImageDrawable(null);
-					imageView.setImageResource(pokerSortArray.get(index).resId);
+					/**x.image().bind(imageView, "drawable://" + pokerSortArray.get(index).resId, new ImageOptions.Builder()
+							.setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+							.setRadius(5)
+							.build());
+					 */
+					imageView.setImageBitmap(PokerEntity.getInstance().getBitmap(pokerSortArray.get(index).resId));
 				}
 			}
 			scrollTo(0,0);

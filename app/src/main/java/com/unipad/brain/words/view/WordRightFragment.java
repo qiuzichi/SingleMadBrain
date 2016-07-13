@@ -117,7 +117,7 @@ public class WordRightFragment extends BasicCommonFragment {
                 SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(), service.getScore(), memoryTime, answerTime, service.getAnswerData());
             }
         }.start();
- 
+
     }
 
     private class WordAdapter extends CommonAdapter<WordEntity> {

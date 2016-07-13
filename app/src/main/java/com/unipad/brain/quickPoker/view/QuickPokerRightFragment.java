@@ -101,7 +101,6 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        LogUtil.e(TAG, "******************onActivityCreated");
         mIBtnBrowseMode = (ImageButton) mViewParent
                 .findViewById(R.id.ibtn_browse_mode);
         mIBtnBrowseMode.setOnClickListener(this);
@@ -115,7 +114,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         mStubAnswerShade = mViewParent.findViewById(R.id.view_shade_answer);
         mSingleLineLayout = (QuickPokerBrowseHorizontalView) mViewParent
                 .findViewById(R.id.browse_proker_single_mode);
-        service = (QuickCardService) AppContext.instance().getGameServiceByProject(Constant.GAME_QUICKIY_POCKER);
+        service = (QuickCardService) mActivity.getService();
     }
 
     @Override
@@ -168,7 +167,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
 
         userGridView.setAdapter(userAdapter);
         otherChannelList = service.getBottomCards();
-        otherAdapter = new OtherAdapter(mActivity, otherChannelList);
+        otherAdapter = new OtherAdapter(mActivity, otherChannelList,R.layout.quick_poker_v_answer_item);
         otherGridView.setAdapter(this.otherAdapter);
         leftCards.setText(" " + otherAdapter.getChannnelLst().size() + " ");
 
