@@ -4,11 +4,11 @@
     android:versionCode="30"
     android:versionName="4.2.14" >
 
-    <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="14" />
+<uses-sdk
+android:minSdkVersion="9"
+android:targetSdkVersion="14" />
 
-    <application>
-    </application>
+<application>
+</application>
 
-</manifest>
+    </manifest>
