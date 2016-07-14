@@ -139,5 +139,7 @@ public class HttpConstant {
     public static final int NOTIFY_GET_NEWCOMPETITION = 0x20008;
     //获取搜索页面的结果
     public static final int NOTIFY_GET_SEARCH_RUSULT = 0x20009;
+    //下载apk 请求
+    public static final int NOTIFY_DOWNLOAD_APK = 0x20010;
 
 }

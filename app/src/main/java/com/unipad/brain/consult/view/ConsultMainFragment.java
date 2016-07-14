@@ -24,10 +24,13 @@ import android.widget.SearchView;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultTab;
 import com.unipad.brain.consult.widget.CustomViewPager;
+import com.unipad.common.Constant;
+import com.unipad.http.HttpConstant;
 import com.unipad.utils.DensityUtil;
 
 import java.lang.reflect.Field;
@@ -167,7 +170,6 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             //强制隐藏软键盘；
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
-            mSearchView.setFocusable(false);
             //发送意图到activity
             Intent intent = new Intent(getmContext(), SearchResultActivity.class);
             intent.putExtra("queryContent", query);
@@ -219,7 +221,6 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         } else {
             lv.setAdapter(baseAdapter);
         }
-
         ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
                 Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
         sa.setDuration(300);
@@ -233,8 +234,9 @@ public class ConsultMainFragment extends ConsultBaseFragment{
 
         // 设置popupWindow可以得到焦点
         mPopupWindows.setFocusable(false);
-        mPopupWindows.showAsDropDown(mSearchView, DensityUtil.dip2px(getmContext(),20), DensityUtil.dip2px(getmContext(),-5));		// 显示
+        mPopupWindows.showAsDropDown(mSearchView, DensityUtil.dip2px(getmContext(), 20), DensityUtil.dip2px(getmContext(), -5));		// 显示
         mSearchView.setFocusable(true);
+
     }
 
 

@@ -3,6 +3,7 @@ package com.unipad.brain.consult.view;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import java.util.List;
  */
 public class InfoListFragment extends ConsultBaseFragment implements AdapterView.OnItemClickListener{
     private ListView mLvInfos;
+    private View mInfoListView;
     private List<ConsultClassBean> mList;
     private MyInfoListAdapter mInfoListAdapter;
     private int mCurrentSelectedPosition;
@@ -42,24 +44,29 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
     @Override
     protected void initView(View view) {
         super.initView(view);
+        this.mInfoListView = view;
         mLvInfos = (ListView)view.findViewById(R.id.lv_info_list);
+        initTitleBar();
+    }
 
-        ((TextView)view.findViewById(R.id.tv_name)).setText(AppContext.instance().loginUser.getUserName());
-        ((TextView)view.findViewById(R.id.tv_address)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
+    private void  initTitleBar(){
+        ((TextView)mInfoListView.findViewById(R.id.tv_name)).setText(AppContext.instance().loginUser.getUserName());
+        ((TextView)mInfoListView.findViewById(R.id.tv_address)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
 
-        final ImageView user_photo = (ImageView)view.findViewById(R.id.iv_header);
+        final ImageView user_photo = (ImageView)mInfoListView.findViewById(R.id.iv_header);
 
-        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())){
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
             x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
                 @Override
                 public void onSuccess(Drawable drawable) {
                     Bitmap map = PicUtil.drawableToBitmap(drawable);
+                    Log.i("info", HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
                     user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
                 }
 
                 @Override
                 public void onError(Throwable throwable, boolean b) {
-
+                    user_photo.setImageResource(R.drawable.set_headportrait);
                 }
 
                 @Override
@@ -72,13 +79,7 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
 
                 }
             });
-
-        }else {
-            user_photo.setImageResource(R.drawable.set_headportrait);
         }
-
-
-
     }
 
     @Override
@@ -104,7 +105,6 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
             }else{
                 bean.setSelected(false);
             }
-
             mList.add(bean);
             bean = null;
         }
@@ -131,7 +131,6 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
         mCurrentSelectedPosition = position;
         item.setSelected(true);
 
-
         mInfoListAdapter.notifyDataSetChanged();
         if(mOnHomePageChangeListener != null) {
             switch (item.getNameResId()) {
@@ -143,6 +142,12 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
                     break;
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initTitleBar();
     }
 
     public interface OnHomePageChangeListener{

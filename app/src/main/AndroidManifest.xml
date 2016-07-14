@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.unipad.brain">
+    package="com.unipad.brain"
+    android:versionCode="1"
+    android:versionName="1.0.1"
+    >
 
     <!-- 手机震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -26,6 +29,13 @@
             <intent-filter>
                 <action android:name="com.baidu.location.service_v2.2" />
             </intent-filter>
+        </service>
+
+        <service android:name="com.unipad.brain.home.dao.LoadService">
+            <intent-filter>
+                <action android:name="com.loaddown.application" />
+            </intent-filter>
+
         </service>
 
         <meta-data
