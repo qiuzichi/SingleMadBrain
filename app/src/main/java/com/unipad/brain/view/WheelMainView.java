@@ -229,7 +229,7 @@ public class WheelMainView extends RelativeLayout {
 
 	// 生成时间
 	void createDate(String year, String month, String day, String hour,String minute) {
-		String dateStr = year + "-" + month + "-" + day + "";// + hour + "时" + minute + "分";
+		String dateStr = year + "/" + month + "/" + day + "";// + hour + "时" + minute + "分";
 //		time_TV.setText("选择时间为：" + dateStr);
 		if(null == changingListener){
 			return;

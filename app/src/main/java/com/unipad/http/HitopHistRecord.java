@@ -24,6 +24,7 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
     }
     public HitopHistRecord(int status ,String startTime,String endDate,int page,int size) {
         super(HttpConstant.HisRecord);
+
         mParams.addBodyParameter("userId", AppContext.instance().loginUser.getUserId());
 
         if (status == 0 || status == 1||status == 2||status == 3) {

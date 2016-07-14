@@ -4,8 +4,8 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/id_num"
-        android:layout_width="match_parent"
+        android:id="@+id/id_num_momory"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
         android:gravity="left"
         android:paddingLeft="5dp"
@@ -14,32 +14,31 @@
         android:text="1"
         android:textSize="20dp" />
 
-    <EditText
-        android:id="@+id/editText"
+    <TextView
+        android:id="@+id/text_memory"
         android:layout_width="80dp"
         android:layout_height="match_parent"
         android:text=""
-        android:editable="false"
         android:textSize="20dp"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/Line"
-        android:layout_alignStart="@+id/Line" />
+        android:layout_alignStart="@+id/Line"
 
+        />
     <TextView
-        android:id="@+id/event_txt"
+        android:id="@+id/event_txt_memory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="地摊222222"
         android:textSize="20dp"
         android:textColor="@color/black"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/editText"
-        android:layout_toEndOf="@+id/editText"
+        android:layout_toRightOf="@+id/text_memory"
         android:layout_marginLeft="174dp"
         android:layout_marginStart="174dp" />
 
     <ImageView
-        android:id="@+id/Line"
+        android:id="@+id/Line_memory"
         android:layout_width="1dp"
         android:layout_height="fill_parent"
         android:src="@color/black"
