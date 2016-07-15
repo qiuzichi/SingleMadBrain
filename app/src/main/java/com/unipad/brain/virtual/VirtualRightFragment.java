@@ -74,8 +74,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
      */
     private RecyclerView memoryRv;
 
-
-
     /**
      * 回忆界面底部按钮
      */
@@ -134,12 +132,10 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
     }
 
-
-
     /**
      * 记忆的adapter
      */
-    class VirtualMemoryAdapter extends RecyclerView.Adapter<VirtualMemoryAdapter.MyViewHolder> implements View.OnClickListener{
+    class VirtualMemoryAdapter extends RecyclerView.Adapter<VirtualMemoryAdapter.MyViewHolder>{
         public List<VirtualEntity> virtualList;
         public VirtualMemoryAdapter (List<VirtualEntity> virtualList) {
             if (virtualList  == null){
@@ -166,24 +162,28 @@ public class VirtualRightFragment extends BasicCommonFragment {
                  holder.tv_date.setText(entity.getDate()+"");
                  holder.editNUmView.setVisibility(View.GONE);
 
-
             } else if (service.mode == 1) {
                 //回忆模式
+                holder.tv_date.setVisibility(View.GONE);
                 holder.editNUmView.setVisibility(View.VISIBLE);
                 holder.editNUmView.setText(entity.getAnswerDate());
                 holder.editNUmView.setInputType(InputType.TYPE_NULL);
-                if(position == index) {
-                    holder.editNUmView.setBackgroundColor(getResources().getColor(R.color.red));
-                }else {
-                    holder.editNUmView.setBackgroundColor(getResources().getColor(R.color.white));
-                }
                 holder.editNUmView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       
+
+                    index=position;
+
                     }
-                } );
-                holder.tv_date.setVisibility(View.GONE);
+                });
+              /*  if(position == index) {
+
+                    holder.editNUmView.setBackgroundColor(getResources().getColor(R.color.red));
+
+                }else {
+
+                    holder.editNUmView.setBackgroundColor(getResources().getColor(R.color.white));
+                }*/
 
             }else if (service.mode == 2) {
                 //答案
@@ -204,14 +204,9 @@ public class VirtualRightFragment extends BasicCommonFragment {
             return virtualList.size();
         }
 
-        @Override
-        public void onClick(View v) {
-
-        }
-
         class MyViewHolder extends RecyclerView.ViewHolder {
            public TextView tv_num,tv_date,tv_event;
-            private EditText editNUmView;
+            public EditText editNUmView;
             public MyViewHolder(View view) {
                 super(view);
                 tv_num=(TextView) view.findViewById(R.id.id_num);
@@ -231,7 +226,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
             mActivity.getCommonFragment().startRememoryTimeCount();
             jianpan_linlayout.setVisibility(View.VISIBLE);
             ToastUtil.showToast("开始");
-    }
+          }
     /**
      * 结束答题
      */
@@ -244,7 +239,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
     /**
      * 输入的索引
       */
-    int index=0;
+     int index=0;
     /**
      * 输入的年份
      */
@@ -289,7 +284,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
                          if (text.trim().length() == 4) {
                         //输入了4位数字之后，自动跳到下一个，index加1
                              index++;
-                        memoryRv.scrollToPosition(index);
+                             memoryRv.scrollToPosition(index);
                 }
                 break;
             case R.id.numButton_clear:
