@@ -33,6 +33,11 @@ public class ConfirmDialog extends BaseConfirmDialog {
 	}
 
 	@Override
+	protected TextView getHintVersionView() {
+		return null;
+	}
+
+	@Override
 	protected TextView getTitleView() {
 		return (TextView) findViewById(R.id.hint_content);
 	}

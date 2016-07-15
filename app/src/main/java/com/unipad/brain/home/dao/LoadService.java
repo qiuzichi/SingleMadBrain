@@ -14,25 +14,26 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 
-import com.unipad.utils.FileUtil;
 import com.unipad.utils.ToastUtil;
 
 import java.io.File;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class LoadService extends Service {
-	private static Context context;
+	private Context context;
+	private DownloadManager manager;
+	private DownloadCompleteReceiver receiver;
 
 
 	// 在服务中 更新软件
-	public static Handler handler = new Handler() {
+	public Handler handler = new Handler() {
 		@Override
 		public void dispatchMessage(Message msg) {
 			super.dispatchMessage(msg);
 			switch (msg.what) {
 			case 1:
 				String path = (String) msg.obj;
-				load(path);
+//				load(path);
 				break;
 			default:
 				break;
@@ -48,9 +49,17 @@ public class LoadService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
 		context = getApplicationContext();
 		manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
 		receiver = new DownloadCompleteReceiver();
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		String path = intent.getStringExtra("loadPath");
+		load(path);
+		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override
@@ -58,13 +67,12 @@ public class LoadService extends Service {
 		super.onDestroy();
 	}
 
-	static DownloadManager manager;
-	static DownloadCompleteReceiver receiver;
 
 	/* 下载 */
 	@SuppressWarnings("deprecation")
-	private static void load(String path) {
-		String apkName = path.substring(path.lastIndexOf("/") + 1,
+	private void load(String path) {
+
+		String apkName = path.substring(path.lastIndexOf("\\") + 1,
 				path.length());
 		DownloadManager.Request down = new DownloadManager.Request(
 				Uri.parse(path));
@@ -72,17 +80,21 @@ public class LoadService extends Service {
 		down.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE
 				| DownloadManager.Request.NETWORK_WIFI);
 		down.setTitle("正在下载" + apkName);
-		// 禁止发出通知，既后台下载
+		// 发出通知，显示下载进度条
 		down.setShowRunningNotification(true);
-		// 不显示下载界面
-		down.setVisibleInDownloadsUi(true);
+		//下载完成后  隐藏notication
+		down.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+		// 显示下载界面
+		down.setVisibleInDownloadsUi(false);
 		// 设置下载后文件存放的位置 Environment.getExternalStorageDirectory().getPath() +
 		down.setDestinationInExternalPublicDir("MLC/upload", apkName);
 		// 将下载请求放入队列
-		manager.enqueue(down);
+		Long loaddownId = manager.enqueue(down);
+
 		try {
 			context.registerReceiver(receiver, new IntentFilter(
 					DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
 		} catch (Exception e) {
 		}
 	}
@@ -102,9 +114,9 @@ public class LoadService extends Service {
 				File f = new File(fileName.replace("file://", ""));// 过滤路径
 					try {
 						if (f.exists()) {
-							FileUtil.openFile(f, context);
+							openFile(f);
 						} else {
-							ToastUtil.showToast("下载失败");
+							ToastUtil.showToast("网络原因 ，下载失败");
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -112,6 +124,8 @@ public class LoadService extends Service {
 			}
 		}
 	}
+
+
 
 	/**
 	 * 打开文件
@@ -131,7 +145,6 @@ public class LoadService extends Service {
 		// 跳转
 		try {
 			startActivity(intent);
-
 		} catch (Exception e) {
 
 		}
@@ -139,4 +152,48 @@ public class LoadService extends Service {
 		stopSelf();
 		context.unregisterReceiver(receiver);
 	}
+
+//	private void updateViews(final long downlaodId) {
+//		final Timer myTimer = new Timer();
+//		myTimer.schedule(new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//				DownloadManager.Query q = new DownloadManager.Query();
+//				q.setFilterById(downlaodId);
+//				Cursor cursor = ((DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE)).query(q);
+//				cursor.moveToFirst();
+//				int bytes_downloaded = cursor
+//						.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+//				int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+//				cursor.close();
+//				final int dl_progress = (bytes_downloaded * 100 / bytes_total);
+//				if (dl_progress == 100) {
+//					myTimer.cancel();
+//					runOnUiThread(new Runnable() {
+//
+//						@Override
+//						public void run() {
+
+//							mDownloadFileBtn.setText("下载完成");
+//							mProgressBar.setProgress(dl_progress);
+//
+//						}
+//					});
+//				} else {
+//					runOnUiThread(new Runnable() {
+//						@Override
+//						public void run() {
+//							mProgressBar.setProgress(dl_progress);
+//							mDownloadFileBtn.setText(dl_progress + "%");
+//						}
+//					});
+//
+//				}
+//
+//			}
+//
+//		}, 0, 10);
+//
+//	}
 }

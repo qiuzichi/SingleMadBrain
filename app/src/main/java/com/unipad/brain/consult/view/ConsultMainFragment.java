@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -170,6 +173,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             //强制隐藏软键盘；
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+            mSearchView.clearFocus();
             //发送意图到activity
             Intent intent = new Intent(getmContext(), SearchResultActivity.class);
             intent.putExtra("queryContent", query);
@@ -292,4 +296,15 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             mPopupWindows.dismiss();
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        MenuItem search = menu.findItem(R.id.searchview_search_bar);
+        search.collapseActionView();
+        //是搜索框默认展开
+         search.expandActionView();
+         super.onCreateOptionsMenu(menu, inflater);
+    }
+
 }

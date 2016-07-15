@@ -230,6 +230,7 @@
     <string name="competetion_result">赛事搜索结果</string>
     <string name="hotspot_result">热点搜索结果</string>
     <string name="update_version_info">优化更多细节，提升客户体验 尝鲜版不容错过</string>
+    <string name="update_version_title">更新版本号：</string>
     <string name="confirm_update">确认更新</string>
 
     <string name="pager_detail">详情</string>

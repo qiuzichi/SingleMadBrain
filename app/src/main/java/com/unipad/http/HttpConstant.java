@@ -14,6 +14,7 @@ public class HttpConstant {
     public static String UPLOAD = "/api/file/upload";
     public static String HisRecord="/api/match/history";
     public static String GET_NEWS_LIST = "/api/news/list";
+    public static String GET_NEWS_VERSION = "/pub/apk/last";
     //赛事排名
     public static String  GAME_TOP="/api/match/getResult";
     //    我的关注

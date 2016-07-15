@@ -174,4 +174,6 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
         mTextLocation.setText(location.getCity());
         mTextLocation.setSelected(true);
     }
+
+
 }
