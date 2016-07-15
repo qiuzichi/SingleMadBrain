@@ -30,9 +30,9 @@
         android:layout_toRightOf="@+id/id_num"
         android:textSize="20dp"
         android:gravity="center"
-        android:inputType="number"
-        android:maxLength="4"
+        android:clickable="true"
         />
+
     <TextView
         android:id="@+id/event_text"
         android:layout_width="150dp"
@@ -40,8 +40,9 @@
         android:textColor="@color/black"
         android:textSize="20dp"
         android:layout_alignParentTop="true"
-       android:layout_marginLeft="130dp"
+        android:layout_marginLeft="130dp"
         android:gravity="center"
+        android:clickable="true"
         />
 
     <ImageView
