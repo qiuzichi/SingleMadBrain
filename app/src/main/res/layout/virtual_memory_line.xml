@@ -31,6 +31,7 @@
         android:textSize="20dp"
         android:gravity="center"
         android:clickable="true"
+        android:enabled="true"
         />
 
     <TextView
@@ -42,7 +43,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="130dp"
         android:gravity="center"
-        android:clickable="true"
         />
 
     <ImageView
