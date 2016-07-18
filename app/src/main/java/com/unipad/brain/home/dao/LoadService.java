@@ -1,6 +1,7 @@
 package com.unipad.brain.home.dao;
 
 import android.annotation.TargetApi;
+
 import android.app.DownloadManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -81,7 +82,7 @@ public class LoadService extends Service {
 				| DownloadManager.Request.NETWORK_WIFI);
 		down.setTitle("正在下载" + apkName);
 		// 发出通知，显示下载进度条
-		down.setShowRunningNotification(true);
+//		down.setShowRunningNotification(true);
 		//下载完成后  隐藏notication
 		down.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
 		// 显示下载界面
