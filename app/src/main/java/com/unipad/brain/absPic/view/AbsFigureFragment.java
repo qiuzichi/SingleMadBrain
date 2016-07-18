@@ -123,7 +123,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
 
         }
     }
-
     private void setText(int i) {
         int visiblePosition = gridView.getFirstVisiblePosition();
         View pre = gridView.getChildAt(current - visiblePosition);

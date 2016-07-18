@@ -128,11 +128,8 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
 
             if(!isGetData){
                 getNews("00003", null, 1, 10);
-
                 //获取广告的数据
                 service.getAdverts("00002");
-
-
                 Log.d("hotspot visit ", "获取消息 界面可见");
                 isGetData = true;
             }
@@ -173,14 +170,10 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
             ((TextView) holder.getView(R.id.tv_item_hotspot_updatetime)).setText(newEntity.getPublishDate());
             //分割线
             View view_line_split = (View)holder.getView(R.id.view_line_item_hotspot);
-
-
             //点赞的imagebutton
             ImageView iv_pager_zan  = (ImageView) holder.getView(R.id.iv_item_hotspot_zan);
-
             //评论
             final ImageView iv_pager_comment  = (ImageView) holder.getView(R.id.iv_item_hotspot_comment);
-
             //查看详情的 relative
             RelativeLayout rl_checkDetail =  holder.getView(R.id.rl_item_hotspot_detail);
 
@@ -221,4 +214,5 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
     public void onClick(View v) {
 
     }
+
 }

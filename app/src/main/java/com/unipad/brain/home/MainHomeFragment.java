@@ -1,47 +1,58 @@
 package com.unipad.brain.home;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
-import com.unipad.brain.consult.ConsultBaseFragment;
-import com.unipad.brain.consult.entity.ConsultClassBean;
 import com.unipad.brain.consult.view.CompititionMainFragment;
 import com.unipad.brain.consult.view.ConsultMainFragment;
 import com.unipad.brain.consult.view.InfoListFragment;
-import com.unipad.brain.consult.view.IntroductionFragment;
+import com.unipad.brain.dialog.BaseConfirmDialog;
+import com.unipad.brain.dialog.ConfirmDialog;
+import com.unipad.brain.dialog.ConfirmUpdateDialog;
+import com.unipad.brain.home.bean.VersionBean;
+import com.unipad.brain.home.dao.LoadService;
 import com.unipad.brain.home.dao.NewsService;
-import com.unipad.brain.main.MainActivity;
 import com.unipad.common.Constant;
-import com.unipad.http.HitopNewsList;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
+import com.unipad.utils.ToastUtil;
 
-public class MainHomeFragment extends MainBasicFragment implements InfoListFragment.OnHomePageChangeListener{
+import java.util.Observer;
+
+public class MainHomeFragment extends MainBasicFragment implements InfoListFragment.OnHomePageChangeListener,IDataObserver {
 
     private FrameLayout mLayoutHome;
-
-
     private InfoListFragment mLeftFragment;
-
     private MainBasicFragment mRightFragment;
-
-    CompititionMainFragment mCompititionMainFragment;
-    ConsultMainFragment mConsultMainFragment;
+    private CompititionMainFragment mCompititionMainFragment;
+    private ConsultMainFragment mConsultMainFragment;
+    private ConfirmUpdateDialog mConfirmDialog;
+    private NewsService service;
+    private VersionBean versionBean;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //初始化界面;
         initView();
-
+        // 1  获取服务器 版本号
+        getVersionFromNet();
     }
 
     @Override
@@ -94,13 +105,12 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
     }
 
     public void onNeedConsultPageShow(){
-//        if(mRightFragment instanceof ConsultMainFragment)return;
+        if(mRightFragment instanceof ConsultMainFragment)return;
 //        mRightFragment = new ConsultMainFragment();
 //        FragmentTransaction transaction = getTransaction();
 //        transaction.add(R.id.fl_mainpager_info, mRightFragment);
         FragmentTransaction transaction = getTransaction();
         transaction.hide(mRightFragment);
-
         mRightFragment = mConsultMainFragment;
         if(mConsultMainFragment == null){
             mConsultMainFragment = new ConsultMainFragment();
@@ -116,9 +126,7 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
 
     @Override
     public void onNeedCompetitionPageShow() {
-//        if(mRightFragment instanceof CompititionMainFragment){
-//            return;
-//        }
+        if(mRightFragment instanceof CompititionMainFragment)return;
         FragmentTransaction transaction = getTransaction();
         transaction.hide(mRightFragment);
 
@@ -130,19 +138,155 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
         }else {
             transaction.show(mRightFragment);
         }
-
-
         //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
         transaction.commit();
     }
 
-    private void hideAll(){
-        FragmentTransaction transaction = getTransaction();
-        if(mConsultMainFragment != null && mConsultMainFragment.isAdded()){
-            transaction.hide(mConsultMainFragment);
+    //获取本地应用的版本名称
+    private String  getApplicationVersion(){
+        PackageInfo mPackageInfo = null;
+        String currentVersionName = null;
+        PackageManager mPackageManager = mActivity.getPackageManager();
+        try {
+            mPackageInfo = mPackageManager.getPackageInfo(mActivity.getPackageName(), PackageManager.GET_CONFIGURATIONS);
+//            int currentVersionCode = mPackageInfo.versionCode;
+            currentVersionName = mPackageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
-        if(mCompititionMainFragment != null && !mCompititionMainFragment.isAdded()){
-            transaction.hide(mCompititionMainFragment);
+        return currentVersionName;
+    }
+    //访问网络 获取服务器 上的版本信息
+    private void showUpdateVersionDialog(Context context) {
+        showNotification();
+        mConfirmDialog = new ConfirmUpdateDialog(context, getString(R.string.update_version_title) + versionBean.getVersion(),
+                versionBean.getInfoDescription(), getString(R.string.cancel),  getString(R.string.confirm_update), mDialogListener);
+        mConfirmDialog.show();
+    }
+
+    private void getVersionFromNet() {
+        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
+        service.registerObserver(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
+        //访问网络 获取数据
+        service.getApkVersion();
+    }
+
+    private boolean checkVersionIsNew(){
+        String versionName = getApplicationVersion();
+        if(versionName.equals(versionBean.getVersion())){
+            return true;
         }
+        return  false;
+    }
+    private BaseConfirmDialog.OnActionClickListener mDialogListener = new BaseConfirmDialog.OnActionClickListener() {
+        @Override
+        public void onActionRight(BaseConfirmDialog dialog) {
+            mConfirmDialog.dismiss();
+            //从网络下载文件
+           downloadApkFile(versionBean.getPath());
+        }
+
+        @Override
+        public void onActionLeft(BaseConfirmDialog dialog) {
+            mConfirmDialog.dismiss();
+        }
+    };
+
+    private void downloadApkFile(String path){
+        Intent server = new Intent("com.loaddown.application");
+        server.putExtra("loadPath", path);
+        mActivity.startService(server);
+//        LoadService.handler.obtainMessage(1,path).sendToTarget();
+    }
+
+    private void showNotification(){
+
+        NotificationManager mNotificationManager = (NotificationManager) mActivity.getSystemService(mActivity.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mActivity);
+        Notification mNotification  = mBuilder.build();
+        mNotification.flags = Notification.FLAG_AUTO_CANCEL;
+
+
+//        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_custom_button);
+//        mRemoteViews.setImageViewResource(R.id.custom_song_icon, R.drawable.ic_launcher);
+//        //API3.0 以上的时候显示按钮，否则消失
+//        mRemoteViews.setTextViewText(R.id.tv_custom_song_singer, "周杰伦");
+//        mRemoteViews.setTextViewText(R.id.tv_custom_song_name, "七里香");
+//        //如果版本号低于（3。0），那么不显示按钮
+//        if(BaseTools.getSystemVersion() <= 9){
+//            mRemoteViews.setViewVisibility(R.id.btn_custom_play, View.GONE);
+//        }else{
+//            mRemoteViews.setViewVisibility(R.id.btn_custom_play, View.VISIBLE);
+//        }
+//        //
+//        if(isPlay){
+//            mRemoteViews.setImageViewResource(R.id.btn_custom_play, R.drawable.btn_pause);
+//        }else{
+//            mRemoteViews.setImageViewResource(R.id.btn_custom_play, R.drawable.btn_play);
+//        }
+//        //点击的事件处理
+//        Intent buttonIntent = new Intent(ACTION_BUTTON);
+//        /* 上一首按钮 */
+//        buttonIntent.putExtra(INTENT_BUTTONID_TAG, BUTTON_PREV_ID);
+//        //这里加了广播，所及INTENT的必须用getBroadcast方法
+//        PendingIntent intent_prev = PendingIntent.getBroadcast(this, 1, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_prev, intent_prev);
+//        /* 播放/暂停  按钮 */
+//        buttonIntent.putExtra(INTENT_BUTTONID_TAG, BUTTON_PALY_ID);
+//        PendingIntent intent_paly = PendingIntent.getBroadcast(this, 2, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_play, intent_paly);
+
+//        setContent(mRemoteView)
+
+        mBuilder.setContentTitle(getString(R.string.update_version_title) + versionBean.getVersion())//设置通知栏标题
+                .setContentText(versionBean.getInfoDescription())
+                .setContentIntent(getDefalutIntent(versionBean.getPath())) //设置通知栏点击意图
+        //      .setNumber(number) //设置通知集合的数量
+                .setTicker(getString(R.string.update_version_title)) //通知首次出现在通知栏，带上升动画效果的
+                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
+                .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
+                .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
+                .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
+//                .setDefaults(Notification.DEFAULT_SOUND)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+                //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
+                .setSmallIcon(R.drawable.ic_launcher);//设置通知小ICON
+
+        mNotificationManager.notify(11, mBuilder.build());
+    }
+
+    private PendingIntent getDefalutIntent(String path){
+//        Intent intent = new Intent(mActivity, MainHomeFragment.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent server = new Intent("com.loaddown.application");
+        server.putExtra("loadPath", path);
+        PendingIntent pendingIntent= PendingIntent.getService(mActivity, 1, server, PendingIntent.FLAG_ONE_SHOT);
+        return pendingIntent;
+    }
+
+    @Override
+    public void update(int key, Object o) {
+        switch(key){
+            case HttpConstant.NOTIFY_DOWNLOAD_APK:
+                versionBean = (VersionBean) o;
+                if(versionBean == null){
+                    //没有网络 网络异常的时候 直接返回什么都不做
+                    return;
+                }
+
+                if(!checkVersionIsNew()){
+                    //不一致 提示notification 以及dialog
+                    showUpdateVersionDialog(mActivity);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        service.unRegisterObserve(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
     }
 }

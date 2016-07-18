@@ -5,6 +5,7 @@ import com.unipad.http.HitopAdList;
 import com.unipad.http.HitopNewsComment;
 import com.unipad.http.HitopNewsList;
 import com.unipad.http.HitopNewsOperate;
+import com.unipad.http.HitopNewsVersion;
 import com.unipad.http.HittopGetUserGame;
 import com.unipad.observer.GlobleObserService;
 
@@ -46,6 +47,11 @@ public class NewsService extends GlobleObserService implements ICoreService{
     public void getComment(String pagerId, int page, int size){
         HitopNewsComment advertList = new HitopNewsComment(pagerId, page, size);
         advertList.get();
+    }
+
+    public void getApkVersion(){
+        HitopNewsVersion newVersion = new HitopNewsVersion();
+        newVersion.get();
     }
 
     @Override

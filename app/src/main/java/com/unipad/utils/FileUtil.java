@@ -11,7 +11,10 @@ import java.io.RandomAccessFile;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
+import android.widget.Toast;
 
 public class FileUtil {
     private static final String TAG = "FileUtil";
@@ -244,4 +247,33 @@ public class FileUtil {
         }
         return null;
     }
+
+    /**
+     * 打开文件
+     *
+     * @param file
+     */
+    public static void openFile(File file, Context context) {
+        // Uri uri = Uri.parse("file://"+file.getAbsolutePath());
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // 设置intent的Action属性
+        intent.setAction(Intent.ACTION_VIEW);
+        // 获取文件file的MIME类型
+        String type =  "application/vnd.android.package-archive";
+        if (type.equals("*/*")) {
+            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // 设置intent的data和Type属性。
+        intent.setDataAndType(Uri.fromFile(file), type);
+        // 跳转
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }

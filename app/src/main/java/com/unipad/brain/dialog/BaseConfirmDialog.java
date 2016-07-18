@@ -11,14 +11,25 @@ import android.widget.TextView;
  *
  */
 public abstract class BaseConfirmDialog extends BaseDialog {
-
+	String hintVersion;  //提示的 最新版本号；
 	String hintTitle; // 需要提示的文本信息；
 	String leftBtnLabel;  //左侧按钮文本；
 	String rightBtnLabel; //右侧按钮文本；
 	OnActionClickListener itemClickListener; // item点击事件处理器
 	
 	
-	public BaseConfirmDialog(Context context, String hint,String leftbtn, String rightbtn,
+	public BaseConfirmDialog(Context context,String hintVersion, String hint,String leftbtn, String rightbtn,
+			OnActionClickListener listener) {
+		super(context);
+		this.hintVersion = hintVersion;
+		hintTitle = hint;
+		leftBtnLabel=leftbtn;
+		rightBtnLabel=rightbtn;
+		itemClickListener = listener;
+	}
+
+
+	public BaseConfirmDialog(Context context,String hint,String leftbtn, String rightbtn,
 			OnActionClickListener listener) {
 		super(context);
 		hintTitle = hint;
@@ -36,6 +47,13 @@ public abstract class BaseConfirmDialog extends BaseDialog {
 	/**
 	 * 获取顶部title对应的view，如果为null，表示不显示；
 	 * 
+	 * @return
+	 */
+	protected abstract TextView getHintVersionView();
+
+	/**
+	 * 获取顶部title对应的view，如果为null，表示不显示；
+	 *
 	 * @return
 	 */
 	protected abstract TextView getTitleView();
@@ -65,6 +83,12 @@ public abstract class BaseConfirmDialog extends BaseDialog {
 		TextView titleView=getTitleView();
 		if (titleView!=null){
 			titleView.setText(hintTitle);
+		}
+
+		//提取 最新的版本号
+		TextView HintVersionView = getHintVersionView();
+		if (HintVersionView != null){
+			HintVersionView.setText(hintVersion);
 		}
 
 		//定义按钮点击事件监听

@@ -12,7 +12,7 @@
         android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="256dip"
+            android:layout_width="@dimen/update_dialog_height"
             android:layout_height="wrap_content"
             
             android:gravity="center" >

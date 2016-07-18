@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -47,7 +48,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 ,WheelMainView.OnChangingListener,IDataObserver {
     private static final String TAG = PersonalRecordFragment.class.getSimpleName();
     private static final String DATE_REGEX = "\\d{4}/\\d{2}/\\d{2}";
-    private EditText mEditSearchBeginDate, mEditSearchEndDate;
+    private Button mEditSearchBeginDate, mEditSearchEndDate;
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy/MM/dd");
     private BrokenLineView mViewBrokenLine;
     private ShowDialog showDialog;
@@ -61,6 +62,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private TableLayout gridView;
     private List<HisRecord> hisRecords;
     private ViewGroup viewParent;
+    private HisRecord record;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -68,8 +70,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 //        mTitleBarRightText = mActivity.getString(R.string.table_graph);
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mBlackColor = mActivity.getResources().getColor(R.color.black);
-        (mEditSearchBeginDate = (EditText) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
-        (mEditSearchEndDate = (EditText) mActivity.findViewById(R.id.record_search_end_data)).setOnClickListener(this);
+        (mEditSearchBeginDate = (Button) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
+        (mEditSearchEndDate = (Button) mActivity.findViewById(R.id.record_search_end_data)).setOnClickListener(this);
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         mActivity.findViewById(R.id.record_text_search).setOnClickListener(this);
         mActivity.findViewById(R.id.record_text_delete).setOnClickListener(this);
@@ -105,13 +107,20 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             case R.id.record_text_delete:
                 break;
             case R.id.record_search_begin_data:
+                showDialog = new ShowDialog(mActivity);
                 wheelMainView=new WheelMainView(mActivity);
                 wheelMainView.setChangingListener(PersonalRecordFragment.this);
                 showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
                 break;
             case R.id.record_search_end_data:
+                showDialog = new ShowDialog(mActivity);
                 wheelMainView=new WheelMainView(mActivity);
-                wheelMainView.setChangingListener(PersonalRecordFragment.this);
+                wheelMainView.setChangingListener(new WheelMainView.OnChangingListener() {
+                    @Override
+                    public void onChanging(String changStr) {
+                        mEditSearchEndDate.setText(changStr);
+                    }
+                });
                 showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
                 break;
             case R.id.group_historry_list:
@@ -121,12 +130,14 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         }
     }
 
+
     private void openPersonalIntegration() {
         Intent intent=new Intent();
         intent.setClass(getActivity(),PersonalInfoActivty.class);
+        intent.putExtra("ranking",record.getRanking());
         startActivity(intent);
-
     }
+
 
 
     @Override
@@ -154,18 +165,18 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             return isValidity;
         }
 
-        if (!searchBeginDate.matches(DATE_REGEX)) {
+        /*if (!searchBeginDate.matches(DATE_REGEX)) {
             isValidity = false;
             mEditSearchBeginDate.setTextColor(mRedColor);
         } else {
             mEditSearchBeginDate.setTextColor(mBlackColor);
-        }
-        if (!searchEndDate.matches(DATE_REGEX)) {
+        }*/
+       /* if (!searchEndDate.matches(DATE_REGEX)) {
             isValidity = false;
             mEditSearchEndDate.setTextColor(mRedColor);
         } else {
             mEditSearchEndDate.setTextColor(mBlackColor);
-        }
+        }*/
         if (!isValidity) {
             ToastUtil.showToast(R.string.record_data_format_note);
             return isValidity;
@@ -176,7 +187,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             long endTimeSeconds = mDateFormat.parse(searchEndDate).getTime() / 1000;
             if (endTimeSeconds <= beginTimeSeconds) {
                 ToastUtil.showToast(R.string.end_date_error);
-                mEditSearchEndDate.setTextColor(mRedColor);
+//                mEditSearchEndDate.setTextColor(mRedColor);
                 return false;
             } else {
                 mEditSearchBeginDate.setTextColor(mBlackColor);
@@ -325,9 +336,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 
     @Override
     public void onChanging(String changStr) {
-
         mEditSearchBeginDate.setText(changStr);
-        mEditSearchEndDate.setText(changStr);
-
     }
 }

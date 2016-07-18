@@ -75,6 +75,11 @@
     <dimen name="listview_empty_size">100sp</dimen>
     <dimen name="listview_search_tips">30dp</dimen>
     <dimen name="listview_search_height">220dp</dimen>
+    <dimen name="update_dialog_weight">700dp</dimen>
+    <dimen name="update_dialog_height">250dp</dimen>
+    <dimen name="update_dialog_view">3dp</dimen>
+    <dimen name="margin_10dip2">20dp</dimen>
+    <dimen name="update_dialog_height_60dp">60dp</dimen>
 
 
 
