@@ -80,6 +80,8 @@
     <dimen name="update_dialog_view">3dp</dimen>
     <dimen name="margin_10dip2">20dp</dimen>
     <dimen name="update_dialog_height_60dp">60dp</dimen>
+    <dimen name="update_notification_height_80dp">80dp</dimen>
+    <dimen name="margin_30dp">30dp</dimen>
 
 
 

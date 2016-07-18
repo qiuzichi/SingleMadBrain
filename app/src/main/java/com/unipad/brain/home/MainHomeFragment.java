@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.RemoteViews;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
@@ -173,6 +174,7 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
 
     private boolean checkVersionIsNew(){
         String versionName = getApplicationVersion();
+
         if(versionName.equals(versionBean.getVersion())){
             return true;
         }
@@ -196,52 +198,28 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
         Intent server = new Intent("com.loaddown.application");
         server.putExtra("loadPath", path);
         mActivity.startService(server);
-//        LoadService.handler.obtainMessage(1,path).sendToTarget();
+//      LoadService.handler.obtainMessage(1,path).sendToTarget();
     }
 
     private void showNotification(){
 
         NotificationManager mNotificationManager = (NotificationManager) mActivity.getSystemService(mActivity.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mActivity);
-        Notification mNotification  = mBuilder.build();
-        mNotification.flags = Notification.FLAG_AUTO_CANCEL;
 
-
-//        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_custom_button);
-//        mRemoteViews.setImageViewResource(R.id.custom_song_icon, R.drawable.ic_launcher);
-//        //API3.0 以上的时候显示按钮，否则消失
-//        mRemoteViews.setTextViewText(R.id.tv_custom_song_singer, "周杰伦");
-//        mRemoteViews.setTextViewText(R.id.tv_custom_song_name, "七里香");
-//        //如果版本号低于（3。0），那么不显示按钮
-//        if(BaseTools.getSystemVersion() <= 9){
-//            mRemoteViews.setViewVisibility(R.id.btn_custom_play, View.GONE);
-//        }else{
-//            mRemoteViews.setViewVisibility(R.id.btn_custom_play, View.VISIBLE);
-//        }
-//        //
-//        if(isPlay){
-//            mRemoteViews.setImageViewResource(R.id.btn_custom_play, R.drawable.btn_pause);
-//        }else{
-//            mRemoteViews.setImageViewResource(R.id.btn_custom_play, R.drawable.btn_play);
-//        }
-//        //点击的事件处理
-//        Intent buttonIntent = new Intent(ACTION_BUTTON);
-//        /* 上一首按钮 */
-//        buttonIntent.putExtra(INTENT_BUTTONID_TAG, BUTTON_PREV_ID);
-//        //这里加了广播，所及INTENT的必须用getBroadcast方法
-//        PendingIntent intent_prev = PendingIntent.getBroadcast(this, 1, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_prev, intent_prev);
-//        /* 播放/暂停  按钮 */
-//        buttonIntent.putExtra(INTENT_BUTTONID_TAG, BUTTON_PALY_ID);
-//        PendingIntent intent_paly = PendingIntent.getBroadcast(this, 2, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_play, intent_paly);
-
-//        setContent(mRemoteView)
-
-        mBuilder.setContentTitle(getString(R.string.update_version_title) + versionBean.getVersion())//设置通知栏标题
+//        RemoteViews mRemoteViews = new RemoteViews(mActivity.getPackageName(), R.layout.notification_contains_btn_layout);
+//        mRemoteViews.setImageViewResource(R.id.iv_notification_icon, R.drawable.ic_launcher);
+//
+//        mRemoteViews.setTextViewText(R.id.tv_custom_notify_title, getString(R.string.update_version_title) + versionBean.getVersion());
+//        mRemoteViews.setTextViewText(R.id.tv_custom_describe, versionBean.getInfoDescription());
+//
+//        PendingIntent buttonIntent = getDefalutIntent(versionBean.getPath());
+//        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_start, buttonIntent);
+        String title = getString(R.string.update_version_title) + versionBean.getVersion();
+        mBuilder
+                .setContentTitle(title)//设置通知栏标题
                 .setContentText(versionBean.getInfoDescription())
                 .setContentIntent(getDefalutIntent(versionBean.getPath())) //设置通知栏点击意图
-        //      .setNumber(number) //设置通知集合的数量
+//                .setNumber(number) //设置通知集合的数量
                 .setTicker(getString(R.string.update_version_title)) //通知首次出现在通知栏，带上升动画效果的
                 .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
                 .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
@@ -251,7 +229,9 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
                 //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
                 .setSmallIcon(R.drawable.ic_launcher);//设置通知小ICON
 
-        mNotificationManager.notify(11, mBuilder.build());
+        Notification mNotification  = mBuilder.build();
+        mNotification.flags = Notification.FLAG_AUTO_CANCEL;
+        mNotificationManager.notify(11, mNotification);
     }
 
     private PendingIntent getDefalutIntent(String path){
