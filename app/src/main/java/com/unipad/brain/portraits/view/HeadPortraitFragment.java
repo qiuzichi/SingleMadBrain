@@ -66,7 +66,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     }
 
     @Override
-    public void startGame() {
+    public void startMemory() {
         mStubShade.setVisibility(View.GONE);
     }
 

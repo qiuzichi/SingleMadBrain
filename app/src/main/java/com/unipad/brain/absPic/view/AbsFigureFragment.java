@@ -149,8 +149,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     }
 
     @Override
-    public void startGame() {
-        super.startGame();
+    public void startMemory() {
         mStubShade.setVisibility(View.GONE);
     }
 

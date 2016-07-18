@@ -223,10 +223,17 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     }
 
     @Override
-    public void startGame() {
+    public void startMemory() {
         mBtnCompeteMode.setEnabled(true);
         mCountDownTime.startCountTime();
     }
+
+    @Override
+    public void startRememory() {
+        mCountDownTime.startCountTime();
+    }
+
+
 
     @Override
     public void pauseGame() {

@@ -92,7 +92,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     }
 
     @Override
-    public void startGame() {
+    public void startMemory() {
         mStubShade.setVisibility(View.GONE);
     }
 

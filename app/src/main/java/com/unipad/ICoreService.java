@@ -11,7 +11,8 @@ public interface  ICoreService {
         boolean IsALlAready();
         void initResourse(String soursePath);
 
-        void startGame();
+        void startMemory();
+        void starRememory();
 
         void pauseGame();
 
