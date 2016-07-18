@@ -27,9 +27,9 @@ Moved Files:
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => list_shuaxin\src\main\AndroidManifest.xml
-* res\ => list_shuaxin\src\main\res\
-* src\ => list_shuaxin\src\main\java\
+* AndroidManifest.xml => list_refresh\src\main\AndroidManifest.xml
+* res\ => list_refresh\src\main\res\
+* src\ => list_refresh\src\main\java\
 
 Next Steps:
 -----------
