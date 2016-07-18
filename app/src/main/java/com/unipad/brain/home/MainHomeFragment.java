@@ -242,7 +242,7 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
                 .setContentText(versionBean.getInfoDescription())
                 .setContentIntent(getDefalutIntent(versionBean.getPath())) //设置通知栏点击意图
         //      .setNumber(number) //设置通知集合的数量
-                .setTicker("真的很好玩吗") //通知首次出现在通知栏，带上升动画效果的
+                .setTicker(getString(R.string.update_version_title)) //通知首次出现在通知栏，带上升动画效果的
                 .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
                 .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
                 .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
