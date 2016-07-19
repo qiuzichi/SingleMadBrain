@@ -9,7 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
-    android:paddingTop="16dp">
+    android:paddingTop="16dp"
+    >
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -85,8 +86,8 @@
         android:dividerHeight="5dp"
         android:layout_below="@+id/linearLayout"
         android:layout_above="@+id/jianpan_linlayout"
+        android:descendantFocusability="afterDescendants"
         />
-
     <LinearLayout
         android:id="@+id/jianpan_linlayout"
         android:layout_width="match_parent"
