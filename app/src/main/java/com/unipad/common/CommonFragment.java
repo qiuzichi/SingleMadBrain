@@ -151,7 +151,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             this.commitAnswer();
         }
     }
-    private void startRememoryTimeCount(){
+    public void startRememoryTimeCount(){
         mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getRecallTime1(),false));
     }
     /**
