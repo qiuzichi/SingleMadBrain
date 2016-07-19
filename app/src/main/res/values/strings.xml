@@ -232,6 +232,9 @@
     <string name="update_version_info">优化更多细节，提升客户体验 尝鲜版不容错过</string>
     <string name="update_version_title">更新版本号：</string>
     <string name="confirm_update">确认更新</string>
+    //apk版本号；
+    <string name="versionName">1.0.1</string>
+
 
     <string name="pager_detail">详情</string>
     <string name="start_search">搜索</string>
@@ -255,4 +258,6 @@
     <string name="remain_pokers_left">还剩</string>
     <string name="remain_pokers_right">张扑克牌</string>
     <string name="com_name">赛事名称</string>
+
+
 </resources>

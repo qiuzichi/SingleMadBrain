@@ -144,19 +144,19 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
     }
 
     //获取本地应用的版本名称
-    private String  getApplicationVersion(){
-        PackageInfo mPackageInfo = null;
-        String currentVersionName = null;
-        PackageManager mPackageManager = mActivity.getPackageManager();
-        try {
-            mPackageInfo = mPackageManager.getPackageInfo(mActivity.getPackageName(), PackageManager.GET_CONFIGURATIONS);
+//    private String  getApplicationVersion(){
+//        PackageInfo mPackageInfo = null;
+//        String currentVersionName = null;
+//        PackageManager mPackageManager = mActivity.getPackageManager();
+//        try {
+//            mPackageInfo = mPackageManager.getPackageInfo(mActivity.getPackageName(), PackageManager.GET_CONFIGURATIONS);
 //            int currentVersionCode = mPackageInfo.versionCode;
-            currentVersionName = mPackageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return currentVersionName;
-    }
+//            currentVersionName = mPackageInfo.versionName;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return currentVersionName;
+//    }
     //访问网络 获取服务器 上的版本信息
     private void showUpdateVersionDialog(Context context) {
         showNotification();
@@ -173,7 +173,7 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
     }
 
     private boolean checkVersionIsNew(){
-        String versionName = getApplicationVersion();
+        String versionName = getString(R.string.versionName);
 
         if(versionName.equals(versionBean.getVersion())){
             return true;
