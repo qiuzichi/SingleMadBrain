@@ -3,6 +3,7 @@ package com.unipad.brain.home.dao;
 import android.annotation.TargetApi;
 
 import android.app.DownloadManager;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,10 +15,15 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
 
+import com.unipad.brain.R;
 import com.unipad.utils.ToastUtil;
 
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class LoadService extends Service {
@@ -41,6 +47,7 @@ public class LoadService extends Service {
 			}
 		}
 	};
+	private Long loaddownId;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -82,7 +89,8 @@ public class LoadService extends Service {
 				| DownloadManager.Request.NETWORK_WIFI);
 		down.setTitle("正在下载" + apkName);
 		// 发出通知，显示下载进度条
-//		down.setShowRunningNotification(true);
+		down.setShowRunningNotification(true);
+
 		//下载完成后  隐藏notication
 		down.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
 		// 显示下载界面
@@ -90,7 +98,7 @@ public class LoadService extends Service {
 		// 设置下载后文件存放的位置 Environment.getExternalStorageDirectory().getPath() +
 		down.setDestinationInExternalPublicDir("MLC/upload", apkName);
 		// 将下载请求放入队列
-		Long loaddownId = manager.enqueue(down);
+		loaddownId = manager.enqueue(down);
 
 		try {
 			context.registerReceiver(receiver, new IntentFilter(
@@ -108,9 +116,9 @@ public class LoadService extends Service {
 				String fileName = "";
 				DownloadManager.Query query = new DownloadManager.Query();
 				query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL);// 设置过滤状态：成功
-				Cursor c = manager.query(query);// 查询以前下载过的‘成功文件’
-				if (c.moveToFirst()) {// 移动到最新下载的文件
-					fileName = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+				Cursor cursor = manager.query(query);// 查询以前下载过的‘成功文件’
+				if (cursor.moveToFirst()) {// 移动到最新下载的文件
+					fileName = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
 				}
 				File f = new File(fileName.replace("file://", ""));// 过滤路径
 					try {
@@ -156,45 +164,44 @@ public class LoadService extends Service {
 
 //	private void updateViews(final long downlaodId) {
 //		final Timer myTimer = new Timer();
-//		myTimer.schedule(new TimerTask() {
+//		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+//		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+//		RemoteViews mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_contains_btn_layout);
+//		mRemoteViews.setImageViewResource(R.id.iv_notification_icon, R.drawable.ic_launcher);
 //
-//			@Override
-//			public void run() {
-//				DownloadManager.Query q = new DownloadManager.Query();
-//				q.setFilterById(downlaodId);
-//				Cursor cursor = ((DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE)).query(q);
-//				cursor.moveToFirst();
-//				int bytes_downloaded = cursor
-//						.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-//				int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-//				cursor.close();
-//				final int dl_progress = (bytes_downloaded * 100 / bytes_total);
-//				if (dl_progress == 100) {
-//					myTimer.cancel();
-//					runOnUiThread(new Runnable() {
+//		mRemoteViews.setTextViewText(R.id.tv_custom_notify_title, getString(R.string.update_version_title) + versionBean.getVersion()
 //
-//						@Override
-//						public void run() {
-
-//							mDownloadFileBtn.setText("下载完成");
-//							mProgressBar.setProgress(dl_progress);
+//
+//				myTimer.schedule(new TimerTask() {
+//
+//					@Override
+//					public void run() {
+//						DownloadManager.Query q = new DownloadManager.Query();
+//						q.setFilterById(downlaodId);
+//						Cursor cursor = ((DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE)).query(q);
+//						cursor.moveToFirst();
+//						int bytes_downloaded = cursor
+//								.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+//						int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+//						cursor.close();
+//						final int dl_progress = (bytes_downloaded * 100 / bytes_total);
+//						if (dl_progress == 100) {
+//							myTimer.cancel();
+//							m
+//						} else {
+//							runOnUiThread(new Runnable() {
+//								@Override
+//								public void run() {
+//									mProgressBar.setProgress(dl_progress);
+//									mDownloadFileBtn.setText(dl_progress + "%");
+//								}
+//							});
 //
 //						}
-//					});
-//				} else {
-//					runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							mProgressBar.setProgress(dl_progress);
-//							mDownloadFileBtn.setText(dl_progress + "%");
-//						}
-//					});
 //
-//				}
+//					}
 //
-//			}
-//
-//		}, 0, 10);
+//				}, 0, 10);
 //
 //	}
 }

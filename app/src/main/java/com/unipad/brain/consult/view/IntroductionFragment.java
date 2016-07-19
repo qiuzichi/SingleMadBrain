@@ -119,7 +119,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
         mAdvertLuobo.setAdapter(adAdapter);
-
     }
 
 
