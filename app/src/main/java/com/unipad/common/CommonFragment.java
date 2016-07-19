@@ -20,9 +20,11 @@ import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.common.bean.CompeteItemEntity;
 import com.unipad.http.HttpConstant;
+import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
+import com.unipad.utils.ToastUtil;
 
 import org.xutils.x;
 
@@ -45,7 +47,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     private boolean isRememoryStatus;
     private ICommunicate mICommunicate;
     private SparseArray mColorArray = new SparseArray();
-
+    private int memoryTime;
 
     @Nullable
     @Override
@@ -140,15 +142,17 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             mTextCompeteProcess.setText(R.string.rememorying);
             mBtnCompeteMode.setText(R.string.commit_answer);
             if (mICommunicate != null) {
-                mICommunicate.memoryTimeToEnd( mActivity.getService().rule.getMemeryTime1() - mCountDownTime.getTime());
+                startRememoryTimeCount();
+                memoryTime = mActivity.getService().rule.getMemeryTime1() - mCountDownTime.getTime();
+                mICommunicate.memoryTimeToEnd(memoryTime);
             }
 
         } else {//回忆模式下才可以提交答案
             this.commitAnswer();
         }
     }
-    public void startRememoryTimeCount(){
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getRecallTime1(),true));
+    private void startRememoryTimeCount(){
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getRecallTime1(),false));
     }
     /**
      * 提交答案
@@ -157,7 +161,15 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
 
 
         if (mICommunicate != null) {
-            mICommunicate.rememoryTimeToEnd(mActivity.getService().rule.getRecallTime1()-mCountDownTime.getTime());
+            final int rememoryTime = mActivity.getService().rule.getRecallTime1()-mCountDownTime.getTime();
+            mICommunicate.rememoryTimeToEnd(rememoryTime);
+            new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+                    SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),mActivity.getService().getScore(),memoryTime,rememoryTime,mActivity.getService().getAnswerData());
+                }
+            }.start();
         }
     }
 
@@ -242,7 +254,13 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
 
     @Override
     public void reStartGame() {
-        mCountDownTime.resumeCountTime();
+        if (mICommunicate != null){
+            BasicCommonFragment basicCommonFragment = (BasicCommonFragment)mICommunicate;
+            if (!basicCommonFragment.isNeedStartGame()) {
+                mCountDownTime.resumeCountTime();
+            }
+        }
+
     }
 
     @Override

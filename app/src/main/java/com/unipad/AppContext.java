@@ -17,6 +17,7 @@ import com.unipad.brain.longPoker.dao.LongPokerService;
 import com.unipad.brain.number.dao.BinaryService;
 import com.unipad.brain.number.dao.LongNumService;
 import com.unipad.brain.number.dao.NumService;
+import com.unipad.brain.number.dao.QuickRandomNumService;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.portraits.control.HeadService;
 import com.unipad.brain.quickPoker.dao.QuickCardService;
@@ -179,6 +180,11 @@ public class AppContext {
                 service.init();
                 serviceList.put(key, service);
             }
+            else if (key.equals(Constant.QUICK_RANDOM_NUM_SERVICE)) {
+                service = new QuickRandomNumService();
+                service.init();
+                serviceList.put(key, service);
+            }
         }
         return service;
     }
@@ -194,7 +200,7 @@ public class AppContext {
         }else if (Constant.GAME_ABS_PICTURE.endsWith(projectId)){
             key = Constant.ABS_FIGURE;
         }else if (Constant.GAME_RANDOM_NUM.endsWith(projectId)){
-
+            key = Constant.QUICK_RANDOM_NUM_SERVICE;
         }else if (Constant.GAME_VIRTUAL_DATE.endsWith(projectId)){
             key = Constant.VIRTUAL_TIME_SERVICE;
         }else if (Constant.GAME_LONG_POCKER.endsWith(projectId)){

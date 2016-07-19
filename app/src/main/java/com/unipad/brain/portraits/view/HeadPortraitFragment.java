@@ -90,19 +90,12 @@ public class HeadPortraitFragment extends BasicCommonFragment{
         service.mode = 1;
         ((HeadService) service).shuffData();
         adapter.notifyDataSetChanged();
-        mActivity.getCommonFragment().startRememoryTimeCount();
+
     }
 
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),service.getScore(),memoryTime,answerTime,service.getAnswerData());
-            }
-        }.start();
         service.mode = 2;
         adapter.notifyDataSetChanged();
     }

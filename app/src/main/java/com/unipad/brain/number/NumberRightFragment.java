@@ -93,6 +93,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void startMemory() {
+        super.startRememory();
         mStubShade.setVisibility(View.GONE);
     }
 
@@ -104,6 +105,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void reStartGame() {
+        super.reStartGame();
         mStubShade.setVisibility(View.GONE);
 
     }
@@ -112,6 +114,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public int getLayoutId() {
         return R.layout.number_frg_right;
     }
+
 
     /**
      * 开始答题
@@ -152,6 +155,8 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             case R.id.listen_keyboard_7:
             case R.id.listen_keyboard_8:
             case R.id.listen_keyboard_9:
+                progress = 100 +mCursorPosition*100/mTotalNumbers;
+                LogUtil.e("","Quick num:"+progress);
                 this.setGridText(mNumberArray.get(view.getId()));
                 break;
             case R.id.listen_keyboard_delete:
@@ -234,7 +239,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             public void finish() {
                 LogUtil.e("","finish...");
                     HIDDialog.dismissDialog(Constant.INIT_REMEMORY_DLG);
-                mActivity.getCommonFragment().startRememoryTimeCount();
+                    sendMsgToPreper();
             }
         });
     }
@@ -270,19 +275,15 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
+        super.rememoryTimeToEnd(answerTime);
         //mStubShade.setVisibility(View.VISIBLE);
         mNumberRememoryLayout.showAnswer(service.lineNumbers, service.answer);
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(), service.getScore(), memoryTime, answerTime, service.getAnswerData());
-            }
-        }.start();
     }
 
     @Override
     public void numberKey(String keyValue) {
+        progress = 100 +mCursorPosition*100/mTotalNumbers;
+        LogUtil.e("","Quick num:"+progress);
         this.setGridText(keyValue);
     }
 

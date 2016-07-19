@@ -223,7 +223,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
     public void inAnswerMode() {
             service.mode=1;
             memoryAdapter.notifyDataSetChanged();
-            mActivity.getCommonFragment().startRememoryTimeCount();
             jianpan_linlayout.setVisibility(View.VISIBLE);
             ToastUtil.showToast("开始");
           }

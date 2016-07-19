@@ -74,7 +74,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
         service.shuffle();
         setButtonArea();
         adapter.notifyDataSetChanged();
-        mActivity.getCommonFragment().startRememoryTimeCount();
+
     }
 
     @Override
@@ -82,13 +82,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
         service.mode = 2;
         setButtonArea();
         adapter.notifyDataSetChanged();
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),service.getScore(),memoryTime,answerTime,service.getAnswerData());
-            }
-        }.start();
     }
 
     @Override

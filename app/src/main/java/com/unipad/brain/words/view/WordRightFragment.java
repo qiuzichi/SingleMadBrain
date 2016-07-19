@@ -103,7 +103,7 @@ public class WordRightFragment extends BasicCommonFragment {
 
         service.mode = 1;
         adapter.notifyDataSetChanged();
-        mActivity.getCommonFragment().startRememoryTimeCount();
+
     }
 
     @Override
@@ -111,12 +111,7 @@ public class WordRightFragment extends BasicCommonFragment {
 
         service.mode = 2;
         adapter.notifyDataSetChanged();
-        new Thread() {
-            @Override
-            public void run() {
-                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(), service.getScore(), memoryTime, answerTime, service.getAnswerData());
-            }
-        }.start();
+
 
     }
 

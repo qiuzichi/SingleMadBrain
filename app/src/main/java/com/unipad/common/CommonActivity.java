@@ -22,6 +22,7 @@ import com.unipad.brain.longPoker.view.LongPokerRightFragment;
 import com.unipad.brain.number.BinaryRightFragment;
 import com.unipad.brain.number.LongNumFragment;
 import com.unipad.brain.number.NumberRightFragment;
+import com.unipad.brain.number.QuickRandomNumFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
 import com.unipad.brain.quickPoker.view.QuickPokerRightFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
@@ -186,7 +187,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         } else if (competeItem.equals(getString(R.string.project_3))){
             gameFragment = new LongNumFragment();
         } else if (competeItem.equals(getString(R.string.project_5))) {
-
+            gameFragment = new QuickRandomNumFragment();
         }  else if (competeItem.equals(getString(R.string.project_9))) {
 
         } else if (competeItem.equals(getResources().getString(R.string.project_10))){
@@ -267,6 +268,6 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                 super.run();
                 SocketThreadManager.sharedInstance().progressGame(matchId,progress,service.round);
             }
-        };
+        }.start();
     }
 }

@@ -55,6 +55,12 @@ public class LongNumFragment extends NumberRightFragment{
     }
 
     @Override
+    public void startRememory() {
+        super.startRememory();
+        mKeyboardDialog.setKeyboardClickListener(this);
+    }
+
+    @Override
     public void rememoryTimeToEnd(int answerTime) {
         super.rememoryTimeToEnd(answerTime);
         if (mKeyboardDialog != null && mKeyboardDialog.isShowing()) {
