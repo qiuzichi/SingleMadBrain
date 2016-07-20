@@ -7,16 +7,10 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-
 
 import com.unipad.IOperateGame;
-import com.unipad.brain.App;
-import com.unipad.brain.R;
-import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
-
 
 import java.util.Map;
 
@@ -116,8 +110,6 @@ public abstract class BasicCommonFragment extends Fragment implements
 
     @Override
     public void memoryTimeToEnd(int memoryTime) {
-
-
 
 
     }

@@ -1,8 +1,25 @@
 package com.unipad.brain.quickPoker.view;
 
-import java.util.ArrayList;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.adapter.DragAdapter;
 import com.unipad.brain.quickPoker.adapter.OtherAdapter;
@@ -19,28 +36,7 @@ import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.SparseIntArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
-import android.view.animation.Animation.AnimationListener;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView;
+import java.util.ArrayList;
 
 public class QuickPokerRightFragment extends BasicCommonFragment implements
         View.OnClickListener, OnItemClickListener {
@@ -50,7 +46,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     private ImageButton mIBtnBrowseMode;
     private View mRightLayout, mHorizontalLayout, mBrowseLayout;
     private ViewStub mStubMutiBrowse, mStubAnswer;
-            private View mStubAnswerShade;
+    private View mStubAnswerShade;
     private QuickPokerBrowseHorizontalView mSingleLineLayout;// 单行浏览模式
     private QuickPokerBrowseVerticalView mMUtiLineLayout;// 多行浏览模式
     /**
