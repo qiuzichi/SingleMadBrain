@@ -34,7 +34,6 @@
         android:enabled="true"
         android:maxLength="4"
         />
-
     <TextView
         android:id="@+id/event_text"
         android:layout_width="150dp"

@@ -18,6 +18,10 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     public RuleGame rule;
 
+    public int round = 1;
+
+    protected int allround = 1;
+
     public boolean gameMode = true;//true为比赛模式，false为练习模式
     public boolean isInitResourseAready() {
         return isInitResourseAready;
@@ -74,10 +78,18 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
         }
     }
 
+
     @Override
-    public void startGame() {
+    public void startMemory() {
         if (operateGame != null) {
-            operateGame.startGame();
+            operateGame.startMemory();
+        }
+    }
+
+    @Override
+    public void starRememory() {
+        if (operateGame != null) {
+            operateGame.startRememory();
         }
     }
 

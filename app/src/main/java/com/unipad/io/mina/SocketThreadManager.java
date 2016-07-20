@@ -80,6 +80,16 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Request request = new Request("10001", body);
         sendMsg(request);
     }
+    public void progressGame(String id,int progress,int round) {
+        Map<String, String> body = new HashMap<String, String>();
+        body.put("USERID", AppContext.instance().loginUser.getUserId());
+        body.put("SCHEDULEID", id);
+        body.put("PROGRESS", String.valueOf(progress));
+        body.put("ROUND", String.valueOf(round));
+        Request request = new Request("10007", body);
+        sendMsg(request);
+    }
+
     public void finishedGameByUser(String matchId,double score,int memoryTime,int answerTime,String answer,int round){
         LogUtil.e("","score:"+score+",memory="+memoryTime+",answerTIme :"+answerTime);
         LogUtil.e("","answer:"+answer);
@@ -119,7 +129,11 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
             }
         }else if(IOConstant.GAME_START.equals(data.get("TRXCODE"))){
             if (service != null) {
-                service.startGame();
+                if ("0".equals(data.get("TYPE"))) {
+                    service.startMemory();
+                }else if ("1".equals(data.get("TYPE"))){
+                    service.starRememory();
+                }
             }
         }else if(IOConstant.GAME_PAUSE.equals(data.get("TRXCODE"))){
             if (service != null) {

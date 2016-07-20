@@ -40,7 +40,10 @@ public class IOConstant {
      * 客户端主动发起结束比赛请求
      */
     public static String END_GAME_BY_Client = "10006";
-
+    /**
+     * 客户端的比赛进度
+     */
+    public static String PROGRESS_GAME = "10007";
     /**
      * 管控端发起全场结束比赛请求
      */

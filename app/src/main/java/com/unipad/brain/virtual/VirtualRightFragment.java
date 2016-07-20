@@ -156,14 +156,9 @@ public class VirtualRightFragment extends BasicCommonFragment {
                             return false;
                         }
                     });
-                    if (position == index) {
-
-                    }else {
-
-                    }
 
                 } else if (service.mode == 2) {
-                    //答案
+                    //回忆结束
                     holder.editNUmView.setVisibility(View.GONE);
                     holder.tv_date.setVisibility(View.VISIBLE);
                     if (entity.getDate().equals(entity.getAnswerDate() + "")) {
@@ -186,16 +181,11 @@ public class VirtualRightFragment extends BasicCommonFragment {
             public EditText editNUmView;
             public MyViewHolder(final View view) {
                 super(view);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
                 tv_num=(TextView) view.findViewById(R.id.id_num);
                 tv_date = (TextView) view.findViewById(R.id.id_datetxt);
                 tv_event=(TextView)view.findViewById(R.id.event_text);
                 editNUmView=(EditText) view.findViewById(R.id.id_text_num);
+                editNUmView.requestFocus();
 
             }
             }
@@ -264,8 +254,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
                 }else if(v.getId()==R.id.numButton_0){
                     text=text+"0";
                 }
-
-
                 if (holder != null) {
                     service.virtualList.get(index).setAnswerDate(text);
 
@@ -276,46 +264,40 @@ public class VirtualRightFragment extends BasicCommonFragment {
                 if (text.trim().length()==4&&index==service.virtualList.size()-1){
 
                 }else
-                if (text.trim().length() == 4){
-                        //输入了4位数字之后，自动跳到下一个，index加1
-                             index++;
-                            holder.editNUmView.requestFocus();
-                             memoryRv.scrollToPosition(index);
-                }else {
+                    //输入了4位数字之后，自动跳到下一个，index加1
+                if (text.length()==4) {
+                    index++;
+                }
+                if (text.length()>=0){
+                    holder.editNUmView.requestFocus();
+                }
 
-                    }
                 break;
             case R.id.numButton_clear:
-                //在第一个格子时
-                if(index==0 && TextUtils.isEmpty(text)) {
+                            //在第一个格子时index不做处理
+                           if(index==0 &&TextUtils.isEmpty(text)){
 
-                }else {
-                    if (!TextUtils.isEmpty(text)) {
-
-                        if (holder != null) {
-                            holder.editNUmView.requestFocus();
-                            text = text.substring(0,text.length()-1);
-                            service.virtualList.get(index).setAnswerDate(text);
-                            holder.editNUmView.setText(text);
-
-                        }
-                       /* if (index != 0 && TextUtils.isEmpty(text)){
-                            index--;
-                            holder.editNUmView.requestFocus();
-                            memoryRv.scrollToPosition(index);
-
-                        }*/
-                    }
-                }
+                               }else {
+                               if (!TextUtils.isEmpty(text)) {
+                                   if (holder != null) {
+                                       holder.editNUmView.requestFocus();
+                                       text = text.substring(0, text.length() - 1);
+                                       service.virtualList.get(index).setAnswerDate(text);
+                                       holder.editNUmView.setText(text);
+                                   }
+                                 }
+                               //格子里的数为空且不在第一个position时 index--
+                               } if (holder.editNUmView.getText().length()==0&&index!=0){
+                                         index--;
+                                }
                               break;
-                         default:
+                        default:
                              break;
-        }
-    }
+                    }
+               }
 
     @Override
     public int getLayoutId() {
-
         return R.layout.virtual_frg_right;
     }
 
@@ -330,5 +312,4 @@ public class VirtualRightFragment extends BasicCommonFragment {
     public void rememoryTimeToEnd(int answerTime) {
         this.endAnswerMode();
     }
-
 }

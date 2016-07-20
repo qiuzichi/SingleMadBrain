@@ -466,8 +466,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         mStubAnswerShade.setVisibility(View.VISIBLE);
     }
     @Override
-    public void startGame() {
-        super.startGame();
+    public void startMemory() {
         mStubAnswerShade.setVisibility(View.GONE);
         inMemoryMode();
     }

@@ -50,9 +50,10 @@ public class QuickCardService extends AbsBaseGameService{
 	public void parseData(String data) {
 		super.parseData(data);
 		String[] allCard = data.split(",");
+		allround = allCard.length;
 		round1 = allCard[0];
 		round2 = allCard[1];
-		parseDataByRound(1);
+		parseDataByRound(round);
 	}
 
 	public void parseDataByRound(int round) {

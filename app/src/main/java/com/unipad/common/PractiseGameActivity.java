@@ -83,8 +83,7 @@ public class PractiseGameActivity extends BasicActivity implements IDataObserver
                     switch (msg.what) {
                         case STRAT_GAME:
                             HIDDialog.dismissAll();
-                            gameFragment.startGame();
-                            mCommonFragment.startGame();
+
                             break;
                         case DOWNLOAD_QUESTION:
                             if (dialog == null) {

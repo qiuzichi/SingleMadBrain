@@ -66,7 +66,7 @@ public class WordRightFragment extends BasicCommonFragment {
     }
 
     @Override
-    public void startGame() {
+    public void startMemory() {
         mStubShade.setVisibility(View.GONE);
     }
 
@@ -114,9 +114,7 @@ public class WordRightFragment extends BasicCommonFragment {
         super.memoryTimeToEnd(memoryTime);
 
         service.mode = 1;
-        //adapter.notifyDataSetChanged();
         wordRvAdapter.notifyDataSetChanged();
-        mActivity.getCommonFragment().startRememoryTimeCount();
     }
 
     @Override
@@ -125,13 +123,6 @@ public class WordRightFragment extends BasicCommonFragment {
         service.mode = 2;
         ///adapter.notifyDataSetChanged();
         wordRvAdapter.notifyDataSetChanged();
-        new Thread() {
-            @Override
-            public void run() {
-                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(), service.getScore(), memoryTime, answerTime, service.getAnswerData());
-            }
-        }.start();
-
     }
 
     private class WordAdapter extends CommonAdapter<WordEntity> {
