@@ -1,30 +1,18 @@
 package com.unipad.brain.absPic.dao;
 
-import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.App;
 import com.unipad.brain.absPic.bean.Figure;
-import com.unipad.brain.portraits.bean.Person;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopDownLoad;
-import com.unipad.http.HitopGetQuestion;
 import com.unipad.utils.LogUtil;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import java.util.Map;
-
 import java.util.List;
-
-import java.util.Random;
-
+import java.util.Map;
 /**
  * Created by gongkan on 2016/4/15.
  */
