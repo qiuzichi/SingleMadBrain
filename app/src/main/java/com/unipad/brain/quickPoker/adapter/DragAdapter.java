@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
+import com.unipad.brain.quickPoker.entity.PokerEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,7 @@ import java.util.List;
 public class DragAdapter extends BaseAdapter {
 	/** TAG */
 	private final static String TAG = "DragAdapter";
-	/** 是否显示底部的ITEM */
-	private boolean isItemShow = false;
+	private View dragView;
 	private Context context;
 	/** 控制的postion */
 	private int holdPosition;
@@ -29,8 +29,7 @@ public class DragAdapter extends BaseAdapter {
 	boolean isVisible = true;
 	/** 可以拖动的列表（即用户选择的频道列表） */
 	public List<ChannelItem> channelList;
-	/** TextView 频道内容 */
-	private ImageView item_text;
+
 	/** 要删除的position */
 	public int remove_position = -1;
 
@@ -67,20 +66,36 @@ public class DragAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = LayoutInflater.from(context).inflate(
-				R.layout.quick_poker_v_answer_item, null);
-		item_text = (ImageView) view.findViewById(R.id.text_item);
-		item_text.setImageResource(getItem(position).resId);
+		ViewHolder holder;
+		if (convertView == null) {
+			holder = new ViewHolder();
+			convertView = LayoutInflater.from(context).inflate(
+					R.layout.quick_poker_v_answer_item, null);
+			holder.img = (ImageView)convertView.findViewById(R.id.text_item);
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder)convertView.getTag();
+		}
+		holder.img.setImageBitmap(PokerEntity.getInstance().getBitmap(getItem(position).resId));
 		// item_text.setText(channel.getName());
 		// if ((position == 0) || (position == 1)) {
 		// item_text.setEnabled(false);
 		// }
 
-		return view;
+		return convertView;
 	}
+	static class ViewHolder
+	{
+		public ImageView img;
 
+	}
 	/** 添加频道列表 */
 	public void addItem(ChannelItem channel) {
+		for (int i = channelList.size()-1;i>0;i--) {
+			if (channelList.get(i).resId == channel.resId){
+				return;
+			}
+		}
 		channelList.add(channel);
 		notifyDataSetChanged();
 	}
@@ -109,17 +124,18 @@ public class DragAdapter extends BaseAdapter {
 
 	/** 设置删除的position */
 	public void setRemove(int position) {
-		remove_position = position;
-		notifyDataSetChanged();
+		//remove_position = position;
+		//notifyDataSetChanged();
 	}
 
 	/** 删除频道列表 */
-	public void remove() {
-		if (remove_position != -1) {
-			channelList.remove(remove_position);
-			remove_position = -1;
+	public void remove(int position) {
+		if (position > 0 || position < channelList.size()) {
+			channelList.remove(position);
+
 			notifyDataSetChanged();
 		}
+
 	}
 
 	/** 设置频道列表 */
@@ -138,8 +154,14 @@ public class DragAdapter extends BaseAdapter {
 	}
 
 	/** 显示放下的ITEM */
-	public void setShowDropItem(boolean show) {
-		isItemShow = show;
+	public void setDropItem(View view) {
+		dragView = view;
+	}
+
+	public void showDropItem() {
+		if (dragView != null) {
+			dragView.setVisibility(View.VISIBLE);
+		}
 	}
 
 }
