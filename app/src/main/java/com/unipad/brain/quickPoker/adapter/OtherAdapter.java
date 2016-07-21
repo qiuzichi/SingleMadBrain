@@ -18,11 +18,8 @@ import com.unipad.common.adapter.CommonAdapter;
 
 public class OtherAdapter extends CommonAdapter<ChannelItem> {
 
-	private ImageView item_text;
-	/** 是否可见 */
-	boolean isVisible = true;
-	/** 要删除的position */
-	public int remove_position = -1;
+
+
 
 	public OtherAdapter(Context context, List<ChannelItem> datas, int layoutId) {
 		super(context, datas, layoutId);
@@ -49,7 +46,7 @@ public class OtherAdapter extends CommonAdapter<ChannelItem> {
 
 	@Override
 	public void convert(ViewHolder holder, ChannelItem channelItem) {
-		item_text = (ImageView)holder.getView(R.id.text_item);
+		ImageView item_text = (ImageView)holder.getView(R.id.text_item);
 		item_text.setImageBitmap(PokerEntity.getInstance().getBitmap(channelItem.resId));
 	}
 
@@ -63,7 +60,7 @@ public class OtherAdapter extends CommonAdapter<ChannelItem> {
 	public void addItem(ChannelItem channel) {
 		boolean  isAddsuccess = false;
 		for (int i = 0; i < mDatas.size(); i++) {
-			if (channel.id < mDatas.get(i).resId) {
+			if (channel.id < mDatas.get(i).id) {
 				mDatas.add(i,channel);
 				isAddsuccess = true;
 				break;
@@ -76,33 +73,16 @@ public class OtherAdapter extends CommonAdapter<ChannelItem> {
 	}
 
 	/** 设置删除的position */
-	public void setRemove(int position) {
-		remove_position = position;
-		notifyDataSetChanged();
-	}
+
 
 	/** 删除频道列表 */
-	public void remove() {
-		if (remove_position != -1) {
-			mDatas.remove(remove_position);
-			remove_position = -1;
+	public void remove(int position) {
+		if (position > 0 &&  position < mDatas.size()) {
+			mDatas.remove(position);
+
 			notifyDataSetChanged();
 		}
 	}
 
-	/** 设置频道列表 */
-	public void setListDate(List<ChannelItem> list) {
-		mDatas = list;
-	}
-
-	/** 获取是否可见 */
-	public boolean isVisible() {
-		return isVisible;
-	}
-
-	/** 设置是否可见 */
-	public void setVisible(boolean visible) {
-		isVisible = visible;
-	}
 
 }

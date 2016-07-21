@@ -99,7 +99,7 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        if (TextUtils.isEmpty(poker.getUserAnswer())) {
+                        /**if (TextUtils.isEmpty(poker.getUserAnswer())) {
                             return;
                         }
                         if (group.getChildAt(0).getId() == checkedId) {
@@ -111,6 +111,7 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                         } else if (group.getChildAt(3).getId() == checkedId) {
                             poker.setUserAnswer("方块" + poker.getUserAnswer().substring(2, 3));
                         }
+                         */
                     }
                 });
             LogUtil.e("","第"+position+"个，"+poker.getUserAnswer());
@@ -161,9 +162,9 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                     LongPokerEntity poker = mDatas.get(dataPositon);
                     String text = dianShuList.get(pos);
                     if (pos == 0) {
-                        poker.setUserAnswer("");
+                      //  poker.setUserAnswer("");
                     } else {
-                        poker.setUserAnswer(poker.getUserAnswer().substring(0, 2)+text);
+                       // poker.setUserAnswer(poker.getUserAnswer().substring(0, 2)+text);
                     }
                     textView.setText(poker.getUserAnswer());
                     //spinnerPopWindow.dismiss();
