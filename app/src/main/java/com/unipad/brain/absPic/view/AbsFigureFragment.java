@@ -59,7 +59,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
             buttonArea.setVisibility(View.GONE);
         }
     }
-
     /**
      *
      */
@@ -71,7 +70,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
         service.shuffle();
         setButtonArea();
         adapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -91,7 +89,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
     public int getLayoutId() {
         return R.layout.fragment_abs_figure;
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

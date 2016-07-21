@@ -120,8 +120,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
             }
         }
 
-
-
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             //将创建的View注册点击事件
@@ -299,7 +297,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     }
                 }
 
-
                 break;
             case R.id.numButton_clear:
                             //在第一个格子时index不做处理
@@ -368,6 +365,5 @@ public class VirtualRightFragment extends BasicCommonFragment {
     public void rememoryTimeToEnd(int answerTime) {
         this.endAnswerMode();
     }
-
 
 }
