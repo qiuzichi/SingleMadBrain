@@ -42,8 +42,8 @@ public class VirtualTimeService extends AbsBaseGameService {
             String[] word=entity[i].split("\\^");
             VirtualEntity virtualEntity=new VirtualEntity();
             virtualEntity.setDate(word[1]);
-            virtualEntity.setNumber(Integer.valueOf(word[0]));
             virtualEntity.setEvent(word[2]);
+            virtualEntity.setNumber(Integer.valueOf(word[0]));
             virtualList.add(virtualEntity);
         }
         initDataFinished();
@@ -73,12 +73,12 @@ public class VirtualTimeService extends AbsBaseGameService {
         float countScore = 0.0f; // 最后总得分，四舍五入
         int errorNum = 0; // 犯错次数
         if(null == virtualList)
-            return new int[]{0,0};
+            return new int[]{0,errorNum};
 
         for(int i = 0; i < virtualList.size() ; i ++){
             // 判断答题与试卷是否一致
             if(virtualList.get(i).getDate().equals(virtualList.get(i).getAnswerDate())){
-                countScore = countScore + correctScore; // 填写错误答案， 扣除相应分数
+                countScore = countScore + correctScore; // 填写正确答案， 加上相应分数
             } else {
                 // 累积犯错次数
                 errorNum ++;

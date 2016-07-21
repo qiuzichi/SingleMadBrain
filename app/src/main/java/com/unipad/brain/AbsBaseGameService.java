@@ -23,6 +23,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     protected int allround = 1;
 
     public boolean gameMode = true;//true为比赛模式，false为练习模式
+
     public boolean isInitResourseAready() {
         return isInitResourseAready;
     }
