@@ -8,20 +8,21 @@ import com.unipad.brain.quickPoker.entity.ChannelItem;
  * Created by gongkan on 2016/7/13.
  */
 public class LongPokerEntity extends ChannelItem {
-    private String userAnswer="";
+    private int userAnswer;
     private int num;
     public LongPokerEntity(int id, int orderId, String name,int num) {
         super(id, orderId, name);
         this.num = num;
     }
     public LongPokerEntity() {
+
     }
 
-    public String getUserAnswer() {
+    public int getUserAnswer() {
         return userAnswer;
     }
 
-    public void setUserAnswer(String userAnswer) {
+    public void setUserAnswer(int userAnswer) {
         this.userAnswer = userAnswer;
     }
 
