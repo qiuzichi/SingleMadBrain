@@ -65,6 +65,7 @@ public class LongPokerService extends AbsBaseGameService {
         float countScore = 0; // 总得分
         int errorNum = 0; // 错误行中的正确次数
         if(null == pokersQuestion){
+
             return new int[]{0,errorNum};
         }
 
