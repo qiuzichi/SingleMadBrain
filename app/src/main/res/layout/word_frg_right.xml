@@ -3,9 +3,18 @@
     android:layout_height="match_parent"
     android:background="@color/right_frg"
     android:padding="@dimen/binary_line_layout_padding">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/word_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="afterDescendants"
+        />
+
     <HorizontalScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_margin="5dp" >
 
         <LinearLayout
