@@ -33,7 +33,7 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
     }
 
     @Override
-    public void onClick(View view) {
-        super.onClick(view);
+    public void rememoryTimeToEnd(int answerTime) {
+        super.rememoryTimeToEnd(answerTime);
     }
 }

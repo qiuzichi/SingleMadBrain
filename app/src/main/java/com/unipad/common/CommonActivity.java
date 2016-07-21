@@ -127,6 +127,11 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         new Thread() {
                            @Override
                            public void run() {
+                               try {
+                                   sleep(5000);
+                               } catch (InterruptedException e) {
+                                   e.printStackTrace();
+                               }
                                SocketThreadManager.sharedInstance().
                                        downLoadQuestionOK(matchId, 100);
                            }
@@ -148,8 +153,15 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                     @Override
                     public void run() {
                         ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
-                        SocketThreadManager.sharedInstance().signOK(matchId);
                         SocketThreadManager.sharedInstance().setService(service);
+                        try {
+                            Thread.sleep(300);
+                            SocketThreadManager.sharedInstance().signOK(matchId);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+
 
                     }
                 }).start();

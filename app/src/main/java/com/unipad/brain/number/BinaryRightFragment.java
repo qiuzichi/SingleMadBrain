@@ -30,4 +30,10 @@ public class BinaryRightFragment extends NumberRightFragment{
         mLayoutBottom.findViewById(R.id.btn_delete).setOnClickListener(this);
         mLayoutBottom.findViewById(R.id.btn_go_top).setOnClickListener(this);
     }
+
+    @Override
+    public void rememoryTimeToEnd(int answerTime) {
+        super.rememoryTimeToEnd(answerTime);
+        showAnswer();
+    }
 }

@@ -277,9 +277,10 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public void rememoryTimeToEnd(final int answerTime) {
         super.rememoryTimeToEnd(answerTime);
         //mStubShade.setVisibility(View.VISIBLE);
+    }
+    public void showAnswer(){
         mNumberRememoryLayout.showAnswer(service.lineNumbers, service.answer);
     }
-
     @Override
     public void numberKey(String keyValue) {
         progress = 100 +mCursorPosition*100/mTotalNumbers;

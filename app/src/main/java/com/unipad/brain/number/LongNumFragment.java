@@ -63,6 +63,7 @@ public class LongNumFragment extends NumberRightFragment{
     @Override
     public void rememoryTimeToEnd(int answerTime) {
         super.rememoryTimeToEnd(answerTime);
+        showAnswer();
         if (mKeyboardDialog != null && mKeyboardDialog.isShowing()) {
             mKeyboardDialog.dismiss();
         }
