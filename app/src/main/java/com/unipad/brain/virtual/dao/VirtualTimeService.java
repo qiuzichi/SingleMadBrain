@@ -1,19 +1,12 @@
 package com.unipad.brain.virtual.dao;
 
-import android.app.Service;
 import android.text.TextUtils;
-import android.util.Log;
-import android.util.SparseArray;
 
-import com.unipad.AppContext;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.virtual.bean.VirtualEntity;
-import com.unipad.common.Constant;
 import com.unipad.http.HitopGetQuestion;
-import com.unipad.utils.LogUtil;
 
 import java.math.BigDecimal;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

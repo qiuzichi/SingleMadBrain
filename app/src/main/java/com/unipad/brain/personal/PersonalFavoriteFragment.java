@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.unipad.AppContext;
@@ -18,7 +17,6 @@ import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.LogUtil;
-import com.unipad.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +116,6 @@ public class PersonalFavoriteFragment extends PersonalCommonFragment implements 
                    }
                });
                 break;
-
            }
 
         }
