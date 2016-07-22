@@ -1,5 +1,6 @@
 package com.unipad.common;
 
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,8 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class ViewHolder
-{
+public class ViewHolder{
 	private SparseArray<View> mViews;
 	private int mPosition;
 	private View mConvertView;
