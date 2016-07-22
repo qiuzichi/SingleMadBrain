@@ -102,4 +102,6 @@
     <dimen name="quick_poker_top_h">26dp</dimen>
     <dimen name="quick_poker_right_w">40dp</dimen>
     <dimen name="memory_text">24sp</dimen>
+
+    <dimen name="dip_2">2dp</dimen>
 </resources>

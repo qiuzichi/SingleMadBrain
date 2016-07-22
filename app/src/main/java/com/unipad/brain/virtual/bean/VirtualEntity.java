@@ -18,7 +18,7 @@ public class VirtualEntity {
     public void setNumber(int number) {
         this.number = number;
     }
-
+    public long itemId;
     /**
      * 虚拟日期
      */

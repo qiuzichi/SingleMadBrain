@@ -1,5 +1,6 @@
 package com.unipad.common;
 
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -17,9 +18,11 @@ import com.unipad.brain.R;
 import com.unipad.brain.absPic.view.AbsFigureFragment;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
+import com.unipad.brain.longPoker.view.LongPokerRightFragment;
 import com.unipad.brain.number.BinaryRightFragment;
 import com.unipad.brain.number.LongNumFragment;
 import com.unipad.brain.number.NumberRightFragment;
+import com.unipad.brain.number.QuickRandomNumFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
 import com.unipad.brain.quickPoker.view.QuickPokerRightFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
@@ -63,12 +66,13 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     private HIDDialog dialog;
     long startTime;
 
-    private static final int STRAT_GAME = 0;
+    private static final int STRAT_MEMORY = 0;
     private static final int DOWNLOAD_QUESTION = 1;
     private static final int PAUSE_GAME = 2;
     private static final int RESTAT_GAME = 3;
     private static final int FINISH_GAME = 4;
     private static final int INIT_DATA_FINISH = 5;
+    private static final int STRAT_REMEMORY = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +88,15 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
             public void dispatchMessage(Message msg) {
                 int what = msg.what;
                 switch (msg.what) {
-                    case STRAT_GAME:
+                    case STRAT_MEMORY:
                         HIDDialog.dismissAll();
-                        gameFragment.startGame();
-                        mCommonFragment.startGame();
+                        gameFragment.startMemory();
+                        mCommonFragment.startMemory();
+                        break;
+                    case STRAT_REMEMORY:
+                        HIDDialog.dismissAll();
+                        gameFragment.startRememory();
+                        mCommonFragment.startRememory();
                         break;
                     case DOWNLOAD_QUESTION:
                         dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中");
@@ -118,6 +127,11 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         new Thread() {
                            @Override
                            public void run() {
+                               try {
+                                   sleep(5000);
+                               } catch (InterruptedException e) {
+                                   e.printStackTrace();
+                               }
                                SocketThreadManager.sharedInstance().
                                        downLoadQuestionOK(matchId, 100);
                            }
@@ -139,8 +153,15 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                     @Override
                     public void run() {
                         ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
-                        SocketThreadManager.sharedInstance().signOK(matchId);
                         SocketThreadManager.sharedInstance().setService(service);
+                        try {
+                            Thread.sleep(300);
+                            SocketThreadManager.sharedInstance().signOK(matchId);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+
 
                     }
                 }).start();
@@ -156,7 +177,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     protected void onResume() {
         super.onResume();
         startTime = startTime- System.currentTimeMillis();
-        LogUtil.e("-------","time = "+startTime);
+        LogUtil.e("-------", "time = " + startTime);
     }
     @Override
     public void initData() {
@@ -170,7 +191,6 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         } else if (competeItem.equals(getString(R.string.project_6))) {
             gameFragment = new VirtualRightFragment();
         } else if (competeItem.equals(getString(R.string.project_8))) {
-
             gameFragment = new WordRightFragment();
         } else if (competeItem.equals(getString(R.string.project_1))) {
             gameFragment = new HeadPortraitFragment();
@@ -179,11 +199,13 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         } else if (competeItem.equals(getString(R.string.project_3))){
             gameFragment = new LongNumFragment();
         } else if (competeItem.equals(getString(R.string.project_5))) {
-
+            gameFragment = new QuickRandomNumFragment();
         }  else if (competeItem.equals(getString(R.string.project_9))) {
 
         } else if (competeItem.equals(getResources().getString(R.string.project_10))){
             gameFragment = new QuickPokerRightFragment();
+        } else if (competeItem.equals(getResources().getString(R.string.project_7))){
+            gameFragment = new LongPokerRightFragment();
         }
 
         fragmentTransaction.replace(R.id.common_rfg_container, gameFragment);
@@ -200,6 +222,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         SocketThreadManager.sharedInstance().releaseInstance();
     }
 
+
     public CommonFragment getCommonFragment() {
         return mCommonFragment;
     }
@@ -211,8 +234,6 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     @Override
     public void initDataFinished() {
-
-
         handler.sendEmptyMessage(INIT_DATA_FINISH);
     }
 
@@ -223,9 +244,16 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     }
 
     @Override
-    public void startGame() {
-        handler.sendEmptyMessage(STRAT_GAME);
+    public void startMemory() {
+        handler.sendEmptyMessage(STRAT_MEMORY);
     }
+
+    @Override
+    public void startRememory() {
+        handler.sendEmptyMessage(STRAT_REMEMORY);
+    }
+
+
 
     @Override
     public void pauseGame() {
@@ -243,5 +271,15 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     public void finishGame() {
         handler.sendEmptyMessage(FINISH_GAME);
 
+    }
+
+    public void progressGame(final int progress){
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SocketThreadManager.sharedInstance().progressGame(matchId,progress,service.round);
+            }
+        }.start();
     }
 }

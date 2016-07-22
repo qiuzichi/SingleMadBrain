@@ -2,10 +2,8 @@ package com.unipad.brain.absPic.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,7 +16,6 @@ import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
-import com.unipad.io.mina.SocketThreadManager;
 
 import org.xutils.x;
 
@@ -62,7 +59,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
             buttonArea.setVisibility(View.GONE);
         }
     }
-
     /**
      *
      */
@@ -74,7 +70,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
         service.shuffle();
         setButtonArea();
         adapter.notifyDataSetChanged();
-        mActivity.getCommonFragment().startRememoryTimeCount();
     }
 
     @Override
@@ -82,13 +77,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
         service.mode = 2;
         setButtonArea();
         adapter.notifyDataSetChanged();
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),service.getScore(),memoryTime,answerTime,service.getAnswerData());
-            }
-        }.start();
     }
 
     @Override
@@ -101,7 +89,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
     public int getLayoutId() {
         return R.layout.fragment_abs_figure;
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -134,6 +121,8 @@ public class AbsFigureFragment extends BasicCommonFragment {
         }
         preAnswer = current;
         current++;
+        gridView.smoothScrollToPosition(current+1);
+
         View curr = gridView.getChildAt(current - visiblePosition);
         if (curr != null) {
             TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
@@ -148,8 +137,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     }
 
     @Override
-    public void startGame() {
-        super.startGame();
+    public void startMemory() {
         mStubShade.setVisibility(View.GONE);
     }
 
@@ -169,8 +157,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
         public FigureAdapter(Context context, List<Figure> datas, int layoutId) {
             super(context, datas, layoutId);
         }
-
-
         /**
          * @param holder
          * @param figure

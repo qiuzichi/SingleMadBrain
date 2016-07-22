@@ -1,8 +1,25 @@
 package com.unipad.brain.quickPoker.view;
 
-import java.util.ArrayList;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.adapter.DragAdapter;
 import com.unipad.brain.quickPoker.adapter.OtherAdapter;
@@ -19,28 +36,7 @@ import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.SparseIntArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
-import android.view.animation.Animation.AnimationListener;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView;
+import java.util.ArrayList;
 
 public class QuickPokerRightFragment extends BasicCommonFragment implements
         View.OnClickListener, OnItemClickListener {
@@ -50,7 +46,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     private ImageButton mIBtnBrowseMode;
     private View mRightLayout, mHorizontalLayout, mBrowseLayout;
     private ViewStub mStubMutiBrowse, mStubAnswer;
-            private View mStubAnswerShade;
+    private View mStubAnswerShade;
     private QuickPokerBrowseHorizontalView mSingleLineLayout;// 单行浏览模式
     private QuickPokerBrowseVerticalView mMUtiLineLayout;// 多行浏览模式
     /**
@@ -286,21 +282,24 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                     newTextView.getLocationInWindow(startLocation);
                     final ChannelItem channel = ((DragAdapter) parent.getAdapter())
                             .getItem(position);// 获取点击的频道内容
-                    otherAdapter.setVisible(false);
+                    //otherAdapter.setVisible(false);
                     // 添加到最后一个
                     otherAdapter.addItem(channel);
+
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             try {
+
                                 int[] endLocation = new int[2];
                                 // 获取终点的坐标
                                 otherGridView.getChildAt(
                                         otherGridView.getLastVisiblePosition())
                                         .getLocationInWindow(endLocation);
                                 MoveAnim(moveImageView, startLocation, endLocation,
-                                        channel, userGridView);
-                                userAdapter.setRemove(position);
+                                        channel, userGridView,position);
+
                             } catch (Exception localException) {
+                                localException.printStackTrace();
                             }
                         }
                     }, 50L);
@@ -315,21 +314,24 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                     newTextView.getLocationInWindow(startLocation);
                     final ChannelItem channel = ((OtherAdapter) parent.getAdapter())
                             .getItem(position);
-                    userAdapter.setVisible(false);
+
                     // 添加到最后一个
                     userAdapter.addItem(channel);
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             try {
+
+
                                 int[] endLocation = new int[2];
                                 // 获取终点的坐标
                                 userGridView.getChildAt(
                                         userGridView.getLastVisiblePosition())
                                         .getLocationInWindow(endLocation);
                                 MoveAnim(moveImageView2, startLocation,
-                                        endLocation, channel, otherGridView);
-                                otherAdapter.setRemove(position);
+                                        endLocation, channel, otherGridView,position);
+
                             } catch (Exception localException) {
+                                localException.printStackTrace();
                             }
                         }
                     }, 50L);
@@ -351,7 +353,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
      */
     private void MoveAnim(View moveView, int[] startLocation,
                           int[] endLocation, final ChannelItem moveChannel,
-                          final GridView clickGridView) {
+                          final GridView clickGridView, final int position) {
         int[] initLocation = new int[2];
         // 获取传递过来的VIEW的坐标
         moveView.getLocationInWindow(initLocation);
@@ -385,13 +387,12 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                 moveViewGroup.removeView(mMoveView);
                 // instanceof 方法判断2边实例是不是一样，判断点击的是DragGrid还是OtherGridView
                 if (clickGridView instanceof DragGrid) {
-                    otherAdapter.setVisible(true);
-                    otherAdapter.notifyDataSetChanged();
-                    userAdapter.remove();
+
+                    userAdapter.remove(position);
                 } else {
-                    userAdapter.setVisible(true);
-                    userAdapter.notifyDataSetChanged();
-                    otherAdapter.remove();
+                    otherAdapter.remove(position);
+
+
                 }
                 isMove = false;
                 leftCards.setText(" " + otherAdapter.getChannnelLst().size()
@@ -451,6 +452,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
 
     @Override
     public void rememoryTimeToEnd(int answerTime) {
+        super.rememoryTimeToEnd(answerTime);
         endAnswerMode(answerTime);
 
     }
@@ -459,15 +461,22 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     public void memoryTimeToEnd(int memoryTime) {
         super.memoryTimeToEnd(memoryTime);
         inAnswerMode();
+        sendMsgToPreper();
     }
     @Override
     public void initDataFinished() {
         super.initDataFinished();
         mStubAnswerShade.setVisibility(View.VISIBLE);
     }
+
     @Override
-    public void startGame() {
-        super.startGame();
+    public void startRememory() {
+        super.startRememory();
+    }
+
+    @Override
+    public void startMemory() {
+        super.startMemory();
         mStubAnswerShade.setVisibility(View.GONE);
         inMemoryMode();
     }

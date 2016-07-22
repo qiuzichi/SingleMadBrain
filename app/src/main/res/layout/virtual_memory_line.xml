@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="80dp">
-
+    android:layout_height="80dp"
+    >
     <TextView
         android:id="@+id/id_num"
         android:layout_width="50dp"
@@ -31,8 +31,8 @@
         android:textSize="20dp"
         android:gravity="center"
         android:clickable="true"
+        android:maxLength="4"
         />
-
     <TextView
         android:id="@+id/event_text"
         android:layout_width="150dp"
@@ -42,7 +42,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="130dp"
         android:gravity="center"
-        android:clickable="true"
         />
 
     <ImageView

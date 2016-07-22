@@ -31,6 +31,7 @@ public class Constant {
     public static final String SHOW_GAME_PAUSE = "com.unipad.show_game_pause";
     public static final String INIT_REMEMORY_DLG = "com.unipad.init_rememory_dlg";
     public static final String COMMIT_POCKER_GAME_DLG = "commit_pocker_game_dlg";
+    public static final String LONG_POKER_REMEMORY_DLG = "long_poker_rememory_dlg";
 
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
     public static final String LONG_SERVICE = "com.unipad.brain.number.dao.NumService";
@@ -42,6 +43,8 @@ public class Constant {
     public static final String WORD_GAME = "00003";
     public static final String VIRTUAL_TIME_SERVICE = "virtual_time_service";
     public static final String QUICK_POKER_SERVICE = "quick_poker_service";
+    public static final String LONG_POKER_SERVICE = "long_poker_service";
+    public static final String QUICK_RANDOM_NUM_SERVICE ="quick_random_num_service" ;
 
 
     private static Map<String, String> projectNames;

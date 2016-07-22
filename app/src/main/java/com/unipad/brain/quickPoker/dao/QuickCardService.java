@@ -37,7 +37,7 @@ public class QuickCardService extends AbsBaseGameService{
 	public boolean init() {
 		bindPokerImageRes();
 		initCards();
-		parseDataByRound(1);
+		//parseDataByRound(1);
 		return true;
 	}
 
@@ -49,10 +49,12 @@ public class QuickCardService extends AbsBaseGameService{
 	@Override
 	public void parseData(String data) {
 		super.parseData(data);
+		LogUtil.e(TAG,data);
 		String[] allCard = data.split(",");
+		allround = allCard.length;
 		round1 = allCard[0];
 		round2 = allCard[1];
-		parseDataByRound(1);
+		parseDataByRound(round);
 	}
 
 	public void parseDataByRound(int round) {
@@ -114,14 +116,14 @@ public class QuickCardService extends AbsBaseGameService{
 
 
 
-	public void initCards() {
+	private void initCards() {
 
 		for (int i = 0; i < Constant.POKER_NUM; i++) {
 
 			bottomCards.add(new ChannelItem(i+1, mPokerImageArray.get(i),huaSe[i/13]+dian[i%13]));
 
 		}
-
+		LogUtil.e("","bottom size = "+bottomCards.size());
 	}
 
 }

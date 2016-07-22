@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.adapter.DragAdapter;
 import com.unipad.utils.DataTools;
+import com.unipad.utils.LogUtil;
 
 public class DragGrid extends GridView {
 	/** 点击时候的X位置 */
@@ -72,6 +73,7 @@ public class DragGrid extends GridView {
 	/* 移动时候最后个动画的ID */
 	private String LastAnimationID;
 
+	private int[] positionInWindow;
 	public DragGrid(Context context) {
 		super(context);
 		init(context);
@@ -122,13 +124,27 @@ public class DragGrid extends GridView {
 			case MotionEvent.ACTION_MOVE:
 				onDrag(x, y, (int) ev.getRawX(), (int) ev.getRawY());
 				if (!isMoving) {
-					OnMove(x, y);
+					//OnMove(x, y);
 				}
 				if (pointToPosition(x, y) != AdapterView.INVALID_POSITION) {
 					break;
 				}
 				break;
 			case MotionEvent.ACTION_UP:
+				LogUtil.e("","touch x = "+x+",y = "+y);
+				LogUtil.e("","window x = "+windowParams.x+", y ="+windowParams.y);
+				if(positionInWindow == null) {
+					positionInWindow = new int[2];
+					getLocationInWindow(positionInWindow);
+				}
+				LogUtil.e("","1---"+positionInWindow[0]+",y="+positionInWindow[1]);
+					getChildAt(0).getLocationInWindow(positionInWindow);
+				LogUtil.e("", "2---" + positionInWindow[0] + ",y=" + positionInWindow[1]);
+					getLocationOnScreen(positionInWindow);
+				LogUtil.e("", "3---" + positionInWindow[0] + ",y=" + positionInWindow[1]);
+				x = (int) (windowParams.x - positionInWindow[0]);
+				y = (int) (windowParams.y - positionInWindow[1]);
+				LogUtil.e("","after x = "+x+",y = "+y);
 				stopDrag();
 				onDrop(x, y);
 				requestDisallowInterceptTouchEvent(false);
@@ -157,13 +173,22 @@ public class DragGrid extends GridView {
 	private void onDrop(int x, int y) {
 		// 根据拖动到的x,y坐标获取拖动位置下方的ITEM对应的POSTION
 		int tempPostion = pointToPosition(x, y);
+		DragAdapter mDragAdapter = (DragAdapter) getAdapter();
+		mDragAdapter.showDropItem();
+		mDragAdapter.setDropItem(null);
+		if (tempPostion == -1) {
+			return;
+		}
+		tempPostion ++;
 		// if (tempPostion != AdapterView.INVALID_POSITION) {
 		dropPosition = tempPostion;
-		DragAdapter mDragAdapter = (DragAdapter) getAdapter();
-		// 显示刚拖动的ITEM
-		mDragAdapter.setShowDropItem(true);
-		// 刷新适配器，让对应的ITEM显示
-		mDragAdapter.notifyDataSetChanged();
+
+		mDragAdapter.exchange(startPosition,
+				dropPosition);
+
+		startPosition = dropPosition;
+		dragPosition = dropPosition;
+
 		// }
 	}
 
@@ -209,7 +234,7 @@ public class DragGrid extends GridView {
 					mVibrator.vibrate(50);// 设置震动时间
 					startDrag(dragBitmap, (int) ev.getRawX(),
 							(int) ev.getRawY());
-					hideDropItem();
+					setDropItem(dragViewGroup);
 					dragViewGroup.setVisibility(View.INVISIBLE);
 					isMoving = false;
 					requestDisallowInterceptTouchEvent(true);
@@ -266,8 +291,8 @@ public class DragGrid extends GridView {
 	}
 
 	/** 隐藏 放下 的ITEM */
-	private void hideDropItem() {
-		((DragAdapter) getAdapter()).setShowDropItem(false);
+	private void setDropItem(View view) {
+		((DragAdapter) getAdapter()).setDropItem(view);
 	}
 
 	/** 获取移动动画 */

@@ -1,6 +1,5 @@
 package com.unipad.brain.words.dao;
 
-import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.words.bean.WordEntity;
 import com.unipad.http.HitopGetQuestion;
@@ -60,7 +59,7 @@ public class WordsService extends AbsBaseGameService {
             word.setWord(aWord[1]);
             LogUtil.e("", "i = " + i + "," + word.getWord() + word.getNumber());
            int index = (num-1) / rows + (num-1) % rows * lines;
-            wordEntities[index] = word;
+            wordEntities[num-1] = word;
             entitys.add(word);
         }
         int i =  entitys.size();
