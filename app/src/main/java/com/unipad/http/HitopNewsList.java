@@ -77,8 +77,8 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
                     int iSize = jsonArray.length();
                     newsList = new ArrayList<>();
                     for (int i = 0; i < iSize; i++) {
-                        NewEntity bean = new NewEntity();
                         JSONObject jsonObj2 = jsonArray.getJSONObject(i);
+                        NewEntity bean = new NewEntity();
                         bean.setBrief(jsonObj2.getString("brief"));
                         bean.setThumbUrl(HttpConstant.PATH_FILE_URL + jsonObj2.getString("pictureUrl"));
                         bean.setPublishDate(jsonObj2.getString("createDate"));

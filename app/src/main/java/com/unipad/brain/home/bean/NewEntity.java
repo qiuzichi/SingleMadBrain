@@ -40,6 +40,12 @@ public class NewEntity {
     private  boolean isLike;
 
 
+    //当前页 是页数
+    private int curPage;
+    //当前页 是页数
+    private int nextPage;
+
+
 
 
     public String getId() {
@@ -113,5 +119,20 @@ public class NewEntity {
         this.isLike = isLike;
     }
 
+    public int getCurPage() {
+        return curPage;
+    }
+
+    public void setCurPage(int curPage) {
+        this.curPage = curPage;
+    }
+
+    public int getNextPage() {
+        return nextPage;
+    }
+
+    public void setNextPage(int nextPage) {
+        this.nextPage = nextPage;
+    }
 
 }
