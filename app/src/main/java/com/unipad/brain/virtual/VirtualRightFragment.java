@@ -180,6 +180,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
         @Override
         public int getItemCount() {
             return virtualList.size();
+
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
