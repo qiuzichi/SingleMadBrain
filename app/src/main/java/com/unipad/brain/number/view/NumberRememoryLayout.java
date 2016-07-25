@@ -19,6 +19,7 @@ import com.unipad.brain.R;
 import com.unipad.brain.number.IInitRememoryCallBack;
 import com.unipad.brain.number.bean.RandomNumberEntity;
 import com.unipad.brain.number.dao.NumService;
+import com.unipad.utils.LogUtil;
 import com.unipad.utils.StringUtil;
 
 /**
@@ -104,6 +105,18 @@ public class NumberRememoryLayout extends LinearLayout implements
         mHandler.sendEmptyMessage(NumService.MSG_OPEN_THREAD);
     }
 
+    public void clearText(){
+        for (int i = 0; i < mLines; i++) {
+            ViewGroup viewGroup = (ViewGroup) getChildAt(i);
+            viewGroup = (ViewGroup) viewGroup.getChildAt(0);
+            StringBuilder answerLine = new StringBuilder();
+            for (int j = 0; j < viewGroup.getChildCount(); j++) {
+                TextView textNumber = (TextView) viewGroup.getChildAt(j);
+                    textNumber.setText("");
+            }
+
+        }
+    }
     private void addLineLayout(int index) {
         RelativeLayout parent = (RelativeLayout) mInflater.inflate(
                 R.layout.number_v_line, null);
@@ -286,6 +299,25 @@ public class NumberRememoryLayout extends LinearLayout implements
             mRightCursorAnim.stop();
         }
     }
+
+    public void getAnswer(SparseArray<String> answer) {
+            for (int i = 0; i < mLines; i++) {
+                ViewGroup viewGroup = (ViewGroup) getChildAt(i);
+                viewGroup = (ViewGroup) viewGroup.getChildAt(0);
+                StringBuilder answerLine = new StringBuilder();
+                for (int j = 0; j < viewGroup.getChildCount(); j++) {
+                    TextView textNumber = (TextView) viewGroup.getChildAt(j);
+                    String userAnswer = textNumber.getText().toString().trim();
+                    if (TextUtils.isEmpty(userAnswer)) {
+                        userAnswer = " ";
+                    }
+                    answerLine.append(userAnswer);
+                }
+                LogUtil.e("","answer:"+(i+1)+","+answerLine.toString());
+                answer.put(i+1, answerLine.toString());
+            }
+    }
+
     public void showAnswer(SparseArray<String> data,SparseArray<String> answer) {
         for (int i = 0; i < mLines; i++) {
             String orgin = data.valueAt(i);

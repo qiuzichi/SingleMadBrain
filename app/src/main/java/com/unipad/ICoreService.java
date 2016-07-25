@@ -11,12 +11,12 @@ public interface  ICoreService {
         boolean IsALlAready();
         void initResourse(String soursePath);
 
-        void startMemory();
+        void startMemory(int round);
         void starRememory();
 
         void pauseGame();
 
         void reStartGame();
-        void initDataFinished();
+
     }
 }

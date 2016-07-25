@@ -60,6 +60,7 @@ public class NumService extends AbsBaseGameService {
      */
     public  SparseArray<String> lineNumbers = new SparseArray<>();
 
+    private String[] allQuestion;
 
     public SparseArray<String> answer = new SparseArray<>();
 
@@ -77,16 +78,26 @@ public class NumService extends AbsBaseGameService {
     @Override
     public void parseData(String data) {
         super.parseData(data);
-        LogUtil.e("","data == "+data);
-        String [] persData = data.split(",");
+        allQuestion  = data.split("&");
+        LogUtil.e("", "data == " + data);
+        parseDataByNextRound();
+    }
+
+
+    public boolean parseDataByNextRound(){
+        if (isLastRound()){
+            return false;
+        }
+        lineNumbers.clear();
+        String [] persData = allQuestion[round].split(",");
         lines = persData.length;
         for (int i = 0;i<lines;i++){
             String[] detail = persData[i].split("\\^");
             lineNumbers.put(Integer.valueOf(detail[0]),detail[1]);
         }
         initDataFinished();
+        return true;
     }
-
     @Override
     public double getScore() {
         return getNumberScore(40f,20f,2f,1f,1)[0];

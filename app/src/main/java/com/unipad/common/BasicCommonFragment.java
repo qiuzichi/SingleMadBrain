@@ -93,6 +93,12 @@ public abstract class BasicCommonFragment extends Fragment implements
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(MSG_PROGRESS);
+    }
+
+    @Override
     public void initDataFinished() {
 
     }
