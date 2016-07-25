@@ -48,7 +48,7 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
                         rule.setTiltle(dataJson.getString("title"));
                         rule.setRuleNo(dataJson.getString("ruleNo"));
                         rule.setCountRule(dataJson.getString("scoreText"));
-                        rule.setCountRecall(dataJson.getInt("recallCount"));
+                        rule.setCountRecall(dataJson.optInt("recallCount",1));
                         int[] memoryTime = new int[rule.getCountRecall()];
                         int[] reMemoryTime = new int[rule.getCountRecall()];
                         switch (rule.getCountRecall()){

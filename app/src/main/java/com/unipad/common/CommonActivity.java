@@ -39,6 +39,7 @@ import java.util.Map;
  * Created by Wbj on 2016/4/7.
  */
 public class CommonActivity extends BasicActivity implements IDataObserver,IOperateGame{
+    private static final String TAG = "CommonActivity" ;
     private CommonFragment mCommonFragment = new CommonFragment();
 
     private AbsBaseGameService service;
@@ -90,34 +91,41 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                 int what = msg.what;
                 switch (msg.what) {
                     case STRAT_MEMORY:
+                        LogUtil.e(TAG,"STRAT_MEMORY");
                         HIDDialog.dismissAll();
                         gameFragment.startMemory();
                         mCommonFragment.startMemory();
                         break;
                     case STRAT_REMEMORY:
+                        LogUtil.e(TAG,"STRAT_REMEMORY");
                         HIDDialog.dismissAll();
                         gameFragment.startRememory();
                         mCommonFragment.startRememory();
                         break;
                     case DOWNLOAD_QUESTION:
+                        LogUtil.e(TAG,"DOWNLOAD_QUESTION");
                         ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
                         break;
                     case PAUSE_GAME:
+                        LogUtil.e(TAG,"PAUSE_GAME");
                         HIDDialog.dismissAll();
                         ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
                         break;
                     case RESTAT_GAME:
+                        LogUtil.e(TAG,"RESTAT_GAME");
                         HIDDialog.dismissAll();
                         gameFragment.reStartGame();
                         mCommonFragment.reStartGame();
                         break;
                     case FINISH_GAME:
+                        LogUtil.e(TAG,"FINISH_GAME");
                         gameFragment.finishGame();
                         mCommonFragment.finishGame();
                         break;
                     case DLG_DELAY_DISMISS:
+                        LogUtil.e("","DLG_DELAY_DISMISS");
                         HIDDialog dialog = HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE);
                         if (dialog == null) {
                             HIDDialog.dismissAll();
@@ -127,6 +135,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         }
                         break;
                     case INIT_DATA_FINISH:
+                        LogUtil.e("","INIT_DATA_FINISH");
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
                         handler.sendEmptyMessageDelayed(DLG_DELAY_DISMISS, 5000);

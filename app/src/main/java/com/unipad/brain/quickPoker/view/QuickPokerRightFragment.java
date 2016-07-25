@@ -196,7 +196,13 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         ToastUtil.createOkAndCancelDialog(mActivity, Constant.COMMIT_POCKER_GAME_DLG, content, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HIDDialog.dismissDialog(Constant.COMMIT_POCKER_GAME_DLG);
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        service.parseDataByRound();
+                    }
+                }.start();
             }
         }).show();
 
