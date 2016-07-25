@@ -48,7 +48,10 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
     private SearchAdapter mSearchAdapter;
     private ListView mListView;
     private PopupWindow mPopupWindows;
-
+    private String contentId;
+    private int pageId;
+    private final String OPERATE_ZAN = "1";
+    private final String OPERATE_COMMENT = "2";
 
 
     @Override
@@ -57,8 +60,14 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         setContentView(R.layout.activity_search_result);
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_SEARCH_RUSULT, this);
+        service.registerObserver(HttpConstant.NOTIFY_GET_SEARCH_OCCSION, this);
+        service.registerObserver(HttpConstant.NOTIFY_GET_SEARCH_HOTSPOT, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
-        String contentId = getIntent().getStringExtra("contentId");
+
+        contentId = getIntent().getStringExtra("contentId");
+        //说明的第一个页面 资讯页面；00001---1
+        pageId = Integer.parseInt(contentId.substring(contentId.lastIndexOf("0") + 1)) - 1;
+
         service.getSearchNews(contentId, contentId, getIntent().getStringExtra("queryContent"), 1, 10);
     }
 
@@ -70,11 +79,13 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
         ((TextView)findViewById(R.id.title_back_text_search)).setOnClickListener(this);
 
         String title = null;
-        if("00001".equals(getIntent().getStringExtra("contentId"))){
+        if("00001".equals(contentId)){
             title = getString(R.string.info_result);
-        }else if("00002".equals(getIntent().getStringExtra("contentId"))) {
+
+
+        }else if("00002".equals(contentId)) {
             title = getString(R.string.competetion_result);
-        }else if("00003".equals(getIntent().getStringExtra("contentId"))) {
+        }else if("00003".equals(contentId)) {
             title = getString(R.string.hotspot_result);
         }
        //设置搜索结果的标题
@@ -122,7 +133,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
                 @Override
                 public void onClick(View v) {
 
-                    service.getNewsOperate(newEntity.getId(), "1", String.valueOf(!newEntity.getIsLike()), "0", 0,
+                    service.getNewsOperate(newEntity.getId(), OPERATE_ZAN, String.valueOf(!newEntity.getIsLike()), null, pageId,
                             new Callback.CommonCallback<String>() {
                                 @Override
                                 public void onSuccess(String s) {
@@ -212,7 +223,7 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
                 }
 
                 //提交评论内容到服务器
-                service.getNewsOperate(newEntity.getId(), "2", null, user_comment, 0, new Callback.CommonCallback<String>(){
+                service.getNewsOperate(newEntity.getId(), OPERATE_COMMENT, null, user_comment, pageId, new Callback.CommonCallback<String>(){
 
                     @Override
                     public void onSuccess(String s) {
@@ -299,6 +310,8 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
     public void update(int key, Object o) {
         switch (key) {
             case HttpConstant.NOTIFY_GET_SEARCH_RUSULT:
+            case HttpConstant.NOTIFY_GET_SEARCH_OCCSION:
+            case HttpConstant.NOTIFY_GET_SEARCH_HOTSPOT:
 
                 mSearchDatas.clear();
                 //获取新闻页面数据
@@ -315,6 +328,8 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
 
                 break;
             case HttpConstant.NOTIFY_GET_OPERATE:
+
+                mSearchAdapter.notifyDataSetChanged();
                 break;
             default:
                 break;
@@ -336,6 +351,8 @@ public class SearchResultActivity  extends BasicActivity implements IDataObserve
     }
     private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_SEARCH_RUSULT,this);
+        service.unRegisterObserve(HttpConstant.NOTIFY_GET_SEARCH_OCCSION,this);
+        service.unRegisterObserve(HttpConstant.NOTIFY_GET_SEARCH_HOTSPOT,this);
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE,this);
     }
 

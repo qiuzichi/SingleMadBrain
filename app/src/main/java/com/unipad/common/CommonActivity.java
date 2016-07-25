@@ -60,17 +60,18 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     private String projectId;
 
-    private HIDDialog dialog;
     long startTime;
 
-    private static final int STRAT_MEMORY = 0;
+
+
     private static final int DOWNLOAD_QUESTION = 1;
     private static final int PAUSE_GAME = 2;
     private static final int RESTAT_GAME = 3;
     private static final int FINISH_GAME = 4;
     private static final int INIT_DATA_FINISH = 5;
     private static final int STRAT_REMEMORY = 6;
-
+    private static final int STRAT_MEMORY = 7;
+    private static final int DLG_DELAY_DISMISS = 8;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,14 +97,11 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         mCommonFragment.startRememory();
                         break;
                     case DOWNLOAD_QUESTION:
-                        dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中");
-                        dialog.show();
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
                         break;
-
                     case PAUSE_GAME:
                         HIDDialog.dismissAll();
-                        dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停");
-                        dialog.show();
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
                         break;
@@ -116,21 +114,26 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         gameFragment.finishGame();
                         mCommonFragment.finishGame();
                         break;
+                    case DLG_DELAY_DISMISS:
+                        HIDDialog dialog = HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE);
+                        if (dialog == null) {
+                            HIDDialog.dismissAll();
+                            ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "等待裁判准备开始").show();
+                        } else {
+                            ((TextView) dialog.findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
+                        }
+                        break;
                     case INIT_DATA_FINISH:
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
-                        ((TextView) HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE).findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
-                        LogUtil.e("","-------------下载完成-----------");
+                        handler.sendEmptyMessageDelayed(DLG_DELAY_DISMISS, 5000);
+
                         new Thread() {
                            @Override
                            public void run() {
-                               try {
-                                   sleep(5000);
-                               } catch (InterruptedException e) {
-                                   e.printStackTrace();
-                               }
                                SocketThreadManager.sharedInstance().
                                        downLoadQuestionOK(matchId, 100);
+                               LogUtil.e("", "-------------下载完成-----------");
                            }
                        }.start();;
                         break;
@@ -151,9 +154,10 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                     public void run() {
                         ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
                         SocketThreadManager.sharedInstance().setService(service);
+                        SocketThreadManager.sharedInstance().setMatchId(matchId);
                         try {
                             Thread.sleep(300);
-                            SocketThreadManager.sharedInstance().signOK(matchId);
+                            SocketThreadManager.sharedInstance().startThreads();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

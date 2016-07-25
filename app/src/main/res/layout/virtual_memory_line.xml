@@ -31,7 +31,6 @@
         android:textSize="20dp"
         android:gravity="center"
         android:clickable="true"
-        android:enabled="true"
         android:maxLength="4"
         />
     <TextView

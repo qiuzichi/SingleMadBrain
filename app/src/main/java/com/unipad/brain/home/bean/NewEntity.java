@@ -40,6 +40,12 @@ public class NewEntity {
     private  boolean isLike;
 
 
+    //当前页 是总页数
+    private int totalPager;
+    //当前页 是总的数据个数；
+    private int totalCount;
+
+
 
 
     public String getId() {
@@ -113,5 +119,20 @@ public class NewEntity {
         this.isLike = isLike;
     }
 
+    public int getTotalPager() {
+        return totalPager;
+    }
+
+    public void setTotalPager(int totalPager) {
+        this.totalPager = totalPager;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 
 }

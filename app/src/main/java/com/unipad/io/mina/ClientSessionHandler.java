@@ -1,9 +1,15 @@
 package com.unipad.io.mina;
 
+import com.unipad.AppContext;
+import com.unipad.common.MobileInfo;
 import com.unipad.utils.LogUtil;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientSessionHandler extends IoHandlerAdapter {
 
@@ -17,9 +23,25 @@ public class ClientSessionHandler extends IoHandlerAdapter {
     public void sessionOpened(IoSession session) throws Exception {
         // TODO Auto-generated method stub
         super.sessionOpened(session);
+        if (handler != null) {
+            Map<String, String> body = new HashMap<String, String>();
+            body.put("USERID", AppContext.instance().loginUser.getUserId());
+            body.put("SCHEDULEID", handler.getMatchId());
+            body.put("DEVICE", MobileInfo.getDeviceId());
+            Request request = new Request("10001", body);
+            request.sendMsg(session);
+        }
 //		String signXML = "00000203<?xml version=\"1.0\" encoding=\"GBK\"?><TRX><HEAD><TRXCODE>10001</TRXCODE></HEAD><BODY><USERID>0887E43BA5CF47E2B4140BE3979317CB</USERID><SCHEDULEID>483A00A3A56B41E8B0E0C93BB8253165</SCHEDULEID></BODY></TRX>";
       //  String signXML = "00000203<?xml version=\"1.0\" encoding=\"GBK\"?><TRX><HEAD><TRXCODE>10001</TRXCODE></HEAD><BODY><USERID>0CC8A614B2CC48FFBE591E6142136076</USERID><SCHEDULEID>DFA3A8C92B2F43D692339B80499250E8</SCHEDULEID></BODY></TRX>";
       //  session.write(signXML);
+    }
+
+    @Override
+    public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
+        super.sessionIdle(session, status);
+        if (session != null){
+            session.closeNow();
+        }
     }
 
     @Override
@@ -46,14 +68,6 @@ public class ClientSessionHandler extends IoHandlerAdapter {
     @Override
     public void sessionClosed(IoSession session) throws Exception {
         super.sessionClosed(session);
-        while (isReconect) {
-            try {
-                Thread.sleep(15000);
-                // 这里是异步操作 连接后立即返回
-                LongTcpClient.instant().reConnect();
-            } catch (Exception e) {
-            }
-        }
     }
 
     //	public static void main(String[] args) {
@@ -64,14 +78,12 @@ public class ClientSessionHandler extends IoHandlerAdapter {
 //		
 //	}
 //
-    public void setIsReconect(boolean isReconect) {
-        this.isReconect = isReconect;
-    }
 
     /**
      * Created by gongkan on 2016/5/31.
      */
     public static interface IDataHandler {
         void processPack(IPack pack);
+        String getMatchId();
     }
 }

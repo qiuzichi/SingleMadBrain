@@ -117,7 +117,7 @@ public class RecommendGallery extends Gallery implements OnItemSelectedListener{
 //        e1 = startEvent;+v
         int count = getCount();
         int position = getSelectedItemPosition();
-Log.d("onfiling",  "运行onfiling  滑动事件");
+
 
 
         if(e1.getX() > e2.getX()) {
@@ -158,8 +158,6 @@ Log.d("onfiling",  "运行onfiling  滑动事件");
                 break;
             case MotionEvent.ACTION_MOVE:
 
-
-                Log.d("gallery", "移动 " + event.getX() + "==={" +startX   );
                 break;
 
             case MotionEvent.ACTION_UP:  //松开
