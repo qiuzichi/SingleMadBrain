@@ -40,10 +40,10 @@ public class NewEntity {
     private  boolean isLike;
 
 
-    //当前页 是页数
-    private int curPage;
-    //当前页 是页数
-    private int nextPage;
+    //当前页 是总页数
+    private int totalPager;
+    //当前页 是总的数据个数；
+    private int totalCount;
 
 
 
@@ -119,20 +119,20 @@ public class NewEntity {
         this.isLike = isLike;
     }
 
-    public int getCurPage() {
-        return curPage;
+    public int getTotalPager() {
+        return totalPager;
     }
 
-    public void setCurPage(int curPage) {
-        this.curPage = curPage;
+    public void setTotalPager(int totalPager) {
+        this.totalPager = totalPager;
     }
 
-    public int getNextPage() {
-        return nextPage;
+    public int getTotalCount() {
+        return totalCount;
     }
 
-    public void setNextPage(int nextPage) {
-        this.nextPage = nextPage;
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 
 }

@@ -73,12 +73,20 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
             if (jsObj != null && jsObj.toString().length() != 0) {
                 if (jsObj.getInt("ret_code") == 0) {
                     JSONObject data = new JSONObject(jsObj.getString("data"));
+                    int totalPage = data.getInt("totalPage");
+                    int totalCount = data.getInt("totalCount");
+
                     JSONArray jsonArray = data.getJSONArray("resultList");
+
                     int iSize = jsonArray.length();
                     newsList = new ArrayList<>();
                     for (int i = 0; i < iSize; i++) {
                         JSONObject jsonObj2 = jsonArray.getJSONObject(i);
                         NewEntity bean = new NewEntity();
+                        if(i==0){
+                            bean.setTotalPager(totalPage);
+                            bean.setTotalCount(totalCount);
+                        }
                         bean.setBrief(jsonObj2.getString("brief"));
                         bean.setThumbUrl(HttpConstant.PATH_FILE_URL + jsonObj2.getString("pictureUrl"));
                         bean.setPublishDate(jsonObj2.getString("createDate"));
@@ -93,18 +101,23 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
             return null;
         }
         int key =HttpConstant.NOTIFY_GET_NEWS;
-
-        if ("00001".equals(contenttype)){
-            key = HttpConstant.NOTIFY_GET_NEWS;
-        } else if ("00002".equals(contenttype)){
-            key = HttpConstant.NOTIFY_GET_COMPETITION;
-        }else if ("00003".equals(contenttype)) {
-            key = HttpConstant.NOTIFY_GET_HOTSPOT;
+        if(TextUtils.isEmpty(keyId)){
+            if ("00001".equals(contenttype)){
+                key = HttpConstant.NOTIFY_GET_NEWS;
+            } else if ("00002".equals(contenttype)){
+                key = HttpConstant.NOTIFY_GET_COMPETITION;
+            }else if ("00003".equals(contenttype)) {
+                key = HttpConstant.NOTIFY_GET_HOTSPOT;
+            }
+        }else {
+            if("00001".equals(keyId)){
+                key = HttpConstant.NOTIFY_GET_SEARCH_RUSULT;
+            }else if("00002".equals(keyId)){
+                key = HttpConstant.NOTIFY_GET_SEARCH_OCCSION;
+            } else if("00003".equals(keyId)){
+                key = HttpConstant.NOTIFY_GET_SEARCH_HOTSPOT;
+            }
         }
-        if("00001".equals(keyId)){
-            key =HttpConstant.NOTIFY_GET_SEARCH_RUSULT;
-        }
-
 
         ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(key,newsList);
         keyId = null;

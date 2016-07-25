@@ -3,8 +3,6 @@ package com.unipad.brain.consult.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,34 +10,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.ProgressBar;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.lidroid.xutils.BitmapUtils;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.consult.adapter.MyRecyclerAdapter;
 import com.unipad.brain.consult.entity.AdPictureBean;
-
+import com.unipad.brain.consult.entity.ConsultTab;
 import com.unipad.brain.consult.listener.DividerDecoration;
+import com.unipad.brain.consult.listener.OnLoadMoreListener;
 import com.unipad.brain.consult.widget.RecommendGallery;
 import com.unipad.brain.consult.widget.RecommendPot;
 import com.unipad.brain.home.MainBasicFragment;
@@ -52,7 +34,6 @@ import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
 
-import org.xutils.common.Callback;
 import org.xutils.common.util.DensityUtil;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -68,26 +49,24 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     private List<NewEntity> newsDatas;
     private List<AdPictureBean> newsAdvertDatas ;
-    //默认加载第一页  的数据
+    //默认加载第一页  的数据 标记为最后一页的页数
     private int requestPagerNum = 1;
     private final int primaryDataNumber = 10;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
     private NewsService service;
-    private PopupWindow mPopupWindows;
     private AdViewPagerAdapter adAdapter;
     private RecommendGallery mAdvertLuobo;
     private boolean isGetData;
     private RecommendPot adPotView;
     private ImageOptions imageOptions;
-    private BitmapUtils biutmapUtils;
-
-    private MyRecyclerViewAdapter mRecyclerViewAdapter;
+    private MyRecyclerAdapter mRecyclerViewAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     //是否是 最后一页
     private boolean isLastPage = false;
+    private int totalPager = 0;
 
 //    private AnimRFRecyclerView mRecyclerView;
 
@@ -100,18 +79,15 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         super.onActivityCreated(savedInstanceState);
         newsDatas = new ArrayList<NewEntity>();
         newsAdvertDatas = new ArrayList<AdPictureBean>();
-
         //初始化轮播图
         initLunPic();
         initData();
         initRecycler();
         //播放轮播广告
         startLunPic();
-
     }
 
     private void initData() {
-        biutmapUtils = new BitmapUtils(mActivity);
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
@@ -161,7 +137,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 //                        newsDatas.clear();
 //                        requestPagerNum = 1;
 //                        service.getNews("00001", null, requestPagerNum, primaryDataNumber);
-//                        mRecyclerView.getAdapter().notifyDataSetChanged();
+//
 //                        // 刷新完成后调用，必须在UI线程中
 //                        mRecyclerView.refreshComplate();
 //                    }
@@ -175,7 +151,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 //                    public void run() {
 //                        // 加载更多完成后调用，必须在UI线程中
 //                        service.getNews("00001", null, requestPagerNum, primaryDataNumber);
-//                        mRecyclerView.getAdapter().notifyDataSetChanged();
+//
 //                        mRecyclerView.loadMoreComplate();
 //                    }
 //                }, 3000);
@@ -185,8 +161,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 //        mRecyclerView.setRefresh(true);
 
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
-//        mRecyclerView.setHasFixedSize(true);
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.light_blue2,
@@ -206,7 +180,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                         mSwipeRefreshLayout.setRefreshing(false);
                         newsDatas.clear();
                         requestPagerNum = 1;
-                        service.getNews("00001", null, requestPagerNum, primaryDataNumber);
+                        service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
                     }
                 }, 1000);
             }
@@ -219,39 +193,19 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mSwipeRefreshLayout.setRefreshing(false);
 
-//        mRecyclerViewAdapter = new MyRecyclerViewAdapterTest(mActivity, mRecyclerView, newsDatas);
-        mRecyclerViewAdapter = new MyRecyclerViewAdapter();
+        mRecyclerViewAdapter = new MyRecyclerAdapter(mActivity, mRecyclerView, newsDatas, 0);
+//        mRecyclerViewAdapter = new MyRecyclerViewAdapter();
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-//        mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-//            @Override
-//            public void onLoadMore() {
-//                newsDatas.add(null);
-//                mRecyclerViewAdapter.notifyItemInserted(newsDatas.size() - 1);
-//                loadMoreData(true);
-//                mRecyclerViewAdapter.setLoading(true);
-//            }
-//        });
-//        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-//
-//            private int lastVisibleItem;
-//
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView,
-//                                             int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE
-//                        && lastVisibleItem + 1 == mRecyclerViewAdapter.getItemCount()) {
-//                    // 此处在现实项目中，请换成网络请求数据代码，加载更多数据
-//                    service.getNews("00001", null, requestPagerNum, primaryDataNumber);
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-//            }
-//        });
+        mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                newsDatas.add(null);
+                mRecyclerViewAdapter.notifyItemInserted(newsDatas.size() - 1);
+                loadMoreData(true);
+                mRecyclerViewAdapter.setLoading(true);
+            }
+        });
+
     }
 
     private void initLunPic(){
@@ -284,10 +238,9 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         if ((isVisibleToUser && isResumed())) {
 
             if(!isGetData){
-                service.getNews("00001", null, requestPagerNum, primaryDataNumber);
-                service.getAdverts("00001");
+                service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+                service.getAdverts(ConsultTab.INTRODUCATION.getTypeId());
                 Log.d("introduction visit ", "获取消息 界面可见");
-
                 isGetData = true;
             }
 
@@ -332,26 +285,10 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         }
     };
 
-    //同时弹出 隐藏键盘 弹出框
-    private void popupInputMethodWindow() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                InputMethodManager imm = (InputMethodManager) getActivity()
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm.isActive()) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-                }
-            }
-        }, 0);
-    }
-
    private void clear() {
        service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWS, this);
        service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE, this);
-        service.unRegisterObserve(HttpConstant.NOTIFY_GET_ADVERT, this);
+       service.unRegisterObserve(HttpConstant.NOTIFY_GET_ADVERT, this);
     }
 
     @Override
@@ -365,6 +302,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         return  R.layout.fragment_introduction;
     }
     //回调数据到搜索栏
+    @Override
     public List<String> getNewsDatas() {
         if(newsDatas.size() != 0){
             List<String> mTipList= new ArrayList<String>();
@@ -380,222 +318,28 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (isLoading){
+                if (isLoading) {
                     mRecyclerViewAdapter.setLoading(false);
                     newsDatas.remove(newsDatas.size() - 1);
                     mRecyclerViewAdapter.notifyItemRemoved(newsDatas.size());
 
-                    mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
-                    if(!isLastPage){
-                        service.getNews("00001", null, requestPagerNum, primaryDataNumber);
-                    }else {
-                        int lastVisibleItem =((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-                        ToastUtil.showToast("最后一页  已经没有新的数据了" + lastVisibleItem);
-
+                    if (!isLastPage) {
+                        service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+                    } else {
+                        mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
+                        //重新加载adapter 不然不更新数据
+                        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+                        ToastUtil.showToast("最后一页  已经没有新的数据了");
                     }
 
                 }
             }
-        },3000);
+        }, 3000);
     }
+
     @Override
     public void onClick(View v) {
     }
-
-
-    //RecyclerView  的 adapter
-    class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-        private boolean isLoadMoreData = false;
-        private LayoutInflater mLayoutInflater;
-        private int totalItemCount;
-        private int lastVisibleItem;
-//        private Context mContext;
-//        private List<NewEntity> mData;
-
-        public MyRecyclerViewAdapter() {
-//            this.mContext = context;
-//            this.mData = data;
-            this.mLayoutInflater = LayoutInflater.from(mActivity);
-
-            if (mRecyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView,
-                                                     int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                       int count = mRecyclerViewAdapter.getItemCount();
-                        if (!isLoadMoreData && newState == RecyclerView.SCROLL_STATE_IDLE
-                                && lastVisibleItem + 1 == count) {
-                            newsDatas.add(null);
-                            mRecyclerViewAdapter.notifyItemInserted(newsDatas.size() - 1);
-                            loadMoreData(true);
-                            mRecyclerViewAdapter.setLoading(true);
-
-                        }
-                    }
-
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                    }
-
-                });
-            }
-        }
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == TYPE_ITEM) {
-                View view = View.inflate(mActivity,
-                        R.layout.item_listview_introduction, null);
-                view.setLayoutParams(new RecyclerView.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT,
-                        RadioGroup.LayoutParams.WRAP_CONTENT));
-                return new ItemViewHolder(view);
-            }  if(viewType == TYPE_FOOTER){
-                return new FooterViewHolder(mLayoutInflater.inflate(R.layout.recycler_footer_layout, parent, false));
-            }
-            return null;
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof ItemViewHolder) {
-                final NewEntity bean = newsDatas.get(position);
-
-                ((ItemViewHolder) holder).text_title.setText(bean.getTitle());
-                ((ItemViewHolder) holder).text_updatetime.setText(bean.getPublishDate());
-                biutmapUtils.display(((ItemViewHolder) holder).iv_picture, bean.getThumbUrl());
-
-                final ImageView iv_zan = ((ItemViewHolder) holder).iv_pager_zan;
-                if (bean.getIsLike()) {
-                    iv_zan.setImageResource(R.drawable.favorite_introduction_check);
-                } else {
-                    //默认情况下
-                    iv_zan.setImageResource(R.drawable.favorite_introduction_normal);
-                }
-
-                //点赞  点击事件
-                iv_zan.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-
-                        Log.e("", "dianzao kai shi !!!!");
-                        service.getNewsOperate(bean.getId(), "1", String.valueOf(!bean.getIsLike()), "0", 0,
-                                new Callback.CommonCallback<String>() {
-                                    @Override
-                                    public void onSuccess(String s) {
-                                        bean.setIsLike(!bean.getIsLike());
-                                        if (bean.getIsLike()) {
-                                            //点击之后 变为check
-                                            iv_zan.setImageResource(R.drawable.favorite_introduction_check);
-                                        } else {
-                                            iv_zan.setImageResource(R.drawable.favorite_introduction_normal);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable throwable, boolean b) {
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(CancelledException e) {
-
-                                    }
-
-                                    @Override
-                                    public void onFinished() {
-
-                                    }
-
-                                });
-                    }
-                });
-                final ImageView iv_comment = (ImageView)((ItemViewHolder) holder).iv_pager_comment;
-                //评论的点击事件
-                iv_comment.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        //初始化弹出窗体
-                        initPopupWindows(bean);
-                        showPopupWindows(iv_comment, 0, 0);
-                    }
-                });
-                final RelativeLayout rl_checkDetail =  ((ItemViewHolder) holder).rl_checkDetail;
-                //查看详情点击
-                rl_checkDetail.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //查看详情的界面
-                        Intent intent = new Intent(mActivity, PagerDetailActivity.class);
-                        intent.putExtra("pagerId", bean.getId());
-                        startActivity(intent);
-                    }
-                });
-
-            }else if(holder instanceof FooterViewHolder){
-                ((FooterViewHolder) holder).pr_moreData.setIndeterminate(true);
-                ((FooterViewHolder) holder).text_loadMore.setText("正在加载数据...");
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return newsDatas.size();
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            // 最后一个item设置为footerView
-//            if (position   == getItemCount()) {
-//                return TYPE_FOOTER;
-//            } else {
-//                return TYPE_ITEM;
-//            }
-            return newsDatas.get(position) != null ? super.getItemViewType(position) : TYPE_FOOTER;
-        }
-
-        public void setLoading(Boolean isLoading) {
-            isLoadMoreData = isLoading;
-        }
-
-        class FooterViewHolder extends RecyclerView.ViewHolder {
-            TextView text_loadMore;
-            ProgressBar pr_moreData;
-            public FooterViewHolder(View view) {
-                super(view);
-                text_loadMore = (TextView) view.findViewById(R.id.tv_item_introduction_news_title);
-                pr_moreData = (ProgressBar) view.findViewById(R.id.progressbar_loadmore_footer);
-            }
-
-        }
-
-        class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView text_title;
-            TextView text_updatetime;
-            ImageView iv_pager_zan;
-            ImageView iv_pager_comment;
-            ImageView iv_picture;
-            RelativeLayout rl_checkDetail;
-            public ItemViewHolder(View view) {
-                super(view);
-                text_title = (TextView) view.findViewById(R.id.tv_item_introduction_news_title);
-                text_updatetime = (TextView) view.findViewById(R.id.tv_item_introduction_updatetime);
-                iv_picture = (ImageView) view.findViewById(R.id.iv_item_introduction_icon);
-                iv_pager_zan = (ImageView) view.findViewById(R.id.iv_item_introduction_zan);
-                iv_pager_comment = (ImageView) view.findViewById(R.id.iv_item_introduction_comment);
-                rl_checkDetail = (RelativeLayout) view.findViewById(R.id.rl_item_introduction_detail);
-            }
-        }
-
-
-
-    }
-
 
     //广告轮播图的 adapter
     class AdViewPagerAdapter extends CommonAdapter<AdPictureBean>{
@@ -612,90 +356,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
 
-    private void initPopupWindows(final NewEntity newEntity ){
-        View mPopupView = View.inflate(mActivity, R.layout.comment_commit_popup, null);
-        //评论内容
-        final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
-
-        //监听返回键事件
-        et_commment.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if(mPopupWindows !=null && mPopupWindows.isShowing()){
-                        mPopupWindows.dismiss();
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
-        //提交评论按钮
-        ((Button) mPopupView.findViewById(R.id.btn_comment_commit)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //点击提交关闭窗体  用户评论内容
-                final String user_comment = et_commment.getText().toString().trim();
-                if (TextUtils.isEmpty(user_comment)) {
-                    Toast.makeText(mActivity, "内容为空 请重新输入", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                //提交评论内容到服务器
-                service.getNewsOperate(newEntity.getId(), "2", null, user_comment, 0, new Callback.CommonCallback<String>() {
-
-                    @Override
-                    public void onSuccess(String s) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable, boolean b) {
-                        Toast.makeText(mActivity, "网络原因 提交失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancelled(CancelledException e) {
-
-                    }
-
-                    @Override
-                    public void onFinished() {
-
-                    }
-                });
-                //清空输入的内容
-                et_commment.setText("");
-                //关闭弹出窗体
-                closePopup();
-            }
-        });
-
-        mPopupWindows = new PopupWindow(mPopupView, -1, 100, true);
-        mPopupWindows.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-        mPopupWindows.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //动画效果;
-        ScaleAnimation sa = new ScaleAnimation(0f, 1f, 0.5f, 1f,
-                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0.5f);
-        sa.setDuration(300);
-        mPopupView.startAnimation(sa);
-
-    }
-
-    private void showPopupWindows(View parent , int x, int y){
-        closePopup();
-        popupInputMethodWindow();
-        mPopupWindows.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
-
-    }
-
-    //关闭弹出窗体
-    private void closePopup(){
-        if(mPopupWindows != null && mPopupWindows.isShowing()){
-            mPopupWindows.dismiss();
-            popupInputMethodWindow();
-        }
-    }
 
     //用于网络请求数据 key 是网页的id   o是解析后的list数据
     @Override
@@ -705,11 +365,17 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 //获取新闻页面数据
                 List<NewEntity> databean = (List<NewEntity>) o;
 
-                if(databean.size() != primaryDataNumber){
+                if(requestPagerNum == 1 && databean.size() != 0){
+                    totalPager = databean.get(0).getTotalPager();
+                }
+
+
+                if(requestPagerNum == totalPager){
                     isLastPage = true;
                 }else{
                     requestPagerNum++;
                 }
+
                 newsDatas.addAll(databean);
                 mRecyclerViewAdapter.notifyDataSetChanged();
                 break;
@@ -728,7 +394,4 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 break;
         }
     }
-
-
-
 }

@@ -39,19 +39,22 @@ import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
-import com.unipad.utils.ToastUtil;
 
 import org.xutils.common.Callback;
 
 import java.util.List;
 
 //RecyclerView  的 adapter
-public class MyRecyclerViewAdapterTest extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IDataObserver {
+public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IDataObserver {
     private boolean isLoadMoreData = false;
     private LayoutInflater mLayoutInflater;
     private int lastVisibleItem;
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER = 1;
+    private final int TYPE_ITEM = 0;
+    private final int TYPE_FOOTER = 1;
+    private final String OPERATE_ZAN = "1";
+    private final String OPERATE_COMMENT = "2";
+
+    private int pageId = -1;
     private Activity mActivity;
     private RecyclerView mRecyclerView;
     private List<NewEntity> newsDatas;
@@ -59,11 +62,12 @@ public class MyRecyclerViewAdapterTest extends RecyclerView.Adapter<RecyclerView
     private OnLoadMoreListener onLoadMoreListener;
     private NewsService service;
 
-    public MyRecyclerViewAdapterTest(Activity mActivity, final RecyclerView mRecyclerView, List<NewEntity> datas) {
+    public MyRecyclerAdapter(Activity mActivity, final RecyclerView mRecyclerView, List<NewEntity> datas ,int pageId) {
         this.mActivity = mActivity;
         this.newsDatas = datas;
         this.mRecyclerView = mRecyclerView;
         this.mLayoutInflater = LayoutInflater.from(mActivity);
+        this.pageId = pageId;
 
 
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
@@ -127,7 +131,7 @@ public class MyRecyclerViewAdapterTest extends RecyclerView.Adapter<RecyclerView
                 public void onClick(View v) {
 
                     Log.e("", "dianzao kai shi !!!!");
-                    service.getNewsOperate(bean.getId(), "1", String.valueOf(!bean.getIsLike()), "0", 0,
+                    service.getNewsOperate(bean.getId(), OPERATE_ZAN, String.valueOf(!bean.getIsLike()), null, pageId,
                             new Callback.CommonCallback<String>() {
                                 @Override
                                 public void onSuccess(String s) {
@@ -266,7 +270,7 @@ public class MyRecyclerViewAdapterTest extends RecyclerView.Adapter<RecyclerView
                     return;
                 }
                 //提交评论内容到服务器
-                service.getNewsOperate(newEntity.getId(), "2", null, user_comment, 0, new Callback.CommonCallback<String>() {
+                service.getNewsOperate(newEntity.getId(), OPERATE_COMMENT, null, user_comment, pageId, new Callback.CommonCallback<String>() {
 
                     @Override
                     public void onSuccess(String s) {
