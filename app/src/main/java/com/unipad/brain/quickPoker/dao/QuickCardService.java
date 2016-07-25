@@ -54,10 +54,10 @@ public class QuickCardService extends AbsBaseGameService{
 		allround = allCard.length;
 		round1 = allCard[0];
 		round2 = allCard[1];
-		parseDataByRound(round);
+		parseDataByRound();
 	}
 
-	public void parseDataByRound(int round) {
+	public void parseDataByRound() {
 		ArrayList<ChannelItem> orgin = PokerEntity.getInstance().getPokerSortArray();
 		orgin.clear();
 		String data = round1;

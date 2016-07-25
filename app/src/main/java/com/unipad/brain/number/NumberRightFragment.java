@@ -64,7 +64,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     private SparseArray<String> mNumberArray = new SparseArray<>();
 
     private String mCompeteItem = "";
-    private NumService service;
+    protected NumService service;
     private FrameLayout frameLayout;
 
     @Override
@@ -86,6 +86,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             for (int i = 0; i < mLines; i++) {
                 mTotalNumbers += service.lineNumbers.valueAt(i).length();
             }
+            frameLayout.removeAllViews();
             frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
             mStubShade.setVisibility(View.VISIBLE);
         }
@@ -93,7 +94,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void startMemory() {
-        super.startRememory();
+        super.startMemory();
         mStubShade.setVisibility(View.GONE);
     }
 
@@ -251,7 +252,11 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         mScrollAnswerView = (ScrollView) mRememoryLayout
                 .findViewById(R.id.scroll_rememory_layout);
         frameLayout.removeAllViews();
-        mNumberRememoryLayout = createReMemoryLayout();
+        if (mNumberRememoryLayout == null){
+            mNumberRememoryLayout = createReMemoryLayout();
+        } else {
+            mNumberRememoryLayout.clearText();
+        }
         frameLayout.addView(mNumberRememoryLayout);
         initAnswerView();
         if (mCompeteItem.equals(getString(R.string.project_3))
@@ -281,6 +286,11 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public void showAnswer(){
         mNumberRememoryLayout.showAnswer(service.lineNumbers, service.answer);
     }
+
+    public void getAnswer(){
+        mNumberRememoryLayout.getAnswer(service.answer);
+    }
+
     @Override
     public void numberKey(String keyValue) {
         progress = 100 +mCursorPosition*100/mTotalNumbers;
@@ -345,8 +355,6 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-
         if (null != mRememoryLayout) {
             mRememoryLayout.removeAllViews();
         }

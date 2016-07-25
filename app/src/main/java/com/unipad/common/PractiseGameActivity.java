@@ -136,7 +136,6 @@ public class PractiseGameActivity extends BasicActivity implements IDataObserver
                 @Override
                 public void run() {
                     ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
-                    SocketThreadManager.sharedInstance().signOK(matchId);
                     SocketThreadManager.sharedInstance().setService(service);
 
                 }

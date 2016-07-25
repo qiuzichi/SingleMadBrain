@@ -21,7 +21,7 @@ public class LogUtil {
     private static boolean isPrint = true;
     private static boolean isDebug = false;
 
-    public static final String TAG = "niiwooTuanDaiApp";
+    public static final String TAG = "unipadApp";
     public static final String MSG = "log msg is null.";
 
     private static List<String> logList;
