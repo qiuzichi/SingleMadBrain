@@ -2,7 +2,6 @@ package com.unipad.http;
 import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.brain.home.bean.MyFollow;
 import com.unipad.brain.personal.bean.CompetitionBean;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
@@ -59,9 +58,9 @@ public class HitopFollow extends  HitopRequest<List<CompetitionBean>>{
                             competitionBean.setAddr(jsonObject.getString("city"));
                             competitionBean.setCost(jsonObject.getString("applyMoney"));
                             myFollows.add(competitionBean);
+                            
                         }
                     }
-
                 }
                     Log.e("",json);
                 }
@@ -77,8 +76,8 @@ public class HitopFollow extends  HitopRequest<List<CompetitionBean>>{
         return null;
     }
 
-    @Override
-    public void buildRequestParams() {
+        @Override
+       public void buildRequestParams() {
 
     }
     public void setSevice(GlobleObserService sevice) {
