@@ -52,7 +52,9 @@ public class PersonalSettingFragment extends PersonalCommonFragment implements I
         mActivity.findViewById(R.id.text_modify_login_pwd).setOnClickListener(this);
         mActivity.findViewById(R.id.text_modify_pay_pwd).setOnClickListener(this);
         mActivity.findViewById(R.id.text_exit_app).setOnClickListener(this);
-
+        //隐藏系统设置 与 支付密码
+mActivity.findViewById(R.id.text_modify_pay_pwd).setVisibility(View.GONE);
+mActivity.findViewById(R.id.text_system_setting).setVisibility(View.GONE);
         mEditSuggest = (EditText) mActivity.findViewById(R.id.setting_feedback_edit);
         mEditSuggest.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

@@ -34,4 +34,9 @@ public abstract class MainBasicFragment extends Fragment implements View.OnClick
     public abstract int getLayoutId();
 
 
+    //回调数据到搜索栏 以后肯定删掉
+    public List<String> getNewsDatas() {
+        return null;
+    }
+
 }

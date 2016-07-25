@@ -48,8 +48,8 @@
     <dimen name="toast_gravity_yoffset">-67dip</dimen>
 
     <!-- 收藏/点赞/评论/分析默认宽高 -->
-    <dimen name="favorite_width">20dip</dimen>
-    <dimen name="favorite_height">20dip</dimen>
+    <dimen name="favorite_width">30dip</dimen>
+    <dimen name="favorite_height">30dip</dimen>
     <dimen name="view_margin_height">30dip</dimen>
     <dimen name="head_portrait_width">80dip</dimen>
 
@@ -64,6 +64,7 @@
     //轮播图的高度
     <dimen name="adver_lunbo_height">230dp</dimen>
     <dimen name="newlist_height">100dp</dimen>
+    <dimen name="newlist_item_height">120dp</dimen>
     <dimen name="compitition_entry_fee">150dp</dimen>
 
     <dimen name="comment_use_height">100dp</dimen>

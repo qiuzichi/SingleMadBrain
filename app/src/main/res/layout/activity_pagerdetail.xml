@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/rl_title_home"
         android:layout_width="match_parent"
         android:layout_height="@dimen/binary_line_h"
-        android:background="@color/main_lf_bg"
-        >
+        android:background="@color/main_lf_bg">
+
         <TextView
             android:id="@+id/title_back_text"
             android:layout_width="wrap_content"
@@ -27,7 +27,6 @@
         />
 
 
-
         <TextView
             android:id="@+id/current_time_text"
             android:layout_width="wrap_content"
@@ -35,119 +34,136 @@
             android:layout_centerInParent="true"
             android:text="@string/pager_detail"
             android:textColor="@color/white"
-            android:textSize="@dimen/common_text_24"
-            />
+            android:textSize="@dimen/common_text_24" />
 
         <!--<TextView-->
-            <!--android:id="@+id/tv_title_addlike_icon"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:drawableLeft="@drawable/key_addlike"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_marginLeft="@dimen/margin_10dip"-->
-            <!--android:layout_marginRight="@dimen/margin_10dip"-->
-            <!--android:drawablePadding="@dimen/radius_4dip"-->
-            <!--/>-->
+        <!--android:id="@+id/tv_title_addlike_icon"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:drawableLeft="@drawable/key_addlike"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_marginLeft="@dimen/margin_10dip"-->
+        <!--android:layout_marginRight="@dimen/margin_10dip"-->
+        <!--android:drawablePadding="@dimen/radius_4dip"-->
+        <!--/>-->
 
 
     </RelativeLayout>
 
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical"-->
-        <!--android:background="@color/white">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--android:background="@color/white">-->
+    <ProgressBar
+        android:id="@+id/pager_load_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_30dp"
+        android:progress="0"
+        android:progressDrawable="@drawable/load_progress_bar"
+        android:secondaryProgress="0"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_blue"
+        >
 
         <WebView
             android:id="@+id/pager_detail_webview"
             android:layout_width="match_parent"
-            android:background="@color/light_blue"
             android:layout_height="match_parent"
-          />
+            android:background="@color/light_blue"
 
-        <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="@dimen/margin_10dip"-->
-            <!--android:layout_marginLeft="@dimen/margin_10dip"-->
-            <!--android:layout_marginRight="@dimen/margin_10dip"-->
-            <!-->-->
+            />
 
-            <!--<TextView-->
-                <!--android:id="@+id/tv_comment_icon"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:text="@string/detail_commont"-->
-                <!--android:textColor="@color/title_tab_select_red"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_marginRight="@dimen/margin_10dip"-->
-                <!--android:drawablePadding="@dimen/radius_4dip"-->
-                <!--/>-->
-            <!--<View-->
-                <!--android:id="@+id/view_red_line"-->
-                <!--android:layout_width="@dimen/comment_width"-->
-                <!--android:layout_height="@dimen/margin_1dp"-->
-                <!--android:layout_alignParentBottom="true"-->
+    </RelativeLayout>
 
-                <!--android:background="@color/title_tab_select_red"-->
-                <!--/>-->
-            <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/margin_1dp"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:layout_toRightOf="@id/view_red_line"-->
-                <!--android:background="@color/line"-->
-                <!--/>-->
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/margin_10dip"-->
+    <!--android:layout_marginLeft="@dimen/margin_10dip"-->
+    <!--android:layout_marginRight="@dimen/margin_10dip"-->
+    <!-->-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_comment_icon"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:text="@string/detail_commont"-->
+    <!--android:textColor="@color/title_tab_select_red"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_marginRight="@dimen/margin_10dip"-->
+    <!--android:drawablePadding="@dimen/radius_4dip"-->
+    <!--/>-->
+    <!--<View-->
+    <!--android:id="@+id/view_red_line"-->
+    <!--android:layout_width="@dimen/comment_width"-->
+    <!--android:layout_height="@dimen/margin_1dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+
+    <!--android:background="@color/title_tab_select_red"-->
+    <!--/>-->
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/margin_1dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_toRightOf="@id/view_red_line"-->
+    <!--android:background="@color/line"-->
+    <!--/>-->
 
 
-        <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
-        <!--<ListView-->
-            <!--android:id="@+id/newscomment_listview"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_weight="2"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_marginLeft="@dimen/margin_10dip"-->
-            <!--android:layout_marginRight="@dimen/margin_10dip"-->
-            <!--android:scrollbars="none"-->
-            <!-->-->
+    <!--<ListView-->
+    <!--android:id="@+id/newscomment_listview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_weight="2"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_marginLeft="@dimen/margin_10dip"-->
+    <!--android:layout_marginRight="@dimen/margin_10dip"-->
+    <!--android:scrollbars="none"-->
+    <!-->-->
 
-        <!--</ListView>-->
+    <!--</ListView>-->
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
 
-            <!--android:layout_height="@dimen/comment_commit_height"-->
-            <!--android:orientation="horizontal">-->
+    <!--android:layout_height="@dimen/comment_commit_height"-->
+    <!--android:orientation="horizontal">-->
 
-            <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/margin_1dp"-->
-                <!--android:background="@color/line"-->
-                <!--/>-->
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/margin_1dp"-->
+    <!--android:background="@color/line"-->
+    <!--/>-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/tv_input_comment_text"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_weight="8"-->
-                <!--android:layout_height="@dimen/margin_10dip"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:hint="@string/say_somethting"-->
-                <!--android:text="zdfafsdfasfsdfdsa"-->
-                <!--android:background="@color/comment_popwindows_bg"-->
-                <!--android:layout_marginLeft="@dimen/margin_10dip"-->
-                <!--android:textColor="@color/red"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_input_comment_text"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="8"-->
+    <!--android:layout_height="@dimen/margin_10dip"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:hint="@string/say_somethting"-->
+    <!--android:text="zdfafsdfasfsdfdsa"-->
+    <!--android:background="@color/comment_popwindows_bg"-->
+    <!--android:layout_marginLeft="@dimen/margin_10dip"-->
+    <!--android:textColor="@color/red"/>-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_biaoqing_icon_comment"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_weight="2"-->
-                <!--android:src="@drawable/help"-->
-                <!--android:layout_height="wrap_content" />-->
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_biaoqing_icon_comment"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="2"-->
+    <!--android:src="@drawable/help"-->
+    <!--android:layout_height="wrap_content" />-->
 
-        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
     <!--</LinearLayout>-->
 

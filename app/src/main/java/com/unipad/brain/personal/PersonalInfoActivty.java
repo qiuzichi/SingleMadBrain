@@ -1,6 +1,6 @@
 package com.unipad.brain.personal;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,21 +26,24 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
     private List<CompetitionBean> competitionBeans;
     private PersonCenterService service;
     private TextView text_myranking;
+    private TopAdapter adapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        text_myranking=(TextView)findViewById(R.id.text_myranking);
-        lv_integration=(ListView)findViewById(R.id.lv_integration);
         competitionBeans=new ArrayList<CompetitionBean>();
         service=(PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER);
         service.registerObserver(HttpConstant.LIST_TOP,this);
+        adapter=new TopAdapter(this,competitionBeans,R.layout.top_list);
         setContentView(R.layout.personal_integration_layout);
+
     }
 
     @Override
     public void onDestroy() {
         service.unregistDataChangeListenerObj(this);
         super.onDestroy();
+
     }
 
     @Override
@@ -58,14 +61,15 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
                     }
                 });
                 break;
-        }
-    }
+          }
+       }
 
     @Override
     public void onStart() {
         super.onStart();
         if (competitionBeans.size()==0){
             service.getTopList(AppContext.instance().loginUser.getUserId());
+
         }
 
     }
@@ -78,11 +82,24 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
 
     @Override
     public void initData() {
-        Intent intent=new Intent();
-        String ranking=intent.getStringExtra("ranking");
+        Intent intent = new Intent();
+        String ranking = intent.getStringExtra("ranking");
         text_myranking.setText(ranking);
 
     }
 
+    private class TopAdapter extends CommomAdapter <CompetitionBean>{
 
+        public TopAdapter(Context context, List<CompetitionBean>datas, int layoutId) {
+            super(context, datas, layoutId);
+
+        }
+
+        @Override
+        public void convert(ViewHolder holder, CompetitionBean competitionBean) {
+            text_myranking=(TextView)findViewById(R.id.text_myranking);
+            lv_integration=(ListView)findViewById(R.id.lv_integration);
+
+        }
+    }
 }

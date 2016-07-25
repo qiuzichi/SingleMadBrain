@@ -32,6 +32,7 @@ import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ConsultTab;
 import com.unipad.brain.consult.widget.CustomViewPager;
+import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
 import com.unipad.utils.DensityUtil;
@@ -190,9 +191,9 @@ public class ConsultMainFragment extends ConsultBaseFragment{
                 closePopup();
                 return false;
             }
-            IntroductionFragment currentFragment = (IntroductionFragment) com.unipad.brain.consult.manager.
+            MainBasicFragment baseFragment = (MainBasicFragment) com.unipad.brain.consult.manager.
                     FragmentManager.getFragment(mConsultTabs[mCurrentIndex]);
-            titleTip = currentFragment.getNewsDatas();
+            titleTip = baseFragment.getNewsDatas();
             adapter = new ArrayAdapter(getmContext(), R.layout.list_item_searchlist,titleTip);
             showSelectDDialog(adapter);
             return true;

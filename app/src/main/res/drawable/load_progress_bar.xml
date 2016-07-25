@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!--item background与progress 顺序不可颠倒 -->
+    <item android:id="@android:id/background" >
+        <shape android:shape="line">
+            <stroke
+                android:width="@dimen/margin_30dp" android:color="@color/black" /> <!--背景颜色和宽度-->
+                android:dashWidth="@dimen/margin_5dip" android:dashGap="@dimen/margin_1dp" /> <!--虚线间隔dp-->
+        </shape>
+    </item>
+
+    <item android:id="@android:id/progress" >
+        <clip>
+            <shape android:shape="line">
+                <stroke
+                    android:width="@dimen/margin_5dip" android:color="#00FF7F"
+                    android:dashWidth="@dimen/margin_5dip" android:dashGap="@dimen/margin_1dp" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>
+
+

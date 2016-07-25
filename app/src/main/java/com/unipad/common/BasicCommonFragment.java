@@ -21,7 +21,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     private Handler handler;
     private static final int MSG_PROGRESS = 0;
     protected int progress = 100;
-    /** 记忆结束时，弹出dialog，等待裁判开始统一记忆，如果这个时候裁判点击暂停，那个dialog消失，出现
+    /** 记忆结束时，弹出dialog，等待裁判开始统一回忆，如果这个时候裁判点击暂停，那个dialog消失，出现
      * 暂停的dialog，恢复开始的时候，原来等待裁判开始的dialog又得显示出来，倒计时不能开始*/
     private boolean isNeedStartGame;
     @Override
@@ -51,7 +51,6 @@ public abstract class BasicCommonFragment extends Fragment implements
         mActivity.getCommonFragment().setICommunicate(this);;
 
     }
-
     /**
      * 是否是比赛模式
      * */

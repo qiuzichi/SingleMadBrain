@@ -146,8 +146,12 @@ public class HttpConstant {
     public static final int NOTIFY_GET_COMMENT = 0x20007;
     //最新赛事
     public static final int NOTIFY_GET_NEWCOMPETITION = 0x20008;
-    //获取搜索页面的结果
+    //获取资讯页面的结果
     public static final int NOTIFY_GET_SEARCH_RUSULT = 0x20009;
+    //获取赛事页面的结果
+    public static final int NOTIFY_GET_SEARCH_OCCSION = 0x20011;
+    //获取热点页面的结果
+    public static final int NOTIFY_GET_SEARCH_HOTSPOT = 0x20012;
     //下载apk 请求
     public static final int NOTIFY_DOWNLOAD_APK = 0x20010;
 

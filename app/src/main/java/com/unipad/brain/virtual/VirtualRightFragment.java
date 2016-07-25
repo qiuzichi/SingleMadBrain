@@ -120,8 +120,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
             }
         }
 
-
-
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             //将创建的View注册点击事件
@@ -155,6 +153,8 @@ public class VirtualRightFragment extends BasicCommonFragment {
                         public boolean onTouch(View v, MotionEvent event) {
                             index = position;
                             holder.editNUmView.requestFocus();
+                            entity.setAnswerDate("");
+                            holder.editNUmView.setText("");
                             return false;
                         }
                     });
@@ -180,6 +180,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
         @Override
         public int getItemCount() {
             return virtualList.size();
+
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -212,7 +213,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
             service.clear();
         super.onDestroyView();
     }
-
     /**
      * 结束答题
      */
@@ -221,7 +221,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
             memoryAdapter.notifyDataSetChanged();
             jianpan_linlayout.setVisibility(View.GONE);
 
-        }
+             }
     /**
      * 输入的索引
       */
@@ -245,25 +245,36 @@ public class VirtualRightFragment extends BasicCommonFragment {
             case R.id.numButton_8:
             case R.id.numButton_0:
                 if(v.getId()==R.id.numButton_1){
-                    text=text+"1";
+                    if (text.length()<4){
+                    text=text+"1";}
                 }else if(v.getId()==R.id.numButton_2){
-                    text=text+"2";
+                    if (text.length()<4) {
+                        text = text + "2";}
                 }else if(v.getId()==R.id.numButton_3){
-                    text=text+"3";
+                    if (text.length()<4){
+                    text=text+"3";}
                 }else if(v.getId()==R.id.numButton_4){
-                    text=text+"4";
+                    if (text.length()<4){
+                    text=text+"4";}
                 }else if(v.getId()==R.id.numButton_5){
-                    text=text+"5";
+                    if (text.length()<4){
+                    text=text+"5";}
                 }else if(v.getId()==R.id.numButton_6){
-                    text=text+"6";
+                    if (text.length()<4){
+                    text=text+"6";}
                 }else if(v.getId()==R.id.numButton_7){
-                    text=text+"7";
+                    if (text.length()<4){
+                    text=text+"7";}
                 }else if(v.getId()==R.id.numButton_8){
-                    text=text+"8";
+                    if (text.length()<4){
+                    text=text+"8";}
                 }else if(v.getId()==R.id.numButton_9){
-                    text=text+"9";
+                    if (text.length()<4){
+                    text=text+"9";}
                 }else if(v.getId()==R.id.numButton_0){
-                    text=text+"0";
+                    if (text.length()<4) {
+                        text = text + "0";
+                    }
                 }
                 if (holder != null) {
                     service.virtualList.get(index).setAnswerDate(text);
@@ -273,21 +284,20 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     service.virtualList.get(index).setAnswerDate(text.substring(0,text.length()-1));
                 }
                 if (index==service.virtualList.size()-1){
-                    break;
+                      break;
                 }
-                    //输入了4位数字之后，自动跳到下一个，index加1
-                if (text.length()==4) {
+                if (text.length() == 4) {
                     index++;
-                VirtualMemoryAdapter.MyViewHolder nextHolder =(VirtualMemoryAdapter.MyViewHolder)(memoryRv.findViewHolderForAdapterPosition(index));
-                if (null == nextHolder) {
+                    VirtualMemoryAdapter.MyViewHolder nextHolder = (VirtualMemoryAdapter.MyViewHolder) (memoryRv.findViewHolderForAdapterPosition(index));
+                    if (null == nextHolder) {
+                        int lastVisibleItem = ((GridLayoutManager) mLayoutmanager).findLastVisibleItemPosition() - 2;
+                        //Log.e(VirtualRightFragment.class.getSimpleName(),lastVisibleItem+"");
+                        moveToPosition(lastVisibleItem, (GridLayoutManager) mLayoutmanager);
+                    } else {
+                        nextHolder.editNUmView.requestFocus();
+                    }
+                }
 
-                    int lastVisibleItem = ((GridLayoutManager) mLayoutmanager).findLastVisibleItemPosition() - 2;
-                    //Log.e(VirtualRightFragment.class.getSimpleName(),lastVisibleItem+"");
-                    moveToPosition(lastVisibleItem,(GridLayoutManager)mLayoutmanager);
-                  } else {
-                    nextHolder.editNUmView.requestFocus();
-                }
-                }
                 break;
             case R.id.numButton_clear:
                             //在第一个格子时index不做处理
@@ -303,17 +313,17 @@ public class VirtualRightFragment extends BasicCommonFragment {
                                    }
                                  }
                                //格子里的数为空且不在第一个position时 index--
-                               } if (holder.editNUmView.getText().length()==0&&holder!=null&&index!=0){
-                                VirtualMemoryAdapter.MyViewHolder nextHolder =(VirtualMemoryAdapter.MyViewHolder)(memoryRv.findViewHolderForAdapterPosition(index));
-                                   if (null == nextHolder) {
+                           } if (holder.editNUmView.getText().length()==0&&holder!=null&&index!=0){
+                VirtualMemoryAdapter.MyViewHolder nextHolder = (VirtualMemoryAdapter.MyViewHolder) (memoryRv.findViewHolderForAdapterPosition(index));
+                           if (null == nextHolder) {
 
-                                 int lastVisibleItem = ((GridLayoutManager) mLayoutmanager).findLastVisibleItemPosition() - 2;
-                                 moveToPosition(lastVisibleItem,(GridLayoutManager)mLayoutmanager);
-                              } else {
-                              nextHolder.editNUmView.requestFocus();
-                              }
-                                        index--;
-                                }
+                         int lastVisibleItem = ((GridLayoutManager) mLayoutmanager).findLastVisibleItemPosition() - 2;
+                         moveToPosition(lastVisibleItem,(GridLayoutManager)mLayoutmanager);
+                            } else {
+                          nextHolder.editNUmView.requestFocus();
+                           }
+                                index--;
+            }
                               break;
                         default:
                              break;
@@ -356,4 +366,5 @@ public class VirtualRightFragment extends BasicCommonFragment {
     public void rememoryTimeToEnd(int answerTime) {
         this.endAnswerMode();
     }
+
 }
