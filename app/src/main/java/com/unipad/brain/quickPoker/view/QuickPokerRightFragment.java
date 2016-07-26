@@ -54,10 +54,6 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
      */
     private boolean isSingleLineBrowse = true;
     /**
-     * 是否处已经显示过扑克牌正面，默认为false
-     */
-    private boolean isSingleLineShowPokerFace, isMutiLineShowedPokerFace;
-    /**
      * 是否处已经开始处于记忆模式
      */
     private boolean isInMemoryMode;
@@ -93,7 +89,8 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     private TextView leftCards;
     private QuickCardService service;
 
-
+    /**答题界面得父布局*/
+   private View answerViewParent;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -130,13 +127,25 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
 
         if (isSingleLineBrowse) {
             mSingleLineLayout.showPokerFace();
-            isSingleLineShowPokerFace = true;
+
         } else {
             mMUtiLineLayout.showPokerFace();
-            isMutiLineShowedPokerFace = true;
+
         }
     }
-
+    @Override
+    public void initDataFinished() {
+        super.initDataFinished();
+        isInMemoryMode = false;
+        if(mBrowseLayout.getParent() == null){
+            mViewParent.addView(mBrowseLayout);
+            mViewParent.removeView(answerViewParent);
+        }
+        if (answerViewParent != null){
+            mViewParent.removeView(answerViewParent);
+        }
+        mStubAnswerShade.setVisibility(View.VISIBLE);
+    }
     /**
      * 进入回忆模式：答题
      */
@@ -154,21 +163,26 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
      * 初始化数据
      */
     private void layoutAnswerView() {
-        View viewAnswer = mStubAnswer.inflate();
-        userGridView = (DragGrid) viewAnswer.findViewById(R.id.userGridView);
-        otherGridView = (OtherGridView) viewAnswer
-                .findViewById(R.id.otherGridView);
-        leftCards = (TextView) viewAnswer.findViewById(R.id.remain_poker_nums);
-        userAdapter = new DragAdapter(mActivity, userChannelList);
+        if (answerViewParent == null) {
+            answerViewParent = mStubAnswer.inflate();
+            userGridView = (DragGrid) answerViewParent.findViewById(R.id.userGridView);
+            otherGridView = (OtherGridView) answerViewParent
+                    .findViewById(R.id.otherGridView);
+            leftCards = (TextView) answerViewParent.findViewById(R.id.remain_poker_nums);
+            userAdapter = new DragAdapter(mActivity, userChannelList);
 
-        userGridView.setAdapter(userAdapter);
-        otherChannelList = service.getBottomCards();
-        otherAdapter = new OtherAdapter(mActivity, otherChannelList,R.layout.quick_poker_v_answer_item);
-        otherGridView.setAdapter(this.otherAdapter);
-        leftCards.setText(" " + otherAdapter.getChannnelLst().size() + " ");
-
-        otherGridView.setOnItemClickListener(this);
-        userGridView.setOnItemClickListener(this);
+            userGridView.setAdapter(userAdapter);
+            otherChannelList = service.getBottomCards();
+            otherAdapter = new OtherAdapter(mActivity, otherChannelList, R.layout.quick_poker_v_answer_item);
+            otherGridView.setAdapter(this.otherAdapter);
+            leftCards.setText(" " + otherAdapter.getChannnelLst().size() + " ");
+            otherGridView.setOnItemClickListener(this);
+            userGridView.setOnItemClickListener(this);
+        } else {
+            mViewParent.addView(answerViewParent);
+            userAdapter.clearData();
+            otherAdapter.setData(service.getBottomCards());
+        }
     }
 
     /**
@@ -231,10 +245,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         mIBtnBrowseMode.setImageDrawable(null);
         mIBtnBrowseMode.setImageResource(R.drawable.ibtn_browse_muti_line);
         if (isInMemoryMode) {
-            if (!isSingleLineShowPokerFace) {
                 mSingleLineLayout.showPokerFace();
-                isSingleLineShowPokerFace = true;
-            }
         }
         mHorizontalLayout.setVisibility(View.VISIBLE);
         mStubMutiBrowse.setVisibility(View.GONE);
@@ -258,10 +269,8 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         }
 
         if (isInMemoryMode) {
-            if (!isMutiLineShowedPokerFace) {
                 mMUtiLineLayout.showPokerFace();
-                isMutiLineShowedPokerFace = true;
-            }
+
         }
         mRightLayout.setVisibility(View.VISIBLE);
     }
@@ -469,11 +478,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         inAnswerMode();
         sendMsgToPreper();
     }
-    @Override
-    public void initDataFinished() {
-        super.initDataFinished();
-        mStubAnswerShade.setVisibility(View.VISIBLE);
-    }
+
 
     @Override
     public void startRememory() {
