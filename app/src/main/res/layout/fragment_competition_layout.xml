@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/rmb"
+            android:drawableLeft="@drawable/project_name"
             android:layout_marginLeft="10dp"
             android:gravity="center|left"
             android:text="@string/project_name" />
@@ -26,10 +26,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/rmb"
+            android:drawableLeft="@drawable/project_addr"
             android:layout_marginLeft="10dp"
             android:gravity="center|left"
-            android:text="@string/project_name" />
+            android:text="@string/competition_addr" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/date_time"
+            android:layout_marginLeft="10dp"
+            android:gravity="center|left"
+            android:text="@string/competition_time1" />
 
         <TextView
             android:layout_width="0dp"
@@ -38,16 +47,7 @@
             android:drawableLeft="@drawable/rmb"
             android:layout_marginLeft="10dp"
             android:gravity="center|left"
-            android:text="@string/project_name" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/rmb"
-            android:layout_marginLeft="10dp"
-            android:gravity="center|left"
-            android:text="@string/project_name" />
+            android:text="@string/race_pay" />
 
 
         <LinearLayout

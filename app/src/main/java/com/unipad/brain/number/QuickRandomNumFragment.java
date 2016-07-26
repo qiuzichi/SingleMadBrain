@@ -51,19 +51,24 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
         super.rememoryTimeToEnd(answerTime);
         getAnswer();
         mKeyboardDialog.dismiss();
-        ToastUtil.createOnlyOkDialog(mActivity, Constant.SHOW_SOCRE_CONFIRM_DLG, "您本轮得分：", "得分：" + service.getScore(), "准备下一轮",
+        String buttonText = service.isLastRound()?null:"准备下一轮";
+        ToastUtil.createOnlyOkDialog(mActivity, Constant.SHOW_SOCRE_CONFIRM_DLG, "您本轮得分：", "得分：" + service.getScore(), buttonText,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         HIDDialog.dismissAll();
-                        ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "准备中").show();
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                super.run();
-                                service.parseDataByNextRound();
-                            }
-                        }.start();
+                        if (service.isLastRound()) {
+                            mActivity.finish();
+                        }else {
+                            ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "准备中").show();
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    super.run();
+                                    service.parseDataByNextRound();
+                                }
+                            }.start();
+                        }
                     }
                 }).show();
 

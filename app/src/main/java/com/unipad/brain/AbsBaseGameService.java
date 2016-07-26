@@ -58,6 +58,8 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     public void clear() {
         rule = null;
         mode = 0;
+        round = 0;
+        allround = 1;
         isInitResourseAready = false;
         isInitQuestionAready = false;
         operateGame = null;
