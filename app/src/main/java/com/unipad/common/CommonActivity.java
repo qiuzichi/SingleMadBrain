@@ -1,6 +1,5 @@
 package com.unipad.common;
 
-import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -12,16 +11,14 @@ import android.widget.TextView;
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
 import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.App;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
 import com.unipad.brain.absPic.view.AbsFigureFragment;
-import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.longPoker.view.LongPokerRightFragment;
 import com.unipad.brain.number.BinaryRightFragment;
+import com.unipad.brain.number.ListenToWriteNumFragment;
 import com.unipad.brain.number.LongNumFragment;
-import com.unipad.brain.number.NumberRightFragment;
 import com.unipad.brain.number.QuickRandomNumFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
 import com.unipad.brain.quickPoker.view.QuickPokerRightFragment;
@@ -214,7 +211,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         } else if (competeItem.equals(getString(R.string.project_5))) {
             gameFragment = new QuickRandomNumFragment();
         }  else if (competeItem.equals(getString(R.string.project_9))) {
-
+            gameFragment = new ListenToWriteNumFragment();
         } else if (competeItem.equals(getResources().getString(R.string.project_10))){
             gameFragment = new QuickPokerRightFragment();
         } else if (competeItem.equals(getResources().getString(R.string.project_7))){

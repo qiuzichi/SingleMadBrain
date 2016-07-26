@@ -46,7 +46,7 @@ public class Constant {
     public static final String QUICK_POKER_SERVICE = "quick_poker_service";
     public static final String LONG_POKER_SERVICE = "long_poker_service";
     public static final String QUICK_RANDOM_NUM_SERVICE ="quick_random_num_service" ;
-
+    public static final String LISTENTOWRITE_NUM_SERVICE="listentowrite_num_service";
 
 
     private static Map<String, String> projectNames;
