@@ -20,7 +20,6 @@ import com.unipad.brain.virtual.bean.DividerGridItemDecoration;
 import com.unipad.brain.virtual.bean.VirtualEntity;
 import com.unipad.brain.virtual.dao.VirtualTimeService;
 import com.unipad.common.BasicCommonFragment;
-import com.unipad.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +56,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
     /**
      * 回忆界面下方的数字布局
      */
+    private View view;
     private LinearLayout jianpan_linlayout;
     private RecyclerView.LayoutManager mLayoutmanager;
 
@@ -66,6 +66,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
         super.onActivityCreated(savedInstanceState);
         jianpan_linlayout= (LinearLayout) mViewParent.findViewById(R.id.jianpan_linlayout);
         jianpan_linlayout.setVisibility(View.GONE);
+        view= mViewParent.findViewById(R.id.viewstub);
         numButton_1= (ImageButton) mViewParent.findViewById(R.id.numButton_1);
         numButton_2= (ImageButton) mViewParent.findViewById(R.id.numButton_2);
         numButton_3= (ImageButton) mViewParent.findViewById(R.id.numButton_3);
@@ -96,14 +97,28 @@ public class VirtualRightFragment extends BasicCommonFragment {
         //添加分割线
         memoryRv.addItemDecoration(new DividerGridItemDecoration(mActivity));
         service = (VirtualTimeService) AppContext.instance().getGameServiceByProject(mActivity.getProjectId());
-
+        memoryRv.setAdapter(memoryAdapter=new VirtualMemoryAdapter(service.virtualList));
     }
 
     @Override
-    public void initDataFinished() {
-        super.initDataFinished();
-        memoryRv.setAdapter(memoryAdapter = new VirtualMemoryAdapter(service.virtualList));
+    public void startMemory() {
+        super.startMemory();
+        view.setVisibility(View.GONE);
+        memoryAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void pauseGame() {
+        super.pauseGame();
+        view.setVisibility(View.VISIBLE);
+        memoryAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void reStartGame() {
+        super.reStartGame();
+       view.setVisibility(View.GONE);
+        memoryAdapter.notifyDataSetChanged();
     }
     /**
      * 记忆的adapter
@@ -115,14 +130,16 @@ public class VirtualRightFragment extends BasicCommonFragment {
         public VirtualMemoryAdapter (List<VirtualEntity> virtualList) {
             if (virtualList  == null){
                 this.virtualList =  new ArrayList<>();
+
             }else {
+
                 this.virtualList = virtualList;
             }
         }
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            //将创建的View注册点击事件
+                //将创建的View注册点击事件
             MyViewHolder holder = new MyViewHolder(LayoutInflater.from(mActivity).inflate(R.layout.virtual_memory_line, parent, false));
             return holder;
         }
@@ -134,6 +151,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
             holder.tv_event.setText(entity.getEvent()+"");
             if (service.mode == 0) {
                 //记忆模式
+                jianpan_linlayout.setVisibility(View.GONE);
                  holder.tv_date.setText(entity.getDate()+"");
                  holder.editNUmView.setVisibility(View.GONE);
 
@@ -143,6 +161,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     if (position == index) {
                         holder.editNUmView.requestFocus();
                     }
+                    jianpan_linlayout.setVisibility(View.VISIBLE);
                     entity.itemId = holder.editNUmView.getId();
                     holder.tv_date.setVisibility(View.GONE);
                     holder.editNUmView.setVisibility(View.VISIBLE);
@@ -161,16 +180,23 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
                 } else if (service.mode == 2) {
                     //回忆结束
+                    jianpan_linlayout.setVisibility(View.GONE);
                     holder.editNUmView.setVisibility(View.GONE);
                     holder.tv_date.setVisibility(View.VISIBLE);
                     if (entity.getDate().equals(entity.getAnswerDate() + "")) {
                         holder.tv_date.setText(entity.getDate() + "\n" + entity.getAnswerDate());
+
                     } else {
+
                         holder.tv_date.setText(entity.getDate() + "\n" + entity.getAnswerDate());
                         holder.tv_date.setTextColor(getResources().getColor(R.color.red));
+
                     }
+
                 }
+
             }
+
         }
 
         public int getItem(){
@@ -192,20 +218,26 @@ public class VirtualRightFragment extends BasicCommonFragment {
                 tv_date = (TextView) view.findViewById(R.id.id_datetxt);
                 tv_event=(TextView)view.findViewById(R.id.event_text);
                 editNUmView=(EditText) view.findViewById(R.id.id_text_num);
+
             }
+
           }
+
         }
     /**
      * 开始答题
      */
     public void inAnswerMode() {
-            service.mode=1;
-
-             memoryAdapter.notifyDataSetChanged();
-            mActivity.getCommonFragment().startRememoryTimeCount();
-            jianpan_linlayout.setVisibility(View.VISIBLE);
-            ToastUtil.showToast("开始");
-          }
+              memoryAdapter.notifyDataSetChanged();
+              service.mode=1;
+        }
+    /**
+     * 结束答题
+     */
+    public void endAnswerMode() {
+            memoryAdapter.notifyDataSetChanged();
+            service.mode=2;
+    }
 
     @Override
     public void onDestroyView() {
@@ -213,15 +245,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
             service.clear();
         super.onDestroyView();
     }
-    /**
-     * 结束答题
-     */
-    public void endAnswerMode() {
-            service.mode=2;
-            memoryAdapter.notifyDataSetChanged();
-            jianpan_linlayout.setVisibility(View.GONE);
-
-             }
     /**
      * 输入的索引
       */
@@ -291,7 +314,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     VirtualMemoryAdapter.MyViewHolder nextHolder = (VirtualMemoryAdapter.MyViewHolder) (memoryRv.findViewHolderForAdapterPosition(index));
                     if (null == nextHolder) {
                         int lastVisibleItem = ((GridLayoutManager) mLayoutmanager).findLastVisibleItemPosition() - 2;
-                        //Log.e(VirtualRightFragment.class.getSimpleName(),lastVisibleItem+"");
                         moveToPosition(lastVisibleItem, (GridLayoutManager) mLayoutmanager);
                     } else {
                         nextHolder.editNUmView.requestFocus();
@@ -358,13 +380,13 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
     @Override
     public void memoryTimeToEnd(int memoryTime) {
-            super.memoryTimeToEnd(memoryTime);
+            index=0;
             this.inAnswerMode();
         }
 
     @Override
     public void rememoryTimeToEnd(int answerTime) {
-        this.endAnswerMode();
-    }
 
+            this.endAnswerMode();
+    }
 }

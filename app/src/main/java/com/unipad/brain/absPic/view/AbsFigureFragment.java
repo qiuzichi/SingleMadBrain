@@ -64,7 +64,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
      */
     @Override
     public void memoryTimeToEnd(int memory) {
-
         service.mode = 1;
         current = 0;
         service.shuffle();

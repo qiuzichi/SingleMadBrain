@@ -189,5 +189,9 @@
             android:layout_weight="0.1"
             android:id="@+id/numButton_clear" />
     </LinearLayout>
-
+   <View
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:id="@+id/viewstub"
+       />
 </RelativeLayout>
