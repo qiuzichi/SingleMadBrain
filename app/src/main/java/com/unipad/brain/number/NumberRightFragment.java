@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -24,7 +25,6 @@ import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
-import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -51,6 +51,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
      * 遮罩层
      */
     private ViewStub mStubShade;
+    private ViewStub mStubListen;
     /**
      * 记录mScrollAnswerView滑动了多少次
      */
@@ -68,7 +69,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     private FrameLayout frameLayout;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+        public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         service = (NumService) mActivity.getService();
         mCompeteItem = Constant.getProjectName(mActivity.getProjectId());
@@ -76,6 +77,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         frameLayout = (FrameLayout) mViewParent.findViewById(R.id.binary_rememory_layout);
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+        mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
     }
 
     @Override
@@ -87,7 +89,20 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
                 mTotalNumbers += service.lineNumbers.valueAt(i).length();
             }
             frameLayout.removeAllViews();
-            frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+            if (mCompeteItem.equals(getString(R.string.project_9))){
+                View mMemoryLayout = mStubListen.inflate();
+                final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
+                mMemoryLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        animationDrawable.start();
+                        return true;
+                    }
+                });
+
+            }else{
+                frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+            }
             mStubShade.setVisibility(View.VISIBLE);
         }
     }
