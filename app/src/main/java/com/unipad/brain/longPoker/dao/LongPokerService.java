@@ -40,7 +40,6 @@ public class LongPokerService extends AbsBaseGameService {
 
     @Override
     public double getScore() {
-
         return getLongPokerScore(52f,26f,1f,2f,1)[0];
     }
 
