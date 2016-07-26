@@ -27,6 +27,7 @@ public class RuleGame {
     private String countRule;
 
     private int[] memoryTime ;
+
     private int [] reMemoryTime;
 
     public String getId() {
