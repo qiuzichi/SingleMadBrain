@@ -31,7 +31,7 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        competitionBeans=new ArrayList<CompetitionBean>();
+        competitionBeans = new ArrayList<CompetitionBean>();
         service=(PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER);
         service.registerObserver(HttpConstant.LIST_TOP,this);
         adapter=new TopAdapter(this,competitionBeans,R.layout.top_list);

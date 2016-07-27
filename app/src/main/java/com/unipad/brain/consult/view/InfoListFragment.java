@@ -60,7 +60,6 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
                 @Override
                 public void onSuccess(Drawable drawable) {
                     Bitmap map = PicUtil.drawableToBitmap(drawable);
-                    Log.i("info", HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
                     user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
                 }
 

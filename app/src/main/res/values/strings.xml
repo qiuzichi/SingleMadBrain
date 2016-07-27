@@ -59,7 +59,7 @@
     <string name="personal_info_commit">提交认证</string>
     <string name="confirm_commit">确认提交</string>
     <string name="broken_line_graph">折线图</string>
-    <string name="table_graph">图表</string>
+    <string name="table_graph">比赛模式</string>
     <string name="clear">清空</string>
     <string name="my_follow">关注列表</string>
     <string name="confirm">确认</string>
@@ -233,7 +233,7 @@
     <string name="update_version_title">更新版本号：</string>
     <string name="confirm_update">确认更新</string>
     //apk版本号；
-    <string name="versionName">1.0.1</string>
+    <string name="versionName">1.0.0</string>
     <string name="loadmore_data">正在加载数据......</string>
 
 

@@ -50,6 +50,7 @@
     <color name="comment_popwindows_input">#EAF3FE</color>
     <color name="comment_popwindows_bg">#EFEDED</color>
     <color name="refresh_progress_bar_bg">#EDEDED</color>
+    <color name="update_text_bg">#FEEFB6</color>
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>

@@ -36,16 +36,16 @@ import com.unipad.utils.ToastUtil;
 
 import java.util.Observer;
 
-public class MainHomeFragment extends MainBasicFragment implements InfoListFragment.OnHomePageChangeListener,IDataObserver {
+public class MainHomeFragment extends MainBasicFragment implements InfoListFragment.OnHomePageChangeListener{
 
     private FrameLayout mLayoutHome;
     private InfoListFragment mLeftFragment;
     private MainBasicFragment mRightFragment;
     private CompititionMainFragment mCompititionMainFragment;
     private ConsultMainFragment mConsultMainFragment;
-    private ConfirmUpdateDialog mConfirmDialog;
-    private NewsService service;
-    private VersionBean versionBean;
+//    private ConfirmUpdateDialog mConfirmDialog;
+//    private NewsService service;
+//    private VersionBean versionBean;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
         //初始化界面;
         initView();
         // 1  获取服务器 版本号
-        getVersionFromNet();
+//        getVersionFromNet();
     }
 
     @Override
@@ -158,115 +158,107 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
 //        return currentVersionName;
 //    }
     //访问网络 获取服务器 上的版本信息
-    private void showUpdateVersionDialog(Context context) {
-        showNotification();
-        mConfirmDialog = new ConfirmUpdateDialog(context, getString(R.string.update_version_title) + versionBean.getVersion(),
-                versionBean.getInfoDescription(), getString(R.string.cancel),  getString(R.string.confirm_update), mDialogListener);
-        mConfirmDialog.show();
-    }
-
-    private void getVersionFromNet() {
-        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
-        service.registerObserver(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
-        //访问网络 获取数据
-        service.getApkVersion();
-    }
-
-    private boolean checkVersionIsNew(){
-        String versionName = getString(R.string.versionName);
-
-        if(versionName.equals(versionBean.getVersion())){
-            return true;
-        }
-        return  false;
-    }
-    private BaseConfirmDialog.OnActionClickListener mDialogListener = new BaseConfirmDialog.OnActionClickListener() {
-        @Override
-        public void onActionRight(BaseConfirmDialog dialog) {
-            mConfirmDialog.dismiss();
-            //从网络下载文件
-           downloadApkFile(versionBean.getPath());
-        }
-
-        @Override
-        public void onActionLeft(BaseConfirmDialog dialog) {
-            mConfirmDialog.dismiss();
-        }
-    };
-
-    private void downloadApkFile(String path){
-        Intent server = new Intent("com.loaddown.application");
-        server.putExtra("loadPath", path);
-        mActivity.startService(server);
-//      LoadService.handler.obtainMessage(1,path).sendToTarget();
-    }
-
-    private void showNotification(){
-
-        NotificationManager mNotificationManager = (NotificationManager) mActivity.getSystemService(mActivity.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mActivity);
-
-//        RemoteViews mRemoteViews = new RemoteViews(mActivity.getPackageName(), R.layout.notification_contains_btn_layout);
-//        mRemoteViews.setImageViewResource(R.id.iv_notification_icon, R.drawable.ic_launcher);
+//    private void showUpdateVersionDialog(Context context) {
+//        showNotification();
+//        mConfirmDialog = new ConfirmUpdateDialog(context, getString(R.string.update_version_title) + versionBean.getVersion(),
+//                versionBean.getInfoDescription(), getString(R.string.cancel),  getString(R.string.confirm_update), mDialogListener);
+//        mConfirmDialog.show();
+//    }
 //
-//        mRemoteViews.setTextViewText(R.id.tv_custom_notify_title, getString(R.string.update_version_title) + versionBean.getVersion());
-//        mRemoteViews.setTextViewText(R.id.tv_custom_describe, versionBean.getInfoDescription());
+//    private void getVersionFromNet() {
+//        service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
+//        service.registerObserver(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
+//        //访问网络 获取数据
+//        service.getApkVersion();
+//    }
 //
-//        PendingIntent buttonIntent = getDefalutIntent(versionBean.getPath());
-//        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_start, buttonIntent);
-        String title = getString(R.string.update_version_title) + versionBean.getVersion();
-        mBuilder
-                .setContentTitle(title)//设置通知栏标题
-                .setContentText(versionBean.getInfoDescription())
-                .setContentIntent(getDefalutIntent(versionBean.getPath())) //设置通知栏点击意图
-//                .setNumber(number) //设置通知集合的数量
-                .setTicker(getString(R.string.update_version_title)) //通知首次出现在通知栏，带上升动画效果的
-                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
-                .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
-                .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
-                .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
-//                .setDefaults(Notification.DEFAULT_SOUND)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
-                //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
-                .setSmallIcon(R.drawable.ic_launcher);//设置通知小ICON
+//    private boolean checkVersionIsNew(){
+//        String versionName = getString(R.string.versionName);
+//
+//        if(versionName.equals(versionBean.getVersion())){
+//            return true;
+//        }
+//        return  false;
+//    }
+//    private BaseConfirmDialog.OnActionClickListener mDialogListener = new BaseConfirmDialog.OnActionClickListener() {
+//        @Override
+//        public void onActionRight(BaseConfirmDialog dialog) {
+//            mConfirmDialog.dismiss();
+//            //从网络下载文件
+//           downloadApkFile(versionBean.getPath());
+//        }
+//
+//        @Override
+//        public void onActionLeft(BaseConfirmDialog dialog) {
+//            mConfirmDialog.dismiss();
+//        }
+//    };
 
-        Notification mNotification  = mBuilder.build();
-        mNotification.flags = Notification.FLAG_AUTO_CANCEL;
-        mNotificationManager.notify(11, mNotification);
-    }
+//    private void downloadApkFile(String path){
+//        Intent server = new Intent("com.loaddown.application");
+//        server.putExtra("loadPath", path);
+//        mActivity.startService(server);
+////      LoadService.handler.obtainMessage(1,path).sendToTarget();
+//    }
 
-    private PendingIntent getDefalutIntent(String path){
-//        Intent intent = new Intent(mActivity, MainHomeFragment.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        Intent server = new Intent("com.loaddown.application");
-        server.putExtra("loadPath", path);
-        PendingIntent pendingIntent= PendingIntent.getService(mActivity, 1, server, PendingIntent.FLAG_ONE_SHOT);
-        return pendingIntent;
-    }
+//    private void showNotification(){
+//
+//        NotificationManager mNotificationManager = (NotificationManager) mActivity.getSystemService(mActivity.NOTIFICATION_SERVICE);
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mActivity);
+//
+//        String title = getString(R.string.update_version_title) + versionBean.getVersion();
+//        mBuilder
+//                .setContentTitle(title)//设置通知栏标题
+//                .setContentText(versionBean.getInfoDescription())
+//                .setContentIntent(getDefalutIntent(versionBean.getPath())) //设置通知栏点击意图
+////                .setNumber(number) //设置通知集合的数量
+//                .setTicker(getString(R.string.update_version_title)) //通知首次出现在通知栏，带上升动画效果的
+//                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
+//                .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
+//                .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
+//                .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
+////                .setDefaults(Notification.DEFAULT_SOUND)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+//                //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
+//                .setSmallIcon(R.drawable.ic_launcher);//设置通知小ICON
+//
+//        Notification mNotification  = mBuilder.build();
+//        mNotification.flags = Notification.FLAG_AUTO_CANCEL;
+//        mNotificationManager.notify(11, mNotification);
+//    }
+//
+//    private PendingIntent getDefalutIntent(String path){
+////        Intent intent = new Intent(mActivity, MainHomeFragment.class);
+////        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        Intent server = new Intent("com.loaddown.application");
+//        server.putExtra("loadPath", path);
+//        PendingIntent pendingIntent= PendingIntent.getService(mActivity, 1, server, PendingIntent.FLAG_ONE_SHOT);
+//        return pendingIntent;
+//    }
 
-    @Override
-    public void update(int key, Object o) {
-        switch(key){
-            case HttpConstant.NOTIFY_DOWNLOAD_APK:
-                versionBean = (VersionBean) o;
-                if(versionBean == null){
-                    //没有网络 网络异常的时候 直接返回什么都不做
-                    return;
-                }
-
-                if(!checkVersionIsNew()){
-                    //不一致 提示notification 以及dialog
-                    showUpdateVersionDialog(mActivity);
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
+//    @Override
+//    public void update(int key, Object o) {
+//        switch(key){
+//            case HttpConstant.NOTIFY_DOWNLOAD_APK:
+//                versionBean = (VersionBean) o;
+//                if(versionBean == null){
+//                    //没有网络 网络异常的时候 直接返回什么都不做
+//                    return;
+//                }
+//
+//                if(!checkVersionIsNew()){
+//                    //不一致 提示notification 以及dialog
+//                    showUpdateVersionDialog(mActivity);
+//                }
+//                break;
+//
+//            default:
+//                break;
+//        }
+//    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        service.unRegisterObserve(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
+//        service.unRegisterObserve(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
     }
 }

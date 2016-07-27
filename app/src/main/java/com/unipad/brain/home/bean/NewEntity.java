@@ -46,7 +46,11 @@ public class NewEntity {
     private int totalCount;
 
 
+    public NewEntity(){}
 
+    public NewEntity(String id){
+        this.id = id;
+    }
 
     public String getId() {
         return id;

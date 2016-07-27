@@ -2,6 +2,8 @@ package com.unipad.brain.personal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,10 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,9 +38,12 @@ import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.personal.view.BrokenLineView;
 import com.unipad.brain.view.WheelMainView;
 import com.unipad.common.Constant;
+import com.unipad.common.ViewHolder;
+import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HitopHistRecord;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.DensityUtil;
 import com.unipad.utils.ToastUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,11 +75,12 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private List<HisRecord> hisRecords;
     private ViewGroup viewParent;
     private HisRecord record;
+    private PopupWindow mPopupWindows;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        mTitleBarRightText = mActivity.getString(R.string.table_graph);
+        mTitleBarRightText = mActivity.getString(R.string.race_mode);
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mBlackColor = mActivity.getResources().getColor(R.color.black);
         (mEditSearchBeginDate = (Button) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
@@ -88,9 +101,64 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 //        return R.layout.history_answer;
     }
 
+    /*右侧点击事件*/
     @Override
     public void clickTitleBarRightText() {
-//       this.switchBrowse();
+        //弹出自定义窗体 同时带check选项  切换视图
+        List<String> selectData = new ArrayList<String>();
+        selectData.add("比赛模式");
+        selectData.add("参赛模式");
+        MyPopupAdappte myPopupAdappte = new MyPopupAdappte(mActivity, selectData, R.layout.item_select_popup);
+        showSelectDialog(myPopupAdappte);
+    }
+
+    /**
+     * 弹出选择对话框
+     */
+    private void showSelectDialog(BaseAdapter baseAdapter) {
+        ListView lv = new ListView(mActivity);
+        TextView mRightTextView = mActivity.getmTextRight();
+        lv.setBackgroundResource(R.drawable.icon_spinner_listview_background);
+        // 隐藏滚动条
+        lv.setVerticalScrollBarEnabled(false);
+
+        lv.setCacheColorHint(Color.parseColor("#00000000"));
+        // 让listView没有分割线
+        lv.setDividerHeight(0);
+        lv.setDivider(null);
+        //lv.setId(10001);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                CheckBox cb_select = (CheckBox) view.findViewById(R.id.check_select_popup);
+                cb_select.setChecked(!cb_select.isChecked());
+                //同时其他item的 checked 为false
+
+            }
+        });
+        if(lv.getAdapter() != null){
+            baseAdapter.notifyDataSetChanged();
+        } else {
+            lv.setAdapter(baseAdapter);
+        }
+        ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
+        sa.setDuration(300);
+        lv.startAnimation(sa);
+
+
+        mPopupWindows = new PopupWindow(lv, mRightTextView.getWidth() + DensityUtil.dip2px(mActivity, 40), DensityUtil.dip2px(mActivity,200));
+        // 设置点击外部可以被关闭
+        mPopupWindows.setOutsideTouchable(true);
+        mPopupWindows.setBackgroundDrawable(new BitmapDrawable());
+
+        // 设置popupWindow可以得到焦点
+        mPopupWindows.setFocusable(true);
+        //显示位置
+        mPopupWindows.showAsDropDown(mRightTextView, DensityUtil.dip2px(mActivity, 20), DensityUtil.dip2px(mActivity, -5));
+
+
     }
 
     @Override
@@ -232,6 +300,21 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             dataList.add(new BrokenLineData("", 0, 98));
         }
         return dataList;
+    }
+    class MyPopupAdappte extends CommonAdapter<String>{
+
+        public MyPopupAdappte(Context context, List<String> datas, int layoutId) {
+            super(context, datas, layoutId);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, String s) {
+            ((TextView)holder.getView(R.id.text_select_popup)).setText(s);
+            //默认 勾选第一项；
+            if(holder.getPosition() == 0){
+                ((CheckBox)holder.getView(R.id.check_select_popup)).setChecked(true);
+            }
+        }
     }
 
 
