@@ -18,9 +18,10 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     public RuleGame rule;
 
-    public int round = 1;
+    /**round是在startMemory中赋值，在这之前初始化的数据*/
+    public int round = 0;
 
-    protected int allround = 1;
+    public int allround = 1;
 
     public boolean gameMode = true;//true为比赛模式，false为练习模式
 
@@ -57,6 +58,8 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     public void clear() {
         rule = null;
         mode = 0;
+        round = 0;
+        allround = 1;
         isInitResourseAready = false;
         isInitQuestionAready = false;
         operateGame = null;
@@ -81,7 +84,8 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
 
     @Override
-    public void startMemory() {
+    public void startMemory(int round) {
+        this.round = round;
         if (operateGame != null) {
             operateGame.startMemory();
         }
@@ -105,7 +109,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
         this.operateGame = operateGame;
     }
 
-    @Override
+
     public void initDataFinished() {
         if (operateGame != null) {
             operateGame.initDataFinished();
@@ -121,7 +125,9 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
             operateGame.downloadingQuestion(data);
         }
     }
-
+    public boolean isLastRound(){
+        return round >= allround;
+    }
     public abstract double getScore();
     public abstract String getAnswerData();
 }

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -80,7 +81,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mLayoutInflater = LayoutInflater.from(mActivity);
         this.pageId = pageId;
 
-        if(pageId == 0){
+        if(this.pageId == 0){
            //添加一条 头信息； 默认为 true
             newsDatas.add(0, new NewEntity("header"));
 
@@ -257,6 +258,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         MyRecyclerAdapter adapter = (MyRecyclerAdapter) mRecyclerView.getAdapter();
 
         if(rl_visit_show != null){
+            SystemClock.sleep(500);
             if(isShowVersion){
                 rl_visit_show.setVisibility(View.VISIBLE);
             }else {

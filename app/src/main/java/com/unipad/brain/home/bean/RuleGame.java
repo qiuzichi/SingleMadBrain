@@ -16,25 +16,19 @@ public class RuleGame {
 
     private String groupId;
 
-    private int memeryTime1;
-
-    private int recallTime1;
-
-    private int memeryTime2;
-
-    private int recallTime2;
-
-    private int memeryTime3;
-
-    private int recallTime3;
-
     private String memeryTip;
 
     private String reCallTip;
 
+    /**记忆次数*/
     private int countRecall;
 
+    /**计分规则*/
     private String countRule;
+
+    private int[] memoryTime ;
+
+    private int [] reMemoryTime;
 
     public String getId() {
         return id;
@@ -68,14 +62,6 @@ public class RuleGame {
         this.gradeId = gradeId;
     }
 
-    public int getMemeryTime1() {
-        return memeryTime1;
-    }
-
-    public void setMemeryTime1(int memeryTime1) {
-        this.memeryTime1 = memeryTime1;
-    }
-
     public String getGroupId() {
         return groupId;
     }
@@ -83,47 +69,6 @@ public class RuleGame {
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
-
-    public int getRecallTime1() {
-        return recallTime1;
-    }
-
-    public void setRecallTime1(int recallTime1) {
-        this.recallTime1 = recallTime1;
-    }
-
-    public int getRecallTime2() {
-        return recallTime2;
-    }
-
-    public void setRecallTime2(int recallTime2) {
-        this.recallTime2 = recallTime2;
-    }
-
-    public int getRecallTime3() {
-        return recallTime3;
-    }
-
-    public void setRecallTime3(int recallTime3) {
-        this.recallTime3 = recallTime3;
-    }
-
-    public int getMemeryTime3() {
-        return memeryTime3;
-    }
-
-    public void setMemeryTime3(int memeryTime3) {
-        this.memeryTime3 = memeryTime3;
-    }
-
-    public int getMemeryTime2() {
-        return memeryTime2;
-    }
-
-    public void setMemeryTime2(int memeryTime2) {
-        this.memeryTime2 = memeryTime2;
-    }
-
     public String getMemeryTip() {
         return memeryTip;
     }
@@ -162,5 +107,21 @@ public class RuleGame {
 
     public void setRuleNo(String ruleNo) {
         this.ruleNo = ruleNo;
+    }
+
+    public int[] getMemoryTime() {
+        return memoryTime;
+    }
+
+    public void setMemoryTime(int[] memoryTime) {
+        this.memoryTime = memoryTime;
+    }
+
+    public int[] getReMemoryTime() {
+        return reMemoryTime;
+    }
+
+    public void setReMemoryTime(int[] reMemoryTime) {
+        this.reMemoryTime = reMemoryTime;
     }
 }

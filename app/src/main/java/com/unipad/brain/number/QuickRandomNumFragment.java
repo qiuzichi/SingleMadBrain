@@ -2,8 +2,12 @@ package com.unipad.brain.number;
 
 import android.view.View;
 
+import com.unipad.brain.R;
+import com.unipad.brain.number.dao.QuickRandomNumService;
 import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.common.Constant;
+import com.unipad.common.widget.HIDDialog;
+import com.unipad.utils.ToastUtil;
 
 /**
  * Created by gongkan on 2016/7/18.
@@ -29,11 +33,55 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
     @Override
     public void startRememory() {
         super.startRememory();
-        mKeyboardDialog.show();
+        if (mKeyboardDialog != null) {
+            mKeyboardDialog.show();
+        }
+    }
+
+    @Override
+    public void initDataFinished() {
+        super.initDataFinished();
+        if (mKeyboardDialog != null) {
+            mKeyboardDialog.dismiss();
+        }
     }
 
     @Override
     public void rememoryTimeToEnd(int answerTime) {
         super.rememoryTimeToEnd(answerTime);
+        getAnswer();
+        mKeyboardDialog.dismiss();
+        String buttonText = service.isLastRound()?null:"准备下一轮";
+        ToastUtil.createOnlyOkDialog(mActivity, Constant.SHOW_SOCRE_CONFIRM_DLG, "您本轮得分：", "得分：" + service.getScore(), buttonText,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        HIDDialog.dismissAll();
+                        if (service.isLastRound()) {
+                            mActivity.finish();
+                        }else {
+                            ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "准备中").show();
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    super.run();
+                                    service.parseDataByNextRound();
+                                }
+                            }.start();
+                        }
+                    }
+                }).show();
+
+    }
+
+    @Override
+    public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
+        //第一轮的时候，会自动发一个消息给管控端，告诉管控端已结束记忆，准备开始答题
+        //进度需要初始化。
+        if (service.round != 1){
+            progress = 100;
+            sendMsgToPreper();
+        }
     }
 }

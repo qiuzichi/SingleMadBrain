@@ -26,26 +26,28 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
 
     private AbsBaseGameService service;
 
+    private String matchId;
+
     // 获取单例
     public static SocketThreadManager sharedInstance() {
         if (s_SocketManager == null) {
             s_SocketManager = new SocketThreadManager();
-            s_SocketManager.startThreads();
         }
         return s_SocketManager;
     }
 
     // 单例，不允许在外部构建对象
     private SocketThreadManager() {
-        mOutThread = new SocketOutputThread();
-        LongTcpClient.instant().setDataHandler(this);
+
     }
 
     /**
      * 启动线程
      */
 
-    private void startThreads() {
+    public void startThreads() {
+        mOutThread = new SocketOutputThread();
+        LongTcpClient.instant().setDataHandler(this);
         mOutThread.start();
         // mDnsthread.start();
     }
@@ -72,14 +74,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         mOutThread.addMsgToSendList(request);
     }
 
-    public void signOK(String id) {
-        Map<String, String> body = new HashMap<String, String>();
-        body.put("USERID", AppContext.instance().loginUser.getUserId());
-        body.put("SCHEDULEID", id);
-        body.put("DEVICE", MobileInfo.getDeviceId());
-        Request request = new Request("10001", body);
-        sendMsg(request);
-    }
+
     public void progressGame(String id,int progress,int round) {
         Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());
@@ -130,7 +125,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         }else if(IOConstant.GAME_START.equals(data.get("TRXCODE"))){
             if (service != null) {
                 if ("0".equals(data.get("TYPE"))) {
-                    service.startMemory();
+                    service.startMemory(Integer.valueOf(data.get("ROUND")));
                 }else if ("1".equals(data.get("TYPE"))){
                     service.starRememory();
                 }
@@ -158,5 +153,13 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
 
     public void setService(AbsBaseGameService service) {
         this.service = service;
+    }
+
+    public String getMatchId() {
+        return matchId;
+    }
+
+    public void setMatchId(String matchId) {
+        this.matchId = matchId;
     }
 }

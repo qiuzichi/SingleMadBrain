@@ -49,4 +49,6 @@ public abstract class BasicActivity extends FragmentActivity implements View.OnC
      * 为了编码的规范，此方法用于初始化变量(包括初始化控件)
      */
     public abstract void initData();
+
+
 }

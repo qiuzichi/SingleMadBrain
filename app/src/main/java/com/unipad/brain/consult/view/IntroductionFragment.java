@@ -82,11 +82,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private VersionBean versionBean;
     private ConfirmUpdateDialog mConfirmDialog;
 
-
-    private void getNews(String contentType,String title,int page,int size ){
-        service.getNews(contentType, title, page, size);
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -446,7 +441,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                         mRecyclerView.setAdapter(mRecyclerViewAdapter);
                         ToastUtil.showToast("最后一页  已经没有新的数据了");
                     }
-
                 }
             }
         }, 3000);
@@ -483,7 +477,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 if(requestPagerNum == 1 && databean.size() != 0){
                     totalPager = databean.get(0).getTotalPager();
                 }
-
 
                 if(requestPagerNum != totalPager){
                     requestPagerNum++;

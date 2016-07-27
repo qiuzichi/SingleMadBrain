@@ -137,7 +137,12 @@ public class DragAdapter extends BaseAdapter {
 		}
 
 	}
-
+	public void clearData(){
+		if (channelList != null){
+			channelList.clear();
+			notifyDataSetChanged();
+		}
+	}
 	/** 设置频道列表 */
 	public void setListDate(List<ChannelItem> list) {
 		channelList = list;

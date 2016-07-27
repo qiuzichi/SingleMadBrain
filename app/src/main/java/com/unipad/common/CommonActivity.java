@@ -1,6 +1,5 @@
 package com.unipad.common;
 
-import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -12,16 +11,14 @@ import android.widget.TextView;
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
 import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.App;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
 import com.unipad.brain.absPic.view.AbsFigureFragment;
-import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.longPoker.view.LongPokerRightFragment;
 import com.unipad.brain.number.BinaryRightFragment;
+import com.unipad.brain.number.ListenToWriteNumFragment;
 import com.unipad.brain.number.LongNumFragment;
-import com.unipad.brain.number.NumberRightFragment;
 import com.unipad.brain.number.QuickRandomNumFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
 import com.unipad.brain.quickPoker.view.QuickPokerRightFragment;
@@ -39,6 +36,7 @@ import java.util.Map;
  * Created by Wbj on 2016/4/7.
  */
 public class CommonActivity extends BasicActivity implements IDataObserver,IOperateGame{
+    private static final String TAG = "CommonActivity" ;
     private CommonFragment mCommonFragment = new CommonFragment();
 
     private AbsBaseGameService service;
@@ -63,17 +61,18 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     private String projectId;
 
-    private HIDDialog dialog;
     long startTime;
 
-    private static final int STRAT_MEMORY = 0;
+
+
     private static final int DOWNLOAD_QUESTION = 1;
     private static final int PAUSE_GAME = 2;
     private static final int RESTAT_GAME = 3;
     private static final int FINISH_GAME = 4;
     private static final int INIT_DATA_FINISH = 5;
     private static final int STRAT_REMEMORY = 6;
-
+    private static final int STRAT_MEMORY = 7;
+    private static final int DLG_DELAY_DISMISS = 8;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,51 +88,61 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                 int what = msg.what;
                 switch (msg.what) {
                     case STRAT_MEMORY:
+                        LogUtil.e(TAG,"STRAT_MEMORY");
                         HIDDialog.dismissAll();
                         gameFragment.startMemory();
                         mCommonFragment.startMemory();
                         break;
                     case STRAT_REMEMORY:
+                        LogUtil.e(TAG,"STRAT_REMEMORY");
                         HIDDialog.dismissAll();
                         gameFragment.startRememory();
                         mCommonFragment.startRememory();
                         break;
                     case DOWNLOAD_QUESTION:
-                        dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中");
-                        dialog.show();
+                        LogUtil.e(TAG,"DOWNLOAD_QUESTION");
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
                         break;
-
                     case PAUSE_GAME:
+                        LogUtil.e(TAG,"PAUSE_GAME");
                         HIDDialog.dismissAll();
-                        dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停");
-                        dialog.show();
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
                         break;
                     case RESTAT_GAME:
+                        LogUtil.e(TAG,"RESTAT_GAME");
                         HIDDialog.dismissAll();
                         gameFragment.reStartGame();
                         mCommonFragment.reStartGame();
                         break;
                     case FINISH_GAME:
+                        LogUtil.e(TAG,"FINISH_GAME");
                         gameFragment.finishGame();
                         mCommonFragment.finishGame();
                         break;
+                    case DLG_DELAY_DISMISS:
+                        LogUtil.e("","DLG_DELAY_DISMISS");
+                        HIDDialog dialog = HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE);
+                        if (dialog == null) {
+                            HIDDialog.dismissAll();
+                            ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "等待裁判准备开始").show();
+                        } else {
+                            ((TextView) dialog.findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
+                        }
+                        break;
                     case INIT_DATA_FINISH:
+                        LogUtil.e("","INIT_DATA_FINISH");
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
-                        ((TextView) HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE).findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
-                        LogUtil.e("","-------------下载完成-----------");
+                        handler.sendEmptyMessageDelayed(DLG_DELAY_DISMISS, 5000);
+
                         new Thread() {
                            @Override
                            public void run() {
-                               try {
-                                   sleep(5000);
-                               } catch (InterruptedException e) {
-                                   e.printStackTrace();
-                               }
                                SocketThreadManager.sharedInstance().
                                        downLoadQuestionOK(matchId, 100);
+                               LogUtil.e("", "-------------下载完成-----------");
                            }
                        }.start();;
                         break;
@@ -154,9 +163,10 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                     public void run() {
                         ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
                         SocketThreadManager.sharedInstance().setService(service);
+                        SocketThreadManager.sharedInstance().setMatchId(matchId);
                         try {
                             Thread.sleep(300);
-                            SocketThreadManager.sharedInstance().signOK(matchId);
+                            SocketThreadManager.sharedInstance().startThreads();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -201,7 +211,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         } else if (competeItem.equals(getString(R.string.project_5))) {
             gameFragment = new QuickRandomNumFragment();
         }  else if (competeItem.equals(getString(R.string.project_9))) {
-
+            gameFragment = new ListenToWriteNumFragment();
         } else if (competeItem.equals(getResources().getString(R.string.project_10))){
             gameFragment = new QuickPokerRightFragment();
         } else if (competeItem.equals(getResources().getString(R.string.project_7))){

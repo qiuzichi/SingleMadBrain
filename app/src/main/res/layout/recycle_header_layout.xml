@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relative_update_version_show"
     android:layout_width="match_parent"
-    android:visibility="gone"
     android:background="@color/update_text_bg"
     android:layout_height="@dimen/margin_30dp">
 

@@ -136,32 +136,38 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
      * 切换比赛进程：记忆模式-->回忆模式-->提交答案
      */
     private void switchCompeteProcess() {
-        mCountDownTime.stopCountTime();
+        int takeTIme = mCountDownTime.stopCountTime();
         if (!isRememoryStatus) {//切换到回忆模式
             isRememoryStatus = true;
             mTextCompeteProcess.setText(R.string.rememorying);
             mBtnCompeteMode.setText(R.string.commit_answer);
             if (mICommunicate != null) {
                 startRememoryTimeCount();
-                memoryTime = mActivity.getService().rule.getMemeryTime1() - mCountDownTime.getTime();
+                memoryTime = takeTIme;
                 mICommunicate.memoryTimeToEnd(memoryTime);
             }
 
         } else {//回忆模式下才可以提交答案
-            this.commitAnswer();
+            this.commitAnswer(takeTIme);
         }
     }
+    private void reset(){
+        isRememoryStatus = false;
+        mBtnCompeteMode.setText(R.string.end_memory);
+        mBtnCompeteMode.setEnabled(true);
+        mTextCompeteProcess.setText(R.string.memorying);
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round],false));
+
+    }
     public void startRememoryTimeCount(){
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getRecallTime1(),false));
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1],false));
     }
     /**
      * 提交答案
      */
-    private void commitAnswer() {
-
-
+    private void commitAnswer(final int rememoryTime) {
+        mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
-            final int rememoryTime = mActivity.getService().rule.getRecallTime1()-mCountDownTime.getTime();
             mICommunicate.rememoryTimeToEnd(rememoryTime);
             new Thread(){
                 @Override
@@ -217,7 +223,8 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         switch (key) {
             case HttpConstant.GET_RULE_NOTIFY:
                 mActivity.getService().rule = (RuleGame) o;
-                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemeryTime1(), false));
+                mActivity.getService().allround =  mActivity.getService().rule.getCountRecall();
+                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round], false));
                 break;
             default:
                 break;
@@ -226,7 +233,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
 
     @Override
     public void initDataFinished() {
-
+       reset();
     }
 
     @Override

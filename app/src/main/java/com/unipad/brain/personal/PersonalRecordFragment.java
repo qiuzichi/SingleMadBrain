@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -52,6 +55,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.zip.Inflater;
+
 /**
  * 个人中心之历史成绩
  * Created by Wbj on 2016/4/27.
@@ -76,6 +81,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private ViewGroup viewParent;
     private HisRecord record;
     private PopupWindow mPopupWindows;
+    private PopupWindow mPopupWindowsDate;
+    private TextView mRightTextView;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -92,7 +99,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mActivity.findViewById(R.id.text_record_china).setVisibility(View.GONE);
         mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
         validateDate();
-        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
+        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK, this);
+
 
     }
     @Override
@@ -105,50 +113,42 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     @Override
     public void clickTitleBarRightText() {
         //弹出自定义窗体 同时带check选项  切换视图
-        List<String> selectData = new ArrayList<String>();
-        selectData.add("比赛模式");
-        selectData.add("参赛模式");
-        MyPopupAdappte myPopupAdappte = new MyPopupAdappte(mActivity, selectData, R.layout.item_select_popup);
-        showSelectDialog(myPopupAdappte);
+        showSelectDialog(null);
     }
 
     /**
      * 弹出选择对话框
      */
     private void showSelectDialog(BaseAdapter baseAdapter) {
-        ListView lv = new ListView(mActivity);
-        TextView mRightTextView = mActivity.getmTextRight();
-        lv.setBackgroundResource(R.drawable.icon_spinner_listview_background);
-        // 隐藏滚动条
-        lv.setVerticalScrollBarEnabled(false);
+        //获取textview组件
+        mRightTextView = mActivity.getmTextRight();
+        View mPopupView = LayoutInflater.from(mActivity).inflate(R.layout.item_select_popup, null);
+        final RadioButton radio_competition = (RadioButton) mPopupView.findViewById(R.id.radio_select_competition);
+        RadioButton radio_exercise = (RadioButton) mPopupView.findViewById(R.id.radio_select_exercise);
+        RadioGroup mRadioGroup = (RadioGroup) mPopupView.findViewById(R.id.radio_group_popup);
 
-        lv.setCacheColorHint(Color.parseColor("#00000000"));
-        // 让listView没有分割线
-        lv.setDividerHeight(0);
-        lv.setDivider(null);
-        //lv.setId(10001);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton rb = (RadioButton) group.findViewById(group.getCheckedRadioButtonId());
 
-                CheckBox cb_select = (CheckBox) view.findViewById(R.id.check_select_popup);
-                cb_select.setChecked(!cb_select.isChecked());
-                //同时其他item的 checked 为false
+Log.e("person record ", rb.isChecked() + "===    radio_competition " + radio_competition.isChecked());
+                mRightTextView.setText(rb.getText().toString());
 
+
+
+                closePopup();
             }
         });
-        if(lv.getAdapter() != null){
-            baseAdapter.notifyDataSetChanged();
-        } else {
-            lv.setAdapter(baseAdapter);
-        }
+
         ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
                 Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
         sa.setDuration(300);
-        lv.startAnimation(sa);
+        mPopupView.startAnimation(sa);
 
 
-        mPopupWindows = new PopupWindow(lv, mRightTextView.getWidth() + DensityUtil.dip2px(mActivity, 40), DensityUtil.dip2px(mActivity,200));
+        mPopupWindows = new PopupWindow(mPopupView, mRightTextView.getWidth() + DensityUtil.dip2px(mActivity, 40), DensityUtil.dip2px(mActivity,100));
         // 设置点击外部可以被关闭
         mPopupWindows.setOutsideTouchable(true);
         mPopupWindows.setBackgroundDrawable(new BitmapDrawable());
@@ -156,9 +156,26 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         // 设置popupWindow可以得到焦点
         mPopupWindows.setFocusable(true);
         //显示位置
-        mPopupWindows.showAsDropDown(mRightTextView, DensityUtil.dip2px(mActivity, 20), DensityUtil.dip2px(mActivity, -5));
+        mPopupWindows.showAsDropDown(mRightTextView, - DensityUtil.dip2px(mActivity, 40), 10);
+    }
+
+    private void showSelectStartDatePopup(View positionView){
+
+        ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
+        sa.setDuration(300);
+        positionView.startAnimation(sa);
 
 
+        mPopupWindowsDate = new PopupWindow(positionView, mEditSearchBeginDate.getWidth() + DensityUtil.dip2px(mActivity, 400), DensityUtil.dip2px(mActivity,300));
+        // 设置点击外部可以被关闭
+        mPopupWindowsDate.setOutsideTouchable(true);
+        mPopupWindowsDate.setBackgroundDrawable(new BitmapDrawable());
+
+        // 设置popupWindow可以得到焦点
+        mPopupWindowsDate.setFocusable(true);
+        //显示位置
+        mPopupWindowsDate.showAsDropDown(mEditSearchBeginDate, - DensityUtil.dip2px(mActivity, 40), 5);
     }
 
     @Override
@@ -175,13 +192,16 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             case R.id.record_text_delete:
                 break;
             case R.id.record_search_begin_data:
-                showDialog = new ShowDialog(mActivity);
+//                showDialog = new ShowDialog(mActivity);
                 wheelMainView=new WheelMainView(mActivity);
                 wheelMainView.setChangingListener(PersonalRecordFragment.this);
-                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
+//                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_BOTTOM,mActivity.getWindowManager(),0.5f,0.6f);
+
+                showSelectStartDatePopup(wheelMainView);
+
                 break;
             case R.id.record_search_end_data:
-                showDialog = new ShowDialog(mActivity);
+//                showDialog = new ShowDialog(mActivity);
                 wheelMainView=new WheelMainView(mActivity);
                 wheelMainView.setChangingListener(new WheelMainView.OnChangingListener() {
                     @Override
@@ -189,7 +209,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                         mEditSearchEndDate.setText(changStr);
                     }
                 });
-                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
+                showSelectStartDatePopup(wheelMainView);
+//                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_BOTTOM,mActivity.getWindowManager(),0.5f,0.6f);
                 break;
             case R.id.group_historry_list:
                openPersonalIntegration();
@@ -202,7 +223,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private void openPersonalIntegration() {
         Intent intent=new Intent();
         intent.setClass(getActivity(),PersonalInfoActivty.class);
-        intent.putExtra("ranking",record.getRanking());
+        intent.putExtra("ranking", record.getRanking());
         startActivity(intent);
     }
 
@@ -212,6 +233,18 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     public void onStart() {
         super.onStart();
         thisShowView = 3;
+    }
+
+    //关闭弹出窗体
+    private void closePopup(){
+
+        if(mPopupWindows != null && mPopupWindows.isShowing()){
+            mPopupWindows.dismiss();
+        }
+
+        if(mPopupWindowsDate != null && mPopupWindowsDate.isShowing()){
+            mPopupWindowsDate.dismiss();
+        }
     }
 
     /**
@@ -300,21 +333,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             dataList.add(new BrokenLineData("", 0, 98));
         }
         return dataList;
-    }
-    class MyPopupAdappte extends CommonAdapter<String>{
-
-        public MyPopupAdappte(Context context, List<String> datas, int layoutId) {
-            super(context, datas, layoutId);
-        }
-
-        @Override
-        public void convert(ViewHolder holder, String s) {
-            ((TextView)holder.getView(R.id.text_select_popup)).setText(s);
-            //默认 勾选第一项；
-            if(holder.getPosition() == 0){
-                ((CheckBox)holder.getView(R.id.check_select_popup)).setChecked(true);
-            }
-        }
     }
 
 
@@ -416,6 +434,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                 break;
         }
     }
+
 
     @Override
     public void onChanging(String changStr) {

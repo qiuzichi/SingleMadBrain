@@ -47,18 +47,26 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
                         rule.setProjectId(dataJson.getString("projectId"));
                         rule.setTiltle(dataJson.getString("title"));
                         rule.setRuleNo(dataJson.getString("ruleNo"));
-                        rule.setMemeryTime1(dataJson.getInt("memoryTime"));
-                        rule.setRecallTime1(dataJson.getInt("recallTime"));
-                        if ("00009".equals(rule.getProjectId())) {
-                            rule.setMemeryTime2(dataJson.getInt("memoryTime2"));
-                            rule.setRecallTime2(dataJson.getInt("recallTime2"));
-                            rule.setMemeryTime3(dataJson.getInt("memoryTime3"));
-                            rule.setRecallTime3(dataJson.getInt("recallTime3"));
+                        rule.setCountRule(dataJson.getString("scoreText"));
+                        rule.setCountRecall(dataJson.optInt("recallCount",1));
+                        int[] memoryTime = new int[rule.getCountRecall()];
+                        int[] reMemoryTime = new int[rule.getCountRecall()];
+                        switch (rule.getCountRecall()){
+                            case 3:
+                                memoryTime[2] = dataJson.optInt("memoryTime3", dataJson.getInt("memoryTime"));
+                                reMemoryTime[2] = dataJson.optInt("recallTime3",dataJson.getInt("recallTime"));
+                            case 2:
+                                memoryTime[1] = dataJson.optInt("memoryTime2", dataJson.getInt("memoryTime"));
+                                reMemoryTime[1] = dataJson.optInt("recallTime2", dataJson.getInt("recallTime"));
+                            case 1:
+                                memoryTime[0] = dataJson.getInt("memoryTime");
+                                reMemoryTime[0] = dataJson.getInt("recallTime");
+                                break;
                         }
+                        rule.setMemoryTime(memoryTime);
+                        rule.setReMemoryTime(reMemoryTime);
                         rule.setMemeryTip(dataJson.getString("memoryText"));
                         rule.setReCallTip(dataJson.getString("recallText"));
-                        rule.setCountRule(dataJson.getString("scoreText"));
-                        rule.setCountRecall(dataJson.getInt("RECALL_COUNT"));
                     }
                 }
             }

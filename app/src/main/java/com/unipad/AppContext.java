@@ -1,9 +1,5 @@
 package com.unipad;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -15,8 +11,8 @@ import com.unipad.brain.home.dao.NewsService;
 import com.unipad.brain.location.dao.LocationService;
 import com.unipad.brain.longPoker.dao.LongPokerService;
 import com.unipad.brain.number.dao.BinaryService;
+import com.unipad.brain.number.dao.ListenToWriteNumService;
 import com.unipad.brain.number.dao.LongNumService;
-import com.unipad.brain.number.dao.NumService;
 import com.unipad.brain.number.dao.QuickRandomNumService;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.portraits.control.HeadService;
@@ -27,6 +23,10 @@ import com.unipad.common.Constant;
 import com.unipad.observer.GlobleHandle;
 
 import org.xutils.DbManager;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * 整个应用的全局上下文
@@ -184,6 +184,10 @@ public class AppContext {
                 service = new QuickRandomNumService();
                 service.init();
                 serviceList.put(key, service);
+            }else if(key.equals(Constant.LISTENTOWRITE_NUM_SERVICE)){
+                service = new ListenToWriteNumService();
+                service.init();
+                serviceList.put(key, service);
             }
         }
         return service;
@@ -208,7 +212,7 @@ public class AppContext {
         }else if (Constant.GAME_RANDOM_WORDS.endsWith(projectId)){
             key = Constant.WORDS_SERVICE;
         }else if (Constant.GAME_LISTON_AND_MEMORY_WORDS.endsWith(projectId)){
-
+            key = Constant.LISTENTOWRITE_NUM_SERVICE;
         }else if (Constant.GAME_QUICKIY_POCKER.endsWith(projectId)){
             key = Constant.QUICK_POKER_SERVICE;
         }

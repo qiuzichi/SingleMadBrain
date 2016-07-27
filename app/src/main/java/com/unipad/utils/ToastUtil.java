@@ -1,6 +1,7 @@
 package com.unipad.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +106,7 @@ public class ToastUtil {
     }
 
     public static HIDDialog createOkAndCancelDialog(Context mContext, String id,String contentTip,View.OnClickListener confirmListener){
-        final HIDDialog dialog =  new HIDDialog(mContext,R.style.DialogStyle, id);
+        final HIDDialog dialog =  new HIDDialog(mContext, id);
         dialog.setContentView(HIDDialog.ENUM_DIALOG_VIEW.TWO_BUTTON_VIEW);
         dialog.setTitle("");
         dialog.setText(contentTip);
@@ -119,6 +120,19 @@ public class ToastUtil {
 
         dialog.setSecondBTText(mContext.getString(R.string.confirm));
         dialog.setSecondBTListener(confirmListener);
+        return dialog;
+    }
+
+    public static HIDDialog createOnlyOkDialog(Context mContext, String id,String tittle,String contentTip,String buttonText,View.OnClickListener confirmListener){
+        final HIDDialog dialog =  new HIDDialog(mContext, id);
+        dialog.setContentView(HIDDialog.ENUM_DIALOG_VIEW.ONE_BUTTON_VIEW);
+        dialog.setTitle(tittle);
+        dialog.setText(contentTip);
+        if (TextUtils.isEmpty(buttonText)) {
+            buttonText = mContext.getString(R.string.confirm);
+        }
+        dialog.setFirstBTText(buttonText);
+        dialog.setFirstBTListener(confirmListener);
         return dialog;
     }
 }

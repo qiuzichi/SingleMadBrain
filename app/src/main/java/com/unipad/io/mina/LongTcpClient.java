@@ -3,11 +3,14 @@ package com.unipad.io.mina;
 import android.widget.Toast;
 
 import com.unipad.brain.App;
+import com.unipad.utils.LogUtil;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 
 import org.apache.mina.core.RuntimeIoException;
+import org.apache.mina.core.filterchain.IoFilter;
+import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
@@ -60,7 +63,7 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
 
         return instance;
     }
-
+    private boolean isReconnect = true;
     public boolean init() {
         if(!isInstanceed) {
             connector = new NioSocketConnector();
@@ -78,25 +81,60 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
 
             //�����Ƿ�forward����һ��filter
             heartBeat.setForwardEvent(true);
+            connector.getFilterChain().addFirst("reconnection", new IoFilterAdapter() {
+                @Override
+                public void sessionClosed(IoFilter.NextFilter nextFilter, IoSession ioSession) throws Exception {
+                    for (; ; ) {
+                        if (!isReconnect){
+                            break;
+                        }
+                        try {
+                            Thread.sleep(3000);
+                            ConnectFuture future = connector.connect();
+                            future.awaitUninterruptibly();// 等待连接创建成功
+                            session = future.getSession();// 获取会话
+                            if (session.isConnected()) {
+                                LogUtil.e("断线重连[");
+                                break;
+                            }
+                        } catch (Exception ex) {
+                            LogUtil.e("重连服务器登录失败,3秒再连接一次:" + ex.getMessage());
+                        }
+                    }
+                }
+            });
             //��������Ƶ��
             heartBeat.setRequestInterval(HEARTBEATRATE);
+            connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30000);  //读写都空闲时间:30秒
+            connector.getSessionConfig().setIdleTime(IdleStatus.READER_IDLE, 40000);//读(接收通道)空闲时间:40秒
+            connector.getSessionConfig().setIdleTime(IdleStatus.WRITER_IDLE, 50000);//写(发送通道)空闲时间:50秒
             connector.getFilterChain().addLast("keeplive", new KeepAliveFilter(new ClientKeepAliveMessageFactoryImp(), IdleStatus.READER_IDLE, KeepAliveRequestTimeoutHandler.DEAF_SPEAKER, 10, 5));
+            connector.setDefaultRemoteAddress(new InetSocketAddress(HOSTNAME, PORT));
+                for (; ; ) {
+                    if (!isReconnect){
+                        break;
+                    }
+                    try {
+                        ConnectFuture future = connector.connect();
+                    future.awaitUninterruptibly();// 等待连接创建完成
+                    session = future.getSession();
+                    if (session.isConnected()) {
+                        isInstanceed = true;
+                        break;
+                    } else {
 
-            try {
-                ConnectFuture future = connector.connect(new InetSocketAddress(
-                        HOSTNAME, PORT));
-                future.awaitUninterruptibly();// 等待连接创建完成
-                session = future.getSession();
-                if (session.isConnected()) {
+                    }
 
-                } else {
+                }catch(RuntimeIoException e){
+                    System.err.println("Failed to connect.");
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                        e.printStackTrace();
 
                 }
-                isInstanceed = true;
-            } catch (RuntimeIoException e) {
-                System.err.println("Failed to connect.");
-                e.printStackTrace();
-
             }
         }
         return isInstanceed;
@@ -110,21 +148,6 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
         }
     }
 
-    public boolean reConnect() {
-        boolean connect = false;
-        ConnectFuture future = connector.connect(new InetSocketAddress(
-                HOSTNAME, PORT));
-
-        future.awaitUninterruptibly();// 等待连接创建完成
-        session = future.getSession();
-        if (session.isConnected()) {
-            connect = true;
-        } else {
-            Toast.makeText(App.getContext(), "请检查网络", Toast.LENGTH_SHORT).show();
-        }
-
-        return connect;
-    }
 
     public void sendMsg(String data) {
         if (session != null) {
@@ -132,14 +155,15 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
         }
     }
     public void disConnect() {
-        if (handler != null) {
-            handler.setIsReconect(false);
-        }
+            isReconnect = false;
         if (session != null) {
             session.closeNow();
         }
     }
     public void sendMsg(Request request) {
+        if (session == null){
+            new Throwable(new RuntimeIoException(" seesion is null"));
+        }
         if (request != null) {
             request.sendMsg(session);
         }
