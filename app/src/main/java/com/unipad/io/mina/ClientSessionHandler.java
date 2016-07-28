@@ -23,14 +23,14 @@ public class ClientSessionHandler extends IoHandlerAdapter {
     public void sessionOpened(IoSession session) throws Exception {
         // TODO Auto-generated method stub
         super.sessionOpened(session);
-        if (handler != null) {
+
             Map<String, String> body = new HashMap<String, String>();
             body.put("USERID", AppContext.instance().loginUser.getUserId());
-            body.put("SCHEDULEID", handler.getMatchId());
+            body.put("SCHEDULEID", SocketThreadManager.sharedInstance().getMatchId());
             body.put("DEVICE", MobileInfo.getDeviceId());
             Request request = new Request("10001", body);
             request.sendMsg(session);
-        }
+
 //		String signXML = "00000203<?xml version=\"1.0\" encoding=\"GBK\"?><TRX><HEAD><TRXCODE>10001</TRXCODE></HEAD><BODY><USERID>0887E43BA5CF47E2B4140BE3979317CB</USERID><SCHEDULEID>483A00A3A56B41E8B0E0C93BB8253165</SCHEDULEID></BODY></TRX>";
       //  String signXML = "00000203<?xml version=\"1.0\" encoding=\"GBK\"?><TRX><HEAD><TRXCODE>10001</TRXCODE></HEAD><BODY><USERID>0CC8A614B2CC48FFBE591E6142136076</USERID><SCHEDULEID>DFA3A8C92B2F43D692339B80499250E8</SCHEDULEID></BODY></TRX>";
       //  session.write(signXML);
@@ -84,6 +84,5 @@ public class ClientSessionHandler extends IoHandlerAdapter {
      */
     public static interface IDataHandler {
         void processPack(IPack pack);
-        String getMatchId();
     }
 }

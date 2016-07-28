@@ -3,9 +3,11 @@ package com.unipad.brain.consult.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -33,12 +35,14 @@ import com.lidroid.xutils.BitmapUtils;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.listener.OnLoadMoreListener;
+import com.unipad.brain.consult.listener.OnShowUpdateDialgo;
 import com.unipad.brain.consult.view.PagerDetailActivity;
 import com.unipad.brain.home.bean.NewEntity;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.PicUtil;
 
 import org.xutils.common.Callback;
 
@@ -47,10 +51,13 @@ import java.util.List;
 //RecyclerView  的 adapter
 public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IDataObserver {
     private boolean isLoadMoreData = false;
+    private boolean isShowVersion = false;
     private LayoutInflater mLayoutInflater;
     private int lastVisibleItem;
+    private int firstVisibleItem;
     private final int TYPE_ITEM = 0;
     private final int TYPE_FOOTER = 1;
+    private final int TYPE_HEADER = 2;
     private final String OPERATE_ZAN = "1";
     private final String OPERATE_COMMENT = "2";
 
@@ -60,15 +67,28 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<NewEntity> newsDatas;
     private PopupWindow mPopupWindows;
     private OnLoadMoreListener onLoadMoreListener;
+    private OnShowUpdateDialgo mOnShowUpdateDialgo;
     private NewsService service;
+    private BitmapUtils bitmapUtils;
+    private RelativeLayout rl_visit_show;
+
 
     public MyRecyclerAdapter(Activity mActivity, final RecyclerView mRecyclerView, List<NewEntity> datas ,int pageId) {
         this.mActivity = mActivity;
         this.newsDatas = datas;
+
         this.mRecyclerView = mRecyclerView;
         this.mLayoutInflater = LayoutInflater.from(mActivity);
         this.pageId = pageId;
 
+        if(this.pageId == 0){
+           //添加一条 头信息； 默认为 true
+            newsDatas.add(0, new NewEntity("header"));
+
+            isShowVersion = true;
+        }
+        bitmapUtils = new BitmapUtils(mActivity);
+        bitmapUtils.configDefaultBitmapConfig(Bitmap.Config.ARGB_8888);
 
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
@@ -81,7 +101,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     super.onScrollStateChanged(recyclerView, newState);
                     if (!isLoadMoreData && newState == RecyclerView.SCROLL_STATE_IDLE
                             && lastVisibleItem + 1 == mRecyclerView.getAdapter().getItemCount()) {
-                        onLoadMoreListener.onLoadMore();
+                            onLoadMoreListener.onLoadMore();
                     }
                 }
 
@@ -89,6 +109,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                    firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
                 }
             });
         }
@@ -101,8 +122,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             view.setLayoutParams(new RecyclerView.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT,
                     RadioGroup.LayoutParams.WRAP_CONTENT));
             return new ItemViewHolder(view);
-        }  if(viewType == TYPE_FOOTER){
+        } else  if(viewType == TYPE_FOOTER){
             return new FooterViewHolder(mLayoutInflater.inflate(R.layout.recycler_footer_layout, parent, false));
+        }else if(viewType == TYPE_HEADER) {
+            return new HeaderViewHolder(mLayoutInflater.inflate(R.layout.recycle_header_layout, parent, false));
         }
         return null;
     }
@@ -114,8 +137,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             ((ItemViewHolder) holder).text_title.setText(bean.getTitle());
             ((ItemViewHolder) holder).text_updatetime.setText(bean.getPublishDate());
-            new BitmapUtils(mActivity).display(((ItemViewHolder) holder).iv_picture, bean.getThumbUrl());
-
+            bitmapUtils.display(((ItemViewHolder) holder).iv_picture, bean.getThumbUrl());
             final ImageView iv_zan = ((ItemViewHolder) holder).iv_pager_zan;
             if (bean.getIsLike()) {
                 iv_zan.setImageResource(R.drawable.favorite_introduction_check);
@@ -181,12 +203,26 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     //查看详情的界面
                     Intent intent = new Intent(mActivity, PagerDetailActivity.class);
                     intent.putExtra("pagerId", bean.getId());
+                    intent.putExtra("pagerId", bean.getId());
                     mActivity.startActivity(intent);
                 }
             });
 
         }else if(holder instanceof FooterViewHolder){
             ((FooterViewHolder) holder).pr_moreData.setIndeterminate(true);
+        }else if(holder instanceof HeaderViewHolder){
+            rl_visit_show = ((HeaderViewHolder) holder).rl_version;
+            ((HeaderViewHolder) holder).text_version.setText("检查到最新版本" );
+
+            rl_visit_show.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isShowVersion && mOnShowUpdateDialgo != null) {
+                        //显示dialog 关闭自己
+                        mOnShowUpdateDialgo.showDialogUpdate();
+                    }
+                }
+            });
         }
     }
 
@@ -203,6 +239,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //            } else {
 //                return TYPE_ITEM;
 //            }
+//        if(position == 0){
+//            return TYPE_HEADER;
+//        }
+        if(position == firstVisibleItem && isShowVersion){
+            return TYPE_HEADER;
+        }
+
         return newsDatas.get(position) != null ? super.getItemViewType(position) : TYPE_FOOTER;
     }
 
@@ -210,14 +253,49 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         isLoadMoreData = isLoading;
     }
 
+    public void setHeadVisibility(boolean isVisibility){
+        isShowVersion = isVisibility;
+        MyRecyclerAdapter adapter = (MyRecyclerAdapter) mRecyclerView.getAdapter();
+
+        if(rl_visit_show != null){
+            SystemClock.sleep(500);
+            if(isShowVersion){
+                rl_visit_show.setVisibility(View.VISIBLE);
+            }else {
+                //移除 header 的数据 如果不移除 会出现空白item页面
+                newsDatas.remove(0);
+                adapter.notifyItemRemoved(firstVisibleItem);
+                //
+                rl_visit_show.setVisibility(View.GONE);
+
+            }
+        }
+        adapter.notifyItemChanged(firstVisibleItem);
+
+    }
+    public boolean getIsVisibility(){
+        return isShowVersion;
+    }
 
     class FooterViewHolder extends RecyclerView.ViewHolder {
         TextView text_loadMore;
         ProgressBar pr_moreData;
         public FooterViewHolder(View view) {
             super(view);
-            text_loadMore = (TextView) view.findViewById(R.id.tv_item_introduction_news_title);
+            text_loadMore = (TextView) view.findViewById(R.id.tv_item_introduction_footer);
             pr_moreData = (ProgressBar) view.findViewById(R.id.progressbar_loadmore_footer);
+
+        }
+
+    }
+
+    class HeaderViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout rl_version;
+        TextView text_version;
+        public HeaderViewHolder(View view) {
+            super(view);
+            rl_version = (RelativeLayout) view.findViewById(R.id.relative_update_version_show);
+            text_version = (TextView) view.findViewById(R.id.text_update_version);
         }
 
     }
@@ -344,6 +422,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
         this.onLoadMoreListener = onLoadMoreListener;
+    }
+
+    public void setmOnShowUpdateDialgo(OnShowUpdateDialgo mOnShowUpdateDialgo) {
+        this.mOnShowUpdateDialgo = mOnShowUpdateDialgo;
     }
 
 

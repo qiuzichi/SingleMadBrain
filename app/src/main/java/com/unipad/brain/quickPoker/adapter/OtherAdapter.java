@@ -25,7 +25,18 @@ public class OtherAdapter extends CommonAdapter<ChannelItem> {
 		super(context, datas, layoutId);
 	}
 
+	public void setData(List<ChannelItem> datas){
+		if (datas != null){
+			if (mDatas == null){
+				mDatas = datas;
+			}else {
+				mDatas.clear();
+				mDatas.addAll(datas);
+			}
+			notifyDataSetChanged();
+		}
 
+	}
 	@Override
 	public int getCount() {
 		return mDatas == null ? 0 : mDatas.size();

@@ -119,6 +119,9 @@ public class PersonalActivity extends BasicActivity implements IDataObserver {
 
     }
 
+    public TextView getmTextRight(){
+        return mTextRight;
+    }
 
     public void setTxtName() {
         if (txtName != null)

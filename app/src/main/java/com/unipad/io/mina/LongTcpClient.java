@@ -176,14 +176,6 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
         }
     }
 
-    @Override
-    public String getMatchId() {
-        if (dataHandler != null) {
-            return dataHandler.getMatchId();
-        }
-        return null;
-    }
-
     public void setDataHandler(ClientSessionHandler.IDataHandler dataHandler) {
         this.dataHandler = dataHandler;
     }
