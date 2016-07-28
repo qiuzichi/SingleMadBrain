@@ -52,6 +52,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
      */
     private ViewStub mStubShade;
     private ViewStub mStubListen;
+    View mMemoryLayout;
     /**
      * 记录mScrollAnswerView滑动了多少次
      */
@@ -78,6 +79,9 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
         mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
+        if (mCompeteItem.equals(getString(R.string.project_9))){
+            mMemoryLayout = mStubListen.inflate();
+        }
     }
 
     @Override
@@ -90,7 +94,6 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             }
             frameLayout.removeAllViews();
             if (mCompeteItem.equals(getString(R.string.project_9))){
-                View mMemoryLayout = mStubListen.inflate();
                 final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
                 mMemoryLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                     @Override
@@ -111,6 +114,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public void startMemory() {
         super.startMemory();
         mStubShade.setVisibility(View.GONE);
+        mMemoryLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -281,15 +285,16 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         } else if (mCompeteItem.equals(getString(R.string.project_2))) {
 
         } else if (mCompeteItem.equals(getString(R.string.project_9))) {
-            View.inflate(mActivity, R.layout.listen_v_bottom, mLayoutBottom);
-            mLayoutBottom.findViewById(R.id.listen_keyboard_0).setOnClickListener(this);
-            mLayoutBottom.findViewById(R.id.listen_keyboard_delete).setOnClickListener(this);
-            int number = 0;
-            mNumberArray.put(R.id.listen_keyboard_0, (number++) + "");
-            for (int id = R.id.listen_keyboard_1; id <= R.id.listen_keyboard_9; ++id) {
-                mNumberArray.put(id, (number++) + "");
-                mLayoutBottom.findViewById(id).setOnClickListener(this);
-            }
+            mMemoryLayout.setVisibility(View.GONE);
+//            View.inflate(mActivity, R.layout.listen_v_bottom, mLayoutBottom);
+//            mLayoutBottom.findViewById(R.id.listen_keyboard_0).setOnClickListener(this);
+//            mLayoutBottom.findViewById(R.id.listen_keyboard_delete).setOnClickListener(this);
+//            int number = 0;
+//            mNumberArray.put(R.id.listen_keyboard_0, (number++) + "");
+//            for (int id = R.id.listen_keyboard_1; id <= R.id.listen_keyboard_9; ++id) {
+//                mNumberArray.put(id, (number++) + "");
+//                mLayoutBottom.findViewById(id).setOnClickListener(this);
+//            }
         }
     }
 

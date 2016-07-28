@@ -87,7 +87,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (mCompeteType.equals(mContext.getString(R.string.project_3))
-                || mCompeteType.equals(mContext.getString(R.string.project_5))) {
+                || mCompeteType.equals(mContext.getString(R.string.project_5))||mCompeteType.equals(mContext.getString(R.string.project_9))) {
             mRows = RandomNumberEntity.rows;
             mLines = RandomNumberEntity.lines;
             mTotalNumbers = mLines * mRows;
