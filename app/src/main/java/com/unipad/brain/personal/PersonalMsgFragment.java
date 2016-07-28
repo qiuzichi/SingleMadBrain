@@ -163,12 +163,9 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
             case HttpConstant.GET_RULE_NOTIFY:
 
                 HIDDialog dialog = ToastUtil.createRuleDialog(mActivity, "1001", (RuleGame) o);
+                //dialog.show();
+
                 dialog.show();
-                Display d = mActivity.getWindowManager().getDefaultDisplay();  //为获取屏幕宽、高
-                WindowManager.LayoutParams p = dialog.getWindow().getAttributes();  //获取对话框当前的参数值
-                p.height = (int) (d.getHeight() * 0.5 );   //高度设置为屏幕的
-                p.width = (int) (d.getWidth() * 0.5 );    //宽度设置为屏幕的
-                dialog.getWindow().setAttributes(p);     //设置生效
                 break;
         }
     }

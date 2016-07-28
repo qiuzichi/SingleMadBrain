@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -21,8 +22,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -105,6 +108,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
     private void initSearchView(){
         //初始化搜索栏；
         mSearchView.setIconifiedByDefault(false);
+        mSearchView.setIconified(false);
         mSearchView.setSubmitButtonEnabled(true);
         mSearchView.setQueryHint(getString(R.string.search_conment));
         try {
@@ -112,7 +116,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             field.setAccessible(true);
             ImageView mSearchButton = (ImageView) field.get(mSearchView);
             //设置搜索的 button 背景图片
-            mSearchButton.setImageDrawable(getResources().getDrawable(R.drawable.search_button_blue));
+            mSearchButton.setImageResource(R.drawable.search_button_blue);
 
         } catch (Exception e) {
             e.printStackTrace();

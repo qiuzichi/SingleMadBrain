@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     >
     <RelativeLayout
@@ -42,32 +43,24 @@
     </RelativeLayout>
 
 
+    <ListView
+        android:id="@+id/listview_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_blue"></ListView>
 
-        <ListView
-            android:id="@+id/listview_search_result"
-            android:layout_width="match_parent"
-            android:background="@color/light_blue"
-            android:layout_height="match_parent"
-          >
-
-
-        </ListView>
-
-        <TextView
-                android:id="@+id/tv_listview_empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/white"
-                android:gravity="center"
-                android:text="@string/listitem_empty"
-                android:textColor="@color/stroke_color"
-                android:textSize="@dimen/listview_empty_size"
-                android:textStyle="bold"
-                android:visibility="gone"
-
-            />
-
-
+    <TextView
+        android:id="@+id/tv_listview_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="@string/listitem_empty"
+        android:textColor="@color/stroke_color"
+        android:textSize="@dimen/listview_empty_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        />
 
 </LinearLayout>

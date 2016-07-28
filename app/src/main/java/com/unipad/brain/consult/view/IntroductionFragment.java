@@ -184,21 +184,20 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        newsDatas.clear();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                newsDatas.clear();
 
-                        if(mRecyclerViewAdapter.getIsVisibility()){
-                            newsDatas.add(0, new NewEntity("header"));
-                        }
+                if(mRecyclerViewAdapter.getIsVisibility()){
+                    newsDatas.add(0, new NewEntity("header"));
+                }
+                requestPagerNum = 1;
+                service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
 
-                        requestPagerNum = 1;
-                        service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
-
-                    }
-                }, 1000);
+                }
+            }, 1000);
             }
         });
 
@@ -274,7 +273,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             downloadApkFile(versionBean.getPath());
             //点击确认更新 隐藏提示栏 删除header item
             mRecyclerViewAdapter.setHeadVisibility(false);
-            mRecyclerView.setAdapter(mRecyclerViewAdapter);
         }
 
         @Override
@@ -376,6 +374,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     //本页面打开 发送意图
                     Intent intent = new Intent(mActivity, PagerDetailActivity.class);
                     intent.putExtra("pagerId", bean.getJumpUrl());
+                    intent.putExtra("isAdvert", true);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent();
@@ -506,8 +505,9 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     return;
                 }
 
-                if(mRecyclerViewAdapter != null){
-                    mRecyclerViewAdapter.setHeadVisibility(!checkVersionIsNew());
+                if(mRecyclerViewAdapter != null && !checkVersionIsNew()){
+                    mRecyclerViewAdapter.setHeadVisibility(true);
+
                 }
 
                 break;
