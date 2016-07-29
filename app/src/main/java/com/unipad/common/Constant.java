@@ -107,16 +107,16 @@ public class Constant {
     public static String getProjectId(String projectName) {
         if (null == projectIds) {
             projectIds = new HashMap<String, String>();
-            projectIds.put(App.getContext().getString(R.string.project_1), "00001");
-            projectIds.put(App.getContext().getString(R.string.project_2), "00002");
-            projectIds.put(App.getContext().getString(R.string.project_3), "00003");
-            projectIds.put(App.getContext().getString(R.string.project_4), "00004");
-            projectIds.put(App.getContext().getString(R.string.project_5), "00005");
-            projectIds.put(App.getContext().getString(R.string.project_6), "00006");
-            projectIds.put(App.getContext().getString(R.string.project_7), "00007");
-            projectIds.put(App.getContext().getString(R.string.project_8), "00008");
-            projectIds.put(App.getContext().getString(R.string.project_9), "00009");
-            projectIds.put(App.getContext().getString(R.string.project_10), "00010");
+            projectIds.put(App.getContext().getString(R.string.project_1), GAME_PORTRAITS);
+            projectIds.put(App.getContext().getString(R.string.project_2), GAME_BINARY_NUM);
+            projectIds.put(App.getContext().getString(R.string.project_3), GAME_LONG_NUM);
+            projectIds.put(App.getContext().getString(R.string.project_4), GAME_ABS_PICTURE);
+            projectIds.put(App.getContext().getString(R.string.project_5), GAME_RANDOM_NUM);
+            projectIds.put(App.getContext().getString(R.string.project_6), GAME_VIRTUAL_DATE);
+            projectIds.put(App.getContext().getString(R.string.project_7), GAME_LONG_POCKER);
+            projectIds.put(App.getContext().getString(R.string.project_8), GAME_RANDOM_WORDS);
+            projectIds.put(App.getContext().getString(R.string.project_9), GAME_LISTON_AND_MEMORY_WORDS);
+            projectIds.put(App.getContext().getString(R.string.project_10), GAME_QUICKIY_POCKER);
         }
         return projectIds.get(projectName);
     }
