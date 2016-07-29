@@ -80,16 +80,17 @@ public class NumService extends AbsBaseGameService {
         super.parseData(data);
         allQuestion  = data.split("&");
         LogUtil.e("", "data == " + data);
+        round = 0;
         parseDataByNextRound();
     }
-
 
     public boolean parseDataByNextRound(){
         if (isLastRound()){
             return false;
         }
+        round++;
         lineNumbers.clear();
-        String [] persData = allQuestion[round].split(",");
+        String [] persData = allQuestion[round-1].split(",");
         lines = persData.length;
         for (int i = 0;i<lines;i++){
             String[] detail = persData[i].split("\\^");

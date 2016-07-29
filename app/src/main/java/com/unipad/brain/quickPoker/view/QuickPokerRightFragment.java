@@ -89,8 +89,11 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     private TextView leftCards;
     private QuickCardService service;
 
-    /**答题界面得父布局*/
-   private View answerViewParent;
+    /**
+     * 答题界面得父布局
+     */
+    private View answerViewParent;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -116,13 +119,10 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     }
 
 
-
-
-
     /**
      * 进入记忆模式
      */
-    public void inMemoryMode() {
+    private void inMemoryMode() {
         isInMemoryMode = true;
 
         if (isSingleLineBrowse) {
@@ -133,19 +133,26 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
 
         }
     }
+
     @Override
     public void initDataFinished() {
         super.initDataFinished();
-        isInMemoryMode = false;
-        if(mBrowseLayout.getParent() == null){
+        if (mBrowseLayout.getParent() == null) {
             mViewParent.addView(mBrowseLayout);
+        }
+        if (answerViewParent != null) {
             mViewParent.removeView(answerViewParent);
         }
-        if (answerViewParent != null){
-            mViewParent.removeView(answerViewParent);
-        }
+        inMemoryMode();
         mStubAnswerShade.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void startMemory() {
+        super.startMemory();
+        mStubAnswerShade.setVisibility(View.GONE);
+    }
+
     /**
      * 进入回忆模式：答题
      */
@@ -172,7 +179,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
             userAdapter = new DragAdapter(mActivity, userChannelList);
 
             userGridView.setAdapter(userAdapter);
-            otherChannelList = service.getBottomCards();
+            otherChannelList = new ArrayList<>(service.getBottomCards());
             otherAdapter = new OtherAdapter(mActivity, otherChannelList, R.layout.quick_poker_v_answer_item);
             otherGridView.setAdapter(this.otherAdapter);
             leftCards.setText(" " + otherAdapter.getChannnelLst().size() + " ");
@@ -181,7 +188,8 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         } else {
             mViewParent.addView(answerViewParent);
             userAdapter.clearData();
-            otherAdapter.setData(service.getBottomCards());
+            otherAdapter.setData(new ArrayList<>(service.getBottomCards()));
+            leftCards.setText(" " + otherAdapter.getChannnelLst().size() + " ");
         }
     }
 
@@ -199,26 +207,34 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
             for (int i = 0; i < userAdapter.getChannelList().size(); i++) {
                 if (userAdapter.getChannelList().get(i).resId != oringe
                         .get(i).resId) {
-                    errorText = ",第"+i+"张应为"+oringe.get(i).name+",而您的是"+userAdapter.getChannelList().get(i).name;
+                    errorText = ",第" + i + "张应为" + oringe.get(i).name + ",而您的是" + userAdapter.getChannelList().get(i).name;
                     break;
                 } else {
                     answer = i + 1;
                 }
             }
         }
-        String content = "您用时 " + time + "秒,正确牌数" + answer + "张"+errorText;
-        ToastUtil.createOkAndCancelDialog(mActivity, Constant.COMMIT_POCKER_GAME_DLG, content, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(){
+        String content = "您用时 " + time + "秒,正确牌数" + answer + "张" + errorText;
+        String buttonText = service.isLastRound() ? null : "准备下一轮";
+        ToastUtil.createOnlyOkDialog(mActivity, Constant.SHOW_SOCRE_CONFIRM_DLG, "您本轮得分：", "得分：" + service.getScore(), buttonText,
+                new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        super.run();
-                        service.parseDataByRound();
+                    public void onClick(View v) {
+                        HIDDialog.dismissDialog(Constant.COMMIT_POCKER_GAME_DLG);
+                        if (service.isLastRound()) {
+                            return;
+                        }
+
+                        ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "准备中").show();
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                super.run();
+                                service.parseDataByRound();
+                            }
+                        }.start();
                     }
-                }.start();
-            }
-        }).show();
+                }).show();
 
     }
 
@@ -245,7 +261,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         mIBtnBrowseMode.setImageDrawable(null);
         mIBtnBrowseMode.setImageResource(R.drawable.ibtn_browse_muti_line);
         if (isInMemoryMode) {
-                mSingleLineLayout.showPokerFace();
+            mSingleLineLayout.showPokerFace();
         }
         mHorizontalLayout.setVisibility(View.VISIBLE);
         mStubMutiBrowse.setVisibility(View.GONE);
@@ -269,7 +285,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         }
 
         if (isInMemoryMode) {
-                mMUtiLineLayout.showPokerFace();
+            mMUtiLineLayout.showPokerFace();
 
         }
         mRightLayout.setVisibility(View.VISIBLE);
@@ -311,7 +327,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                                         otherGridView.getLastVisiblePosition())
                                         .getLocationInWindow(endLocation);
                                 MoveAnim(moveImageView, startLocation, endLocation,
-                                        channel, userGridView,position);
+                                        channel, userGridView, position);
 
                             } catch (Exception localException) {
                                 localException.printStackTrace();
@@ -343,7 +359,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                                         userGridView.getLastVisiblePosition())
                                         .getLocationInWindow(endLocation);
                                 MoveAnim(moveImageView2, startLocation,
-                                        endLocation, channel, otherGridView,position);
+                                        endLocation, channel, otherGridView, position);
 
                             } catch (Exception localException) {
                                 localException.printStackTrace();
@@ -485,12 +501,6 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         super.startRememory();
     }
 
-    @Override
-    public void startMemory() {
-        super.startMemory();
-        mStubAnswerShade.setVisibility(View.GONE);
-        inMemoryMode();
-    }
 
     @Override
     public void pauseGame() {

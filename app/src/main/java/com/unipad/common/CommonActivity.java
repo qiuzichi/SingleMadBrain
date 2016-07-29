@@ -284,10 +284,16 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
     }
 
     public void progressGame(final int progress){
+        LogUtil.e(TAG,"progress = "+progress);
         new Thread(){
             @Override
             public void run() {
                 super.run();
+                if (progress == 201){
+                    if (!service.isLastRound()) {
+                        service.round = service.round + 1;
+                    }
+                }
                 SocketThreadManager.sharedInstance().progressGame(matchId,progress,service.round);
             }
         }.start();

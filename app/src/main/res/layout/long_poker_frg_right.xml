@@ -6,8 +6,8 @@
         <LinearLayout
             android:id="@+id/browse_proker_hlayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-           android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:orientation="vertical"
             android:padding="6dp" >
 
@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
+                android:gravity="center"
                 android:text="@string/single_browse_note"
                 android:textColor="#CCCCCC"
                 android:textSize="32sp" />
@@ -29,7 +30,7 @@
             android:id="@+id/browse_proker_muti_stub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout="@layout/long_poker_recycleview"/>
+            android:layout="@layout/long_poker_viewpager"/>
 
 
 

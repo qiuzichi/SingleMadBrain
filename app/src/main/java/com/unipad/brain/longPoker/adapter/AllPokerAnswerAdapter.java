@@ -42,7 +42,7 @@ public class AllPokerAnswerAdapter extends RecyclerView.Adapter<AllPokerAnswerAd
         }
     }
     private void setMemoryAdapter(RecyclerView recyclerView,int position) {
-        OnePokerRecycleAdapter recycleAdapter= new OnePokerRecycleAdapter(mContext,service.pokersQuestion);
+       // OnePokerRecycleAdapter recycleAdapter= new OnePokerRecycleAdapter(mContext,service.pokersQuestion);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器
@@ -50,7 +50,7 @@ public class AllPokerAnswerAdapter extends RecyclerView.Adapter<AllPokerAnswerAd
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         //设置Adapter
-        recyclerView.setAdapter( recycleAdapter);
+       // recyclerView.setAdapter( recycleAdapter);
     }
     @Override
     public int getItemCount() {

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="ImageRadioButton">
+
+        <attr name="drawableWith" format="dimension"/>
+        <attr name="drawableHeight" format="dimension"/>
+        <attr name="drawableTop" format="reference"/>
+        <attr name="drawableLeft" format="reference"/>
+        <attr name="drawableRight" format="reference"/>
+        <attr name="drawableBottom" format="reference"/>
+
+    </declare-styleable>
     <array name="sex">
         <item>男</item>
         <item>女</item>

@@ -156,7 +156,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mBtnCompeteMode.setText(R.string.end_memory);
         mBtnCompeteMode.setEnabled(true);
         mTextCompeteProcess.setText(R.string.memorying);
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round],false));
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round-1],false));
 
     }
     public void startRememoryTimeCount(){
@@ -224,7 +224,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             case HttpConstant.GET_RULE_NOTIFY:
                 mActivity.getService().rule = (RuleGame) o;
                 mActivity.getService().allround =  mActivity.getService().rule.getCountRecall();
-                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round], false));
+                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round-1], false));
                 break;
             default:
                 break;

@@ -8,6 +8,7 @@ import com.unipad.brain.longPoker.entity.LongPokerEntity;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.utils.LogUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -78,7 +79,9 @@ public class LongPokerService extends AbsBaseGameService {
         // 一副牌为 53个元素 其中52个元素为纸牌元素， 一个元素为标题元素。
         for(int i = 0 ; i < pokersQuestion.size() ; i ++ ){
            //  过滤标题元素
+
             if(i % 53 != 0){
+                LogUtil.e("","answer :"+pokersQuestion.get(i).getUserAnswer()+","+pokersQuestion.get(i).name);
                 newPokersQuestion.add(pokersQuestion.get(i));
             }
         }
@@ -102,6 +105,7 @@ public class LongPokerService extends AbsBaseGameService {
         int number = getLastAnswer(newPokersQuestion);
 
         for(int i = 0; i < pokerScoer.size() ; i ++ ){
+
             int[] pokers = pokerScoer.get(i);
             if((i+1) == pokerScoer.size()){
                 if(pokers[0] == number){
@@ -131,6 +135,7 @@ public class LongPokerService extends AbsBaseGameService {
         BigDecimal bigDecimal =  new BigDecimal(countScore).setScale(0, BigDecimal.ROUND_HALF_UP);
         //int lastScore = bigDecimal. 四舍五入
         Integer last = bigDecimal.intValue();
+
         return new int[]{last,  errorNum * outRangeScore};
     }
 
