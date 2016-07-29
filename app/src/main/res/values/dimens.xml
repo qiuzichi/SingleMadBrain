@@ -70,7 +70,7 @@
     <dimen name="comment_use_height">100dp</dimen>
     <dimen name="comment_commit_height">30dp</dimen>
 
-    <dimen name="popopwindows_height">50dp</dimen>
+    <dimen name="popopwindows_height">30dp</dimen>
     <dimen name="popopwindows_report_weight">40dp</dimen>
     <dimen name="drawablePadding_icon">20dp</dimen>
     <dimen name="listview_empty_size">100sp</dimen>

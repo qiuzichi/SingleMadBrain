@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -21,8 +22,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -52,8 +55,9 @@ public class ConsultMainFragment extends ConsultBaseFragment{
     private ConsultTab[] mConsultTabs;
     private SearchView mSearchView;
     private PopupWindow mPopupWindows;
-    private List<String> titleTip;
-    private ArrayAdapter  adapter;
+    private List<String> result;
+    private ArrayAdapter adapter;
+
 
     @Override
     public  int getLayoutId(){
@@ -66,7 +70,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         mTabWidget = (TabWidget) view.findViewById(R.id.tabwidget_consult_main);
         mViewPager = (CustomViewPager) view.findViewById(R.id.viewPager_consult);
         mSearchView = (SearchView) view.findViewById(R.id.searchview_search_bar);
-        titleTip = new ArrayList<>();
+        result = new ArrayList<String>();
 
         initMyTabWidget();
         initViewPager();
@@ -104,6 +108,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
     private void initSearchView(){
         //初始化搜索栏；
         mSearchView.setIconifiedByDefault(false);
+        mSearchView.setIconified(false);
         mSearchView.setSubmitButtonEnabled(true);
         mSearchView.setQueryHint(getString(R.string.search_conment));
         try {
@@ -111,7 +116,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             field.setAccessible(true);
             ImageView mSearchButton = (ImageView) field.get(mSearchView);
             //设置搜索的 button 背景图片
-            mSearchButton.setImageDrawable(getResources().getDrawable(R.drawable.personal_frg_record_search));
+            mSearchButton.setImageResource(R.drawable.search_button_blue);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,7 +172,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         itemView.setBackgroundResource(selected ? R.color.red : R.color.main_1);
     }
 
-    private  SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener(){
+    private SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener(){
         //提交按钮之后  调用该方法
         @Override
         public boolean onQueryTextSubmit(String query) {
@@ -175,6 +180,8 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
             mSearchView.clearFocus();
+
+
             //发送意图到activity
             Intent intent = new Intent(getmContext(), SearchResultActivity.class);
             intent.putExtra("queryContent", query);
@@ -193,9 +200,25 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             }
             MainBasicFragment baseFragment = (MainBasicFragment) com.unipad.brain.consult.manager.
                     FragmentManager.getFragment(mConsultTabs[mCurrentIndex]);
-            titleTip = baseFragment.getNewsDatas();
-            adapter = new ArrayAdapter(getmContext(), R.layout.list_item_searchlist,titleTip);
-            showSelectDDialog(adapter);
+            List<String> titleTip = baseFragment.getNewsDatas();
+
+            if(result == null){
+                result = new ArrayList<String>();
+            }
+            result.clear();
+
+            for(int i = 0; i < titleTip.size(); i++){
+                String searchResult = titleTip.get(i);
+                if(searchResult.contains(newText)){
+                    //如果有搜索的内容出现
+                    result.add(searchResult);
+                }
+            }
+
+            if(result.size() > 0 ){
+                adapter = new ArrayAdapter(getmContext(), R.layout.list_item_searchlist, result);
+                showSelectDDialog(adapter);
+            }
             return true;
         }
     } ;
@@ -218,7 +241,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mPopupWindows.setFocusable(true);
-                mOnQueryTextListener.onQueryTextSubmit(titleTip.get(position).toString());
+                mOnQueryTextListener.onQueryTextSubmit(result.get(position).toString());
             }
         });
         if(lv.getAdapter() != null){

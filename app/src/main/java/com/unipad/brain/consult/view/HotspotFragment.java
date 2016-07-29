@@ -58,14 +58,10 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
 
     private NewsService service;
     private List<NewEntity> newsDatas ;
-
     private List<AdPictureBean> newsAdvertDatas ;
     private ImageOptions imageOptions;
-
     private int requestPagerNum = 1;
     private final int perPageDataNumber = 10;
-
-
     private boolean isGetData;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -89,6 +85,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                 if(requestPagerNum == 1 && databean.size() != 0){
                     totalPager = databean.get(0).getTotalPager();
                 }
+
                 if(totalPager == requestPagerNum){
                     isLastPage = true;
                 }else{
@@ -177,6 +174,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         mSwipeRefreshLayout.setRefreshing(false);
 
         mRecyclerViewAdapter = new MyRecyclerAdapter(mActivity, mRecyclerView, newsDatas,2);
+
 //        mRecyclerViewAdapter = new MyRecyclerViewAdapter();
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {

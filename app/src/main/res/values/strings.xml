@@ -59,7 +59,7 @@
     <string name="personal_info_commit">提交认证</string>
     <string name="confirm_commit">确认提交</string>
     <string name="broken_line_graph">折线图</string>
-    <string name="table_graph">图表</string>
+    <string name="table_graph">比赛模式</string>
     <string name="clear">清空</string>
     <string name="my_follow">关注列表</string>
     <string name="confirm">确认</string>
@@ -150,7 +150,17 @@
     <string name="recall_part">回忆部分</string>
     <string name="attention">注意：</string>
     <string name="next">次</string>
-    <string name="project_5_target">尽量以最短时间记忆更多的随机数字（1、3、5、2、9等）（以每行40位数字）并正确的回忆起来，有两次比赛机会。</string>
+    <string name="project_1_target">目标：在规定时间内记忆人名和头像，并于回忆时将人名跟头 像正确搭配，记得越多越好</string>
+    <string name="project_2_target">目标：尽量记下更多的二进制数字（例：01101)</string>
+    <string name="project_3_target">目标：尽量记忆越多的随机数字 （1、3、5、8、2、5 等）（以 每行 40 位数字）并正确地回忆起来。</string>
+    <string name="project_4_target">目标：尽量多的记忆，并于回忆时将每行的正确次序标注出来。</string>
+    <string name="project_5_target">目标：尽量以最短时间记忆更多的随机数字（1、3、5、2、9等）（以每行40位数字）并正确的回忆起来，有两次比赛机会。</string>
+    <string name="project_6_target">目标：尽量多的记忆的历史／未来事件的年份，并于回忆时将其 写在相关的事件的前面。</string>
+    <string name="project_7_target">目标：尽量记忆和回忆多副扑克牌的顺序。</string>
+    <string name="project_8_target">目标：尽可能记忆越多的随机词语（例：狗、花瓶、吉他等）并 正确地回忆出来。</string>
+    <string name="project_9_target">目标：尽量记忆和回忆听到的数字。</string>
+    <string name="project_10_target">目标：尽量以最短的时间记忆一副 52 张的扑克牌。</string>
+
     <string name="project_5_attention_content">于第一轮过后将有短暂休息以方便计分。分数将于第二轮开始前公布给选手。</string>
     <string name="project_5_memory_content">1、计算机产生的数字，以每行 40 位排列。\n2、问卷数字的数目为现时世界纪录加上百分之二十。选手如果可以超出世界记录的百分之二十的数量，可以向组委会提出申请增加的数量，但须于比赛一个月前提出要求.</string>
     <string name="project_5_recall_content">1、参赛选手应使用组委会提供的答卷。\n2、参赛选手必须将记忆好的数字以每行 40 个写出来。</string>
@@ -220,6 +230,7 @@
     <string name="detail_commont">评论</string>
     <string name="project_name">项目名称</string>
     <string name="race_mode">比赛模式</string>
+    <string name="exercise_mode">练习模式</string>
     <string name="race_date">比赛日期</string>
     <string name="race_time">比赛时间</string>
     <string name="race_pay">比赛费用</string>
@@ -233,8 +244,9 @@
     <string name="update_version_info">优化更多细节，提升客户体验 尝鲜版不容错过</string>
     <string name="update_version_title">更新版本号：</string>
     <string name="confirm_update">确认更新</string>
-    //apk版本号；
+    <!-- apk版本号；-->
     <string name="versionName">1.0.1</string>
+
     <string name="loadmore_data">正在加载数据......</string>
 
 

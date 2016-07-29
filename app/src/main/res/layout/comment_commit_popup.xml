@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/popopwindows_height"
-    android:background="@color/comment_popwindows_bg"
-    android:orientation="horizontal"
     android:id="@+id/popup_windows_linearLayout"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/comment_popwindows_bg"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_popup_comment_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/user_photo"
+        android:scaleType="fitCenter"
+        android:layout_marginLeft="@dimen/margin_10dip" />
 
     <EditText
-        android:layout_width="0dp"
+        android:id="@+id/et_popup_comment_input"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_10dip"
+        android:layout_marginTop="@dimen/margin_5dip"
         android:layout_weight="9"
+        android:background="@drawable/edit_block"
+        android:gravity="left"
         android:hint="@string/input_comment"
         android:inputType="textMultiLine"
-        android:gravity="left"
-        android:paddingTop="@dimen/margin_edge"
-        android:paddingLeft="@dimen/margin_5dip"
-        android:layout_marginTop="@dimen/margin_5dip"
         android:minLines="6"
-        android:layout_marginLeft="@dimen/margin_10dip"
-        android:textSize="@dimen/common_text_22"
+        android:paddingLeft="@dimen/margin_5dip"
+        android:paddingTop="@dimen/margin_edge"
         android:textColor="@color/black"
-        android:background="@drawable/edit_block"
-        android:id="@+id/et_popup_comment_input"
-        />
+        android:textSize="@dimen/common_text_22" />
 
 
-        <Button
-            android:id="@+id/btn_comment_commit"
-            android:layout_width="@dimen/popopwindows_report_weight"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/margin_5dip"
-            android:paddingLeft="@dimen/margin_10dip"
-            android:paddingRight="@dimen/margin_10dip"
-            android:layout_marginRight="@dimen/margin_10dip"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:layout_height="match_parent"
-            android:text="@string/button_report"
-            android:textSize="@dimen/common_text_22"
-            />
+    <Button
+        android:id="@+id/btn_comment_commit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_10dip"
+        android:layout_marginTop="@dimen/margin_5dip"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/margin_10dip"
+        android:paddingRight="@dimen/margin_10dip"
+        android:singleLine="true"
+        android:text="@string/button_report"
+        android:textSize="@dimen/common_text_22" />
 
 </LinearLayout>

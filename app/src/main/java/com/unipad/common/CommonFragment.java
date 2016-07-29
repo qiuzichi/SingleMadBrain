@@ -18,13 +18,11 @@ import com.unipad.IOperateGame;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
-import com.unipad.common.bean.CompeteItemEntity;
 import com.unipad.http.HttpConstant;
 import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
-import com.unipad.utils.ToastUtil;
 
 import org.xutils.x;
 
@@ -161,6 +159,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     }
     public void startRememoryTimeCount(){
         mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1],false));
+        LogUtil.e("CommonFragment","第"+(mActivity.getService().round-1)+"轮的回忆时间为="+mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1]);
     }
     /**
      * 提交答案

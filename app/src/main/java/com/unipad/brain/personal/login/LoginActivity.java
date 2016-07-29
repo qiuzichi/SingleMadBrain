@@ -37,6 +37,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
     //  自定义Dialog 对象
     private ShowDialog showDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,16 +1,13 @@
 package com.unipad.http;
 
-import com.unipad.AppContext;
-import com.unipad.UserDetailEntity;
 import com.unipad.brain.home.bean.RuleGame;
-import com.unipad.brain.home.dao.HomeGameHandService;
-import com.unipad.common.Constant;
 import com.unipad.observer.GlobleObserService;
 
 import org.json.JSONObject;
 
 /**
  * Created by gongkan on 2016/6/17.
+ * 获取项目规则
  */
 public class HitopGetRule extends HitopRequest<RuleGame> {
 
@@ -46,7 +43,9 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
                         rule.setGradeId(dataJson.getString("gradeId"));
                         rule.setProjectId(dataJson.getString("projectId"));
                         rule.setTiltle(dataJson.getString("title"));
-                        rule.setRuleNo(dataJson.getString("ruleNo"));
+                        if(!dataJson.isNull("ruleNo")){
+                            rule.setRuleNo(dataJson.getString("ruleNo"));
+                        }
                         rule.setCountRule(dataJson.getString("scoreText"));
                         rule.setCountRecall(dataJson.optInt("recallCount",1));
                         int[] memoryTime = new int[rule.getCountRecall()];

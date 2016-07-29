@@ -41,7 +41,7 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
             jsObj = new JSONObject(json);
             if (jsObj != null && jsObj.toString().length() != 0) {
                 if( jsObj.getInt("ret_code") == 0) {
-    Log.i("hitopadlist", json);
+
 
                     JSONArray jsonArray = jsObj.getJSONArray("lists");
                     int iSize = jsonArray.length();
@@ -55,8 +55,7 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
                         bean.setJumpUrl(jsonObj2.getString("jumpUrl"));
                         bean.setAdvertPath(HttpConstant.PATH_FILE_URL+jsonObj2.getString("path"));
                         adList.add(bean);
-        Log.i("hitopadlist", adList.size()+ "  " + bean.getAdvertPath());
-                }
+                    }
                 }
             }
         }catch (Exception e) {

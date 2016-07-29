@@ -1,31 +1,45 @@
 package com.unipad.brain.consult.view;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.adapter.MyRecyclerAdapter;
+import com.unipad.brain.consult.adapter.RecyclerViewHeader;
 import com.unipad.brain.consult.entity.AdPictureBean;
 import com.unipad.brain.consult.entity.ConsultTab;
 import com.unipad.brain.consult.listener.DividerDecoration;
 import com.unipad.brain.consult.listener.OnLoadMoreListener;
+import com.unipad.brain.consult.listener.OnShowUpdateDialgo;
 import com.unipad.brain.consult.widget.RecommendGallery;
 import com.unipad.brain.consult.widget.RecommendPot;
+import com.unipad.brain.dialog.BaseConfirmDialog;
+import com.unipad.brain.dialog.ConfirmUpdateDialog;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.bean.NewEntity;
+import com.unipad.brain.home.bean.VersionBean;
 import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
@@ -40,9 +54,10 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 /**
- * 推荐
+ * 推荐 新闻
  * Created by jianglu on 2016/6/20.
  */
 public class IntroductionFragment extends MainBasicFragment implements IDataObserver {
@@ -52,9 +67,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     //默认加载第一页  的数据 标记为最后一页的页数
     private int requestPagerNum = 1;
     private final int primaryDataNumber = 10;
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER = 1;
-
     private NewsService service;
     private AdViewPagerAdapter adAdapter;
     private RecommendGallery mAdvertLuobo;
@@ -64,15 +76,11 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private MyRecyclerAdapter mRecyclerViewAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    //是否是 最后一页
-    private boolean isLastPage = false;
+    //总页数 大小
     private int totalPager = 0;
-
-//    private AnimRFRecyclerView mRecyclerView;
-
-    private void getNews(String contentType,String title,int page,int size ){
-        service.getNews(contentType, title, page, size);
-    }
+    //返回的服务器 apk版本信息
+    private VersionBean versionBean;
+    private ConfirmUpdateDialog mConfirmDialog;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -81,6 +89,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         newsAdvertDatas = new ArrayList<AdPictureBean>();
         //初始化轮播图
         initLunPic();
+
         initData();
         initRecycler();
         //播放轮播广告
@@ -88,13 +97,15 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
     private void initData() {
+        mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
+
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
+        service.registerObserver(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
 
-//        mNewsAdapter = new NewsListAdapter(mActivity, newsDatas, R.layout.item_listview_introduction);
-//        mRecyclerView.setAdapter(mNewsAdapter);
 
     }
     private void initRecycler(){
@@ -160,8 +171,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         // 刷新
 //        mRecyclerView.setRefresh(true);
 
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
+
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.light_blue2,
                 R.color.red,
@@ -174,15 +184,20 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        newsDatas.clear();
-                        requestPagerNum = 1;
-                        service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
-                    }
-                }, 1000);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                newsDatas.clear();
+
+                if(mRecyclerViewAdapter.getIsVisibility()){
+                    newsDatas.add(0, new NewEntity("header"));
+                }
+                requestPagerNum = 1;
+                service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+
+                }
+            }, 1000);
             }
         });
 
@@ -193,16 +208,26 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mSwipeRefreshLayout.setRefreshing(false);
 
+
         mRecyclerViewAdapter = new MyRecyclerAdapter(mActivity, mRecyclerView, newsDatas, 0);
-//        mRecyclerViewAdapter = new MyRecyclerViewAdapter();
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+
                 newsDatas.add(null);
                 mRecyclerViewAdapter.notifyItemInserted(newsDatas.size() - 1);
                 loadMoreData(true);
                 mRecyclerViewAdapter.setLoading(true);
+
+            }
+        });
+
+        mRecyclerViewAdapter.setmOnShowUpdateDialgo(new OnShowUpdateDialgo() {
+            @Override
+            public void showDialogUpdate() {
+                showUpdateVersionDialog(mActivity);
+
             }
         });
 
@@ -231,6 +256,81 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         setUserVisibleHint(true);
     }
 
+    private boolean checkVersionIsNew(){
+        String versionName = getString(R.string.versionName);
+
+        if(versionName.equals(versionBean.getVersion())){
+            return true;
+        }
+        return  false;
+    }
+
+    private BaseConfirmDialog.OnActionClickListener mDialogListener = new BaseConfirmDialog.OnActionClickListener() {
+        @Override
+        public void onActionRight(BaseConfirmDialog dialog) {
+            mConfirmDialog.dismiss();
+            //从网络下载文件
+            downloadApkFile(versionBean.getPath());
+            //点击确认更新 隐藏提示栏 删除header item
+            mRecyclerViewAdapter.setHeadVisibility(false);
+        }
+
+        @Override
+        public void onActionLeft(BaseConfirmDialog dialog) {
+            mConfirmDialog.dismiss();
+        }
+    };
+
+    private void downloadApkFile(String path){
+        Intent server = new Intent("com.loaddown.application");
+        server.putExtra("loadPath", path);
+        mActivity.startService(server);
+//      LoadService.handler.obtainMessage(1,path).sendToTarget();
+    }
+
+    //显示dialog  以及 通知栏 有新版本
+    private void showUpdateVersionDialog(Context context) {
+        showNotification();
+        mConfirmDialog = new ConfirmUpdateDialog(context, getString(R.string.update_version_title) + versionBean.getVersion(),
+                versionBean.getInfoDescription(), getString(R.string.cancel),  getString(R.string.confirm_update), mDialogListener);
+        mConfirmDialog.show();
+    }
+
+    private void showNotification(){
+
+        NotificationManager mNotificationManager = (NotificationManager) mActivity.getSystemService(mActivity.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mActivity);
+
+        String title = getString(R.string.update_version_title) + versionBean.getVersion();
+        mBuilder
+                .setContentTitle(title)//设置通知栏标题
+                .setContentText(versionBean.getInfoDescription())
+                .setContentIntent(getDefalutIntent(versionBean.getPath())) //设置通知栏点击意图
+//                .setNumber(number) //设置通知集合的数量
+                .setTicker(getString(R.string.update_version_title)) //通知首次出现在通知栏，带上升动画效果的
+                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
+                .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
+                .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
+                .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
+//                .setDefaults(Notification.DEFAULT_SOUND)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+                        //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
+                .setSmallIcon(R.drawable.ic_launcher);//设置通知小ICON
+
+        Notification mNotification  = mBuilder.build();
+        mNotification.flags = Notification.FLAG_AUTO_CANCEL;
+        mNotificationManager.notify(11, mNotification);
+    }
+
+    private PendingIntent getDefalutIntent(String path){
+//        Intent intent = new Intent(mActivity, MainHomeFragment.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent server = new Intent("com.loaddown.application");
+        server.putExtra("loadPath", path);
+        PendingIntent pendingIntent= PendingIntent.getService(mActivity, 1, server, PendingIntent.FLAG_ONE_SHOT);
+        return pendingIntent;
+    }
+
+
     //对于用户不可见 与 不可见  会被调用；
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -240,6 +340,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             if(!isGetData){
                 service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
                 service.getAdverts(ConsultTab.INTRODUCATION.getTypeId());
+
+                service.getApkVersion();
                 Log.d("introduction visit ", "获取消息 界面可见");
                 isGetData = true;
             }
@@ -272,6 +374,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     //本页面打开 发送意图
                     Intent intent = new Intent(mActivity, PagerDetailActivity.class);
                     intent.putExtra("pagerId", bean.getJumpUrl());
+                    intent.putExtra("isAdvert", true);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent();
@@ -289,6 +392,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
        service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWS, this);
        service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE, this);
        service.unRegisterObserve(HttpConstant.NOTIFY_GET_ADVERT, this);
+       service.unRegisterObserve(HttpConstant.NOTIFY_GET_ADVERT, this);
+       service.unRegisterObserve(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
     }
 
     @Override
@@ -308,12 +413,16 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             List<String> mTipList= new ArrayList<String>();
             for(int i=0; i<newsDatas.size(); i++){
                 String title =  newsDatas.get(i).getTitle();
+                if(TextUtils.isEmpty(title)){
+                    continue;
+                }
                 mTipList.add(title);
             }
             return  mTipList;
         }
         return null;
     }
+
     private void loadMoreData(final Boolean isLoading){
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -323,7 +432,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     newsDatas.remove(newsDatas.size() - 1);
                     mRecyclerViewAdapter.notifyItemRemoved(newsDatas.size());
 
-                    if (!isLastPage) {
+                    if (requestPagerNum != totalPager) {
                         service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
                     } else {
                         mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
@@ -331,7 +440,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                         mRecyclerView.setAdapter(mRecyclerViewAdapter);
                         ToastUtil.showToast("最后一页  已经没有新的数据了");
                     }
-
                 }
             }
         }, 3000);
@@ -369,26 +477,39 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     totalPager = databean.get(0).getTotalPager();
                 }
 
-
-                if(requestPagerNum == totalPager){
-                    isLastPage = true;
-                }else{
+                if(requestPagerNum != totalPager){
                     requestPagerNum++;
                 }
-
                 newsDatas.addAll(databean);
                 mRecyclerViewAdapter.notifyDataSetChanged();
                 break;
+
             case HttpConstant.NOTIFY_GET_OPERATE:
                 //获取喜欢 点赞 评论 信息
                 mRecyclerViewAdapter.notifyDataSetChanged();
                 break;
+
             case HttpConstant.NOTIFY_GET_ADVERT:
                 //获取轮播图数据
                 newsAdvertDatas.clear();
                 newsAdvertDatas.addAll((List<AdPictureBean>) o);
 
                 adAdapter.notifyDataSetChanged();
+                break;
+
+
+            case HttpConstant.NOTIFY_DOWNLOAD_APK:
+                versionBean = (VersionBean) o;
+                if(versionBean == null){
+                    //没有网络 网络异常的时候 直接返回什么都不做
+                    return;
+                }
+
+                if(mRecyclerViewAdapter != null && !checkVersionIsNew()){
+                    mRecyclerViewAdapter.setHeadVisibility(true);
+
+                }
+
                 break;
             default:
                 break;

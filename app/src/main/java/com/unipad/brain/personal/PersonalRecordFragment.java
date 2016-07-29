@@ -2,18 +2,31 @@ package com.unipad.brain.personal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,9 +42,12 @@ import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.brain.personal.view.BrokenLineView;
 import com.unipad.brain.view.WheelMainView;
 import com.unipad.common.Constant;
+import com.unipad.common.ViewHolder;
+import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HitopHistRecord;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.DensityUtil;
 import com.unipad.utils.ToastUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +56,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.zip.Inflater;
+
 /**
  * 个人中心之历史成绩
  * Created by Wbj on 2016/4/27.
@@ -63,11 +81,14 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private List<HisRecord> hisRecords;
     private ViewGroup viewParent;
     private HisRecord record;
+    private PopupWindow mPopupWindows;
+    private PopupWindow mPopupWindowsDate;
+    private TextView mRightTextView;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        mTitleBarRightText = mActivity.getString(R.string.table_graph);
+        mTitleBarRightText = mActivity.getString(R.string.race_mode);
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mBlackColor = mActivity.getResources().getColor(R.color.black);
         (mEditSearchBeginDate = (Button) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
@@ -79,7 +100,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mActivity.findViewById(R.id.text_record_china).setVisibility(View.GONE);
         mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
         validateDate();
-        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK,this);
+        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK, this);
+
 
     }
     @Override
@@ -88,9 +110,67 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 //        return R.layout.history_answer;
     }
 
+    /*右侧点击事件*/
     @Override
     public void clickTitleBarRightText() {
-//       this.switchBrowse();
+        //弹出自定义窗体 同时带check选项  切换视图
+        showSelectDialog(null);
+    }
+
+    /**
+     * 弹出选择对话框
+     */
+    private void showSelectDialog(BaseAdapter baseAdapter) {
+        //获取textview组件
+        mRightTextView = mActivity.getmTextRight();
+        View mPopupView = LayoutInflater.from(mActivity).inflate(R.layout.item_select_popup, null);
+        final RadioButton radio_competition = (RadioButton) mPopupView.findViewById(R.id.radio_select_competition);
+        RadioButton radio_exercise = (RadioButton) mPopupView.findViewById(R.id.radio_select_exercise);
+        RadioGroup mRadioGroup = (RadioGroup) mPopupView.findViewById(R.id.radio_group_popup);
+
+
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton rb = (RadioButton) group.findViewById(group.getCheckedRadioButtonId());
+                mRightTextView.setText(rb.getText().toString());
+                closePopup();
+            }
+        });
+
+        ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
+        sa.setDuration(300);
+        mPopupView.startAnimation(sa);
+
+
+        mPopupWindows = new PopupWindow(mPopupView, mRightTextView.getWidth() + DensityUtil.dip2px(mActivity, 40), DensityUtil.dip2px(mActivity,100));
+        // 设置点击外部可以被关闭
+        mPopupWindows.setOutsideTouchable(true);
+        mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // 设置popupWindow可以得到焦点
+        mPopupWindows.setFocusable(true);
+        //显示位置
+        mPopupWindows.showAsDropDown(mRightTextView, - DensityUtil.dip2px(mActivity, 10), 10);
+    }
+
+    private void showSelectStartDatePopup(View positionView){
+
+        ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
+        sa.setDuration(300);
+        positionView.startAnimation(sa);
+
+
+        mPopupWindowsDate = new PopupWindow(positionView, mEditSearchBeginDate.getWidth() + DensityUtil.dip2px(mActivity, 400), DensityUtil.dip2px(mActivity,300));
+        // 设置点击外部可以被关闭
+        mPopupWindowsDate.setOutsideTouchable(true);
+        mPopupWindowsDate.setBackgroundDrawable(new BitmapDrawable());
+
+        // 设置popupWindow可以得到焦点
+        mPopupWindowsDate.setFocusable(true);
+        //显示位置
+        mPopupWindowsDate.showAsDropDown(mEditSearchBeginDate, - DensityUtil.dip2px(mActivity, 40), 5);
     }
 
     @Override
@@ -107,13 +187,16 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             case R.id.record_text_delete:
                 break;
             case R.id.record_search_begin_data:
-                showDialog = new ShowDialog(mActivity);
+//                showDialog = new ShowDialog(mActivity);
                 wheelMainView=new WheelMainView(mActivity);
                 wheelMainView.setChangingListener(PersonalRecordFragment.this);
-                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
+//                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_BOTTOM,mActivity.getWindowManager(),0.5f,0.6f);
+
+                showSelectStartDatePopup(wheelMainView);
+
                 break;
             case R.id.record_search_end_data:
-                showDialog = new ShowDialog(mActivity);
+//                showDialog = new ShowDialog(mActivity);
                 wheelMainView=new WheelMainView(mActivity);
                 wheelMainView.setChangingListener(new WheelMainView.OnChangingListener() {
                     @Override
@@ -121,7 +204,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                         mEditSearchEndDate.setText(changStr);
                     }
                 });
-                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.6f);
+                showSelectStartDatePopup(wheelMainView);
+//                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_BOTTOM,mActivity.getWindowManager(),0.5f,0.6f);
                 break;
             case R.id.group_historry_list:
                openPersonalIntegration();
@@ -134,7 +218,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private void openPersonalIntegration() {
         Intent intent=new Intent();
         intent.setClass(getActivity(),PersonalInfoActivty.class);
-        intent.putExtra("ranking",record.getRanking());
+        intent.putExtra("ranking", record.getRanking());
         startActivity(intent);
     }
 
@@ -144,6 +228,18 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     public void onStart() {
         super.onStart();
         thisShowView = 3;
+    }
+
+    //关闭弹出窗体
+    private void closePopup(){
+
+        if(mPopupWindows != null && mPopupWindows.isShowing()){
+            mPopupWindows.dismiss();
+        }
+
+        if(mPopupWindowsDate != null && mPopupWindowsDate.isShowing()){
+            mPopupWindowsDate.dismiss();
+        }
     }
 
     /**
@@ -333,6 +429,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                 break;
         }
     }
+
 
     @Override
     public void onChanging(String changStr) {

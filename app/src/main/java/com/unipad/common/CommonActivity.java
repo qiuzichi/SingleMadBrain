@@ -294,6 +294,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         service.round = service.round + 1;
                     }
                 }
+                LogUtil.e("CommonActivity","10007发送进度给管控端progress="+progress+"--round="+service.round);
                 SocketThreadManager.sharedInstance().progressGame(matchId,progress,service.round);
             }
         }.start();
