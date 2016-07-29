@@ -194,7 +194,7 @@ public class NumberRememoryLayout extends LinearLayout implements
 
                     //快速随机、马拉松数字项目的回忆界面需要显示光标
                     if (mCompeteType.equals(mContext.getString(R.string.project_3))
-                            || mCompeteType.equals(mContext.getString(R.string.project_5))) {
+                            || mCompeteType.equals(mContext.getString(R.string.project_5))||mCompeteType.equals(mContext.getString(R.string.project_9))) {
                         ViewGroup viewGroup = (ViewGroup) getChildAt(0);// 获取行号
                         viewGroup = (ViewGroup) viewGroup.getChildAt(0);
                         TextView textNumber = (TextView) viewGroup

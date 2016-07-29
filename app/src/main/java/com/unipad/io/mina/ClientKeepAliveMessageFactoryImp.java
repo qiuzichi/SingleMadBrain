@@ -1,7 +1,5 @@
 package com.unipad.io.mina;
 
-import android.util.Log;
-
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.keepalive.KeepAliveMessageFactory;
 
@@ -15,7 +13,7 @@ public class ClientKeepAliveMessageFactoryImp implements KeepAliveMessageFactory
 	public boolean isRequest(IoSession session, Object message) {
 		// TODO Auto-generated method stub
 		if(message instanceof String && message.equals(HEARTBEATREQUEST)){
-			Log.e("gongkan", "isRequest:" + HEARTBEATREQUEST);
+			//Log.e("gongkan", "isRequest:" + HEARTBEATREQUEST);
 			return true;
 		}
 		return false;
@@ -25,8 +23,8 @@ public class ClientKeepAliveMessageFactoryImp implements KeepAliveMessageFactory
 	public boolean isResponse(IoSession session, Object message) {
 		// TODO Auto-generated method stub
 		if(message instanceof String && message.equals(HEARTBEATRESPONSE)){
-			Log.e("gongkan","isResponse:"+message.toString());
-			System.out.println("isResponse:"+message.toString());
+			//Log.e("gongkan","isResponse:"+message.toString());
+			//System.out.println("isResponse:"+message.toString());
 			return true;
 		}
 		return false;
@@ -35,16 +33,16 @@ public class ClientKeepAliveMessageFactoryImp implements KeepAliveMessageFactory
 	@Override
 	public Object getRequest(IoSession session) {
 		// TODO Auto-generated method stub
-		Log.e("gongkan","getRequest:"+HEARTBEATREQUEST);
-		System.out.println("getRequest:"+HEARTBEATREQUEST);
+		//Log.e("gongkan","getRequest:"+HEARTBEATREQUEST);
+		//System.out.println("getRequest:"+HEARTBEATREQUEST);
 		return HEARTBEATREQUEST;
 	}
 
 	@Override
 	public Object getResponse(IoSession session, Object request) {
 		// TODO Auto-generated method stub
-		Log.e("gongkan","getResponse:"+request.toString());
-		System.out.println("getResponse:"+request.toString());
+		//Log.e("gongkan","getResponse:"+request.toString());
+		//System.out.println("getResponse:"+request.toString());
 		return null;
 	}
 

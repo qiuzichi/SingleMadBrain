@@ -1,22 +1,14 @@
 package com.unipad.brain.number.dao;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import android.text.TextUtils;
 import android.util.SparseArray;
-import android.view.View;
 import android.widget.ListView;
 
-import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
-import com.unipad.common.Constant;
-import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopGetQuestion;
 import com.unipad.utils.LogUtil;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * 二进制数字项目实体
@@ -85,6 +77,7 @@ public class NumService extends AbsBaseGameService {
 
 
     public boolean parseDataByNextRound(){
+        LogUtil.e("NumService","解析下一轮的数据+isLastRound = " + isLastRound());
         if (isLastRound()){
             return false;
         }
