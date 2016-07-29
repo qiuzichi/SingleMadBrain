@@ -56,6 +56,7 @@ public class HitopFollow extends  HitopRequest<List<CompetitionBean>>{
                             competitionBean.setProjectId(jsonObject.getString("projectId"));
                             competitionBean.setCompetitionDate(jsonObject.getString("startDate"));
                             competitionBean.setAddr(jsonObject.getString("city"));
+                            competitionBean.setComId(jsonObject.getString("id"));
                             competitionBean.setCost(jsonObject.getString("applyMoney"));
                             myFollows.add(competitionBean);
                             

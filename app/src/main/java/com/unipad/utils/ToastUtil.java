@@ -2,6 +2,7 @@ package com.unipad.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,10 +75,11 @@ public class ToastUtil {
         return WaitingDialog;
     }
 
-    public static HIDDialog createRuleDialog(Context mContext, String id,RuleGame rule)
+    public static HIDDialog createRuleDialog(Context mContext, String id, RuleGame rule)
     {
+        HIDDialog.dismissAll();
        final HIDDialog WaitingDialog = new HIDDialog(mContext,R.style.DialogTheme, id);
-        WaitingDialog.setContentView(R.layout.first_login_dialog,480,600);
+        WaitingDialog.setContentView(R.layout.first_login_dialog);
 
 
        // WaitingDialog.setTitle(Constant.getProjectName(rule.getProjectId()) + "规则：");
@@ -92,6 +94,12 @@ public class ToastUtil {
                 WaitingDialog.dismiss();
             }
         });
+
+        Display d = WaitingDialog.getWindow().getWindowManager().getDefaultDisplay();  //为获取屏幕宽、高
+        WindowManager.LayoutParams p = WaitingDialog.getWindow().getAttributes();  //获取对话框当前的参数值
+        p.height = (int) (d.getHeight() * 0.5);   //高度设置为屏幕的
+        p.width = (int) (d.getWidth() * 0.5 );    //宽度设置为屏幕的
+        WaitingDialog.getWindow().setAttributes(p);     //设置生效
         return WaitingDialog;
     }
 

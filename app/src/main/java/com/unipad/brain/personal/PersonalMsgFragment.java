@@ -3,7 +3,9 @@ package com.unipad.brain.personal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -129,6 +131,7 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                 break;
             case HttpConstant.USER_IN_GAEM:
                 // 判断是否可以进入比赛
+                HIDDialog.dismissAll();
                 try {
                     JSONObject jsonObject = new JSONObject((String)o);
                     if(jsonObject == null){
@@ -158,7 +161,11 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                 }
                 break;
             case HttpConstant.GET_RULE_NOTIFY:
-                ToastUtil.createRuleDialog(mActivity,"1001",(RuleGame)o).show();
+
+                HIDDialog dialog = ToastUtil.createRuleDialog(mActivity, "1001", (RuleGame) o);
+                //dialog.show();
+
+                dialog.show();
                 break;
         }
     }
@@ -172,6 +179,8 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
         public void onClick(View v) {
             CompetitionBean competitionBean = (CompetitionBean)v.getTag();
             service.checkMatchStart(competitionBean.getComId(),competitionBean.getProjectId());
+            ToastUtil.createWaitingDlg(mActivity,null,Constant.LOGIN_WAIT_DLG).show();
         }
     }
+
 }

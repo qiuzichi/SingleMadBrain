@@ -78,6 +78,8 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
 
                 }
             });
+        }else {
+            user_photo.setImageResource(R.drawable.set_headportrait);
         }
     }
 

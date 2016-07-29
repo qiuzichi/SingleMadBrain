@@ -69,6 +69,10 @@ public class PagerDetailActivity extends BasicActivity implements IDataObserver{
         setContentView(R.layout.activity_pagerdetail);
         articleId = getIntent().getStringExtra("pagerId");
 
+        if(getIntent().getBooleanExtra("isAdvert", false)){
+            //如果是广告的 我就隐藏详情；
+             ((TextView) findViewById(R.id.current_time_text)).setVisibility(View.GONE);
+        }
     }
 
 

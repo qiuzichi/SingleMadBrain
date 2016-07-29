@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -32,7 +35,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadCallBack;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadFrom;
 import com.unipad.AppContext;
+import com.unipad.brain.App;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.listener.OnLoadMoreListener;
 import com.unipad.brain.consult.listener.OnShowUpdateDialgo;
@@ -42,9 +49,11 @@ import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.DensityUtil;
 import com.unipad.utils.PicUtil;
 
 import org.xutils.common.Callback;
+import org.xutils.x;
 
 import java.util.List;
 
@@ -69,8 +78,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private OnLoadMoreListener onLoadMoreListener;
     private OnShowUpdateDialgo mOnShowUpdateDialgo;
     private NewsService service;
-    private BitmapUtils bitmapUtils;
-    private RelativeLayout rl_visit_show;
+    //private BitmapUtils bitmapUtils;
 
 
     public MyRecyclerAdapter(Activity mActivity, final RecyclerView mRecyclerView, List<NewEntity> datas ,int pageId) {
@@ -80,15 +88,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mRecyclerView = mRecyclerView;
         this.mLayoutInflater = LayoutInflater.from(mActivity);
         this.pageId = pageId;
-
-        if(this.pageId == 0){
-           //添加一条 头信息； 默认为 true
-            newsDatas.add(0, new NewEntity("header"));
-
-            isShowVersion = true;
-        }
-        bitmapUtils = new BitmapUtils(mActivity);
-        bitmapUtils.configDefaultBitmapConfig(Bitmap.Config.ARGB_8888);
 
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
@@ -137,7 +136,34 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             ((ItemViewHolder) holder).text_title.setText(bean.getTitle());
             ((ItemViewHolder) holder).text_updatetime.setText(bean.getPublishDate());
-            bitmapUtils.display(((ItemViewHolder) holder).iv_picture, bean.getThumbUrl());
+
+            final ImageView iv_icon = ((ItemViewHolder) holder).iv_picture;
+            if(!TextUtils.isEmpty(bean.getThumbUrl())){
+                x.image().bind(iv_icon, bean.getThumbUrl(), new Callback.CommonCallback<Drawable>() {
+                    @Override
+                    public void onSuccess(Drawable result) {
+                        iv_icon.setImageBitmap(PicUtil.drawableToBitmap(result));
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        iv_icon.setImageResource(R.drawable.error_remind);
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }else {
+                iv_icon.setImageResource(R.drawable.error_remind);
+            }
+
             final ImageView iv_zan = ((ItemViewHolder) holder).iv_pager_zan;
             if (bean.getIsLike()) {
                 iv_zan.setImageResource(R.drawable.favorite_introduction_check);
@@ -192,7 +218,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 public void onClick(View v) {
                     //初始化弹出窗体
                     initPopupWindows(bean);
-                    showPopupWindows(iv_comment, 0, 0);
+                    showPopupWindows(iv_comment);
                 }
             });
             final RelativeLayout rl_checkDetail =  ((ItemViewHolder) holder).rl_checkDetail;
@@ -211,10 +237,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }else if(holder instanceof FooterViewHolder){
             ((FooterViewHolder) holder).pr_moreData.setIndeterminate(true);
         }else if(holder instanceof HeaderViewHolder){
-            rl_visit_show = ((HeaderViewHolder) holder).rl_version;
+
             ((HeaderViewHolder) holder).text_version.setText("检查到最新版本" );
 
-            rl_visit_show.setOnClickListener(new View.OnClickListener() {
+           ((HeaderViewHolder) holder).ll_version.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isShowVersion && mOnShowUpdateDialgo != null) {
@@ -242,10 +268,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //        if(position == 0){
 //            return TYPE_HEADER;
 //        }
+Log.e("myadapter", position + "");
         if(position == firstVisibleItem && isShowVersion){
             return TYPE_HEADER;
         }
-
         return newsDatas.get(position) != null ? super.getItemViewType(position) : TYPE_FOOTER;
     }
 
@@ -256,23 +282,19 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setHeadVisibility(boolean isVisibility){
         isShowVersion = isVisibility;
         MyRecyclerAdapter adapter = (MyRecyclerAdapter) mRecyclerView.getAdapter();
-
-        if(rl_visit_show != null){
-            SystemClock.sleep(500);
-            if(isShowVersion){
-                rl_visit_show.setVisibility(View.VISIBLE);
-            }else {
-                //移除 header 的数据 如果不移除 会出现空白item页面
-                newsDatas.remove(0);
-                adapter.notifyItemRemoved(firstVisibleItem);
-                //
-                rl_visit_show.setVisibility(View.GONE);
-
-            }
+        if(isShowVersion){
+            newsDatas.add(0, new NewEntity("header"));
+            adapter.notifyItemInserted(0);
+        }else {
+            //移除 header 的数据 如果不移除 会出现空白item页面
+            newsDatas.remove(0);
+            adapter.notifyItemRemoved(firstVisibleItem);
         }
         adapter.notifyItemChanged(firstVisibleItem);
+        mRecyclerView.setAdapter(adapter);
 
     }
+
     public boolean getIsVisibility(){
         return isShowVersion;
     }
@@ -290,11 +312,11 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout rl_version;
+        LinearLayout ll_version;
         TextView text_version;
         public HeaderViewHolder(View view) {
             super(view);
-            rl_version = (RelativeLayout) view.findViewById(R.id.relative_update_version_show);
+            ll_version = (LinearLayout) view.findViewById(R.id.relative_update_version_show);
             text_version = (TextView) view.findViewById(R.id.text_update_version);
         }
 
@@ -321,9 +343,39 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private void initPopupWindows(final NewEntity newEntity ){
         View mPopupView = View.inflate(mActivity, R.layout.comment_commit_popup, null);
+
+        /*初始化用戶头像*/
+        final ImageView user_photo = (ImageView) mPopupView.findViewById(R.id.iv_popup_comment_icon);
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
+            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map = PicUtil.drawableToBitmap(drawable);
+                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    user_photo.setImageResource(R.drawable.set_headportrait);
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        }else {
+            user_photo.setImageResource(R.drawable.set_headportrait);
+        }
+
+
         //评论内容
         final EditText et_commment = (EditText) mPopupView.findViewById(R.id.et_popup_comment_input);
-
         //监听返回键事件
         et_commment.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -337,6 +389,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 return false;
             }
         });
+
+
         //提交评论按钮
         ((Button) mPopupView.findViewById(R.id.btn_comment_commit)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -377,7 +431,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         });
 
-        mPopupWindows = new PopupWindow(mPopupView, -1, 100, true);
+        mPopupWindows = new PopupWindow(mPopupView, -1, DensityUtil.dip2px(mActivity, 50), true);//窗体大小
         mPopupWindows.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
         mPopupWindows.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -389,10 +443,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
-    private void showPopupWindows(View parent , int x, int y){
+    private void showPopupWindows(View parent){
         closePopup();
         popupInputMethodWindow();
-        mPopupWindows.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+        mPopupWindows.showAtLocation(parent, Gravity.BOTTOM,0,0);
 
     }
 

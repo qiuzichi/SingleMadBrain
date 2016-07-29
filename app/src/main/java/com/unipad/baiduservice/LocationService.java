@@ -70,6 +70,7 @@ public class LocationService {
 	public LocationClientOption getOption(){
 		return DIYoption;
 	}
+
 	/***
 	 * 
 	 * @return DefaultLocationClientOption

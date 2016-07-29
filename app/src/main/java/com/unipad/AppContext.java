@@ -23,6 +23,7 @@ import com.unipad.common.Constant;
 import com.unipad.observer.GlobleHandle;
 
 import org.xutils.DbManager;
+import org.xutils.image.ImageOptions;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -78,6 +79,11 @@ public class AppContext {
     public BDLocation location;
 
     private DbManager.DaoConfig daoConfig;
+
+    public ImageOptions getImageOptions(){
+        //ImageOptions ImageOptions = new ImageOptions.Builder().set
+        return null;
+    };
 
     private AppContext() {
     }

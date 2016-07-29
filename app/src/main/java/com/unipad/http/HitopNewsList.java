@@ -88,7 +88,10 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
                             bean.setTotalCount(totalCount);
                         }
                         bean.setBrief(jsonObj2.getString("brief"));
-                        bean.setThumbUrl(HttpConstant.PATH_FILE_URL + jsonObj2.getString("pictureUrl"));
+                        if(!TextUtils.isEmpty(jsonObj2.getString("pictureUrl"))){
+                            /*如果不为空 补齐  为空什么都不做*/
+                            bean.setThumbUrl(HttpConstant.PATH_FILE_URL + jsonObj2.getString("pictureUrl"));
+                        }
                         bean.setPublishDate(jsonObj2.getString("createDate"));
                         bean.setTitle(jsonObj2.getString("title"));
                         bean.setId(jsonObj2.getString("id"));

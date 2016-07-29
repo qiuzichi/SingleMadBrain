@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -132,12 +133,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(group.getCheckedRadioButtonId());
-
-Log.e("person record ", rb.isChecked() + "===    radio_competition " + radio_competition.isChecked());
                 mRightTextView.setText(rb.getText().toString());
-
-
-
                 closePopup();
             }
         });
@@ -151,12 +147,11 @@ Log.e("person record ", rb.isChecked() + "===    radio_competition " + radio_com
         mPopupWindows = new PopupWindow(mPopupView, mRightTextView.getWidth() + DensityUtil.dip2px(mActivity, 40), DensityUtil.dip2px(mActivity,100));
         // 设置点击外部可以被关闭
         mPopupWindows.setOutsideTouchable(true);
-        mPopupWindows.setBackgroundDrawable(new BitmapDrawable());
-
+        mPopupWindows.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // 设置popupWindow可以得到焦点
         mPopupWindows.setFocusable(true);
         //显示位置
-        mPopupWindows.showAsDropDown(mRightTextView, - DensityUtil.dip2px(mActivity, 40), 10);
+        mPopupWindows.showAsDropDown(mRightTextView, - DensityUtil.dip2px(mActivity, 10), 10);
     }
 
     private void showSelectStartDatePopup(View positionView){
