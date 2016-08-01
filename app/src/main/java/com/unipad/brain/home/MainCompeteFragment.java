@@ -73,6 +73,7 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
 
 
         this.setSidebar();
+
         lv_project = (ListView) mActivity.findViewById(R.id.lv_project);
         fl_project = (FrameLayout) mActivity.findViewById(R.id.fl_project);
 //        txt_title = (TextView) mActivity.findViewById(R.id.txt_title);
@@ -347,10 +348,8 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
         view.findViewById(R.id.confirm_btn_setting).setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   //当确认修改  修改数据本地
-                   SharepreferenceUtils.writeLong( homeBeans.get(projectindex).projectBean.getProjectId() + "answerTime", binaryAnswerTime);
-                   SharepreferenceUtils.writeLong( homeBeans.get(projectindex).projectBean.getProjectId(), binaryMemoryTime);
-                   ToastUtil.showToast("设置成功");
+                   //当确认修改  保存数据本地
+                   saveDataFile();
                }
            }
         );
@@ -382,6 +381,12 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
                 .dateFormat(binaryAnswerTime));
         binaryMemoryText.setText(Util
                 .dateFormat(binaryMemoryTime));
+    }
+
+    private void saveDataFile(){
+        SharepreferenceUtils.writeLong( homeBeans.get(projectindex).projectBean.getProjectId() + "answerTime", binaryAnswerTime);
+        SharepreferenceUtils.writeLong( homeBeans.get(projectindex).projectBean.getProjectId(), binaryMemoryTime);
+        ToastUtil.showToast("设置成功");
     }
 
 }

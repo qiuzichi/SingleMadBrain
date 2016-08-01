@@ -81,7 +81,7 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
     }
 
     private void initEvent(){
-        initEvent();
+
         lv_apple.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
