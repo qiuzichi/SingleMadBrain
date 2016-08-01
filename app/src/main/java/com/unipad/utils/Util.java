@@ -58,10 +58,10 @@ public class Util {
 						long value = secondPicker.getValue() + 60
 								* minutePicker.getValue() + 3600
 								* hourPicker.getValue();
-						SharepreferenceUtils.writeLong(key, value);
+//						SharepreferenceUtils.writeLong(key, value);
 						dialog.dismiss();
 						if (callback != null) {
-							callback.callback();
+							callback.callback(value);
 						}
 					}
 				});
@@ -86,7 +86,7 @@ public class Util {
 			}
 		};
 		long value = SharepreferenceUtils.readLong(key, 300L);
-		
+
 		Log.e("gongkan", "value:" + value);
 		hourPicker.setFormatter(formatter);
 		hourPicker.setMaxValue(23);
@@ -118,6 +118,7 @@ public class Util {
 		return dateFormat(hour) + ":" + dateFormat(minute) + ":"
 				+ dateFormat(second);
 	}
+
 
 	/**
 	 * 格式化时间变量

@@ -19,7 +19,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     public RuleGame rule;
 
     /**round是在startMemory中赋值，在这之前初始化的数据*/
-    public int round = 0;
+    public int round = 1;
 
     public int allround = 1;
 
@@ -58,7 +58,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     public void clear() {
         rule = null;
         mode = 0;
-        round = 0;
+        round = 1;
         allround = 1;
         isInitResourseAready = false;
         isInitQuestionAready = false;

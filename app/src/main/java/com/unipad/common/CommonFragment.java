@@ -18,13 +18,11 @@ import com.unipad.IOperateGame;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
-import com.unipad.common.bean.CompeteItemEntity;
 import com.unipad.http.HttpConstant;
 import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
-import com.unipad.utils.ToastUtil;
 
 import org.xutils.x;
 
@@ -156,11 +154,12 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mBtnCompeteMode.setText(R.string.end_memory);
         mBtnCompeteMode.setEnabled(true);
         mTextCompeteProcess.setText(R.string.memorying);
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round],false));
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round-1],false));
 
     }
     public void startRememoryTimeCount(){
         mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1],false));
+        LogUtil.e("CommonFragment","第"+(mActivity.getService().round-1)+"轮的回忆时间为="+mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1]);
     }
     /**
      * 提交答案
@@ -224,7 +223,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             case HttpConstant.GET_RULE_NOTIFY:
                 mActivity.getService().rule = (RuleGame) o;
                 mActivity.getService().allround =  mActivity.getService().rule.getCountRecall();
-                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round], false));
+                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round-1], false));
                 break;
             default:
                 break;

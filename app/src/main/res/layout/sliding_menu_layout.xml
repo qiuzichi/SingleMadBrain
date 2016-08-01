@@ -21,14 +21,14 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="@dimen/margin_10dip"
-                    android:text="人名头像记忆"
+                    android:text="@string/project_1"
                     android:textColor="@color/main_1"
                     android:textSize="@dimen/text_size_competition" />
 
                 <ImageView
                      android:id="@+id/img_close"
-                     android:layout_height="@dimen/comment_commit_height"
-                     android:layout_width="@dimen/comment_commit_height"
+                     android:layout_height="@dimen/margin_30dp"
+                     android:layout_width="@dimen/margin_30dp"
                      android:src="@drawable/close_menu"
                      android:layout_alignParentRight="true"
                      android:layout_centerVertical="true"
@@ -49,7 +49,7 @@
                     android:layout_marginLeft="@dimen/setting_project_height"
                     android:layout_weight="100"
                     android:textColor="@color/main_2"
-                    android:text="设置比赛记忆时间"
+                    android:text="@string/set_memorytime"
                     android:textSize="@dimen/common_text_24" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/margin_10dip"
                     android:textColor="@color/time_setting"
-                    android:text="00:05:00"
+
                     android:textSize="@dimen/text_size_competition" />
 
                 <ImageView
@@ -90,7 +90,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/setting_project_height"
                     android:layout_weight="100"
-                    android:text="设置比赛答题时间"
+                    android:text="@string/set_answertime"
                     android:textColor="@color/main_2"
                     android:textSize="@dimen/common_text_24" />
 
@@ -101,7 +101,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/margin_10dip"
                     android:textColor="@color/time_setting"
-                    android:text="00:05:00"
+
                     android:textSize="@dimen/text_size_competition" />
 
                 <ImageView
@@ -183,6 +183,25 @@
                   <!--android:textColor="@color/black"-->
                   <!--android:textSize="18sp"-->
                   <!--android:padding="5dp"/>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/confirm_btn_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/news_title_height"
+                    android:paddingLeft="@dimen/margin_30dp"
+                    android:paddingRight="@dimen/margin_30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/confirm_modify"
+                    android:textSize="@dimen/common_text_24"
+                    android:textColor="@color/light_blue2"
+                    />
+
+            </RelativeLayout>
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

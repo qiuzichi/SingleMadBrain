@@ -215,7 +215,6 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                 }
                 break;
             case HttpConstant.GET_RULE_NOTIFY:
-
                 HIDDialog dialog = ToastUtil.createRuleDialog(mActivity, "1001", (RuleGame) o);
                 //dialog.show();
 

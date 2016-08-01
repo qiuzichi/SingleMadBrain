@@ -61,7 +61,7 @@ public class HorRecycleAdapter extends RecyclerView.Adapter<HorRecycleAdapter.Po
             TextView textView = (TextView) holder.tv;
             textView.setTextDirection(View.TEXT_DIRECTION_RTL);
             textView.setGravity(Gravity.CENTER);
-            textView.setText("第\n"+position/53+"\n副");
+            textView.setText("第\n"+(position/53 + 1)+"\n副");
             textView.setTextSize(28);
         }
     }

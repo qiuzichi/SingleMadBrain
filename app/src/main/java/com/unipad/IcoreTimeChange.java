@@ -1,5 +1,5 @@
 package com.unipad;
 
 public interface IcoreTimeChange {
-	public void callback();
+	public void callback(long value);
 }

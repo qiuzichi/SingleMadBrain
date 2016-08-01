@@ -51,7 +51,6 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
      * 遮罩层
      */
     private ViewStub mStubShade;
-    private ViewStub mStubListen;
     View mMemoryLayout;
     /**
      * 记录mScrollAnswerView滑动了多少次
@@ -78,7 +77,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         frameLayout = (FrameLayout) mViewParent.findViewById(R.id.binary_rememory_layout);
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
-        mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
+        ViewStub mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
         if (mCompeteItem.equals(getString(R.string.project_9))){
             mMemoryLayout = mStubListen.inflate();
         }
@@ -89,9 +88,11 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         if (null != service.lineNumbers && service.lineNumbers.size() != 0) {
             mLines = service.lineNumbers.size();
             mRows = service.lineNumbers.valueAt(0).length();
+            mTotalNumbers = 0;
             for (int i = 0; i < mLines; i++) {
                 mTotalNumbers += service.lineNumbers.valueAt(i).length();
             }
+            LogUtil.e("","mLines = " + mLines + "--mRows = " + mRows +"--mTotalNumbers = " + mTotalNumbers);
             frameLayout.removeAllViews();
             if (mCompeteItem.equals(getString(R.string.project_9))){
                 final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
@@ -268,6 +269,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         // mViewParent.removeView(mMemoryLayout);// 先移除记忆界面
         // mStubShade.setVisibility(View.GONE);// 隐藏遮罩层
         // 再加载回忆界面
+        mCursorPosition = 0;
         mScrollAnswerView = (ScrollView) mRememoryLayout
                 .findViewById(R.id.scroll_rememory_layout);
         frameLayout.removeAllViews();

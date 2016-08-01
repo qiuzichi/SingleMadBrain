@@ -2,12 +2,16 @@ package com.unipad.brain.longPoker.view;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.RadioButton;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
@@ -27,8 +31,11 @@ import java.util.ArrayList;
 public class LongPokerRightFragment extends BasicCommonFragment {
     private RecyclerView recyclerView;
     private LongPokerService service;
-    private RecyclerView rememoryPokerRecycle;
+    private RecyclerView[] rememoryPokerRecycle;
     private View shadeView;
+    private ViewPager viewpager;
+   // private GridLayoutManager layoutManager;
+
     @Override
     public int getLayoutId() {
         return R.layout.long_poker_frg_right;
@@ -73,11 +80,8 @@ public class LongPokerRightFragment extends BasicCommonFragment {
         shadeView.setVisibility(View.GONE);
     }
 
-    private void setRememoryAdapter(){
-        ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.browse_proker_muti_stub);
-        rememoryPokerRecycle = (RecyclerView) viewStub.inflate();
-        OnePokerRecycleAdapter onePokerRecycleAdapter = new OnePokerRecycleAdapter(mActivity,service.pokersQuestion);
-        GridLayoutManager layoutManager = new GridLayoutManager(mActivity,2);
+    private GridLayoutManager createGridLayoutManager() {
+        GridLayoutManager layoutManager = new GridLayoutManager(mActivity, 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -89,15 +93,65 @@ public class LongPokerRightFragment extends BasicCommonFragment {
 
             }
         });
-        //设置布局管理器
-        rememoryPokerRecycle.setLayoutManager(layoutManager);
-        //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        //设置Adapter
-        rememoryPokerRecycle.setAdapter(onePokerRecycleAdapter);
+        return layoutManager;
     }
+
+    private void setRememoryAdapter() {
+        ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.browse_proker_muti_stub);
+        viewpager = (ViewPager) viewStub.inflate();
+        rememoryPokerRecycle = new RecyclerView[service.howMany];
+
+        for (int i = 0; i < service.howMany; i++) {
+            RecyclerView recyclerView = new RecyclerView(mActivity);
+            recyclerView.setLayoutManager(createGridLayoutManager());
+            rememoryPokerRecycle[i] = recyclerView;
+        }
+        PagerAdapter pagerAdapter = new PagerAdapter() {
+
+            @Override
+            public boolean isViewFromObject(View arg0, Object arg1) {
+                // TODO Auto-generated method stub
+                return arg0 == arg1;
+            }
+
+            @Override
+            public int getCount() {
+                // TODO Auto-generated method stub
+                return rememoryPokerRecycle.length;
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position,
+                                    Object object) {
+                // TODO Auto-generated method stub
+                container.removeView(rememoryPokerRecycle[position]);
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                // TODO Auto-generated method stub
+                RecyclerView recyclerView = rememoryPokerRecycle[position];
+                if (recyclerView.getAdapter() == null) {
+                    LogUtil.e("","viewpager postion = "+position);
+                    OnePokerRecycleAdapter onePokerRecycleAdapter = new OnePokerRecycleAdapter(mActivity, service.pokersQuestion, position * 53, 53);
+
+                    recyclerView.setAdapter(onePokerRecycleAdapter);
+                }
+                container.addView(rememoryPokerRecycle[position]);
+
+
+                return rememoryPokerRecycle[position];
+            }
+
+        };
+
+        viewpager.setAdapter(pagerAdapter);
+        //设置布局管理器
+    }
+
     private void setMemoryAdapter() {
-        HorRecycleAdapter recycleAdapter= new HorRecycleAdapter(mActivity,service.pokersQuestion);
+        HorRecycleAdapter recycleAdapter = new HorRecycleAdapter(mActivity, service.pokersQuestion);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         //设置布局管理器
@@ -107,7 +161,7 @@ public class LongPokerRightFragment extends BasicCommonFragment {
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.HORIZONTAL);
         //设置Adapter
-        recyclerView.setAdapter( recycleAdapter);
+        recyclerView.setAdapter(recycleAdapter);
     }
 
     @Override

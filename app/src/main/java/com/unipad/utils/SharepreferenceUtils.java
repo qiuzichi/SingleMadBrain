@@ -7,11 +7,11 @@ import com.unipad.brain.App;
 import com.unipad.brain.home.SApplication;
 
 public class SharepreferenceUtils {
-	public static final String THEME_NAME = "gameSetting";
+	public static final String THEME_NAME = "timeSetting";
 
-	public static void writeString(String key, String value, String sharedFile) {
+	public static void writeString(String key, String value) {
 		SharedPreferences preferences = App.getContext()
-				.getSharedPreferences(sharedFile, Context.MODE_PRIVATE);
+				.getSharedPreferences(THEME_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.putString(key, value);
 		editor.apply();
