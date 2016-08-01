@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.unipad.brain.R;
+import com.unipad.brain.longPoker.IProgress;
 import com.unipad.brain.longPoker.entity.LongPokerEntity;
 import com.unipad.brain.longPoker.view.SpinerPopWindow;
 import com.unipad.common.Constant;
@@ -23,6 +24,7 @@ import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,12 +35,12 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
     private List<LongPokerEntity> mDatas;
     private LayoutInflater inflater;
     private SpinerPopWindow spinnerPopWindow;
-    private ArrayList<String> dianShuList;
     private int start;
     private int length;
     private int mCurrentPosition;
-    private int[] resDrawableId = new int[]{R.drawable.fangkuai,R.drawable.heitao,R.drawable.hongtao,R.drawable.meihua};
-
+    private int[] resDrawableId = new int[]{R.drawable.heitao,R.drawable.hongtao,R.drawable.meihua,R.drawable.fangkuai};
+    private List<String> dianShuList ;
+    private IProgress progress;
     public OnePokerRecycleAdapter(Context context, List<LongPokerEntity> datas,int start,int length) {
         this.mContext = context;
         if (datas == null) {
@@ -46,6 +48,7 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
         } else {
             this.mDatas = datas;
         }
+        dianShuList = Arrays.asList(mContext.getResources().getStringArray(R.array.poker));
         this.start = start;
         this.length = length;
         inflater = LayoutInflater.from(mContext);
@@ -81,26 +84,39 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
             tv.setGravity(Gravity.CENTER);
             tv.setTextSize(30);
         } else {
+
             final LongPokerEntity poker = mDatas.get(start+position);
             TextView tv_num = (TextView) holder.view.findViewById(R.id.num);
             final TextView textDianView =  (TextView) holder.view.findViewById(R.id.tv_value);
-            int userAnswer = poker.getUserAnswer();
+            final int userAnswer = poker.getUserAnswer();
+            final RadioGroup radioGroup = (RadioGroup) holder.view.findViewById(R.id.radio_group);
             if (userAnswer != 0) {
-                Drawable image = mContext.getResources().getDrawable(resDrawableId[userAnswer/13]);
+                Drawable image = mContext.getResources().getDrawable(poker.getHuaseId());
                 image.setBounds(0, 0, image.getMinimumWidth(), image.getMinimumHeight());
                 textDianView.setCompoundDrawables(image, null, null, null);
-                textDianView.setText(dianShuList.get((userAnswer-1)%13 +1));
+                textDianView.setText(dianShuList.get((userAnswer - 1) % 13 + 1));
             } else {
                 textDianView.setCompoundDrawables(null, null, null, null);
                 textDianView.setText("");
             }
-            RadioGroup radioGroup = (RadioGroup) holder.view.findViewById(R.id.radio_group);
-            final int checkID = radioGroup.getCheckedRadioButtonId() - radioGroup.getChildAt(1).getId();
+            for(int i = 0;i<resDrawableId.length;i++){
+                if (resDrawableId[i] == poker.getHuaseId()){
+                    radioGroup.check(radioGroup.getChildAt(1).getId()+i);
+                    break;
+                }
+            }
             textDianView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mCurrentPosition = position;
-                    showSpinnerPopWinsow(textDianView,checkID);
+                    if (progress != null){
+                        int pro= (start+position)*100/mDatas.size();
+                        if (pro ==100){
+                            pro--;
+                        }
+                        progress.setProgress(pro+100);
+                    }
+                    showSpinnerPopWinsow(textDianView);
 
                 }
             });
@@ -109,26 +125,28 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        LogUtil.e("","onOnCheckedChange :"+position);
+                        poker.setHuaseId(resDrawableId[checkedId-group.getChildAt(1).getId()]);
                         mCurrentPosition = position;
                         int dian = poker.getUserAnswer()%13;
                         if (poker.getUserAnswer() == 0) {
                             return;
                         }
-                        int index = 0;
-                        if (group.getChildAt(0).getId() == checkedId) {
+
+                        if (group.getChildAt(1).getId() == checkedId) {
                             poker.setUserAnswer(13+dian);
-                            index = 1;
-                        } else if (group.getChildAt(1).getId() == checkedId) {
-                            poker.setUserAnswer(26+dian);
-                          index =2;
+
                         } else if (group.getChildAt(2).getId() == checkedId) {
-                            poker.setUserAnswer(39+dian);
-                           index = 3;
+                            poker.setUserAnswer(26+dian);
+
                         } else if (group.getChildAt(3).getId() == checkedId) {
+                            poker.setUserAnswer(39+dian);
+
+                        } else if (group.getChildAt(4).getId() == checkedId) {
                             poker.setUserAnswer(dian);
-                          index = 0;
+
                         }
-                        Drawable image = mContext.getResources().getDrawable(resDrawableId[index]);
+                        Drawable image = mContext.getResources().getDrawable(poker.getHuaseId());
                         image.setBounds(0, 0, image.getMinimumWidth(), image.getMinimumHeight());
                         textDianView.setCompoundDrawables(image,null,null,null);
 
@@ -153,51 +171,34 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
         }
 
     }
-    private void showSpinnerPopWinsow(final TextView textView , final int drawableId){
+    private void showSpinnerPopWinsow(final TextView textView){
         if (spinnerPopWindow == null) {
             spinnerPopWindow = new SpinerPopWindow(mContext);
-            dianShuList = new ArrayList<>();
-            dianShuList.add("");
-            dianShuList.add("A");
-            dianShuList.add("2");
-            dianShuList.add("3");
-            dianShuList.add("4");
-            dianShuList.add("5");
-            dianShuList.add("6");
-            dianShuList.add("7");
-            dianShuList.add("8");
-            dianShuList.add("9");
-            dianShuList.add("10");
-            dianShuList.add("J");
-            dianShuList.add("Q");
-            dianShuList.add("K");
+
             spinnerPopWindow.refreshData(dianShuList, 0);
             spinnerPopWindow.setWidth(textView.getWidth());
             spinnerPopWindow.setItemListener(new AbstractSpinerAdapter.IOnItemSelectListener() {
                 @Override
                 public void onItemClick(int pos) {
-                    LongPokerEntity poker = mDatas.get(start+mCurrentPosition);
-                    String text = dianShuList.get(pos);
-
+                    LongPokerEntity poker = mDatas.get(start + mCurrentPosition);
                     if (pos == 0) {
                         poker.setUserAnswer(0);
                       //  poker.setUserAnswer("");
                     } else {
-                        Drawable image = null;
-                        switch (drawableId){
-                            case 0://黑桃
+                        switch (poker.getHuaseId()){
+                            case R.drawable.heitao://黑桃
                                 poker.setUserAnswer(13+pos);
 
                                 break;
-                            case 1://红桃
+                            case R.drawable.hongtao://红桃
                                 poker.setUserAnswer(26+pos);
 
                                 break;
-                            case 2://梅花
+                            case R.drawable.meihua://梅花
                                 poker.setUserAnswer(39+pos);
 
                                 break;
-                            case 3://方块
+                            case R.drawable.fangkuai://方块
                                 poker.setUserAnswer(pos);
 
                                 break;

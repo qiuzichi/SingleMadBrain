@@ -66,7 +66,9 @@ public class SpinerPopWindow extends PopupWindow implements AdapterView.OnItemCl
 		}
 	}
 
-
+	public List<String> getData(){
+		return mAdapter.getData();
+	}
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view, int pos, long arg3) {
 		dismiss();

@@ -111,8 +111,8 @@ public abstract class BasicCommonFragment extends Fragment implements
 
     @Override
     public void memoryTimeToEnd(int memoryTime) {
-
-
+        progress = 100;
+        handler.sendEmptyMessage(MSG_PROGRESS);
     }
 
     @Override
