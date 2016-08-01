@@ -38,20 +38,20 @@ public class HomeFragment extends BaseFragment implements IHome {
     private FrameLayout fl_project;
 
     // 侧边栏的start -------------///
-    @ViewInject(R.id.txt_title)
-    private TextView txt_title;
-
-    @ViewInject(R.id.txt_attention_content)
-    private TextView txt_attention_content;
-
-    @ViewInject(R.id.txt_memory_content)
-    private TextView txt_memory_content;
-
-    @ViewInject(R.id.txt_recall_content)
-    private TextView txt_recall_content;
-
-    @ViewInject(R.id.txt_function_content)
-    private TextView txt_function_content;
+//    @ViewInject(R.id.txt_title)
+//    private TextView txt_title;
+//
+//    @ViewInject(R.id.txt_attention_content)
+//    private TextView txt_attention_content;
+//
+//    @ViewInject(R.id.txt_memory_content)
+//    private TextView txt_memory_content;
+//
+//    @ViewInject(R.id.txt_recall_content)
+//    private TextView txt_recall_content;
+//
+//    @ViewInject(R.id.txt_function_content)
+//    private TextView txt_function_content;
 
     public static HomeFragment getHomeFragment() {
         if (null == homeFragment)
@@ -123,11 +123,11 @@ public class HomeFragment extends BaseFragment implements IHome {
 
     @Override
     public void setSlidingMenuTxt(ProjectBean projectBean) {
-        txt_title.setText(projectBean.getName() + getResources().getString(R.string.action_rule));
-        txt_attention_content.setText(projectBean.getAttention());
-        txt_memory_content.setText(projectBean.getMemory_rule());
-        txt_recall_content.setText(projectBean.getRecall_rule());
-        txt_function_content.setText(projectBean.getRecord_rule());
+//        txt_title.setText(projectBean.getName() + getResources().getString(R.string.action_rule));
+//        txt_attention_content.setText(projectBean.getAttention());
+//        txt_memory_content.setText(projectBean.getMemory_rule());
+//        txt_recall_content.setText(projectBean.getRecall_rule());
+//        txt_function_content.setText(projectBean.getRecord_rule());
     }
 
 }

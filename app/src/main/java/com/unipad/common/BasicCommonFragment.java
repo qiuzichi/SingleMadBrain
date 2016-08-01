@@ -96,7 +96,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     @Override
     public void initDataFinished() {
         progress = 201;
-        mActivity.progressGame(progress);
+        handler.sendEmptyMessage(MSG_PROGRESS);
     }
 
     @Override

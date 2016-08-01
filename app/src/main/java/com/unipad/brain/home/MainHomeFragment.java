@@ -52,8 +52,7 @@ public class MainHomeFragment extends MainBasicFragment implements InfoListFragm
         super.onActivityCreated(savedInstanceState);
         //初始化界面;
         initView();
-        // 1  获取服务器 版本号
-//        getVersionFromNet();
+
     }
 
     @Override

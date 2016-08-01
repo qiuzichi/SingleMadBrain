@@ -27,6 +27,7 @@ public class App extends Application {
     public LocationService locationService;
     public Vibrator mVibrator;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -96,5 +97,7 @@ public class App extends Application {
          */
         void dispatchMessage(Message msg);
     }
+
+
 
 }

@@ -19,6 +19,8 @@
     <color name="bg_three">#1e5401</color>
     <color name="stroke_color">#ACACAC</color>
     <color name="line">#b5bdc4</color>
+    <color name="time_setting">#9a9a9a</color>
+
     <color name="txt_ash">#141414</color>
     <color name="text_gray">#A4A4A4</color>
     <color name="main">#2faff8</color>
@@ -35,6 +37,7 @@
     <color name="personal_setting_text">#4A4A4A</color>
     <color name="bottom_bt_bg">#2FAFF8</color>
     <color name="edit_text_hint">#A5A5A5</color>
+    <color name="view_divide_line">#CCCCCC</color>
     <color name="record_city">#0A58BC</color>
     <color name="record_china">#2FAFF8</color>
     <color name="hv_container_bg">#D1E9E9</color>
@@ -66,4 +69,6 @@
     <!-- 咨询相关颜色-->
     <color name="cosult_bg_light_blue">#d2e9ff</color>
     <color name="memory_order">#666666</color>
+    <color name="loading_dialog_bg">#88000000</color>
+    <color name="dialog_gray">#646464</color>
 </resources>

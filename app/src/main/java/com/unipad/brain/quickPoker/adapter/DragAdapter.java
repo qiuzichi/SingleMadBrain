@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
 import com.unipad.brain.quickPoker.entity.PokerEntity;

@@ -187,7 +187,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             case R.id.record_text_delete:
                 break;
             case R.id.record_search_begin_data:
-//                showDialog = new ShowDialog(mActivity);
+                showDialog = new ShowDialog(mActivity);
                 wheelMainView=new WheelMainView(mActivity);
                 wheelMainView.setChangingListener(PersonalRecordFragment.this);
 //                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_BOTTOM,mActivity.getWindowManager(),0.5f,0.6f);

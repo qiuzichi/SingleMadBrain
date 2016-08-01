@@ -87,6 +87,10 @@
     <string name="exit_app">退出登录</string>
     <string name="pay_pwd">支付密码</string>
     <string name="login_pwd">登录密码</string>
+    <string name="set_answertime">设置比赛答题时间</string>
+    <string name="set_memorytime">设置比赛记忆时间</string>
+    <string name="set_rule">规则设置</string>
+
     <string name="commit">提交</string>
     <string name="mad_crazy_describe">\t\t\t 世界记忆力锦标赛（World Memory Championships）是由“世界记忆之父” 托尼·博赞于1991年发起，
         由世界记忆力运动委员会（WMSC）组织的世界最高级别的记忆力赛事。\n\t\t\t 世界脑力锦标赛颁发国际认可并世界通用的“世界记忆大师”证书，
