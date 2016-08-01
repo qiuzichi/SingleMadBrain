@@ -78,7 +78,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private OnLoadMoreListener onLoadMoreListener;
     private OnShowUpdateDialgo mOnShowUpdateDialgo;
     private NewsService service;
-    //private BitmapUtils bitmapUtils;
+
 
 
     public MyRecyclerAdapter(Activity mActivity, final RecyclerView mRecyclerView, List<NewEntity> datas ,int pageId) {

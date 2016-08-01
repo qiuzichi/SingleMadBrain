@@ -110,6 +110,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setIconified(false);
         mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.clearFocus();
         mSearchView.setQueryHint(getString(R.string.search_conment));
         try {
             Field field = mSearchView.getClass().getDeclaredField("mSubmitButton");
@@ -122,15 +123,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             e.printStackTrace();
         }
 
-        mSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
-            }
-        });
-
         mSearchView.setOnQueryTextListener(mOnQueryTextListener);
-
     }
 
     private void initViewPager(){

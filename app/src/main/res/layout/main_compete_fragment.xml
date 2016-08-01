@@ -84,7 +84,7 @@
             android:layout_weight="8">
 
 
-<include layout="@layout/fragment_project_layout"/>
+            <include layout="@layout/fragment_project_layout"/>
 
 
         </FrameLayout>

@@ -14,97 +14,175 @@
             <RelativeLayout 
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent">
-                 <TextView 
-                  android:id="@+id/txt_title"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textSize="29sp"
-                  android:textColor="@color/main_1"
-                  android:layout_marginTop="20dp"
-                  android:layout_centerInParent="true"/>
-                 
-                 <ImageView 
+
+                <TextView
+                    android:id="@+id/txt_title_project"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/margin_10dip"
+                    android:text="人名头像记忆"
+                    android:textColor="@color/main_1"
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
                      android:id="@+id/img_close"
-                     android:layout_height="wrap_content"
-                     android:layout_width="wrap_content"
+                     android:layout_height="@dimen/comment_commit_height"
+                     android:layout_width="@dimen/comment_commit_height"
                      android:src="@drawable/close_menu"
                      android:layout_alignParentRight="true"
                      android:layout_centerVertical="true"
-                     android:layout_marginRight="10dp"/>
+                     android:layout_marginRight="@dimen/margin_30dp"/>
             </RelativeLayout>
-             
-              
-              <TextView 
-                  android:id="@+id/txt_attention"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/main_1"
-                  android:text="@string/attention"
-                  android:textSize="18sp"
-                  android:padding="5dp"
-                  android:layout_marginTop="20dp"/>
-              
-                <TextView 
-                  android:id="@+id/txt_attention_content"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-                  android:padding="5dp"/>
-                
-                <TextView 
-                  android:id="@+id/txt_memory_part"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/main_1"
-                  android:text="@string/memory_part"
-                  android:padding="5dp"
-                  android:textSize="18sp"
-                  android:layout_marginTop="20dp"/>
-              
-                <TextView 
-                  android:id="@+id/txt_memory_content"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-                  android:padding="5dp"/>
-                
-                <TextView 
-                  android:id="@+id/txt_recall_part"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/main_1"
-                  android:text="@string/recall_part"
-                  android:textSize="18sp"
-                  android:padding="5dp"
-                  android:layout_marginTop="20dp"/>
-              
-                <TextView 
-                  android:id="@+id/txt_recall_content"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-                  android:padding="5dp"/>
-                
-                 <TextView 
-                  android:id="@+id/txt_function"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/main_1"
-                  android:text="@string/jf_function"
-                  android:padding="5dp"
-                  android:textSize="18sp"
-                  android:layout_marginTop="20dp"/>
-              
-                <TextView 
-                  android:id="@+id/txt_function_content"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-                  android:padding="5dp"/>
+
+            <LinearLayout
+                android:id="@+id/binary_memory_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/newlist_height"
+                android:clickable="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/setting_project_height"
+                    android:layout_weight="100"
+                    android:textColor="@color/main_2"
+                    android:text="设置比赛记忆时间"
+                    android:textSize="@dimen/common_text_24" />
+
+                <TextView
+                    android:id="@+id/binary_memory_set_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:textColor="@color/time_setting"
+                    android:text="00:05:00"
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:background="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1dp"
+                android:background="@color/view_divide_line" >
+            </View>
+
+            <LinearLayout
+                android:id="@+id/binary_answer_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10dip"
+                android:clickable="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/setting_project_height"
+                    android:layout_weight="100"
+                    android:text="设置比赛答题时间"
+                    android:textColor="@color/main_2"
+                    android:textSize="@dimen/common_text_24" />
+
+                <TextView
+                    android:id="@+id/binary_answer_set_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:textColor="@color/time_setting"
+                    android:text="00:05:00"
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:background="@drawable/arrow_right" />
+            </LinearLayout>
+              <!-- -->
+              <!--<TextView -->
+                  <!--android:id="@+id/txt_attention"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/main_1"-->
+                  <!--android:text="@string/attention"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"-->
+                  <!--android:layout_marginTop="20dp"/>-->
+              <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_attention_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/black"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"/>-->
+                <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_memory_part"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/main_1"-->
+                  <!--android:text="@string/memory_part"-->
+                  <!--android:padding="5dp"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:layout_marginTop="20dp"/>-->
+              <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_memory_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/black"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"/>-->
+                <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_recall_part"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/main_1"-->
+                  <!--android:text="@string/recall_part"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"-->
+                  <!--android:layout_marginTop="20dp"/>-->
+              <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_recall_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/black"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"/>-->
+                <!-- -->
+                 <!--<TextView -->
+                  <!--android:id="@+id/txt_function"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/main_1"-->
+                  <!--android:text="@string/jf_function"-->
+                  <!--android:padding="5dp"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:layout_marginTop="20dp"/>-->
+              <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_function_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/black"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"/>-->
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -11,12 +11,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.os.StatFs;
+import android.util.DisplayMetrics;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.unipad.utils.LogUtil;
 
 
 /**
@@ -31,6 +33,10 @@ public class SApplication extends Application {
 	public static Bitmap default_ico = null;
 	public boolean isActive = true;
 	public static SApplication instance;
+
+	public static int screenWidth = 0, screenHeight = 0, statusBarHeight = 0;
+	public static final float LEFT_RATIO = 1.0f / 5.8f;
+	public static final float RIGHT_RATIO = 1 - LEFT_RATIO;
 
 	// /注册获取验证码的冷却事件
 	private int codeSeconds = 0;
@@ -49,6 +55,13 @@ public class SApplication extends Application {
 		notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		SApplication.activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
 		initImageLoader(this);
+
+		// 获取屏幕的宽和高
+//		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+//		screenWidth = displayMetrics.widthPixels;
+//		screenHeight = displayMetrics.heightPixels;
+//
+//		getStatusBarHeight();
 	}
 
 	
@@ -144,5 +157,28 @@ public class SApplication extends Application {
 		StatFs localStatFs = new StatFs(strDataDirectoryPath);
 		long size = localStatFs.getBlockSize() * localStatFs.getBlockCount();
 		return size;
+	}
+
+	/**
+	 * 获取状态栏高度
+	 */
+	private int getStatusBarHeight() {
+		try {
+			Class<?> cla = Class.forName("com.android.internal.R$dimen");
+			Object object = cla.newInstance();
+			int tempHeight = Integer.parseInt(cla.getField("status_bar_height")
+					.get(object).toString());
+			statusBarHeight = context.getResources().getDimensionPixelOffset(
+					tempHeight);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return statusBarHeight;
+
+	}
+
+	public static SApplication getApplication() {
+		return (SApplication) context;
 	}
 }
