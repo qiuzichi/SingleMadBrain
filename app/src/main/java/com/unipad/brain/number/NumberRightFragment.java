@@ -69,7 +69,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     private FrameLayout frameLayout;
 
     @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         service = (NumService) mActivity.getService();
         mCompeteItem = Constant.getProjectName(mActivity.getProjectId());
@@ -78,13 +78,14 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
         ViewStub mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
-        if (mCompeteItem.equals(getString(R.string.project_9))){
+        if (mCompeteItem.equals(getString(R.string.project_9))) {
             mMemoryLayout = mStubListen.inflate();
         }
     }
 
     @Override
     public void initDataFinished() {
+        super.initDataFinished();
         if (null != service.lineNumbers && service.lineNumbers.size() != 0) {
             mLines = service.lineNumbers.size();
             mRows = service.lineNumbers.valueAt(0).length();
@@ -92,9 +93,9 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             for (int i = 0; i < mLines; i++) {
                 mTotalNumbers += service.lineNumbers.valueAt(i).length();
             }
-            LogUtil.e("","mLines = " + mLines + "--mRows = " + mRows +"--mTotalNumbers = " + mTotalNumbers);
+            LogUtil.e("", "mLines = " + mLines + "--mRows = " + mRows + "--mTotalNumbers = " + mTotalNumbers);
             frameLayout.removeAllViews();
-            if (mCompeteItem.equals(getString(R.string.project_9))){
+            if (mCompeteItem.equals(getString(R.string.project_9))) {
                 final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
                 mMemoryLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                     @Override
@@ -104,7 +105,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
                     }
                 });
 
-            }else{
+            } else {
                 frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
             }
             mStubShade.setVisibility(View.VISIBLE);
@@ -176,8 +177,8 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             case R.id.listen_keyboard_7:
             case R.id.listen_keyboard_8:
             case R.id.listen_keyboard_9:
-                progress = 100 +mCursorPosition*100/mTotalNumbers;
-                LogUtil.e("","Quick num:"+progress);
+                progress = 100 + mCursorPosition * 100 / mTotalNumbers;
+                LogUtil.e("", "Quick num:" + progress);
                 this.setGridText(mNumberArray.get(view.getId()));
                 break;
             case R.id.listen_keyboard_delete:
@@ -247,20 +248,20 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         return new NumberRememoryLayout(mActivity, getCompeteItem(), mRows, mLines, mTotalNumbers, new IInitRememoryCallBack() {
             @Override
             public void begin() {
-                ToastUtil.createWaitingDlg(mActivity,"加载答题卡中",Constant.INIT_REMEMORY_DLG).show();
+                ToastUtil.createWaitingDlg(mActivity, "加载答题卡中", Constant.INIT_REMEMORY_DLG).show();
             }
 
             @Override
             public void loading(int progress) {
-                LogUtil.e("","loading :" + progress);
-                        ((TextView) HIDDialog.getExistDialog(Constant.INIT_REMEMORY_DLG).findViewById(R.id.dialog_text)).setText("加载答题卡中:" + progress);
+                LogUtil.e("", "loading :" + progress);
+                ((TextView) HIDDialog.getExistDialog(Constant.INIT_REMEMORY_DLG).findViewById(R.id.dialog_text)).setText("加载答题卡中:" + progress);
             }
 
             @Override
             public void finish() {
-                LogUtil.e("","finish...");
-                    HIDDialog.dismissDialog(Constant.INIT_REMEMORY_DLG);
-                    sendMsgToPreper();
+                LogUtil.e("", "finish...");
+                HIDDialog.dismissDialog(Constant.INIT_REMEMORY_DLG);
+                sendMsgToPreper();
             }
         });
     }
@@ -273,7 +274,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         mScrollAnswerView = (ScrollView) mRememoryLayout
                 .findViewById(R.id.scroll_rememory_layout);
         frameLayout.removeAllViews();
-        if (mNumberRememoryLayout == null){
+        if (mNumberRememoryLayout == null) {
             mNumberRememoryLayout = createReMemoryLayout();
         } else {
             mNumberRememoryLayout.clearText();
@@ -305,18 +306,23 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         super.rememoryTimeToEnd(answerTime);
         //mStubShade.setVisibility(View.VISIBLE);
     }
-    public void showAnswer(){
+
+    public void showAnswer() {
         mNumberRememoryLayout.showAnswer(service.lineNumbers, service.answer);
     }
 
-    public void getAnswer(){
+    public void getAnswer() {
         mNumberRememoryLayout.getAnswer(service.answer);
     }
 
     @Override
     public void numberKey(String keyValue) {
-        progress = 100 +mCursorPosition*100/mTotalNumbers;
-        LogUtil.e("","Quick num:"+progress);
+        if (mCursorPosition == mTotalNumbers) {
+            progress = 100 + mCursorPosition * 100 / mTotalNumbers - 1;
+        } else {
+            progress = 100 + mCursorPosition * 100 / mTotalNumbers;
+        }
+        LogUtil.e("", "Quick num:" + progress);
         this.setGridText(keyValue);
     }
 
