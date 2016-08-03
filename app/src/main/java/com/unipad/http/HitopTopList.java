@@ -23,6 +23,7 @@ private GlobleObserService service;
 
     public HitopTopList(String path) {
         super(path);
+        mParams.addBodyParameter("matchId",path);
     }
 
     public HitopTopList(){

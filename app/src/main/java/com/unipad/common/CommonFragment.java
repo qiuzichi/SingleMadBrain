@@ -27,7 +27,6 @@ import com.unipad.utils.LogUtil;
 import org.xutils.x;
 
 import java.util.Map;
-
 /**
  * Created by Wbj on 2016/4/7.
  */
@@ -46,7 +45,6 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     private ICommunicate mICommunicate;
     private SparseArray mColorArray = new SparseArray();
     private int memoryTime;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,6 +144,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             }
 
         } else {//回忆模式下才可以提交答案
+
             this.commitAnswer(takeTIme);
         }
     }
@@ -164,7 +163,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     /**
      * 提交答案
      */
-    private void commitAnswer(final int rememoryTime) {
+    private void commitAnswer(final  int rememoryTime) {
         mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
             mICommunicate.rememoryTimeToEnd(rememoryTime);
@@ -273,7 +272,6 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     public void finishGame() {
 
     }
-
     /**
      * CommonFragment对外通讯接口
      */

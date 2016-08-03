@@ -178,8 +178,8 @@ public class PersonalFavoriteFragment extends PersonalCommonFragment implements 
                    public void convert(ViewHolder holder, CompetitionBean competitionBean) {
                        holder.setText(R.id.txt_year,competitionBean.getCompetitionDate());
                          holder.setText(R.id.txt_name,competitionBean.getName());
-                       holder.setText(R.id.txt_addr,competitionBean.getAddr());
-                       holder.setText(R.id.txt_cost,competitionBean.getCost());
+                         holder.setText(R.id.txt_addr,competitionBean.getAddr());
+                         holder.setText(R.id.txt_cost,competitionBean.getCost());
                    }
                });
                 break;
