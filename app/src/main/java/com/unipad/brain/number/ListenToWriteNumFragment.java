@@ -1,7 +1,12 @@
 package com.unipad.brain.number;
 
+import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
 import android.view.View;
+import android.view.ViewStub;
+import android.view.ViewTreeObserver;
 
+import com.unipad.brain.R;
 import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
@@ -12,7 +17,7 @@ import com.unipad.utils.ToastUtil;
  */
 public class ListenToWriteNumFragment extends NumberRightFragment{
     private KeyboardDialog mKeyboardDialog;
-
+   private View mMemoryLayout;
     @Override
     public boolean isNeedShowCurrent() {
         return true;
@@ -27,6 +32,28 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
     public void initAnswerView() {
         mKeyboardDialog = new KeyboardDialog(mActivity);
         mKeyboardDialog.setKeyboardClickListener(this);
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ViewStub mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
+            mMemoryLayout = mStubListen.inflate();
+    }
+
+    @Override
+    public void initMemoryView() {
+
+        final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
+        mMemoryLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                animationDrawable.start();
+                return true;
+            }
+        });
+
     }
 
     @Override

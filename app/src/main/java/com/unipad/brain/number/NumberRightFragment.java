@@ -51,7 +51,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
      * 遮罩层
      */
     private ViewStub mStubShade;
-    View mMemoryLayout;
+
     /**
      * 记录mScrollAnswerView滑动了多少次
      */
@@ -66,7 +66,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     private String mCompeteItem = "";
     protected NumService service;
-    private FrameLayout frameLayout;
+    protected FrameLayout frameLayout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -77,10 +77,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         frameLayout = (FrameLayout) mViewParent.findViewById(R.id.binary_rememory_layout);
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
-        ViewStub mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
-        if (mCompeteItem.equals(getString(R.string.project_9))) {
-            mMemoryLayout = mStubListen.inflate();
-        }
+
     }
 
     @Override
@@ -94,20 +91,9 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
                 mTotalNumbers += service.lineNumbers.valueAt(i).length();
             }
             LogUtil.e("", "mLines = " + mLines + "--mRows = " + mRows + "--mTotalNumbers = " + mTotalNumbers);
-            frameLayout.removeAllViews();
-            if (mCompeteItem.equals(getString(R.string.project_9))) {
-                final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
-                mMemoryLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        animationDrawable.start();
-                        return true;
-                    }
-                });
 
-            } else {
-                frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
-            }
+            initMemoryView();
+
             mStubShade.setVisibility(View.VISIBLE);
         }
     }
@@ -116,7 +102,6 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public void startMemory() {
         super.startMemory();
         mStubShade.setVisibility(View.GONE);
-        mMemoryLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -243,7 +228,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public abstract String getCompeteItem();
 
     public abstract void initAnswerView();
-
+    public abstract void initMemoryView();
     private NumberRememoryLayout createReMemoryLayout() {
         return new NumberRememoryLayout(mActivity, getCompeteItem(), mRows, mLines, mTotalNumbers, new IInitRememoryCallBack() {
             @Override
@@ -281,24 +266,6 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         }
         frameLayout.addView(mNumberRememoryLayout);
         initAnswerView();
-        if (mCompeteItem.equals(getString(R.string.project_3))
-                || mCompeteItem.equals(getString(R.string.project_5))) {
-            LogUtil.e("--", "");
-
-        } else if (mCompeteItem.equals(getString(R.string.project_2))) {
-
-        } else if (mCompeteItem.equals(getString(R.string.project_9))) {
-            mMemoryLayout.setVisibility(View.GONE);
-//            View.inflate(mActivity, R.layout.listen_v_bottom, mLayoutBottom);
-//            mLayoutBottom.findViewById(R.id.listen_keyboard_0).setOnClickListener(this);
-//            mLayoutBottom.findViewById(R.id.listen_keyboard_delete).setOnClickListener(this);
-//            int number = 0;
-//            mNumberArray.put(R.id.listen_keyboard_0, (number++) + "");
-//            for (int id = R.id.listen_keyboard_1; id <= R.id.listen_keyboard_9; ++id) {
-//                mNumberArray.put(id, (number++) + "");
-//                mLayoutBottom.findViewById(id).setOnClickListener(this);
-//            }
-        }
     }
 
     @Override
