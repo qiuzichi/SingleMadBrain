@@ -1,7 +1,5 @@
 package com.unipad.brain.view;
 
-import java.util.Calendar;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -9,7 +7,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.unipad.brain.R;
+
+import java.util.Calendar;
 /**
  *   
  * @author Administrator
@@ -228,7 +229,13 @@ public class WheelMainView extends RelativeLayout {
 	}
 
 	// 生成时间
-	void createDate(String year, String month, String day, String hour,String minute) {
+	void createDate(String year,String month, String day, String hour,String minute) {
+		if (Integer.valueOf(month)<10&&Integer.valueOf(month)>0){
+			month=String.valueOf("0"+month);
+		}
+		if (Integer.valueOf(day)<10&&Integer.valueOf(day)>0){
+			day=String.valueOf("0"+day);
+		}
 		String dateStr = year + "/" + month + "/" + day + "";// + hour + "时" + minute + "分";
 //		time_TV.setText("选择时间为：" + dateStr);
 		if(null == changingListener){

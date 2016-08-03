@@ -3,35 +3,25 @@ package com.unipad.brain.personal.dao;
 import android.text.TextUtils;
 
 import com.unipad.AppContext;
-import com.unipad.ICoreService;
 import com.unipad.AuthEntity;
+import com.unipad.ICoreService;
 import com.unipad.UserDetailEntity;
-import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.portraits.control.HeadService;
-import com.unipad.brain.portraits.view.HeadPortraitFragment;
-import com.unipad.common.Constant;
 import com.unipad.common.MobileInfo;
 import com.unipad.http.HitopApplyed;
 import com.unipad.http.HitopAuth;
 import com.unipad.http.HitopAuthInfo;
 import com.unipad.http.HitopAuthUploadFile;
-import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopFeedback;
 import com.unipad.http.HitopFollow;
-import com.unipad.http.HitopGetQuestion;
 import com.unipad.http.HitopGetRule;
 import com.unipad.http.HitopHistRecord;
 import com.unipad.http.HitopLogin;
-
 import com.unipad.http.HitopMatchStart;
 import com.unipad.http.HitopTopList;
 import com.unipad.http.HitopUpPhoto;
 import com.unipad.http.HitopUpdataPwd;
 import com.unipad.http.HitopUserInfoUpdate;
-
-
 import com.unipad.observer.GlobleObserService;
-import com.unipad.utils.LogUtil;
 import com.unipad.utils.MD5Utils;
 
 import java.io.File;
@@ -216,6 +206,9 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
      */
     public void getHistoryRecord(String startTime, String endTime, String uid) {
         HitopHistRecord hitopRecord = new HitopHistRecord(-1,startTime,endTime,1,20);
+        hitopRecord.buildRequestParams("startTime",startTime);
+        hitopRecord.buildRequestParams("endTime",endTime);
+        hitopRecord.buildRequestParams("userId",uid);
         hitopRecord.post();
     }
     /*

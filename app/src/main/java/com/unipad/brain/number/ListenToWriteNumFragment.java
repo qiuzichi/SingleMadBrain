@@ -70,7 +70,7 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
                         }
                     }
                 }).show();
-    }
+              }
 
     @Override
     public void memoryTimeToEnd(int memoryTime) {

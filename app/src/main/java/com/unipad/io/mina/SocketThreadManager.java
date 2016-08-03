@@ -1,18 +1,9 @@
 package com.unipad.io.mina;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.unipad.AppContext;
-import com.unipad.ICoreService;
 import com.unipad.brain.AbsBaseGameService;
-import com.unipad.common.Constant;
-import com.unipad.common.MobileInfo;
-import com.unipad.http.HitopDownLoad;
-import com.unipad.http.HitopGetQuestion;
 import com.unipad.utils.LogUtil;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,8 +63,8 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
     public void sendMsg(Request request) {
 
         mOutThread.addMsgToSendList(request);
-    }
 
+    }
 
     public void progressGame(String id,int progress,int round) {
         Map<String, String> body = new HashMap<String, String>();
@@ -86,7 +77,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
     }
 
     public void finishedGameByUser(String matchId,double score,int memoryTime,int answerTime,String answer,int round){
-        LogUtil.e("","score:"+score+",memory="+memoryTime+",answerTIme :"+answerTime);
+        LogUtil.e("", "score:"+score+",memory="+memoryTime+",answerTIme :"+answerTime);
         LogUtil.e("","answer:"+answer);
         Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());
@@ -99,10 +90,10 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         body.put("CONTENT",answer);
         Request request = new Request(IOConstant.END_GAME_BY_Client,body);
         sendMsg(request);
-    }
+        }
     public void finishedGameByUser(String matchId,double score,int memoryTime,int answerTime,String answer){
         finishedGameByUser(matchId,score,memoryTime,answerTime,answer,1);
-    }
+       }
     public void downLoadQuestionOK(String id,int progress) {
         Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());
@@ -111,14 +102,17 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Request request = new Request(IOConstant.LOAD_QUSETION_END, body);
         sendMsg(request);
     }
+
     @Override
     public void processPack(IPack pack) {
+
         handPack((Response) pack);
     }
 
     private void handPack(Response response) {
         Map<String, String> data = response.getDatas();
-        if (IOConstant.SEND_QUESTIONS.equals(data.get("TRXCODE"))) {//收到服务器下发试题的通知
+        if (IOConstant.SEND_QUESTIONS.equals(data.get("TRXCODE"))) {
+            //收到服务器下发试题的通知
             if (service != null) {
                 service.downloadingQuestion(data);
             }

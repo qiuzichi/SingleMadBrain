@@ -269,7 +269,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //            return TYPE_HEADER;
 //        }
 Log.e("myadapter", position + "");
-        if(position == firstVisibleItem && isShowVersion){
+        if(position == 0 && isShowVersion){
             return TYPE_HEADER;
         }
         return newsDatas.get(position) != null ? super.getItemViewType(position) : TYPE_FOOTER;

@@ -1,12 +1,10 @@
 package com.unipad.http;
-import android.text.TextUtils;
 import android.util.Log;
+
 import com.unipad.AppContext;
 import com.unipad.brain.home.bean.HisRecord;
-import com.unipad.brain.home.dao.HisRecordService;
 import com.unipad.brain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
-import com.unipad.utils.ToastUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,20 +22,19 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
     }
     public HitopHistRecord(int status ,String startTime,String endDate,int page,int size) {
         super(HttpConstant.HisRecord);
-
         mParams.addBodyParameter("userId", AppContext.instance().loginUser.getUserId());
 
         if (status == 0 || status == 1||status == 2||status == 3) {
             mParams.addBodyParameter("status", "" + status);
         }
-            if (null != startTime) {
-                mParams.addBodyParameter("startDate", startTime);
-            }
-            if (null != endDate) {
-                mParams.addBodyParameter("endDate", endDate);
-            }
-            mParams.addBodyParameter("page", "" + page);
-            mParams.addBodyParameter("size", "" + size);
+        if (null != startTime) {
+            mParams.addBodyParameter("startDate", startTime);
+        }
+        if (null != endDate) {
+            mParams.addBodyParameter("endDate", endDate);
+        }
+        mParams.addBodyParameter("page", "" + page);
+        mParams.addBodyParameter("size", "" + size);
 
     }
     @Override
@@ -51,8 +48,8 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
         String response = null;
         try {
             response = new String(json.getBytes(), "utf-8");
-             jsObj = new JSONObject(response);
-             Log.e("", "" + json);
+            jsObj = new JSONObject(response);
+            Log.e("", "" + json);
             if (jsObj != null && jsObj.toString().length() != 0)
                 if (jsObj.getInt("ret_code") == 0) {
 
@@ -89,7 +86,7 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
         return null;
     }
     @Override
-    public void buildRequestParams() {
+       public void buildRequestParams() {
 
     }
 }

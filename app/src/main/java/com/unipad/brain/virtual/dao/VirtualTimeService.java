@@ -2,6 +2,7 @@ package com.unipad.brain.virtual.dao;
 
 import android.text.TextUtils;
 
+import com.unipad.IOperateGame;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.virtual.bean.VirtualEntity;
 import com.unipad.http.HitopGetQuestion;
@@ -15,7 +16,7 @@ import java.util.Map;
  * Created by gongkan on 2016/7/4.
  */
 public class VirtualTimeService extends AbsBaseGameService {
-
+    private IOperateGame operateGame;
    public List<VirtualEntity> virtualList = new ArrayList<>();
     @Override
     public void downloadingQuestion(Map<String, String> data) {
@@ -42,13 +43,15 @@ public class VirtualTimeService extends AbsBaseGameService {
         initDataFinished();
     }
 
+    @Override
+    public void clear() {
+        virtualList.clear();
+    }
 
     @Override
     public double getScore() {
         return getVirtualTimeScore(1.0f,0.5f)[0];
     }
-
-
     /**
      * @描述：  虚拟日期时间和日期 计分。
      *
@@ -94,9 +97,13 @@ public class VirtualTimeService extends AbsBaseGameService {
         return new int[]{lastScore,errorNum};
     }
 
-
     @Override
     public String getAnswerData() {
-        return null;
+        StringBuilder userdate=new StringBuilder();
+       for (int i=0;i<virtualList.size();i++){
+           userdate.append(virtualList.get(i).toString()).append(",");
+
+       }
+        return userdate.toString();
     }
-}
+ }

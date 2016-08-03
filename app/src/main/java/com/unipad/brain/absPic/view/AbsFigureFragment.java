@@ -16,6 +16,8 @@ import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.common.widget.HIDDialog;
+import com.unipad.utils.ToastUtil;
 
 import org.xutils.x;
 
@@ -59,8 +61,9 @@ public class AbsFigureFragment extends BasicCommonFragment {
             buttonArea.setVisibility(View.GONE);
         }
     }
+
     /**
-     *
+     *结束记忆后由管控端统一开始
      */
     @Override
     public void memoryTimeToEnd(int memory) {
@@ -68,13 +71,29 @@ public class AbsFigureFragment extends BasicCommonFragment {
         current = 0;
         service.shuffle();
         setButtonArea();
+       //ToastUtil.createTipDialog(mActivity,Constant.SHOW_GAME_PAUSE,"等待裁判开始").show();
+       //mStubShade.setVisibility(View.VISIBLE);
         adapter.notifyDataSetChanged();
+
     }
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
         service.mode = 2;
         setButtonArea();
+        showScore();
         adapter.notifyDataSetChanged();
+
+    }
+
+    private void showScore() {
+        ToastUtil.createOnlyOkDialog(mActivity,Constant.SHOW_RULE_DIG,
+                "本轮得分","得分:"+service.getScore(), "",new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HIDDialog.dismissAll();
+                finishGame();
+            }
+        }).show();
     }
 
     @Override
@@ -120,11 +139,11 @@ public class AbsFigureFragment extends BasicCommonFragment {
         preAnswer = current;
         current++;
         gridView.smoothScrollToPosition(current+1);
-
         View curr = gridView.getChildAt(current - visiblePosition);
         if (curr != null) {
             TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
             currTv.setBackgroundColor(getResources().getColor(R.color.blue));
+
         }
     }
 
@@ -137,6 +156,12 @@ public class AbsFigureFragment extends BasicCommonFragment {
     @Override
     public void startMemory() {
         mStubShade.setVisibility(View.GONE);
+      //  HIDDialog.dismissAll();
+    }
+
+    @Override
+    public void startRememory() {
+       mStubShade.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -154,16 +179,14 @@ public class AbsFigureFragment extends BasicCommonFragment {
     private class FigureAdapter extends CommonAdapter<Figure> {
         public FigureAdapter(Context context, List<Figure> datas, int layoutId) {
             super(context, datas, layoutId);
-        }
+            }
         /**
          * @param holder
          * @param figure
          */
         @Override
-
         public void convert(final ViewHolder holder, final Figure figure) {
             ImageView headView = (ImageView) holder.getView(R.id.icon_absfigure);
-
             x.image().bind(headView, figure.getPath());
             //Log.e("---", "path = " + person.getHeadPortraitPath() + ",name=" + person.getFirstName() + person.getLastName());
             final TextView orginNum = (TextView) holder.getView(R.id.orgin_num);
@@ -182,7 +205,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
                             TextView tv = (TextView) Preview.findViewById(R.id.answer_num);
                             tv.setBackgroundColor(getResources().getColor(R.color.white));
                         }
-                       v.findViewById(R.id.answer_num).setBackgroundColor(getResources().getColor(R.color.blue));
+                        v.findViewById(R.id.answer_num).setBackgroundColor(getResources().getColor(R.color.blue));
                         preAnswer = current;
                         current = holder.getPosition();
 

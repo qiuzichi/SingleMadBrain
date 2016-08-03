@@ -65,7 +65,6 @@ public class FigureService extends AbsBaseGameService{
         return absScore(1f,1f);
     }
 
-
     /**
      * @描述： 抽象图形记分方法
      * @param correctScore   一行正确所得分数
@@ -125,13 +124,22 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public String getAnswerData() {
-        return allFigures.toString();
+        StringBuilder userData= new StringBuilder();
+        for (int i = 0;i<allFigures.size();i++){
+            userData.append((i/5)+1).append("^").append(allFigures.get(i).toString()).append("；");
+
+        }
+        userData.deleteCharAt(userData.length()-1);
+        LogUtil.e("",""+userData);
+        return userData.toString();
     }
 
     @Override
     public void parseData(String data) {
         super.parseData(data);
+
     }
+
 
     @Override
     public void initResourse(String soursePath) {
@@ -161,6 +169,11 @@ public class FigureService extends AbsBaseGameService{
     public void downloadingQuestion(Map<String, String> data) {
         super.downloadingQuestion(data);
         handDownQuestion(data);
+    }
+
+    @Override
+    public void finishGame() {
+        super.finishGame();
     }
 
     private void handDownQuestion(Map<String, String> data) {
