@@ -2,8 +2,6 @@ package com.unipad.brain.number;
 
 import android.view.View;
 
-import com.unipad.brain.R;
-import com.unipad.brain.number.dao.QuickRandomNumService;
 import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;

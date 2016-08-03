@@ -71,6 +71,7 @@ public class VirtualEntity {
     }
 
     public void setAnswerDate(String answerDate) {
+
         this.answerDate = answerDate;
     }
 }
