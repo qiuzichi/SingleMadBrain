@@ -139,7 +139,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
                 if (recyclerView.getAdapter() == null) {
                     LogUtil.e("","viewpager postion = "+position);
                     OnePokerRecycleAdapter onePokerRecycleAdapter = new OnePokerRecycleAdapter(mActivity, service.pokersQuestion, position * 53, 53);
-
+                    onePokerRecycleAdapter.setProgress(LongPokerRightFragment.this);
                     recyclerView.setAdapter(onePokerRecycleAdapter);
                 }
                 container.addView(rememoryPokerRecycle[position]);

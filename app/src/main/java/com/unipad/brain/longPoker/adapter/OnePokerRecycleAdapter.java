@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -86,6 +87,7 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
         } else {
 
             final LongPokerEntity poker = mDatas.get(start+position);
+
             TextView tv_num = (TextView) holder.view.findViewById(R.id.num);
             final TextView textDianView =  (TextView) holder.view.findViewById(R.id.tv_value);
             final int userAnswer = poker.getUserAnswer();
@@ -99,12 +101,8 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                 textDianView.setCompoundDrawables(null, null, null, null);
                 textDianView.setText("");
             }
-            for(int i = 0;i<resDrawableId.length;i++){
-                if (resDrawableId[i] == poker.getHuaseId()){
-                    radioGroup.check(radioGroup.getChildAt(1).getId()+i);
-                    break;
-                }
-            }
+
+            LogUtil.e("","start:"+start+",positon="+position+","+poker.name+",userAnswer:"+userAnswer+",huase："+poker.getHuaseId());
             textDianView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -126,6 +124,7 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
                         LogUtil.e("","onOnCheckedChange :"+position);
+                        LogUtil.e("",",resPosition:"+(checkedId-group.getChildAt(1).getId()));
                         poker.setHuaseId(resDrawableId[checkedId-group.getChildAt(1).getId()]);
                         mCurrentPosition = position;
                         int dian = poker.getUserAnswer()%13;
@@ -152,6 +151,13 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
 
                     }
                 });
+                for(int i = 0;i<resDrawableId.length;i++){
+                if (resDrawableId[i] == poker.getHuaseId()){
+                    RadioButton radiobutton = (RadioButton) radioGroup.getChildAt(i + 1);
+                    radiobutton.setChecked(true);
+                    break;
+                }
+            }
             LogUtil.e("","第"+position+"个，"+poker.getUserAnswer());
             }
 
@@ -160,6 +166,10 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
     @Override
     public int getItemCount() {
         return length;
+    }
+
+    public void setProgress(IProgress progress) {
+        this.progress = progress;
     }
 
     class APokerViewHolder extends RecyclerView.ViewHolder {
@@ -213,7 +223,7 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
             });
         }
         if (!spinnerPopWindow.isShowing()){
-            spinnerPopWindow.showAsDropDown(textView);
+            spinnerPopWindow.showAtLocation(textView, Gravity.CENTER, 0, 0);
         }
     }
 }

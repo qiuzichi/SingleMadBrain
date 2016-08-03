@@ -121,6 +121,12 @@ public abstract class BasicCommonFragment extends Fragment implements
         handler.sendEmptyMessage(MSG_PROGRESS);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(MSG_PROGRESS);
+    }
+
     public  void sendMsgToPreper(){
         isNeedStartGame = true;
         ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();

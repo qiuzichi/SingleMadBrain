@@ -14,7 +14,6 @@
     <com.unipad.brain.ImageRadioButton
         android:id="@+id/hei_tao"
         android:layout_width="80dp"
-        android:checked="true"
         imageradiobutton:drawableWith = "30dp"
         imageradiobutton:drawableHeight = "35dp"
         imageradiobutton:drawableLeft="@drawable/heitao"

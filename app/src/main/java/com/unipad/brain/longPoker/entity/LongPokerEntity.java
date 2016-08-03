@@ -18,7 +18,13 @@ public class LongPokerEntity extends ChannelItem {
     public LongPokerEntity() {
 
     }
+    public LongPokerEntity(ChannelItem longPokerEntity) {
+        this.name = longPokerEntity.name;
 
+        this.id = longPokerEntity.id;
+
+        this.resId = longPokerEntity.resId;
+    }
     public int getUserAnswer() {
         return userAnswer;
     }
@@ -41,4 +47,5 @@ public class LongPokerEntity extends ChannelItem {
     public void setHuaseId(int huaseId) {
         this.huaseId = huaseId;
     }
+
 }

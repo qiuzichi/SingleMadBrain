@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
     <GridView
         android:id="@+id/abs_figure_gridview"
         android:focusable="true"
@@ -53,10 +52,9 @@
             android:text="5"
             android:layout_weight="1"/>
     </LinearLayout>
-    <ViewStub
+    <View
         android:id="@+id/view_shade"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:layout="@layout/shade_v"/>
+        android:background="@color/white"/>
 </RelativeLayout>
