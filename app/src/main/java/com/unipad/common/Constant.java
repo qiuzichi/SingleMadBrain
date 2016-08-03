@@ -48,6 +48,9 @@ public class Constant {
     public static final String QUICK_RANDOM_NUM_SERVICE ="quick_random_num_service" ;
     public static final String LISTENTOWRITE_NUM_SERVICE="listentowrite_num_service";
 
+    public static final String KEY_SET_BINARY_MEMORY_TIME = "key_set_binary_memory_time";
+    public static final String KEY_SET_BINARY_ANSWER_TIME = "key_set_binary_answer_time";
+
 
     private static Map<String, String> projectNames;
     private static Map<String,String> GradeId;
