@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +64,8 @@ import java.util.zip.Inflater;
  * 个人中心之历史成绩
  * Created by Wbj on 2016/4/27.
  */
-public class PersonalRecordFragment extends PersonalCommonFragment implements View.OnClickListener
-,WheelMainView.OnChangingListener,IDataObserver {
+public class PersonalRecordFragment extends PersonalCommonFragment implements View.OnClickListener, ShowDialog.OnShowDialogClick,
+        WheelMainView.OnChangingListener,IDataObserver {
     private static final String TAG = PersonalRecordFragment.class.getSimpleName();
     private static final String DATE_REGEX = "\\d{4}/\\d{2}/\\d{2}";
     private Button mEditSearchBeginDate, mEditSearchEndDate;
@@ -133,7 +135,28 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(group.getCheckedRadioButtonId());
+
                 mRightTextView.setText(rb.getText().toString());
+
+                switch (group.getCheckedRadioButtonId()){
+                    case R.id.radio_select_competition: //比赛模式
+
+                        break;
+                    case R.id.radio_select_exercise: //练习模式
+                        showDialog = new ShowDialog(mActivity);
+                        View view = LayoutInflater.from(mActivity).inflate(R.layout.first_login_dialog, null);
+                        TextView tv_msg = (TextView) view.findViewById(R.id.txt_msg);
+                        ((TextView) view.findViewById(R.id.txt_pname)).setVisibility(View.GONE);
+                        tv_msg.setText(getString(R.string.exercise_not_open));
+                        tv_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
+                        tv_msg.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                        showDialog.showDialog(view, ShowDialog.TYPE_CENTER, mActivity.getWindowManager(), 0.2f, 0.5f);
+                        showDialog.setOnShowDialogClick(PersonalRecordFragment.this);
+                        showDialog.bindOnClickListener(view, new int[]{R.id.img_close});
+                        break;
+                }
+
                 closePopup();
             }
         });
@@ -187,7 +210,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             case R.id.record_text_delete:
                 break;
             case R.id.record_search_begin_data:
-                showDialog = new ShowDialog(mActivity);
+//                showDialog = new ShowDialog(mActivity);
                 wheelMainView=new WheelMainView(mActivity);
                 wheelMainView.setChangingListener(PersonalRecordFragment.this);
 //                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_BOTTOM,mActivity.getWindowManager(),0.5f,0.6f);
@@ -434,5 +457,12 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     @Override
     public void onChanging(String changStr) {
         mEditSearchBeginDate.setText(changStr);
+    }
+
+    @Override
+    public void dialogClick(int id) {
+        if(null != showDialog && showDialog.isShowing()){
+            showDialog.dismiss();
+        }
     }
 }

@@ -2,6 +2,8 @@ package com.unipad.brain.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.unipad.brain.home.bean.HomeBean;
 import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.competitionpj.view.HomePresenter;
 import com.unipad.common.Constant;
+import com.unipad.utils.DensityUtil;
 import com.unipad.utils.SharepreferenceUtils;
 import com.unipad.utils.ToastUtil;
 import com.unipad.utils.Util;
@@ -48,8 +51,8 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
     private TextView txt_china_memory, txt_china_recall;
     //世界赛
     private TextView txt_world_memory, txt_world_recall;
-    //帮助按钮
-    private ImageView img_phelp;
+    //时间设置
+    private TextView tv_set;
     /**
      * Fragment界面父布局
      */
@@ -65,6 +68,7 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
 
     private long binaryAnswerTime, binaryMemoryTime;
     private TextView binaryMemoryText, binaryAnswerText;
+    private ShowDialog showDialog;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -89,10 +93,11 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
         txt_china_recall = (TextView) mActivity.findViewById(R.id.txt_china_recall);
         txt_world_memory = (TextView) mActivity.findViewById(R.id.txt_world_memory);
         txt_world_recall = (TextView) mActivity.findViewById(R.id.txt_world_recall);
-        img_phelp = (ImageView) mActivity.findViewById(R.id.img_phelp);
+        tv_set = (TextView) mActivity.findViewById(R.id.txt_set_competition_time);
         relatlayout = (RelativeLayout) mActivity.findViewById(R.id.relatlayout);
         mActivity.findViewById(R.id.btn_apple).setOnClickListener(this);//比赛报名
-        img_phelp.setOnClickListener(this);
+        mActivity.findViewById(R.id.btn_exercise).setOnClickListener(this);//练习模式
+        tv_set.setOnClickListener(this);
 
         relatlayout.setVisibility(View.GONE);
         lv_project.setAdapter(homeListAdapter);//(new nvvervi());
@@ -149,14 +154,26 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
                 intent.putExtra("projectBean", homeBeans.get(projectindex).projectBean);
                 this.startActivity(intent);
                 break;
-            case R.id.img_phelp:
+            case R.id.txt_set_competition_time:
                 setMenuOpen();
-                //设置时间 初始化；
+                //设置时间 每次都会读取本地保存的数据
                 setMemoryTime();
                 break;
             case R.id.img_close:
                 menu.toggle();
                 break;
+            case R.id.btn_exercise:  //练习模式
+                showDialog = new ShowDialog(mActivity);
+                View view = LayoutInflater.from(mActivity).inflate(R.layout.first_login_dialog, null);
+                TextView tv_msg = (TextView) view.findViewById(R.id.txt_msg);
+                ((TextView) view.findViewById(R.id.txt_pname)).setVisibility(View.GONE);
+                tv_msg.setText(getString(R.string.exercise_not_open));
+                tv_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                tv_msg.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                showDialog.showDialog(view, ShowDialog.TYPE_CENTER, mActivity.getWindowManager(), 0.2f, 0.4f);
+                showDialog.setOnShowDialogClick(this);
+                showDialog.bindOnClickListener(view, new int[]{R.id.img_close});
 
             default:
                 break;
@@ -216,6 +233,10 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
         switch (id){
             default:
                 break;
+
+        }
+        if(null != showDialog && showDialog.isShowing()){
+            showDialog.dismiss();
         }
     }
 
@@ -296,6 +317,7 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
         // 得到View对象
         View view = menu.getMenu();
         set_tital_slidmenu = (TextView) view.findViewById(R.id.txt_title_project);
+
         binaryMemoryText = (TextView) view.findViewById(R.id.binary_memory_set_show);
         binaryAnswerText = (TextView) view.findViewById(R.id.binary_answer_set_show);
 
@@ -311,10 +333,8 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
             @Override
             public void onClick(View v) {
                /* 设置记忆比赛时间点击事件*/
-
                 Util.createSetting(getActivity(),
-                        homeBeans.get(projectindex).projectBean.getProjectId(),
-                        new IcoreTimeChange() {
+                        binaryMemoryTime, new IcoreTimeChange() {
                             @Override
                             public void callback(long value) {
                                 binaryMemoryTime = value;
@@ -331,8 +351,7 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
             public void onClick(View v) {
                /* 设置答题时间点击事件*/
                 Util.createSetting(getActivity(),
-                        homeBeans.get(projectindex).projectBean.getProjectId() + "answerTime",
-                        new IcoreTimeChange() {
+                        binaryAnswerTime, new IcoreTimeChange() {
                             @Override
                             public void callback(long value) {
                                 binaryAnswerTime = value;
@@ -348,45 +367,30 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
         view.findViewById(R.id.confirm_btn_setting).setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   //当确认修改  保存数据本地
-                   saveDataFile();
+                //当确认修改  保存数据本地  以  _ 分割 2个时间
+               String time = binaryMemoryTime + "_" + binaryAnswerTime;
+               SharepreferenceUtils.writeString(homeBeans.get(projectindex).projectBean.getProjectId(), time);
+               ToastUtil.showToast("设置成功");
                }
            }
         );
-
-
-
-//        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(mActivity);
-//        sharedPreferencesUtil.saveString(homeBeans.get(projectindex).projectBean.getProjectId(),"800_700");
-//
-//        ShowDialog showDialog = new ShowDialog(mActivity);
-//        showDialog.setOnShowDialogClick(this);
-//        showDialog.bindOnClickListener(null,new int[]{});
-//        showDialog.showDialog(null,ShowDialog.TYPE_CENTER,mActivity.getWindowManager(),0.5f,0.5f);
-
         return view;
     }
 
 
 
     private void setMemoryTime(){
-        binaryAnswerTime =  SharepreferenceUtils.readLong(
-                homeBeans.get(projectindex).projectBean.getProjectId() + "answerTime",
-                300l);
-        binaryMemoryTime = SharepreferenceUtils.readLong(
+        String s  = SharepreferenceUtils.getString(
                 homeBeans.get(projectindex).projectBean.getProjectId(),
-                300l);
+                "300_300");
+        String[] time = s.split("_");
+        binaryAnswerTime = Integer.parseInt(time[1]);
+        binaryMemoryTime = Integer.parseInt(time[0]);
 
         binaryAnswerText.setText(Util
                 .dateFormat(binaryAnswerTime));
         binaryMemoryText.setText(Util
                 .dateFormat(binaryMemoryTime));
-    }
-
-    private void saveDataFile(){
-        SharepreferenceUtils.writeLong( homeBeans.get(projectindex).projectBean.getProjectId() + "answerTime", binaryAnswerTime);
-        SharepreferenceUtils.writeLong( homeBeans.get(projectindex).projectBean.getProjectId(), binaryMemoryTime);
-        ToastUtil.showToast("设置成功");
     }
 
 }

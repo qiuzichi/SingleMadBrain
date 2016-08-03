@@ -90,6 +90,7 @@
     <string name="set_answertime">设置比赛答题时间</string>
     <string name="set_memorytime">设置比赛记忆时间</string>
     <string name="set_rule">规则设置</string>
+    <string name="set_time">设置</string>
 
     <string name="commit">提交</string>
     <string name="mad_crazy_describe">\t\t\t 世界记忆力锦标赛（World Memory Championships）是由“世界记忆之父” 托尼·博赞于1991年发起，
@@ -248,6 +249,7 @@
     <string name="update_version_info">优化更多细节，提升客户体验 尝鲜版不容错过</string>
     <string name="update_version_title">更新版本号：</string>
     <string name="confirm_update">确认更新</string>
+    <string name="exercise_not_open">练习模式暂未开通</string>
     <!-- apk版本号；-->
     <string name="versionName">1.0.1</string>
 

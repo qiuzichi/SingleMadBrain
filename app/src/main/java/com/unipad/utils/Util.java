@@ -21,12 +21,12 @@ import com.unipad.brain.R;
 public class Util {
 	
 	public static AlertDialog createSetting(final Context context,
-			final String key) {
-		return createSetting(context, key, null);
+			final long value) {
+		return createSetting(context, value, null);
 	}
 
 	public static AlertDialog createSetting(final Context context,
-			final String key, final IcoreTimeChange callback) {
+			final long value, final IcoreTimeChange callback) {
 
 		Builder build = new Builder(context);
 		build.setCancelable(false);
@@ -85,9 +85,9 @@ public class Util {
 				return tmpStr;
 			}
 		};
-		long value = SharepreferenceUtils.readLong(key, 300L);
+//		long value = timeValue;//SharepreferenceUtils.readLong(key, 300L);
 
-		Log.e("gongkan", "value:" + value);
+//		Log.e("gongkan", "value:" + value);
 		hourPicker.setFormatter(formatter);
 		hourPicker.setMaxValue(23);
 		hourPicker.setMinValue(0);
