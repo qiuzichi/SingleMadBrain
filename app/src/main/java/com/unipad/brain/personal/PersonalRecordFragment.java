@@ -52,7 +52,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private static final String TAG = PersonalRecordFragment.class.getSimpleName();
     private static final String DATE_REGEX = "\\d{4}/\\d{2}/\\d{2}";
     private Button mEditSearchBeginDate, mEditSearchEndDate;
-    private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private BrokenLineView mViewBrokenLine;
     private ShowDialog showDialog;
     private PersonCenterService service;
@@ -300,8 +300,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                 ArrayList<String> histogramNameList = new ArrayList<>();
 
                 Calendar calendar = Calendar.getInstance();
-                final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
-                Date date = sdf.parse(searchBeginDate.substring(searchBeginDate.indexOf("/") + 1, searchBeginDate.length()));
+                final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+                Date date = sdf.parse(searchBeginDate.substring(searchBeginDate.indexOf("-") + 1, searchBeginDate.length()));
                 calendar.setTime(date);
                 //Log.i(TAG, "sdf.format(date)-->" + sdf.format(calendar.getTime()));
                 histogramNameList.add(sdf.format(calendar.getTime()));
