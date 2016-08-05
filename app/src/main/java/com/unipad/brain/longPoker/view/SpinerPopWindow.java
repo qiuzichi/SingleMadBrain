@@ -1,7 +1,5 @@
 package com.unipad.brain.longPoker.view;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -15,6 +13,8 @@ import com.unipad.brain.R;
 import com.unipad.brain.longPoker.adapter.AbstractSpinerAdapter;
 import com.unipad.brain.longPoker.adapter.NormalSpinerAdapter;
 
+import java.util.List;
+
 public class SpinerPopWindow extends PopupWindow implements AdapterView.OnItemClickListener {
 
 	private Context mContext;
@@ -26,7 +26,6 @@ public class SpinerPopWindow extends PopupWindow implements AdapterView.OnItemCl
 	public SpinerPopWindow(Context context)
 	{
 		super(context);
-		
 		mContext = context;
 		init();
 	}
