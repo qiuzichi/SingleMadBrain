@@ -56,6 +56,7 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public void clear() {
+        super.clear();
         allFigures.clear();
     }
 

@@ -11,10 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.longPoker.IProgress;
 import com.unipad.brain.longPoker.adapter.AllPokerAnswerAdapter;
 import com.unipad.brain.longPoker.adapter.HorRecycleAdapter;
 import com.unipad.brain.longPoker.adapter.OnePokerRecycleAdapter;
@@ -28,14 +30,14 @@ import java.util.ArrayList;
 /**
  * Created by gongkan on 2016/7/13.
  */
-public class LongPokerRightFragment extends BasicCommonFragment {
+public class LongPokerRightFragment extends BasicCommonFragment implements IProgress {
     private RecyclerView recyclerView;
     private LongPokerService service;
     private RecyclerView[] rememoryPokerRecycle;
     private View shadeView;
     private ViewPager viewpager;
    // private GridLayoutManager layoutManager;
-
+    private LinearLayout memoryLayout;
     @Override
     public int getLayoutId() {
         return R.layout.long_poker_frg_right;
@@ -49,17 +51,19 @@ public class LongPokerRightFragment extends BasicCommonFragment {
         service = (LongPokerService) AppContext.instance().getService(Constant.LONG_POKER_SERVICE);
         //setMemoryAdapter();
         shadeView = mViewParent.findViewById(R.id.view_shade_answer);
-        ;
+        memoryLayout = (LinearLayout) mViewParent.findViewById(R.id.browse_proker_hlayout);
     }
 
     @Override
     public void startMemory() {
+        mViewParent.addView(memoryLayout);
         shadeView.setVisibility(View.GONE);
     }
 
     @Override
     public void startRememory() {
         super.startRememory();
+        setRememoryAdapter();
     }
 
     @Override
@@ -135,7 +139,7 @@ public class LongPokerRightFragment extends BasicCommonFragment {
                 if (recyclerView.getAdapter() == null) {
                     LogUtil.e("","viewpager postion = "+position);
                     OnePokerRecycleAdapter onePokerRecycleAdapter = new OnePokerRecycleAdapter(mActivity, service.pokersQuestion, position * 53, 53);
-
+                    onePokerRecycleAdapter.setProgress(LongPokerRightFragment.this);
                     recyclerView.setAdapter(onePokerRecycleAdapter);
                 }
                 container.addView(rememoryPokerRecycle[position]);
@@ -162,6 +166,7 @@ public class LongPokerRightFragment extends BasicCommonFragment {
         layoutManager.setOrientation(OrientationHelper.HORIZONTAL);
         //设置Adapter
         recyclerView.setAdapter(recycleAdapter);
+        mViewParent.removeView(memoryLayout);
     }
 
     @Override
@@ -174,13 +179,14 @@ public class LongPokerRightFragment extends BasicCommonFragment {
         super.memoryTimeToEnd(memoryTime);
         clearMemoryRecycle();
         service.mode = 1;
-        setRememoryAdapter();
+        sendMsgToPreper();
     }
 
     private void clearMemoryRecycle() {
         ((HorRecycleAdapter) recyclerView.getAdapter()).clear();
         recyclerView.setAdapter(null);
-        mViewParent.removeViewAt(0);
+        mViewParent.removeView(memoryLayout);
+        memoryLayout =null;
     }
 
     @Override
@@ -188,4 +194,8 @@ public class LongPokerRightFragment extends BasicCommonFragment {
 
     }
 
+    @Override
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
 }

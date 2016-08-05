@@ -34,7 +34,8 @@ public class AbsFigureFragment extends BasicCommonFragment {
     private int current;
     private int preAnswer;
     private View buttonArea;
-    private ViewStub mStubShade;
+    private View mStubShade;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -45,7 +46,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
         mViewParent.findViewById(R.id.answer_3).setOnClickListener(this);
         mViewParent.findViewById(R.id.answer_4).setOnClickListener(this);
         mViewParent.findViewById(R.id.answer_5).setOnClickListener(this);
-        mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+        mStubShade =  mViewParent.findViewById(R.id.view_shade);
         service = (FigureService) (AppContext.instance().getService(Constant.ABS_FIGURE));
         adapter = new FigureAdapter(mActivity, service.allFigures, R.layout.list_item_abs_figure);
         gridView.setAdapter(adapter);
@@ -75,7 +76,6 @@ public class AbsFigureFragment extends BasicCommonFragment {
         adapter.notifyDataSetChanged();
 
     }
-
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
         service.mode = 2;

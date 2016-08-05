@@ -3,6 +3,7 @@ package com.unipad.brain.number;
 import android.view.View;
 
 import com.unipad.brain.R;
+import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.common.Constant;
 
 /**
@@ -29,6 +30,12 @@ public class BinaryRightFragment extends NumberRightFragment{
         mLayoutBottom.findViewById(R.id.btn_vibrate).setOnClickListener(this);
         mLayoutBottom.findViewById(R.id.btn_delete).setOnClickListener(this);
         mLayoutBottom.findViewById(R.id.btn_go_top).setOnClickListener(this);
+    }
+
+    @Override
+    public void initMemoryView() {
+        frameLayout.removeAllViews();
+        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
     }
 
     @Override

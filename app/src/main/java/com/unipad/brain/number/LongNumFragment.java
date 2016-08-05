@@ -5,6 +5,7 @@ import android.widget.ScrollView;
 
 import com.unipad.brain.R;
 import com.unipad.brain.number.view.KeyboardDialog;
+import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.Constant;
 import com.unipad.utils.LogUtil;
@@ -52,6 +53,12 @@ public class LongNumFragment extends NumberRightFragment{
         mKeyboardDialog = new KeyboardDialog(mActivity);
         mKeyboardDialog.show();
         mKeyboardDialog.setKeyboardClickListener(this);
+    }
+
+    @Override
+    public void initMemoryView() {
+        frameLayout.removeAllViews();
+        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
     }
 
     @Override

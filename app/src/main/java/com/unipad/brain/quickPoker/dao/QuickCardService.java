@@ -32,6 +32,12 @@ public class QuickCardService extends AbsBaseGameService{
 	private ArrayList<ChannelItem> bottomCards = new ArrayList<ChannelItem>();
 	private String round1 = "26_28_25_24_46_29_52_3_39_36_20_11_4_40_49_31_5_32_38_37_9_44_18_2_7_47_23_41_21_12_22_1_43_10_33_45_34_42_16_17_27_30_8_50_6_51_35_14_13_19_15_48";
 	private String[] roundData;
+
+	public void setUserData(String userData) {
+		this.userData = userData;
+	}
+
+	private String userData="";
 	@Override
 	public boolean init() {
 		//parseDataByRound(1);
@@ -97,7 +103,8 @@ public class QuickCardService extends AbsBaseGameService{
 
 	@Override
 	public String getAnswerData() {
-		return null;
+		LogUtil.e("","快速扑克牌"+userData);
+		return userData;
 	}
 
 

@@ -140,6 +140,11 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         new Thread() {
                            @Override
                            public void run() {
+                               try {
+                                   Thread.sleep(5000);
+                               } catch (InterruptedException e) {
+                                   e.printStackTrace();
+                               }
                                SocketThreadManager.sharedInstance().
                                        downLoadQuestionOK(matchId, 100);
                                LogUtil.e("", "-------------下载完成-----------");
