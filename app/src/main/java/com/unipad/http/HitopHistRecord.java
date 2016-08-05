@@ -28,12 +28,10 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
             mParams.addBodyParameter("status", "" + status);
         }
         if (null != startTime) {
-            startTime.replaceAll("/","|");
-            mParams.addBodyParameter("startDate", startTime);
+            mParams.addBodyParameter("startDate", startTime.replaceAll("/","|"));
         }
         if (null != endDate) {
-            endDate.replaceAll("/","|");
-            mParams.addBodyParameter("endDate", endDate);
+            mParams.addBodyParameter("endDate", endDate.replaceAll("/","|"));
         }
         mParams.addBodyParameter("page", "" + page);
         mParams.addBodyParameter("size", "" + size);
