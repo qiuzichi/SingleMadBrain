@@ -170,6 +170,11 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
         mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                if(requestPagerNum == totalPager){
+                   /* 最后一页 直接吐司 不显示下拉加载*/
+                    ToastUtil.showToast(getString(R.string.loadmore_null_data));
+                    return;
+                }
                 newsDatas.add(null);
                 mRecyclerViewAdapter.notifyItemInserted(newsDatas.size() - 1);
                 loadMoreData(true);
@@ -210,7 +215,7 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
                         mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
                         //重新加载adapter 不然不更新数据
                         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-                        ToastUtil.showToast("最后一页  已经没有新的数据了");
+                        ToastUtil.showToast(getString(R.string.loadmore_null_data));
                     }
 
                 }
@@ -225,7 +230,6 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
 
     private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_COMPETITION, this);
-
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_OPERATE, this);
     }
 

@@ -70,28 +70,26 @@
                             android:layout_marginLeft="@dimen/margin_10dip"
                             android:src="@drawable/select__favorite_introduction"
                         />
+
                         <ImageView
                             android:id="@+id/iv_item_introduction_comment"
-                            android:layout_toRightOf="@id/iv_item_introduction_zan"
                             android:layout_width="@dimen/favorite_width"
                             android:layout_height="@dimen/favorite_width"
-                            android:scaleType="fitXY"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="@dimen/margin_10dip"
-                            android:src="@drawable/favorite_introduction_normal"
-                        />
-
+                            android:layout_toRightOf="@id/iv_item_introduction_zan"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/favorite_introduction_normal" />
 
                         <TextView
                             android:id="@+id/tv_item_introduction_updatetime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:clickable="false"
-                            android:layout_marginRight="@dimen/margin_10dip"
                             android:layout_centerVertical="true"
-                            android:text="@string/hint_begin_data"
-                            />
+                            android:layout_marginRight="@dimen/margin_10dip"
+                            android:clickable="false"
+                            android:text="@string/hint_begin_data" />
 
                     </RelativeLayout>
 
@@ -117,14 +115,7 @@
                         android:textSize="@dimen/text_size_18"
 
                         />
-
                 </RelativeLayout>
-
-
             </LinearLayout>
-
-
         </RelativeLayout>
-
-
 </RelativeLayout>

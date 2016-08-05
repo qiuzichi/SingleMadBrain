@@ -194,6 +194,7 @@
                     android:layout_marginTop="@dimen/news_title_height"
                     android:paddingLeft="@dimen/margin_30dp"
                     android:paddingRight="@dimen/margin_30dp"
+                    android:background="@drawable/apple"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="@string/confirm_modify"

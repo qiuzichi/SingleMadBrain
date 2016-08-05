@@ -236,7 +236,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                         mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
                         //重新加载adapter 不然不更新数据
                         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-                        ToastUtil.showToast("最后一页  已经没有新的数据了");
+                        ToastUtil.showToast(getString(R.string.loadmore_null_data));
                     }
 
                 }
