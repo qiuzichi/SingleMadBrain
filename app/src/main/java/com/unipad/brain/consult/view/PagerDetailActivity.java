@@ -89,7 +89,6 @@ public class PagerDetailActivity extends BasicActivity implements IDataObserver{
         }
         //新闻部分的 webview
         mWebView = (WebView) findViewById(R.id.pager_detail_webview);
-
         mProgressBar = (ProgressBar) findViewById(R.id.pager_load_progressBar);
 
        //设置返回
