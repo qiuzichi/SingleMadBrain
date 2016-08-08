@@ -89,7 +89,6 @@
     <string name="login_pwd">登录密码</string>
     <string name="set_answertime">设置比赛答题时间</string>
     <string name="set_memorytime">设置比赛记忆时间</string>
-    <string name="set_rule">规则设置</string>
     <string name="set_time">设置</string>
 
     <string name="commit">提交</string>
@@ -250,6 +249,8 @@
     <string name="update_version_title">更新版本号：</string>
     <string name="confirm_update">确认更新</string>
     <string name="exercise_not_open">练习模式暂未开通</string>
+    <string name="exercise_mode_set">练习模式规则设置</string>
+    <string name="competition_mode_set">比赛模式规则设置</string>
     <!-- apk版本号；-->
     <string name="versionName">1.0.0</string>
     <string name="check_version">检查到最新版本 :</string>

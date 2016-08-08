@@ -13,7 +13,6 @@
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/newlist_height"
                 android:layout_width="fill_parent">
 
                 <TextView
@@ -35,6 +34,18 @@
                      android:layout_centerVertical="true"
                      android:layout_marginRight="@dimen/margin_30dp"/>
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txt_title_exercise"
+                android:layout_below="@id/txt_title_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_10dip"
+                android:text="@string/exercise_mode_set"
+                android:textColor="@color/main_1"
+                android:textSize="@dimen/text_size_competition" />
+
 
             <LinearLayout
                 android:id="@+id/binary_memory_item"
@@ -112,6 +123,80 @@
                     android:layout_marginRight="@dimen/margin_10dip"
                     android:background="@drawable/arrow_right" />
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_competition_mode_set"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_30dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_title_competition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/margin_10dip"
+                    android:text="@string/competition_mode_set"
+                    android:textColor="@color/main_1"
+                    android:textSize="@dimen/text_size_competition" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/radio_group_competition_mode"
+                    android:layout_below="@id/txt_title_competition"
+                    android:paddingTop="@dimen/margin_10dip"
+                    android:gravity="center_horizontal"
+                    >
+
+
+                    <RadioButton
+                        android:id="@+id/btn_default_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_marginRight="@dimen/margin_30dp"
+                        android:background="@drawable/sel_mode_group_bg"
+                        android:button="@color/transparent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textSize="@dimen/common_text_24"
+                        android:textColor="@color/white"
+                        />
+                    <RadioButton
+                        android:id="@+id/btn_default_mode_3"
+                        android:layout_toRightOf="@+id/btn_default_mode"
+                        android:layout_marginRight="@dimen/margin_30dp"
+                        android:layout_width="wrap_content"
+                        android:background="@drawable/sel_mode_group_bg"
+                        android:button="@color/transparent"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="3"
+                        android:textSize="@dimen/common_text_24"
+                        android:textColor="@color/white"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/btn_default_mode_4"
+                        android:layout_width="wrap_content"
+                        android:layout_toRightOf="@+id/btn_default_mode_3"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/sel_mode_group_bg"
+                        android:button="@color/transparent"
+                        android:gravity="center"
+                        android:layout_marginRight="@dimen/margin_30dp"
+                        android:text="4"
+                        android:textSize="@dimen/common_text_24"
+                        android:textColor="@color/white"
+                        />
+                </RadioGroup>
+
+
+            </RelativeLayout>
               <!-- -->
               <!--<TextView -->
                   <!--android:id="@+id/txt_attention"-->
@@ -198,8 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="@string/confirm_modify"
-                    android:textSize="@dimen/common_text_24"
-                    android:textColor="@color/light_blue2"
+                    android:textColor="@color/white"
                     />
 
             </RelativeLayout>
