@@ -70,9 +70,4 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
         ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(key,adList);
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

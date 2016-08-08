@@ -1,90 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="3"
-            android:background="@color/white" >
+            android:background="@color/white">
 
             <LinearLayout
-                android:id="@+id/ll_head"
+                android:id="@+id/rl_head"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:background="@color/main_1"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3" >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/photo_a" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/rl_img_icon"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
                     android:gravity="center_vertical"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lisa  丽莎"
-                        android:textSize="23sp"
-                        android:textColor="@color/white" />
+                    android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="5dp"
-                        android:paddingRight="70dp"
-                        android:src="@color/white" />
+                        android:id="@+id/iv_user_pic"
+                        android:layout_width="@dimen/newlist_height"
+                        android:layout_height="@dimen/newlist_height"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/margin_10dip"
+                        android:src="@drawable/set_headportrait" />
+                </RelativeLayout>
 
-                    <TextView
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/rl_img_icon"
+                    android:layout_weight="7"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:drawableLeft="@drawable/heart"
-                        android:gravity="center_vertical"
-                        android:textSize="20sp"
-                        android:text="  23·纽约"
-                        android:textColor="@color/white" />
-                </LinearLayout>
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txt_uese_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginLeft="@dimen/margin_5dip"
+                            android:layout_marginRight="@dimen/margin_5dip"
+
+                            android:text="@string/about_us"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_text_24" />
+
+
+                        <ImageView
+                            android:id="@+id/devide_view_line"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/margin_1dp"
+                            android:layout_below="@+id/txt_uese_name"
+                            android:layout_marginTop="@dimen/margin_5dip"
+                            android:src="@color/white" />
+
+
+                        <TextView
+                            android:id="@+id/txt_uese_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/user_favorite"
+                            android:drawablePadding="@dimen/margin_5dip"
+                            android:text="@string/person_level"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/person_name_size" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
             </LinearLayout>
 
             <ListView
                 android:id="@+id/lv_project"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@id/rl_head"
                 android:divider="@color/line"
-                android:scrollbars="none"
                 android:dividerHeight="1dp"
-                android:layout_below="@id/ll_head" />
+                android:scrollbars="none" />
         </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/fl_project"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:background="@drawable/home_bg"
-            android:layout_weight="8">
+            android:layout_weight="8"
+            android:background="@drawable/home_bg">
 
 
-            <include layout="@layout/fragment_project_layout"/>
+            <include layout="@layout/fragment_project_layout" />
 
 
         </FrameLayout>

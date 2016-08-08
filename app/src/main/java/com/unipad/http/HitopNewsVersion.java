@@ -53,9 +53,4 @@ public class HitopNewsVersion extends HitopRequest<VersionBean>{
 
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

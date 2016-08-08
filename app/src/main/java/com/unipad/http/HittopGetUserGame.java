@@ -100,10 +100,4 @@ public class HittopGetUserGame extends HitopRequest<List<CompetitionBean>> {
         ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).noticeDataChange(key,competitionBeanArrayList);
         return competitionBeanArrayList;
     }
-
-
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

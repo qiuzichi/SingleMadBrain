@@ -64,12 +64,6 @@ Log.i("hitopOperater", json);
         ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(HttpConstant.NOTIFY_GET_OPERATE,newsList);
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
-
     public boolean getResonse() {
         return isOK;
     }

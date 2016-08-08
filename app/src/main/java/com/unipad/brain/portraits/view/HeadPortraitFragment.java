@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -41,9 +44,12 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         LogUtil.e(" HeadPortraitFragment", "--..--onActivityCreated--");
         mListView = (GridView) mViewParent.findViewById(R.id.gridview);
-
+//      getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
 
         adapter = new HeadAdapter(mActivity, ((HeadService) service).data, R.layout.list_portrait);
@@ -55,8 +61,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     public void initDataFinished() {
         super.initDataFinished();
         adapter.notifyDataSetChanged();
-    mStubShade.setVisibility(View.VISIBLE);
-
+        mStubShade.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -136,10 +141,14 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                 firstName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
+                        if (actionId== EditorInfo.IME_ACTION_NEXT){
+                            lastName.requestFocus();
+                            return true;
+                        }
                         return false;
                     }
                 });
+
                 firstName.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -156,6 +165,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                         person.setAnswerFirstName(firstName.getText().toString().trim());
                     }
                 });
+
                 lastName.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -177,10 +187,25 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         int visiblePosition = mListView.getFirstVisiblePosition();
                         View Preview = mListView.getChildAt(holder.getPosition() + 1 - visiblePosition);
+
                         if (null != Preview) {
+                            /*  下一个item 的firstName*/
                             EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
-                            LogUtil.e("","first:"+firstName.getText().toString());
+                            LogUtil.e("", "first:" + firstName.getText().toString());
                             firstName.requestFocus();
+                            firstName.setFocusable(true);
+
+                            if(!firstName.isShown()){
+
+                            }
+                            return  true;
+
+                        }else if(mDatas.size() - 1 == mListView.getLastVisiblePosition()){
+                             /*到最后完成一个item  关闭软键盘*/
+                            lastName.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(lastName.getWindowToken(), 0);
+                            return true;
                         }
                         return false;
                     }

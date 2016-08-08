@@ -55,8 +55,4 @@ public HitopForgetPwd(){
                 noticeDataChange(HttpConstant.REGIST_FILED,null);
         return null;
     }
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

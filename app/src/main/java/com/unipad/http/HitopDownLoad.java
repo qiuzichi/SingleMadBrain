@@ -125,11 +125,6 @@ public class HitopDownLoad extends HitopRequest<File> {
         return null;
     }
 
-    @Override
-    public void buildRequestParams() {
-
-    }
-
     public void setService(AbsBaseGameService service) {
         this.service = service;
     }

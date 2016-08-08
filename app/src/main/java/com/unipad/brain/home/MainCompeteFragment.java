@@ -1,7 +1,10 @@
 package com.unipad.brain.home;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.slidingmenu.lib.SlidingMenu;
+import com.unipad.AppContext;
 import com.unipad.IcoreTimeChange;
 import com.unipad.brain.R;
 import com.unipad.brain.dialog.ShowDialog;
@@ -24,10 +28,14 @@ import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.competitionpj.view.HomePresenter;
 import com.unipad.common.Constant;
 import com.unipad.common.PractiseGameActivity;
-import com.unipad.utils.DensityUtil;
+import com.unipad.http.HttpConstant;
+import com.unipad.utils.PicUtil;
 import com.unipad.utils.SharepreferenceUtils;
 import com.unipad.utils.ToastUtil;
 import com.unipad.utils.Util;
+
+import org.xutils.common.Callback;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +93,38 @@ public class MainCompeteFragment extends MainBasicFragment  {
 //        txt_memory_content = (TextView) mActivity.findViewById(R.id.txt_memory_content);
 //        txt_recall_content = (TextView) mActivity.findViewById(R.id.txt_recall_content);
 //        txt_function_content = (TextView) mActivity.findViewById(R.id.txt_function_content);
+
+        ((TextView)mActivity.findViewById(R.id.txt_uese_name)).setText(AppContext.instance().loginUser.getUserName());
+        ((TextView)mActivity.findViewById(R.id.txt_uese_level)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
+
+        final ImageView user_photo = (ImageView)mActivity.findViewById(R.id.iv_user_pic);
+
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
+            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map = PicUtil.drawableToBitmap(drawable);
+                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    user_photo.setImageResource(R.drawable.set_headportrait);
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        }else {
+            user_photo.setImageResource(R.drawable.set_headportrait);
+        }
 
         txt_pname = (TextView) mActivity.findViewById(R.id.txt_pname);
         txt_city_memory = (TextView) mActivity.findViewById(R.id.txt_city_memory);

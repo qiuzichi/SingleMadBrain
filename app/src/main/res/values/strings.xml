@@ -251,9 +251,11 @@
     <string name="confirm_update">确认更新</string>
     <string name="exercise_not_open">练习模式暂未开通</string>
     <!-- apk版本号；-->
-    <string name="versionName">1.0.1</string>
+    <string name="versionName">1.0.0</string>
+    <string name="check_version">检查到最新版本 :</string>
 
     <string name="loadmore_data">正在加载数据......</string>
+    <string name="loadmore_null_data">最后一页  已经没有新的数据了</string>
 
 
     <string name="pager_detail">详情</string>

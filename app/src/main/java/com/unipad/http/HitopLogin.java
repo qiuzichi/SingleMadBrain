@@ -82,12 +82,6 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
         return user;
     }
 
-
-    @Override
-    public void buildRequestParams() {
-
-    }
-
     public void setSevice(GlobleObserService sevice) {
         this.sevice = sevice;
     }

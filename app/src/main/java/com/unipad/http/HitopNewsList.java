@@ -126,9 +126,4 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
         keyId = null;
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

@@ -72,17 +72,23 @@ public class PagerDetailActivity extends BasicActivity implements IDataObserver{
         if(getIntent().getBooleanExtra("isAdvert", false)){
             //如果是广告的 我就隐藏详情；
              ((TextView) findViewById(R.id.current_time_text)).setVisibility(View.GONE);
+
         }
     }
 
 
     public void initData() {
-        String  id = getIntent().getStringExtra("pagerId");
-        String htmlDatas = HttpConstant.url +HttpConstant.GET_NEWS_DETAIL + "?id=" +
-                getIntent().getStringExtra("pagerId") + "&userId=" + AppContext.instance().loginUser.getUserId();
+        String htmlDatas = null;
+
+        if(getIntent().getBooleanExtra("isAdvert", false)){
+            htmlDatas = getIntent().getStringExtra("pagerId");
+        }else {
+            String  id = getIntent().getStringExtra("pagerId");
+            htmlDatas = HttpConstant.url +HttpConstant.GET_NEWS_DETAIL + "?id=" +
+                    getIntent().getStringExtra("pagerId") + "&userId=" + AppContext.instance().loginUser.getUserId();
+        }
         //新闻部分的 webview
         mWebView = (WebView) findViewById(R.id.pager_detail_webview);
-
         mProgressBar = (ProgressBar) findViewById(R.id.pager_load_progressBar);
 
        //设置返回
