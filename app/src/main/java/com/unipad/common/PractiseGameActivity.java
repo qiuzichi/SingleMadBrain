@@ -7,196 +7,283 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
 import com.unipad.brain.AbsBaseGameService;
+import com.unipad.brain.App;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
 import com.unipad.brain.absPic.view.AbsFigureFragment;
+import com.unipad.brain.absPic.view.PractiseFigureFragment;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.number.BinaryRightFragment;
 import com.unipad.brain.number.LongNumFragment;
 import com.unipad.brain.number.NumberRightFragment;
+import com.unipad.brain.number.PractiseQuickRandomFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
+import com.unipad.brain.quickPoker.view.PrictisePokerFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
 import com.unipad.brain.words.view.WordRightFragment;
 import com.unipad.common.widget.HIDDialog;
+import com.unipad.http.HitopGetRandomQuestion;
+import com.unipad.http.HitopRequest;
+import com.unipad.http.HttpConstant;
 import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
+import org.json.JSONException;
+import org.xutils.common.Callback;
+
+import java.util.Map;
+
 /**
  * Created by gongkan on 2016/6/27.
  */
-public class PractiseGameActivity extends BasicActivity implements IDataObserver{
+public class PractiseGameActivity extends AbsMatchActivity implements IDataObserver,IOperateGame{
     /**
      * Created by Wbj on 2016/4/7.
      */
-        private CommonFragment mCommonFragment = new CommonFragment();
-        private AbsBaseGameService service;
-        public String getMatchId() {
-            return matchId;
-        }
-        private Handler handler;
-        private BasicCommonFragment gameFragment;
-        public void setMatchId(String matchId) {
-            this.matchId = matchId;
-        }
+    private static final String TAG = "PractiseGameActivity";
+    private PractiseCommLeftFragment mCommonFragment = new PractiseCommLeftFragment();
+    private AbsBaseGameService service;
 
-        public String getProjectId() {
-            return projectId;
-        }
+    private Handler handler;
+    private BasicCommonFragment gameFragment;
 
-        public void setProjectId(String projectId) {
-            this.projectId = projectId;
-        }
+    public String getProjectId() {
+        return projectId;
+    }
 
-        private String matchId;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
 
-        private String projectId;
+    private String questionId;
 
-        private HIDDialog dialog;
-        long startTime;
+    private String projectId;
 
-        private static final int STRAT_GAME = 0;
-        private static final int DOWNLOAD_QUESTION = 1;
-        private static final int PAUSE_GAME = 2;
-        private static final int RESTAT_GAME = 3;
-        private static final int FINISH_GAME = 4;
-        private static final int INIT_DATA_FINISH = 5;
+    long startTime;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.common_aty);
-            startTime = System.currentTimeMillis();
-            matchId = getIntent().getStringExtra("matchId");
-            projectId = getIntent().getStringExtra("projectId");
-            service = (AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId);
-            handler  = new Handler() {
-                @Override
-                public void dispatchMessage(Message msg) {
-                    int what = msg.what;
-                    switch (msg.what) {
-                        case STRAT_GAME:
-                            HIDDialog.dismissAll();
+    private static final int DOWNLOAD_QUESTION = 1;
+    private static final int SHOW_WAIT_DLG= 2;
+    private static final int RESTAT_GAME = 3;
+    private static final int FINISH_GAME = 4;
+    private static final int INIT_DATA_FINISH = 5;
+    private static final int STRAT_REMEMORY = 6;
+    private static final int STRAT_MEMORY = 7;
+    private static final int DLG_DELAY_DISMISS = 8;
 
-                            break;
-                        case DOWNLOAD_QUESTION:
-                            if (dialog == null) {
-                                dialog = ToastUtil.createTipDialog(PractiseGameActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中");
-                            }
-                            else {
-                                ((TextView)dialog.findViewById(R.id.dialog_tip_content)).setText("下载试题中");
-                            }
-                            dialog.show();
-                            break;
-
-                        case PAUSE_GAME:
-                            if (dialog == null) {
-                                dialog = ToastUtil.createTipDialog(PractiseGameActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停");
-                            }
-                            else {
-                                ((TextView)dialog.findViewById(R.id.dialog_tip_content)).setText("比赛暂停");
-                            }
-                            dialog.show();
-                            gameFragment.pauseGame();
-                            mCommonFragment.pauseGame();
-                            break;
-                        case RESTAT_GAME:
-                            HIDDialog.dismissAll();
-                            gameFragment.reStartGame();
-                            mCommonFragment.reStartGame();
-                            break;
-                        case FINISH_GAME:
-                            gameFragment.finishGame();
-                            mCommonFragment.finishGame();
-                            break;
-                        case INIT_DATA_FINISH:
-                            gameFragment.initDataFinished();
-                            mCommonFragment.initDataFinished();
-                            ((TextView) HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE).findViewById(R.id.dialog_tip_content)).setText("等待裁判准备开始");
-                            break;
-                    }
-                }
-            };
-
-            /** handler.post(new Runnable() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.common_aty);
+        startTime = System.currentTimeMillis();
+        projectId = getIntent().getStringExtra("projectId");
+        service = (AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId);
+        service.setOperateGame(this);
+        service.registerObserver(HttpConstant.GET_RANDOM_QUESTION_ERR,this);
+        handler = new Handler() {
             @Override
-            public void run() {
-            dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "签到，等待裁判下发试题");
-            dialog.show();
-            }
-            }
-             );*/
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
-                    SocketThreadManager.sharedInstance().setService(service);
-
+            public void dispatchMessage(Message msg) {
+                int what = msg.what;
+                switch (msg.what) {
+                    case STRAT_MEMORY:
+                        LogUtil.e(TAG, "STRAT_MEMORY");
+                        HIDDialog.dismissAll();
+                        gameFragment.startMemory();
+                        mCommonFragment.startMemory();
+                        break;
+                    case STRAT_REMEMORY:
+                        LogUtil.e(TAG, "STRAT_REMEMORY");
+                        HIDDialog.dismissAll();
+                        gameFragment.startRememory();
+                        mCommonFragment.startRememory();
+                        break;
+                    case DOWNLOAD_QUESTION:
+                        LogUtil.e(TAG, "DOWNLOAD_QUESTION");
+                        ToastUtil.createTipDialog(PractiseGameActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
+                        break;
+                    case RESTAT_GAME:
+                        LogUtil.e(TAG, "RESTAT_GAME");
+                        HIDDialog.dismissAll();
+                        gameFragment.reStartGame();
+                        mCommonFragment.reStartGame();
+                        break;
+                    case FINISH_GAME:
+                        LogUtil.e(TAG, "FINISH_GAME");
+                        gameFragment.finishGame();
+                        mCommonFragment.finishGame();
+                        break;
+                    case DLG_DELAY_DISMISS:
+                        LogUtil.e("", "DLG_DELAY_DISMISS");
+                            HIDDialog.dismissAll();
+                        break;
+                    case INIT_DATA_FINISH:
+                        LogUtil.e("", "INIT_DATA_FINISH");
+                        gameFragment.initDataFinished();
+                        mCommonFragment.initDataFinished();
+                        service.startMemory(1);
+                        break;
+                    case SHOW_WAIT_DLG:
+                        LogUtil.e(TAG, "SHOW_WAIT_DLG");
+                        ToastUtil.createTipDialog(PractiseGameActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
+                        break;
                 }
-            }).start();
-
-
-        }
-
-        public AbsBaseGameService getService() {
-            return service;
-        }
-
-        @Override
-        protected void onResume() {
-            super.onResume();
-            startTime = startTime- System.currentTimeMillis();
-            LogUtil.e("-------", "time = " + startTime);
-        }
-        @Override
-        public void initData() {
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.common_lfg_container, mCommonFragment);
-            String competeItem = Constant.getProjectName(projectId);
-            if (competeItem.equals(getString(R.string.project_2))) {
-                gameFragment = new BinaryRightFragment();
-            } else if (competeItem.equals(getString(R.string.project_6))) {
-                gameFragment = new VirtualRightFragment();
-            } else if (competeItem.equals(getString(R.string.project_8))) {
-                gameFragment = new WordRightFragment();
-            } else if (competeItem.equals(getString(R.string.project_1))) {
-                gameFragment = new HeadPortraitFragment();
-
-            } else if (competeItem.equals(getString(R.string.project_4))) {
-                gameFragment = new AbsFigureFragment();
-            } else if (competeItem.equals(getString(R.string.project_3))) {
-                gameFragment = new LongNumFragment();
-            } else if (competeItem.equals(getString(R.string.project_5))){
-
-            } else if (competeItem.equals(getString(R.string.project_9))) {
-
             }
-            fragmentTransaction.replace(R.id.common_rfg_container, gameFragment);
-            fragmentTransaction.commit();
-            fragmentManager.executePendingTransactions();
+        };
+
+                HitopGetRandomQuestion randomQuestion = new HitopGetRandomQuestion(projectId);
+                randomQuestion.setService(service);
+                randomQuestion.post();
+
+        handler.sendEmptyMessageDelayed(SHOW_WAIT_DLG, 100);
+
+        /** handler.post(new Runnable() {
+        @Override public void run() {
+        dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "签到，等待裁判下发试题");
+        dialog.show();
         }
-
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-
-            SocketThreadManager.sharedInstance().releaseInstance();
         }
+         );*/
 
-        public CommonFragment getCommonFragment() {
-            return mCommonFragment;
+
+    }
+
+    public AbsBaseGameService getService() {
+        return service;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTime = startTime - System.currentTimeMillis();
+        LogUtil.e("-------", "time = " + startTime);
+    }
+
+    @Override
+    public void initData() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.common_lfg_container, mCommonFragment);
+        if (Constant.GAME_BINARY_NUM.equals(projectId)) {
+            gameFragment = new BinaryRightFragment();
+        } else if (Constant.GAME_VIRTUAL_DATE.equals(projectId)) {
+            gameFragment = new VirtualRightFragment();
+        } else if (Constant.GAME_RANDOM_WORDS.equals(projectId)) {
+            gameFragment = new WordRightFragment();
+        } else if (Constant.GAME_PORTRAITS.equals(projectId)) {
+            gameFragment = new HeadPortraitFragment();
+
+        } else if (Constant.GAME_ABS_PICTURE.equals(projectId)) {
+            gameFragment = new PractiseFigureFragment();
+        } else if (Constant.GAME_LONG_NUM.equals(projectId)) {
+            gameFragment = new LongNumFragment();
+        } else if (Constant.GAME_QUICKIY_POCKER.equals(projectId)) {
+            gameFragment = new PrictisePokerFragment();
+        } else if (Constant.GAME_LONG_POCKER.equals(projectId)) {
+
+        } else if (Constant.GAME_RANDOM_NUM.equals(projectId)) {
+            gameFragment = new PractiseQuickRandomFragment();
         }
+        fragmentTransaction.replace(R.id.common_rfg_container, gameFragment);
+        fragmentTransaction.commit();
+        fragmentManager.executePendingTransactions();
+    }
 
-        @Override
-        public void update(int key, Object o) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gameFragment = null;
+        mCommonFragment = null;
+        service.unRegisterObserve(HttpConstant.GET_RANDOM_QUESTION_ERR, this);
+        AppContext.instance().clearService(service);
+    }
 
+    public PractiseCommLeftFragment getCommonFragment() {
+        return mCommonFragment;
+    }
+
+    @Override
+    public void update(int key, Object o) {
+        switch (key) {
+            case HttpConstant.GET_RANDOM_QUESTION_ERR:
+                HIDDialog.dismissAll();
+                HIDDialog dialog = ToastUtil.createOnlyOkDialog(this, Constant.GET_RANDOM_QUESTION_ERROR_DLG, "error", (String) o, null, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        HIDDialog.dismissAll();
+                    }
+                });
+                dialog.show();
+                break;
+            case  HttpConstant.GET_RANDOM_QUESTION_OK:
+                questionId = (String) o;
+                break;
+            default:
+                break;
         }
+    }
 
+    @Override
+    public void initDataFinished() {
+        handler.sendEmptyMessage(INIT_DATA_FINISH);
+    }
+
+    @Override
+    public void downloadingQuestion(Map<String, String> data) {
+
+    }
+
+    @Override
+    public void startMemory() {
+        handler.sendEmptyMessage(STRAT_MEMORY);
+    }
+
+    @Override
+    public void startRememory() {
+        handler.sendEmptyMessage(STRAT_REMEMORY);
+    }
+
+    @Override
+    public void pauseGame() {
+
+    }
+
+    @Override
+    public void reStartGame() {
+
+    }
+
+    @Override
+    public void finishGame() {
+
+    }
+
+    public void sendMsgGetSocre(int memoryTime,int rememory,Callback.CommonCallback<String> callback){
+        HitopRequest<String> request = new HitopRequest<String>("/api/practice/save") {
+            @Override
+            public String buildRequestURL() {
+                return null;
+            }
+
+            @Override
+            public String handleJsonData(String json) throws JSONException {
+                return null;
+            }
+        };
+        request.buildRequestParams("userId",AppContext.instance().loginUser.getUserId());
+        request.buildRequestParams("userName",AppContext.instance().loginUser.getUserName());
+        request.buildRequestParams("projectId",projectId);
+        request.buildRequestParams("questionId",questionId);
+        request.buildRequestParams("memtime",memoryTime+"");
+        request.buildRequestParams("rectime",rememory+"");
+        request.buildRequestParams("content",service.getAnswerData());
+        request.post(callback);
+    }
 }
+

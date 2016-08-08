@@ -32,7 +32,7 @@ public abstract class HitopRequest<T>{
     
     public abstract T handleJsonData(String json) throws JSONException;
 
-    public abstract void buildRequestParams();
+
 
 
     public HitopRequest(String path){
@@ -44,7 +44,7 @@ public abstract class HitopRequest<T>{
             ToastUtil.showToast("请检查网络");
             return ;
         }
-        buildRequestParams();
+
         x.http().get(mParams, new ResultCallBack<String>(){
             @Override
             public void onSuccess(String result) {

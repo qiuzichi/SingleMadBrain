@@ -85,7 +85,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
     }
 
     private GridLayoutManager createGridLayoutManager() {
-        GridLayoutManager layoutManager = new GridLayoutManager(mActivity, 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -107,7 +107,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
         rememoryPokerRecycle = new RecyclerView[service.howMany];
 
         for (int i = 0; i < service.howMany; i++) {
-            RecyclerView recyclerView = new RecyclerView(mActivity);
+            RecyclerView recyclerView = new RecyclerView(getActivity());
             recyclerView.setLayoutManager(createGridLayoutManager());
             rememoryPokerRecycle[i] = recyclerView;
         }
@@ -138,7 +138,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
                 RecyclerView recyclerView = rememoryPokerRecycle[position];
                 if (recyclerView.getAdapter() == null) {
                     LogUtil.e("","viewpager postion = "+position);
-                    OnePokerRecycleAdapter onePokerRecycleAdapter = new OnePokerRecycleAdapter(mActivity, service.pokersQuestion, position * 53, 53);
+                    OnePokerRecycleAdapter onePokerRecycleAdapter = new OnePokerRecycleAdapter(getActivity(), service.pokersQuestion, position * 53, 53);
                     onePokerRecycleAdapter.setProgress(LongPokerRightFragment.this);
                     recyclerView.setAdapter(onePokerRecycleAdapter);
                 }
@@ -155,9 +155,9 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
     }
 
     private void setMemoryAdapter() {
-        HorRecycleAdapter recycleAdapter = new HorRecycleAdapter(mActivity, service.pokersQuestion);
+        HorRecycleAdapter recycleAdapter = new HorRecycleAdapter(getActivity(), service.pokersQuestion);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         //设置布局管理器
         recyclerView.setLayoutManager(layoutManager);
         //设置item间隙

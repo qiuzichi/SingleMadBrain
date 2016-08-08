@@ -5,6 +5,7 @@
     <GridView
         android:id="@+id/abs_figure_gridview"
         android:focusable="true"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"

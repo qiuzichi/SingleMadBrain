@@ -23,6 +23,7 @@ import com.unipad.brain.home.bean.HomeBean;
 import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.competitionpj.view.HomePresenter;
 import com.unipad.common.Constant;
+import com.unipad.common.PractiseGameActivity;
 import com.unipad.utils.DensityUtil;
 import com.unipad.utils.SharepreferenceUtils;
 import com.unipad.utils.ToastUtil;
@@ -34,7 +35,7 @@ import java.util.List;
 /**
  * yzj----项目:虚拟事件
  */
-public class MainCompeteFragment extends MainBasicFragment implements ShowDialog.OnShowDialogClick {
+public class MainCompeteFragment extends MainBasicFragment  {
     private RelativeLayout relatlayout;
     private ListView lv_project;
     private FrameLayout fl_project;
@@ -68,7 +69,6 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
 
     private long binaryAnswerTime, binaryMemoryTime;
     private TextView binaryMemoryText, binaryAnswerText;
-    private ShowDialog showDialog;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -122,10 +122,6 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
                 txt_world_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[2]);
                 txt_world_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[2]);
 
-                if (position == 6 || position == 9) {
-                    return;
-                }
-
 
             }
         });
@@ -163,17 +159,9 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
                 menu.toggle();
                 break;
             case R.id.btn_exercise:  //练习模式
-                showDialog = new ShowDialog(mActivity);
-                View view = LayoutInflater.from(mActivity).inflate(R.layout.first_login_dialog, null);
-                TextView tv_msg = (TextView) view.findViewById(R.id.txt_msg);
-                ((TextView) view.findViewById(R.id.txt_pname)).setVisibility(View.GONE);
-                tv_msg.setText(getString(R.string.exercise_not_open));
-                tv_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-                tv_msg.setGravity(Gravity.CENTER_HORIZONTAL);
-
-                showDialog.showDialog(view, ShowDialog.TYPE_CENTER, mActivity.getWindowManager(), 0.2f, 0.4f);
-                showDialog.setOnShowDialogClick(this);
-                showDialog.bindOnClickListener(view, new int[]{R.id.img_close});
+                Intent praIntent = new Intent(mActivity, PractiseGameActivity.class);
+                praIntent.putExtra("projectId", homeBeans.get(projectindex).projectBean.getProjectId());
+                this.startActivity(praIntent);
 
             default:
                 break;
@@ -226,18 +214,6 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
         homeBeans.add(thnumBean);
         homeBeans.add(kspkBean);
 
-    }
-
-    @Override
-    public void dialogClick(int id) {
-        switch (id){
-            default:
-                break;
-
-        }
-        if(null != showDialog && showDialog.isShowing()){
-            showDialog.dismiss();
-        }
     }
 
     class HomeListAdapter extends BaseAdapter {

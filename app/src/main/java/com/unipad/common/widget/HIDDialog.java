@@ -689,7 +689,9 @@ public class HIDDialog  extends Dialog
         super.setContentView(viewDialog, params);
         enumTypeView = null;
     }
-
+    public static HIDDialog getLastDialog(){
+        return lastDialog;
+    }
     /**
      * 屏幕明暗控制
      * @param brightness

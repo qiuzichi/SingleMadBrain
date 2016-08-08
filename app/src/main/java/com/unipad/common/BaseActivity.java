@@ -216,22 +216,7 @@ public class BaseActivity extends Activity implements IBaseActivity,View.OnClick
 	 * @return
 	 */
 	public boolean isAppOnForeground() {
-		// Returns a list of application processes that are running on the
-		// device
-//		String packageName = getApplicationContext().getPackageName();
-//
-//		List<RunningAppProcessInfo> appProcesses = SApplication.activityManager
-//				.getRunningAppProcesses();
-//		if (appProcesses == null)
-//			return false;
-//
-//		for (RunningAppProcessInfo appProcess : appProcesses) {
-//			// The name of the process that this object is associated with.
-//			if (appProcess.processName.equals(packageName)
-//					&& appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-//				return true;
-//			}
-//		}
+
 		return false;
 	}
 

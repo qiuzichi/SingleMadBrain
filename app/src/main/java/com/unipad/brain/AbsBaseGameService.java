@@ -3,6 +3,7 @@ package com.unipad.brain;
 import com.unipad.ICoreService;
 import com.unipad.IOperateGame;
 import com.unipad.brain.home.bean.RuleGame;
+import com.unipad.common.Constant;
 import com.unipad.observer.GlobleObserService;
 
 import java.util.Map;
@@ -125,6 +126,10 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
             operateGame.downloadingQuestion(data);
         }
     }
+    public void downloadResource(String questionId){
+
+    }
+
     public boolean isLastRound(){
         return round >= allround;
     }

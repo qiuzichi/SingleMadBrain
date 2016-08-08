@@ -31,7 +31,7 @@ public class Constant {
     public static final String SHOW_GAME_PAUSE = "com.unipad.show_game_pause";
     public static final String INIT_REMEMORY_DLG = "com.unipad.init_rememory_dlg";
     public static final String COMMIT_POCKER_GAME_DLG = "commit_pocker_game_dlg";
-    public static final String LONG_POKER_REMEMORY_DLG = "long_poker_rememory_dlg";
+    public static final String GET_RANDOM_QUESTION_ERROR_DLG = "get_random_question_error_dlg";
     public static final String QUICK_RANDOM_DLG = "quick_random_dlg";
     public static final String SHOW_SOCRE_CONFIRM_DLG = "show_socre_confirm_dlg";
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
