@@ -49,7 +49,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
         mListView = (GridView) mViewParent.findViewById(R.id.gridview);
 //      getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getActivity().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
 
         adapter = new HeadAdapter(mActivity, ((HeadService) service).data, R.layout.list_portrait);
@@ -193,10 +193,9 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                             EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
                             LogUtil.e("", "first:" + firstName.getText().toString());
                             firstName.requestFocus();
-                            firstName.setFocusable(true);
 
-                            if(!firstName.isShown()){
-
+                            if(mListView.getNumColumns() % (holder.getPosition()+1) == 0){
+                                mListView.smoothScrollToPositionFromTop(holder.getPosition() + 1, Preview.getHeight());
                             }
                             return  true;
 

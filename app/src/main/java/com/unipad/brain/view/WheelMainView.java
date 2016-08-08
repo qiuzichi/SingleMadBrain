@@ -236,7 +236,7 @@ public class WheelMainView extends RelativeLayout {
 		if (Integer.valueOf(day)<10&&Integer.valueOf(day)>0){
 			day=String.valueOf("0"+day);
 		}
-		String dateStr = year + "/" + month + "/" + day + "";// + hour + "时" + minute + "分";
+		String dateStr = year + "-" + month + "-" + day + "";// + hour + "时" + minute + "分";
 //		time_TV.setText("选择时间为：" + dateStr);
 		if(null == changingListener){
 			return;

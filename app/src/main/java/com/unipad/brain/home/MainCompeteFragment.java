@@ -452,19 +452,17 @@ public class MainCompeteFragment extends MainBasicFragment implements ShowDialog
 
     private void setMemoryTime(){
         String s  = SharepreferenceUtils.getString(
-                homeBeans.get(projectindex).projectBean.getProjectId(),
-                "300_300_0");
+                homeBeans.get(projectindex).projectBean.getProjectId(), "300_300_0");
         String[] time = s.split("_");
+        mCompetitionMode = time[2];
         binaryAnswerTime = Integer.parseInt(time[1]);
-        mCompetitionMode = Integer.parseInt(time[2]) + "";
         binaryMemoryTime = Integer.parseInt(time[0]);
 
         binaryAnswerText.setText(Util
                 .dateFormat(binaryAnswerTime));
         binaryMemoryText.setText(Util
                 .dateFormat(binaryMemoryTime));
-
-        if(rl_competitionMode.isShown()){
+        if(rl_competitionMode.getVisibility() == View.VISIBLE){
            if("0".equals(mCompetitionMode)){
                mRadioGroup.clearCheck();
            }else if("2".equals(mCompetitionMode)){

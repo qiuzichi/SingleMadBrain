@@ -66,7 +66,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
 
         @Override
         public void convert(ViewHolder holder, CompetitionBean competitionBean) {
-            //比赛模式
+            //比赛项目名称
             TextView race_model = (TextView) holder.getView(R.id.tv_competion_info_model_item);
             race_model.setText(Constant.getProjectName(competitionBean.getProjectId()));
 
@@ -99,9 +99,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         switch (key) {
             case HttpConstant.NOTIFY_GET_NEWCOMPETITION:
                 //获取数据
-
                 mNewCompetitionDatas.addAll((List<CompetitionBean>) o);
-
                 mNewCompetitionAdapter.notifyDataSetChanged();
                 break;
             default:
