@@ -39,10 +39,7 @@ public abstract class BasicCommonFragment extends Fragment implements
                 @Override
                 public void dispatchMessage(Message msg) {
                     ((CommonActivity) getActivity()).progressGame(progress);
-
-                    if (progress == 100) {//记忆完成。
-                        ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
-                    }else if ( progress == 200 || progress == 201) {
+                    if ( progress == 100 ||progress == 200 || progress == 201) {
 
                     } else {
                         LogUtil.e("", "Rememory progress :" + progress);
@@ -135,6 +132,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     public void memoryTimeToEnd(int memoryTime) {
         if (isMatchMode()) {
             progress = 100;
+
             handler.sendEmptyMessage(MSG_PROGRESS);
         }
     }
@@ -158,7 +156,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     public void sendMsgToPreper() {
         if (isMatchMode()) {
             isNeedStartGame = true;
-
+            ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
             handler.sendEmptyMessage(MSG_PROGRESS);
         }
     }

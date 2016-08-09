@@ -330,7 +330,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                 String userAnswer  = textNumber.getText().toString().trim();
                 String o = String.valueOf(orgin.charAt(j));
                 if (TextUtils.isEmpty(userAnswer)){
-                    userAnswer = " ";
+                    userAnswer = "X";
                 }
                 answerLine.append(userAnswer);
                 textNumber.setText(o+"\n"+userAnswer);

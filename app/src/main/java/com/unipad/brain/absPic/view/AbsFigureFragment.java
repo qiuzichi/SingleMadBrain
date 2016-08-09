@@ -74,6 +74,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
        //ToastUtil.createTipDialog(mActivity,Constant.SHOW_GAME_PAUSE,"等待裁判开始").show();
        //mStubShade.setVisibility(View.VISIBLE);
         adapter.notifyDataSetChanged();
+        sendMsgToPreper();
 
     }
     @Override
@@ -158,7 +159,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
 
     @Override
     public void startRememory() {
-       mStubShade.setVisibility(View.VISIBLE);
+       mStubShade.setVisibility(View.GONE);
     }
 
     @Override
