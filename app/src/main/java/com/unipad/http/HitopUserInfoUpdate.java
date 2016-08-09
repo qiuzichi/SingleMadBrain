@@ -28,12 +28,6 @@ public class HitopUserInfoUpdate extends HitopRequest<Object> {
         this.sevice.noticeDataChange(HttpConstant.PERSONALDATA,json);
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
-
     public void setSevice(GlobleObserService sevice) {
         this.sevice = sevice;
     }

@@ -21,9 +21,4 @@ public class HittopUpload extends HitopRequest<Object>{
     public Object handleJsonData(String json) {
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

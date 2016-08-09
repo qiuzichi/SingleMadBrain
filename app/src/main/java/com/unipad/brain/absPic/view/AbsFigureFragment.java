@@ -48,7 +48,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
         mViewParent.findViewById(R.id.answer_5).setOnClickListener(this);
         mStubShade =  mViewParent.findViewById(R.id.view_shade);
         service = (FigureService) (AppContext.instance().getService(Constant.ABS_FIGURE));
-        adapter = new FigureAdapter(mActivity, service.allFigures, R.layout.list_item_abs_figure);
+        adapter = new FigureAdapter(getActivity(), service.allFigures, R.layout.list_item_abs_figure);
         gridView.setAdapter(adapter);
         current = gridView.getFirstVisiblePosition();
         setButtonArea();
@@ -78,23 +78,16 @@ public class AbsFigureFragment extends BasicCommonFragment {
     }
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-        service.mode = 2;
-        setButtonArea();
-        showScore();
-        adapter.notifyDataSetChanged();
-
+        if (isMatchMode()){
+            mActivity.finish();
+        }else {
+            service.mode = 2;
+            setButtonArea();
+            adapter.notifyDataSetChanged();
+        }
     }
 
-    private void showScore() {
-        ToastUtil.createOnlyOkDialog(mActivity,Constant.SHOW_RULE_DIG,
-                "本轮得分","得分:"+service.getScore(), "",new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HIDDialog.dismissAll();
-                finishGame();
-            }
-        }).show();
-    }
+
 
     @Override
     public void onDestroy() {
@@ -138,13 +131,17 @@ public class AbsFigureFragment extends BasicCommonFragment {
         }
         preAnswer = current;
         current++;
-        gridView.smoothScrollToPosition(current+1);
         View curr = gridView.getChildAt(current - visiblePosition);
         if (curr != null) {
             TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
             currTv.setBackgroundColor(getResources().getColor(R.color.blue));
 
+        }else{
+            gridView.smoothScrollBy(gridView.getVerticalSpacing()+100,0);
         }
+        if (current%5 == 0)
+            gridView.smoothScrollBy(gridView.getVerticalSpacing()+100,0);
+       // gridView.smoothScrollToPosition(current+5,);
     }
 
     @Override

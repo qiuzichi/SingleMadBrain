@@ -47,10 +47,6 @@ public class HitopGetQuestion extends HitopRequest<String>{
         return null;
     }
 
-    @Override
-    public void buildRequestParams() {
-
-    }
 
     public void setService(ICoreService.IGameHand service) {
         this.service = service;

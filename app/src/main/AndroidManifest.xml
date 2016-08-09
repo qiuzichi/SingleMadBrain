@@ -62,7 +62,7 @@
         <activity
             android:name="com.unipad.common.CommonActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".personal.login.RegisterActivity"
             android:screenOrientation="landscape"
@@ -94,7 +94,9 @@
             android:screenOrientation="landscape"/>
         <!--   ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.   -->
-
+        <activity
+            android:name="com.unipad.common.PractiseGameActivity"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

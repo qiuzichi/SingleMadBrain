@@ -20,19 +20,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.adapter.DragAdapter;
 import com.unipad.brain.quickPoker.adapter.OtherAdapter;
 import com.unipad.brain.quickPoker.dao.QuickCardService;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
-import com.unipad.brain.quickPoker.entity.PokerEntity;
 import com.unipad.brain.quickPoker.view.widget.DragGrid;
 import com.unipad.brain.quickPoker.view.widget.OtherGridView;
 import com.unipad.brain.quickPoker.view.widget.QuickPokerBrowseHorizontalView;
 import com.unipad.brain.quickPoker.view.widget.QuickPokerBrowseVerticalView;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
-import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -110,7 +109,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         mStubAnswerShade = mViewParent.findViewById(R.id.view_shade_answer);
         mSingleLineLayout = (QuickPokerBrowseHorizontalView) mViewParent
                 .findViewById(R.id.browse_proker_single_mode);
-        service = (QuickCardService) mActivity.getService();
+        service = (QuickCardService) AppContext.instance().getService(Constant.QUICK_POKER_SERVICE);
     }
 
     @Override
@@ -180,11 +179,11 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                     .findViewById(R.id.otherGridView);
             leftCards = (TextView) answerViewParent.findViewById(R.id.remain_poker_nums);
             userChannelList = new ArrayList<>();
-            userAdapter = new DragAdapter(mActivity, userChannelList);
+            userAdapter = new DragAdapter(getActivity(), userChannelList);
 
             userGridView.setAdapter(userAdapter);
             otherChannelList = new ArrayList<>(service.getBottomCards());
-            otherAdapter = new OtherAdapter(mActivity, otherChannelList, R.layout.quick_poker_v_answer_item);
+            otherAdapter = new OtherAdapter(getActivity(), otherChannelList, R.layout.quick_poker_v_answer_item);
             otherGridView.setAdapter(this.otherAdapter);
             leftCards.setText(" " + otherAdapter.getChannnelLst().size() + " ");
             otherGridView.setOnItemClickListener(this);
@@ -209,9 +208,9 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         service.setUserData(userData.toString());
         if (service.isLastRound()){
             ToastUtil.showToast("本场比赛结束，退出比赛");
-            mActivity.finish();
+            getActivity().finish();
         }else {
-            ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "开始准备下一轮").show();
+            ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, "开始准备下一轮").show();
             new Thread() {
                 @Override
                 public void run() {

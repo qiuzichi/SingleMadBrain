@@ -74,12 +74,6 @@ private GlobleObserService service;
         }
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
-
     public void setSevice(PersonCenterService sevice) {
         this.service=sevice;
 

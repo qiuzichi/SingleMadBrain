@@ -193,17 +193,19 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                             EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
                             LogUtil.e("", "first:" + firstName.getText().toString());
                             firstName.requestFocus();
+                LogUtil.e(getClass().getSimpleName(), Preview.isShown() + "            =preview is show");
 
-                            if(mListView.getNumColumns() % (holder.getPosition()+1) == 0){
-                                mListView.smoothScrollToPositionFromTop(holder.getPosition() + 1, Preview.getHeight());
+                            if((holder.getPosition()+1) % mListView.getNumColumns() == 0){
+                                mListView.smoothScrollToPositionFromTop(holder.getPosition() + 1, 0);
+                                closeSofeInputMothed(Preview);
+                               ((ImageView) Preview.findViewById(R.id.icon_head)).setPadding(0,Preview.getHeight(),0,0);
                             }
                             return  true;
 
                         }else if(mDatas.size() - 1 == mListView.getLastVisiblePosition()){
                              /*到最后完成一个item  关闭软键盘*/
                             lastName.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(lastName.getWindowToken(), 0);
+                            closeSofeInputMothed(lastName);
                             return true;
                         }
                         return false;
@@ -227,6 +229,10 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                 answerHoleName.setVisibility(View.VISIBLE);
                 answerHoleName.setText(person.getAnswerFirstName() + "·" + person.getAnswerLastName());
             }
+        }
+        private void closeSofeInputMothed(View v){
+            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
     }
 }

@@ -42,8 +42,8 @@ public class FigureService extends AbsBaseGameService{
             if (j < 0) {
                 j = 4;
             }
-            if (temp.size() < j) {
-                j = temp.size();
+            if (temp.size()-1 < j) {
+                j = temp.size()-1;
             }
             int max = min + j;
             int index = (int) (min+Math.random()*(max-min+1));
@@ -176,21 +176,26 @@ public class FigureService extends AbsBaseGameService{
         super.finishGame();
     }
 
+    @Override
+    public void downloadResource(String questionId) {
+        String fileDir = Constant.GAME_FILE_PATH;
+        HitopDownLoad httpDown = new HitopDownLoad();
+        httpDown.buildRequestParams("questionId", questionId);
+        String filePath = fileDir + "/question.zip";
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+        }
+        httpDown.setService(this);
+        httpDown.downLoad(filePath);
+    }
+
     private void handDownQuestion(Map<String, String> data) {
             String fileDir = Constant.GAME_FILE_PATH;
             HitopDownLoad httpDown = new HitopDownLoad();
             httpDown.setMatchId(data.get("SCHEDULEID"));
             httpDown.buildRequestParams("questionId", data.get("QUESTIONID"));
-            String filePath;
-            String fileData = data.get("VOICE");
-            if (TextUtils.isEmpty(fileData)) {
-                filePath = fileDir + "/question.zip";
-
-            } else {
-                String taile = fileData.split(".")[1];
-                filePath = fileDir + "/voice" + taile;
-
-            }
+            String filePath = fileDir + "/question.zip";
             File file = new File(filePath);
             if (file.exists()) {
                 file.delete();

@@ -23,16 +23,18 @@ import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
+import com.unipad.utils.SharepreferenceUtils;
 
+import org.xutils.common.Callback;
 import org.xutils.x;
 
 import java.util.Map;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver,IOperateGame{
+public class PractiseCommLeftFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IOperateGame{
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
-    private CommonActivity mActivity;
+    private PractiseGameActivity mActivity;
     private RelativeLayout mParentLayout;
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
     private Button mBtnCompeteMode;
@@ -42,9 +44,10 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
      * 是否处于回忆模式，只有两种模式且先记忆再回忆；默认为false，即处于记忆模式；
      */
     private boolean isRememoryStatus;
-    private ICommunicate mICommunicate;
+    private CommonFragment.ICommunicate mICommunicate;
     private SparseArray mColorArray = new SparseArray();
     private int memoryTime;
+    private int reMemoryTime;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +59,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         LogUtil.e("CommonFragment", "----onActivityCreated--");
-        mActivity = (CommonActivity) getActivity();
+        mActivity = (PractiseGameActivity) getActivity();
 
         mTextName = (TextView) mParentLayout.findViewById(R.id.user_name);
         mTextAgeAds = (TextView) mParentLayout.findViewById(R.id.user_age_ads);
@@ -75,12 +78,16 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextTime.setText(mCountDownTime.getTimeString());
         mTextName.setText(AppContext.instance().loginUser.getUserName());
         mIconImageView = (ImageView) mParentLayout.findViewById(R.id.user_photo);
-        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
         x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
         //if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
-          //  mTextCompeteProcess.setText(R.string.playing_voice);
+        //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}
-
+        String s  = SharepreferenceUtils.getString(
+                mActivity.getProjectId(),
+                "300_300");
+        String[] time = s.split("_");
+        reMemoryTime = Integer.parseInt(time[1]);
+        memoryTime = Integer.parseInt(time[0]);
     }
 
     /**
@@ -97,6 +104,16 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 
     @Override
     public void onResume() {
@@ -113,7 +130,6 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).unRegisterObserve(HttpConstant.GET_RULE_NOTIFY, this);
         mCountDownTime.stopCountTime();
         mColorArray.clear();
     }
@@ -131,6 +147,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
                 startRememoryTimeCount();
                 memoryTime = takeTIme;
                 mICommunicate.memoryTimeToEnd(memoryTime);
+                mActivity.getService().starRememory();
             }
 
         } else {//回忆模式下才可以提交答案
@@ -143,12 +160,11 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mBtnCompeteMode.setText(R.string.end_memory);
         mBtnCompeteMode.setEnabled(true);
         mTextCompeteProcess.setText(R.string.memorying);
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round-1],false));
+        mTextTime.setText(mCountDownTime.setNewSeconds(memoryTime, false));
 
     }
     public void startRememoryTimeCount(){
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1],false));
-        LogUtil.e("CommonFragment","第"+(mActivity.getService().round-1)+"轮的回忆时间为="+mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1]);
+        mTextTime.setText(mCountDownTime.setNewSeconds(reMemoryTime, false));
     }
     /**
      * 提交答案
@@ -157,13 +173,27 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
             mICommunicate.rememoryTimeToEnd(rememoryTime);
-            new Thread(){
+            mActivity.sendMsgGetSocre(memoryTime, rememoryTime, new Callback.CommonCallback<String>() {
                 @Override
-                public void run() {
-                    super.run();
-                    SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),mActivity.getService().getScore(),memoryTime,rememoryTime,mActivity.getService().getAnswerData());
+                public void onSuccess(String result) {
+
                 }
-            }.start();
+
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+
+                }
+
+                @Override
+                public void onCancelled(CancelledException cex) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
         }
     }
 
@@ -202,30 +232,18 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextTime.setText(mCountDownTime.getTimeString());
     }
 
-    public void setICommunicate(ICommunicate iCommunicate) {
+    public void setICommunicate(CommonFragment.ICommunicate iCommunicate) {
         mICommunicate = iCommunicate;
     }
 
-    @Override
-    public void update(int key, Object o) {
-        switch (key) {
-            case HttpConstant.GET_RULE_NOTIFY:
-                mActivity.getService().rule = (RuleGame) o;
-                mActivity.getService().allround =  mActivity.getService().rule.getCountRecall();
-                mTextTime.setText( mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round-1], false));
-                break;
-            default:
-                break;
-        }
-    }
 
     @Override
     public void initDataFinished() {
-       reset();
+        reset();
     }
 
     @Override
-    public void downloadingQuestion(Map<String,String> data) {
+    public void downloadingQuestion(Map<String, String> data) {
 
     }
 
@@ -240,21 +258,13 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mCountDownTime.startCountTime();
     }
 
-
-
     @Override
     public void pauseGame() {
-        mCountDownTime.pauseCountTime();
+
     }
 
     @Override
     public void reStartGame() {
-        if (mICommunicate != null){
-            BasicCommonFragment basicCommonFragment = (BasicCommonFragment)mICommunicate;
-            if (!basicCommonFragment.isNeedStartGame()) {
-                mCountDownTime.resumeCountTime();
-            }
-        }
 
     }
 
@@ -262,33 +272,4 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     public void finishGame() {
 
     }
-    /**
-     * CommonFragment对外通讯接口
-     */
-    public interface ICommunicate {
-        /**
-         * 更换背景
-         *
-         * @param color 颜色值
-         */
-        void changeBg(int color);
-
-        /**
-         * 当记忆时间到时调用的方法
-         */
-        void memoryTimeToEnd(int memoryTime);
-
-        /**
-         * 当回忆时间到时调用的方法
-         */
-        void rememoryTimeToEnd(int answerTime);
-
-        /**
-         * 退出当前Activity
-         */
-        void exitActivity();
-
-
-    }
-
 }

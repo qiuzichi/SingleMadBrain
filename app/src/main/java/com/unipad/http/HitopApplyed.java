@@ -78,10 +78,6 @@ public class HitopApplyed extends  HitopRequest<Object> {
         return null;
     }
 
-    @Override
-    public void buildRequestParams() {
-
-    }
 
     public void setSevice(GlobleObserService sevice) {
 

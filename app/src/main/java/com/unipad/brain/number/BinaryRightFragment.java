@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.unipad.brain.R;
 import com.unipad.brain.number.view.NumberMemoryLayout;
+import com.unipad.common.CommonActivity;
 import com.unipad.common.Constant;
 
 /**
@@ -19,12 +20,16 @@ public class BinaryRightFragment extends NumberRightFragment{
 
     @Override
     public String getCompeteItem() {
-        return Constant.getProjectName(mActivity.getProjectId());
+        if (isMatchMode()) {
+            return Constant.getProjectName(((CommonActivity)getActivity()).getProjectId());
+        } else{
+            return "";
+        }
     }
 
     @Override
     public void initAnswerView() {
-        View.inflate(mActivity, R.layout.binary_v_bottom, mLayoutBottom);
+        View.inflate(getActivity(), R.layout.binary_v_bottom, mLayoutBottom);
         mLayoutBottom.findViewById(R.id.ibtn_binary_0).setOnClickListener(this);
         mLayoutBottom.findViewById(R.id.ibtn_binary_1).setOnClickListener(this);
         mLayoutBottom.findViewById(R.id.btn_vibrate).setOnClickListener(this);
@@ -35,7 +40,7 @@ public class BinaryRightFragment extends NumberRightFragment{
     @Override
     public void initMemoryView() {
         frameLayout.removeAllViews();
-        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+        frameLayout.addView(new NumberMemoryLayout(getActivity(), service.lineNumbers));
     }
 
     @Override

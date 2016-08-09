@@ -73,8 +73,4 @@ public class HitopApplyGame extends HitopRequest<CompetitionBean> {
         return null;
     }
 
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

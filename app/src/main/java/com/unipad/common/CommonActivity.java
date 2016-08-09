@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonActivity extends BasicActivity implements IDataObserver,IOperateGame{
+public class CommonActivity extends AbsMatchActivity implements IDataObserver,IOperateGame{
     private static final String TAG = "CommonActivity" ;
     private CommonFragment mCommonFragment = new CommonFragment();
 

@@ -87,8 +87,4 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
         }
         return null;
     }
-    @Override
-       public void buildRequestParams() {
-
-    }
 }

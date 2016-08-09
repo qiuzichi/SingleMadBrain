@@ -77,10 +77,6 @@ public class HitopFollow extends  HitopRequest<List<CompetitionBean>>{
         return null;
     }
 
-        @Override
-       public void buildRequestParams() {
-
-    }
     public void setSevice(GlobleObserService sevice) {
         this.sevice = sevice;
     }
