@@ -198,11 +198,9 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                             EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
                             LogUtil.e("", "first:" + firstName.getText().toString());
                             firstName.requestFocus();
-                LogUtil.e(getClass().getSimpleName(), Preview.isShown() + "            =preview is show");
-
                             if((holder.getPosition()+1) % mListView.getNumColumns() == 0){
                                 mListView.smoothScrollToPositionFromTop(holder.getPosition() + 1, 0);
-                                closeSofeInputMothed(Preview);
+//                                closeSofeInputMothed(Preview);
                             }
                             return  true;
 
@@ -234,9 +232,9 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                 answerHoleName.setText(person.getAnswerFirstName() + "·" + person.getAnswerLastName());
             }
         }
-        private void closeSofeInputMothed(View v){
+        private void closeSofeInputMothed(View view){
             InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

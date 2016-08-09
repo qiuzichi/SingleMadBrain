@@ -31,9 +31,8 @@ import java.util.Set;
 
 /**
  * 整个应用的全局上下文
- *
+ * <p/>
  * Created by gongkan on 2016/3/11
- *
  */
 public class AppContext {
 
@@ -72,18 +71,20 @@ public class AppContext {
     public int[] disPlay = {1280, 800};
 
     /**
-     *  用户对当前地址信息
-     *  请查找相关API http://developer.baidu.com/map/loc_refer/com/baidu/location/BDLocation.html
-     *  使用时应当判断对象是否为空
+     * 用户对当前地址信息
+     * 请查找相关API http://developer.baidu.com/map/loc_refer/com/baidu/location/BDLocation.html
+     * 使用时应当判断对象是否为空
      */
     public BDLocation location;
 
     private DbManager.DaoConfig daoConfig;
 
-    public ImageOptions getImageOptions(){
+    public ImageOptions getImageOptions() {
         //ImageOptions ImageOptions = new ImageOptions.Builder().set
         return null;
-    };
+    }
+
+    ;
 
     private AppContext() {
     }
@@ -165,32 +166,31 @@ public class AppContext {
                 service = new HomeGameHandService();
                 service.init();
                 serviceList.put(key, service);
-            } else if(key.equals(Constant.LOCATION_SERVICE)){
+            } else if (key.equals(Constant.LOCATION_SERVICE)) {
                 service = new LocationService();
                 service.init();
                 serviceList.put(key, service);
-            }else if (key.equals(Constant.LONG_SERVICE)) {
+            } else if (key.equals(Constant.LONG_SERVICE)) {
                 service = new LongNumService();
                 service.init();
                 serviceList.put(key, service);
-            }else if (key.equals(Constant.VIRTUAL_TIME_SERVICE)) {
+            } else if (key.equals(Constant.VIRTUAL_TIME_SERVICE)) {
                 service = new VirtualTimeService();
                 service.init();
                 serviceList.put(key, service);
-            }else if (key.equals(Constant.QUICK_POKER_SERVICE)) {
+            } else if (key.equals(Constant.QUICK_POKER_SERVICE)) {
                 service = new QuickCardService();
                 service.init();
                 serviceList.put(key, service);
-            }else if (key.equals(Constant.LONG_POKER_SERVICE)) {
+            } else if (key.equals(Constant.LONG_POKER_SERVICE)) {
                 service = new LongPokerService();
                 service.init();
                 serviceList.put(key, service);
-            }
-            else if (key.equals(Constant.QUICK_RANDOM_NUM_SERVICE)) {
+            } else if (key.equals(Constant.QUICK_RANDOM_NUM_SERVICE)) {
                 service = new QuickRandomNumService();
                 service.init();
                 serviceList.put(key, service);
-            }else if(key.equals(Constant.LISTENTOWRITE_NUM_SERVICE)){
+            } else if (key.equals(Constant.LISTENTOWRITE_NUM_SERVICE)) {
                 service = new ListenToWriteNumService();
                 service.init();
                 serviceList.put(key, service);
@@ -203,23 +203,23 @@ public class AppContext {
         String key = null;
         if (Constant.GAME_PORTRAITS.endsWith(projectId)) {
             key = Constant.HEADSERVICE;
-        } else if (Constant.GAME_BINARY_NUM.endsWith(projectId)){
+        } else if (Constant.GAME_BINARY_NUM.endsWith(projectId)) {
             key = Constant.BINARYNUMSERVICE;
-        }else if (Constant.GAME_LONG_NUM.endsWith(projectId)){
+        } else if (Constant.GAME_LONG_NUM.endsWith(projectId)) {
             key = Constant.LONG_SERVICE;
-        }else if (Constant.GAME_ABS_PICTURE.endsWith(projectId)){
+        } else if (Constant.GAME_ABS_PICTURE.endsWith(projectId)) {
             key = Constant.ABS_FIGURE;
-        }else if (Constant.GAME_RANDOM_NUM.endsWith(projectId)){
+        } else if (Constant.GAME_RANDOM_NUM.endsWith(projectId)) {
             key = Constant.QUICK_RANDOM_NUM_SERVICE;
-        }else if (Constant.GAME_VIRTUAL_DATE.endsWith(projectId)){
+        } else if (Constant.GAME_VIRTUAL_DATE.endsWith(projectId)) {
             key = Constant.VIRTUAL_TIME_SERVICE;
-        }else if (Constant.GAME_LONG_POCKER.endsWith(projectId)){
+        } else if (Constant.GAME_LONG_POCKER.endsWith(projectId)) {
             key = Constant.LONG_POKER_SERVICE;
-        }else if (Constant.GAME_RANDOM_WORDS.endsWith(projectId)){
+        } else if (Constant.GAME_RANDOM_WORDS.endsWith(projectId)) {
             key = Constant.WORDS_SERVICE;
-        }else if (Constant.GAME_LISTON_AND_MEMORY_WORDS.endsWith(projectId)){
+        } else if (Constant.GAME_LISTON_AND_MEMORY_WORDS.endsWith(projectId)) {
             key = Constant.LISTENTOWRITE_NUM_SERVICE;
-        }else if (Constant.GAME_QUICKIY_POCKER.endsWith(projectId)){
+        } else if (Constant.GAME_QUICKIY_POCKER.endsWith(projectId)) {
             key = Constant.QUICK_POKER_SERVICE;
         }
 
@@ -254,12 +254,13 @@ public class AppContext {
         }
     }
 
-    public void clearService(ICoreService service){
+    public void clearService(ICoreService service) {
         if (serviceList.containsValue(service)) {
             service.clear();
             serviceList.remove(service);
         }
     }
+
     /**
      * 销毁该全局处理器
      */

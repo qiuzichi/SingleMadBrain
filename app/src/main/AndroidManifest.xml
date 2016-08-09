@@ -64,7 +64,7 @@
             android:screenOrientation="landscape"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan" />
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+
         <activity
             android:name=".personal.login.RegisterActivity"
             android:screenOrientation="landscape"
