@@ -198,7 +198,6 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                             if((holder.getPosition()+1) % mListView.getNumColumns() == 0){
                                 mListView.smoothScrollToPositionFromTop(holder.getPosition() + 1, 0);
                                 closeSofeInputMothed(Preview);
-                               ((ImageView) Preview.findViewById(R.id.icon_head)).setPadding(0,Preview.getHeight(),0,0);
                             }
                             return  true;
 
