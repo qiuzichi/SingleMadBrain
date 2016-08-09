@@ -34,6 +34,7 @@ public class Constant {
     public static final String GET_RANDOM_QUESTION_ERROR_DLG = "get_random_question_error_dlg";
     public static final String QUICK_RANDOM_DLG = "quick_random_dlg";
     public static final String SHOW_SOCRE_CONFIRM_DLG = "show_socre_confirm_dlg";
+    public static final String MATCH_RESULT_DLG = "match_result_dlg";
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
     public static final String LONG_SERVICE = "com.unipad.brain.number.dao.NumService";
 
@@ -50,6 +51,7 @@ public class Constant {
 
     public static final String KEY_SET_BINARY_MEMORY_TIME = "key_set_binary_memory_time";
     public static final String KEY_SET_BINARY_ANSWER_TIME = "key_set_binary_answer_time";
+
 
 
     private static Map<String, String> projectNames;

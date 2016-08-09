@@ -127,7 +127,8 @@ public abstract class HitopRequest<T>{
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-
+                new Exception(throwable).printStackTrace();
+                ToastUtil.showToast("请求异常");
             }
 
             @Override

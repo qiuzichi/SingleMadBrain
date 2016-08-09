@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonActivity extends AbsMatchActivity implements IDataObserver,IOperateGame{
+public class CommonActivity extends AbsMatchActivity implements IOperateGame{
     private static final String TAG = "CommonActivity" ;
     private CommonFragment mCommonFragment = new CommonFragment();
 
@@ -233,8 +233,12 @@ public class CommonActivity extends AbsMatchActivity implements IDataObserver,IO
         super.onDestroy();
         gameFragment = null;
         mCommonFragment = null;
-        AppContext.instance().clearService(service);
+        matchId = null;
+        LogUtil.e(TAG,"destory");
+        service.setOperateGame(null);
         SocketThreadManager.sharedInstance().releaseInstance();
+        AppContext.instance().clearService(service);
+
     }
 
 
@@ -242,10 +246,6 @@ public class CommonActivity extends AbsMatchActivity implements IDataObserver,IO
         return mCommonFragment;
     }
 
-    @Override
-    public void update(int key, Object o) {
-
-    }
 
     @Override
     public void initDataFinished() {

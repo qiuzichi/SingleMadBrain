@@ -40,7 +40,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     private HeadAdapter adapter;
     private GridView mListView;
     private HeadService service;
-    private ViewStub mStubShade;
+    private View mStubShade;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -54,7 +54,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
         adapter = new HeadAdapter(mActivity, ((HeadService) service).data, R.layout.list_portrait);
         mListView.setAdapter(adapter);
-        mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+        mStubShade =  mViewParent.findViewById(R.id.view_shade);
     }
 
     @Override
@@ -89,6 +89,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     public void memoryTimeToEnd(int memoryTime) {
         super.memoryTimeToEnd(memoryTime);
         showAnserView();
+        sendMsgToPreper();
     }
 
     private void showAnserView() {
@@ -101,8 +102,12 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-        service.mode = 2;
-        adapter.notifyDataSetChanged();
+        if (isMatchMode()){
+            mActivity.finish();
+        }else {
+            service.mode = 2;
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

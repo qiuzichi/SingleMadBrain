@@ -245,7 +245,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             @Override
             public void finish() {
                 LogUtil.e("", "finish...");
-                HIDDialog.dismissDialog(Constant.INIT_REMEMORY_DLG);
+                HIDDialog.dismissAll();
                 sendMsgToPreper();
             }
         });
@@ -259,6 +259,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         mScrollAnswerView = (ScrollView) mRememoryLayout
                 .findViewById(R.id.scroll_rememory_layout);
         frameLayout.removeAllViews();
+
         if (mNumberRememoryLayout == null) {
             mNumberRememoryLayout = createReMemoryLayout();
         } else {
