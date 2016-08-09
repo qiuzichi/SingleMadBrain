@@ -32,6 +32,7 @@ import java.util.Map;
  */
 public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver,IOperateGame{
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
+    private static final String TAG = "CommonFragment";
     private CommonActivity mActivity;
     private RelativeLayout mParentLayout;
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
@@ -113,6 +114,9 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LogUtil.e(TAG,"onDestory");
+        mActivity = null;
+        mICommunicate = null;
         ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).unRegisterObserve(HttpConstant.GET_RULE_NOTIFY, this);
         mCountDownTime.stopCountTime();
         mColorArray.clear();

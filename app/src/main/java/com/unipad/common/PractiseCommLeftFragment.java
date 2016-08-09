@@ -5,9 +5,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,6 +21,7 @@ import com.unipad.IOperateGame;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
@@ -173,20 +177,45 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
         mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
             mICommunicate.rememoryTimeToEnd(rememoryTime);
+            final HIDDialog WaitingDialog = new HIDDialog(mActivity, R.style.dialog_wait, Constant.MATCH_RESULT_DLG);
+            WaitingDialog.setContentView(R.layout.ui_waiting_confirm,
+                    (int) mActivity.getResources().getDimension(R.dimen.wait_dialog_width), (int) mActivity.getResources()
+                            .getDimension(R.dimen.wait_dialog_height));
+
+            // 必须放在设置 view之后,自定义的view是不能设置该方法的，注释掉
+           final TextView contentView = (TextView) WaitingDialog.findViewById(R.id.dialog_text);
+            Button confirmButton = (Button) WaitingDialog.findViewById(R.id.confirm_btn);
+            confirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WaitingDialog.dismiss();
+                }
+            });
+            contentView.setText(mActivity.getResources().getString(R.string.commit_score));
+
+            Window win = WaitingDialog.getWindow();
+            WindowManager.LayoutParams lp = win.getAttributes();
+            win.setGravity(Gravity.CENTER_VERTICAL);
+
+            win.setAttributes(lp);
+            WaitingDialog.show();
             mActivity.sendMsgGetSocre(memoryTime, rememoryTime, new Callback.CommonCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-
+                    String content = mActivity.getResources().getString(R.string.memory_score,memoryTime,rememoryTime,result);
+                    contentView.setText(content);
+                    WaitingDialog.findViewById(R.id.wait_progress).setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onError(Throwable ex, boolean isOnCallback) {
-
+                    new Exception(ex).printStackTrace();
+                    WaitingDialog.dismiss();
                 }
 
                 @Override
                 public void onCancelled(CancelledException cex) {
-
+                    WaitingDialog.dismiss();
                 }
 
                 @Override

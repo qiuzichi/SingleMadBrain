@@ -52,7 +52,8 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
 
     public void releaseInstance() {
         LongTcpClient.instant().release();
-
+        setService(null);
+        setMatchId(null);
         if (s_SocketManager != null) {
             s_SocketManager.stopThreads();
             s_SocketManager = null;

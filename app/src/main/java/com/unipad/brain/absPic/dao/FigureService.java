@@ -126,7 +126,12 @@ public class FigureService extends AbsBaseGameService{
     public String getAnswerData() {
         StringBuilder userData= new StringBuilder();
         for (int i = 0;i<allFigures.size();i++){
-            userData.append((i/5)+1).append("^").append(allFigures.get(i).toString()).append("；");
+            userData.append((i/5)+1).append("^").append(allFigures.get(i).toString());
+            if (i%5==4){
+                userData.append(";");
+            }else {
+                userData.append(",");
+            }
 
         }
         userData.deleteCharAt(userData.length()-1);

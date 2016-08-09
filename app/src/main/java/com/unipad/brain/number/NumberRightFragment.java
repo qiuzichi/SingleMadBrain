@@ -245,7 +245,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             @Override
             public void finish() {
                 LogUtil.e("", "finish...");
-                HIDDialog.dismissDialog(Constant.INIT_REMEMORY_DLG);
+                HIDDialog.dismissAll();
                 sendMsgToPreper();
             }
         });

@@ -86,7 +86,8 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
         projectId = getIntent().getStringExtra("projectId");
         service = (AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId);
         service.setOperateGame(this);
-        service.registerObserver(HttpConstant.GET_RANDOM_QUESTION_ERR,this);
+        service.registerObserver(HttpConstant.GET_RANDOM_QUESTION_ERR, this);
+        service.registerObserver(HttpConstant.GET_RANDOM_QUESTION_OK,this);
         handler = new Handler() {
             @Override
             public void dispatchMessage(Message msg) {
@@ -201,6 +202,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
         gameFragment = null;
         mCommonFragment = null;
         service.unRegisterObserve(HttpConstant.GET_RANDOM_QUESTION_ERR, this);
+        service.unRegisterObserve(HttpConstant.GET_RANDOM_QUESTION_OK, this);
         AppContext.instance().clearService(service);
     }
 

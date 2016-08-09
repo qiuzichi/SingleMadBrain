@@ -309,7 +309,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                     TextView textNumber = (TextView) viewGroup.getChildAt(j);
                     String userAnswer = textNumber.getText().toString().trim();
                     if (TextUtils.isEmpty(userAnswer)) {
-                        userAnswer = " ";
+                        userAnswer = "X";
                     }
                     answerLine.append(userAnswer);
                 }

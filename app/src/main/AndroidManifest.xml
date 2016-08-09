@@ -62,6 +62,7 @@
         <activity
             android:name="com.unipad.common.CommonActivity"
             android:screenOrientation="landscape"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".personal.login.RegisterActivity"
