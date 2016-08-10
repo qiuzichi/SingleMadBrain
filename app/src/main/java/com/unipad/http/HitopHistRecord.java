@@ -16,12 +16,13 @@ import java.util.List;
  * Created by Administrator on 2016/6/23 0023.
  */
 public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
-
+    private int key;
     public HitopHistRecord(String path) {
         super(path);
     }
     public HitopHistRecord(int status ,String startTime,String endDate,int page,int size) {
         super(HttpConstant.HisRecord);
+        key = HttpConstant.HISRECORD_OK;
         mParams.addBodyParameter("userId", AppContext.instance().loginUser.getUserId());
 
         if (status == 0 || status == 1||status == 2||status == 3) {
@@ -39,6 +40,15 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
         mParams.addBodyParameter("size", "" + size);
 
     }
+
+    public HitopHistRecord(int page, int size) {
+        super(HttpConstant.ExerRecord);
+        key = HttpConstant.EXECISE_DATA;
+        mParams.addBodyParameter("userId", AppContext.instance().loginUser.getUserId());
+        mParams.addBodyParameter("page", "" + page);
+        mParams.addBodyParameter("size", "" + size);
+    }
+
     @Override
     public String buildRequestURL() {
         return getHost();
@@ -55,7 +65,7 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
             if (jsObj != null && jsObj.toString().length() != 0)
                 if (jsObj.getInt("ret_code") == 0) {
 
-                    JSONObject data = new JSONObject(jsObj.getString("data"));
+                    JSONObject data = jsObj.getJSONObject("data");
                     JSONArray jsonArray = data.getJSONArray("resultList");
                     int iSize = jsonArray.length();
 
@@ -65,14 +75,15 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
                     for (int i = 0; i < iSize; i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         HisRecord bean = new HisRecord();
-                        bean.setMatchId(jsonObject.getString("matchId"));
-                        bean.setProjectId(jsonObject.getString("projectId"));
-                        bean.setGroupId(jsonObject.getString("groupId"));
-                        bean.setGradeId(jsonObject.getString("gradeId"));
-                        bean.setStartDate(jsonObject.getString("startDate"));
-                        bean.setRectime(jsonObject.getString("rectime"));
-                        bean.setMemtime(jsonObject.getString("memtime"));
-                        bean.setScore(jsonObject.getString("score"));
+                        //{"memoryTime":7,"rank":1,"recallTime":155,"score":100}  "memoryTime":7,"rank":1,"recallTime":155,"score":100}
+                        bean.setMatchId(jsonObject.optString("matchId"));
+                        bean.setProjectId(jsonObject.optString("projectId"));
+                        bean.setGroupId(jsonObject.optString("groupId"));
+                        bean.setGradeId(jsonObject.optString("gradeId"));
+                        bean.setStartDate(jsonObject.optString("startDate"));
+                        bean.setRectime(jsonObject.optString("rectime"));
+                        bean.setMemtime(jsonObject.optString("memtime"));
+                        bean.setScore(jsonObject.optString("score"));
                         bean.setRanking(jsonObject.optString("ranking"));
                         hisRecords.add(bean);
                     }
@@ -81,10 +92,8 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
             e.printStackTrace();
             return null;
         }
-        if (hisRecords != null) {
-            ((PersonCenterService)AppContext.instance().getService
-                    (Constant.PERSONCENTER)).noticeDataChange(HttpConstant.HISRECORD_OK,hisRecords);
-        }
+        ((PersonCenterService)AppContext.instance().getService
+                (Constant.PERSONCENTER)).noticeDataChange(key,hisRecords);
         return null;
     }
 }

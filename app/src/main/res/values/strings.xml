@@ -258,6 +258,7 @@
 
     <string name="loadmore_data">正在加载数据......</string>
     <string name="loadmore_null_data">最后一页  已经没有新的数据了</string>
+    <string name="hostory_null_data">没有历史战绩数据</string>
 
 
     <string name="pager_detail">详情</string>

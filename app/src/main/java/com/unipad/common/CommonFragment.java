@@ -2,8 +2,11 @@ package com.unipad.common;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +26,9 @@ import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
+import com.unipad.utils.PicUtil;
 
+import org.xutils.common.Callback;
 import org.xutils.x;
 
 import java.util.Map;
@@ -82,7 +87,35 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
           //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}
 
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
+            x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map = PicUtil.drawableToBitmap(drawable);
+                    mIconImageView.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    mIconImageView.setImageResource(R.drawable.set_headportrait);
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        }else {
+            mIconImageView.setImageResource(R.drawable.set_headportrait);
+        }
     }
+
+
 
     /**
      * 获取背景颜色集合并设置示例图片背景

@@ -53,7 +53,7 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
         ((TextView)mInfoListView.findViewById(R.id.tv_uese_name_consult)).setText(AppContext.instance().loginUser.getUserName());
         ((TextView)mInfoListView.findViewById(R.id.tv_uese_level_consult)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
 
-        final ImageView user_photo = (ImageView)mInfoListView.findViewById(R.id.iv_header_info_consult);
+        final ImageView user_photo = (ImageView)mInfoListView.findViewById(R.id.iv_header);
 
         if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
             x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
