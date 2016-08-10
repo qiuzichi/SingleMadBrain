@@ -81,6 +81,7 @@
                             android:drawableLeft="@drawable/user_favorite"
                             android:drawablePadding="@dimen/margin_5dip"
                             android:text="@string/person_level"
+                            android:layout_gravity="center"
                             android:textColor="@color/white"
                             android:textSize="@dimen/person_name_size" />
 

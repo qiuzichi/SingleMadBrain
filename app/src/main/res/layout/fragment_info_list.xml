@@ -10,7 +10,7 @@
         android:background="@color/main_1">
 
         <ImageView
-            android:id="@+id/iv_header_info_consult"
+            android:id="@+id/iv_header"
             android:layout_width="@dimen/head_portrait_width"
             android:layout_height="@dimen/head_portrait_width"
             android:layout_centerVertical="true"
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_header_info_consult"
+            android:layout_toRightOf="@+id/iv_header"
             android:orientation="vertical">
 
             <TextView
@@ -30,6 +30,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/about_us"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:layout_gravity="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_text_24" />
 
@@ -44,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/user_favorite"
                 android:drawablePadding="@dimen/margin_5dip"
+                android:layout_gravity="center"
                 android:text="@string/person_level"
                 android:textColor="@color/white"
                 android:textSize="@dimen/person_name_size" />

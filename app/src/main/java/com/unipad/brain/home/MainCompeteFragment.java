@@ -15,6 +15,8 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -77,6 +79,10 @@ public class MainCompeteFragment extends MainBasicFragment  {
 
     private long binaryAnswerTime, binaryMemoryTime;
     private TextView binaryMemoryText, binaryAnswerText;
+    private ShowDialog showDialog;
+    private RelativeLayout rl_competitionMode;
+    private String mCompetitionMode;
+    private RadioGroup mRadioGroup;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -153,7 +159,7 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 homeListAdapter.notifyDataSetChanged();
                 txt_pname.setText(homeBeans.get(position).projectBean.getName());
                 /*侧滑菜单设置*/
-                set_tital_slidmenu.setText(homeBeans.get(position).projectBean.getName() + getString(R.string.set_rule));
+                set_tital_slidmenu.setText(homeBeans.get(position).projectBean.getName());
 
                 txt_city_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[0]);
                 txt_city_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[0]);
@@ -161,6 +167,16 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 txt_china_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[1]);
                 txt_world_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[2]);
                 txt_world_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[2]);
+
+
+                if (position == 6 || position == 9) {
+                    return;
+                }
+
+                if(position == 1 || position == 2 || position ==4){
+                    rl_competitionMode.setVisibility(View.VISIBLE);
+                }
+
 
 
             }
@@ -332,7 +348,28 @@ public class MainCompeteFragment extends MainBasicFragment  {
         menu.setMenu(R.layout.sliding_menu_layout);
         // 得到View对象
         View view = menu.getMenu();
+
         set_tital_slidmenu = (TextView) view.findViewById(R.id.txt_title_project);
+        rl_competitionMode = (RelativeLayout) view.findViewById(R.id.rl_competition_mode_set);
+        mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_group_competition_mode);
+        mCompetitionMode = "0";
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (group.getCheckedRadioButtonId()) {
+                    case R.id.btn_default_mode:
+                        mCompetitionMode = "2";
+                        break;
+                    case R.id.btn_default_mode_3:
+                        mCompetitionMode = "3";
+                        break;
+                    case R.id.btn_default_mode_4:
+                        mCompetitionMode = "4";
+                        break;
+                }
+            }
+        });
 
         binaryMemoryText = (TextView) view.findViewById(R.id.binary_memory_set_show);
         binaryAnswerText = (TextView) view.findViewById(R.id.binary_answer_set_show);
@@ -383,8 +420,8 @@ public class MainCompeteFragment extends MainBasicFragment  {
         view.findViewById(R.id.confirm_btn_setting).setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                //当确认修改  保存数据本地  以  _ 分割 2个时间
-               String time = binaryMemoryTime + "_" + binaryAnswerTime;
+                //当确认修改  保存数据本地  以  _ 分割 2个时间  比赛模式设置
+               String time = binaryMemoryTime + "_" + binaryAnswerTime + "_" + mCompetitionMode;
                SharepreferenceUtils.writeString(homeBeans.get(projectindex).projectBean.getProjectId(), time);
                ToastUtil.showToast("设置成功");
                }
@@ -397,9 +434,9 @@ public class MainCompeteFragment extends MainBasicFragment  {
 
     private void setMemoryTime(){
         String s  = SharepreferenceUtils.getString(
-                homeBeans.get(projectindex).projectBean.getProjectId(),
-                "300_300");
+                homeBeans.get(projectindex).projectBean.getProjectId(), "300_300_0");
         String[] time = s.split("_");
+        mCompetitionMode = time[2];
         binaryAnswerTime = Integer.parseInt(time[1]);
         binaryMemoryTime = Integer.parseInt(time[0]);
 
@@ -407,6 +444,17 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 .dateFormat(binaryAnswerTime));
         binaryMemoryText.setText(Util
                 .dateFormat(binaryMemoryTime));
+        if(rl_competitionMode.getVisibility() == View.VISIBLE){
+           if("0".equals(mCompetitionMode)){
+               mRadioGroup.clearCheck();
+           }else if("2".equals(mCompetitionMode)){
+               mRadioGroup.check(R.id.btn_default_mode);
+            }else if("3".equals(mCompetitionMode)){
+               mRadioGroup.check(R.id.btn_default_mode_3);
+            }else if("4".equals(mCompetitionMode)){
+               mRadioGroup.check(R.id.btn_default_mode_4);
+            }
+        }
     }
 
 }

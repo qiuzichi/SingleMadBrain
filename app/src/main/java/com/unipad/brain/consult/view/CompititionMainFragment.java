@@ -14,6 +14,7 @@ import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ListAreaEnum;
+import com.unipad.brain.consult.entity.ListCompetitionEnum;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.dao.NewsService;
@@ -66,9 +67,19 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
 
         @Override
         public void convert(ViewHolder holder, CompetitionBean competitionBean) {
-            //比赛模式
+            //比赛项目名称
             TextView race_model = (TextView) holder.getView(R.id.tv_competion_info_model_item);
             race_model.setText(Constant.getProjectName(competitionBean.getProjectId()));
+            ListCompetitionEnum projectEnum = null;
+            if(Constant.GAME_QUICKIY_POCKER.equals(competitionBean.getProjectId())){
+                projectEnum = ListCompetitionEnum.values()[9];
+            }else {
+                projectEnum = ListCompetitionEnum.values()[Integer.parseInt(competitionBean.getGradeId().substring(competitionBean.getGradeId().lastIndexOf("0") + 1)) - 1];
+            }
+            Drawable drawable_model = getResources().getDrawable(projectEnum.getLabelResId());
+            drawable_model.setBounds(0, 0, drawable_model.getMinimumWidth(), drawable_model.getMinimumHeight());
+            race_model.setCompoundDrawables(null, drawable_model, null, null);
+
 
             //比赛区域
             TextView race_gradle = (TextView) holder.getView(R.id.tv_competion_info_area_item);
@@ -99,9 +110,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         switch (key) {
             case HttpConstant.NOTIFY_GET_NEWCOMPETITION:
                 //获取数据
-
                 mNewCompetitionDatas.addAll((List<CompetitionBean>) o);
-
                 mNewCompetitionAdapter.notifyDataSetChanged();
                 break;
             default:

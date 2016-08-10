@@ -47,9 +47,8 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
         LogUtil.e(" HeadPortraitFragment", "--..--onActivityCreated--");
         mListView = (GridView) mViewParent.findViewById(R.id.gridview);
-//      getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getActivity().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
 
         adapter = new HeadAdapter(mActivity, ((HeadService) service).data, R.layout.list_portrait);
@@ -198,18 +197,15 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                             EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
                             LogUtil.e("", "first:" + firstName.getText().toString());
                             firstName.requestFocus();
-                            firstName.setFocusable(true);
-
-                            if(!firstName.isShown()){
-
+                            if((holder.getPosition()+1) % mListView.getNumColumns() == 0){
+                                mListView.smoothScrollBy(mListView.getVerticalSpacing()+mListView.getChildAt(0).getHeight(),0);
                             }
                             return  true;
 
                         }else if(mDatas.size() - 1 == mListView.getLastVisiblePosition()){
                              /*到最后完成一个item  关闭软键盘*/
                             lastName.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(lastName.getWindowToken(), 0);
+                            closeSofeInputMothed(lastName);
                             return true;
                         }
                         return false;
@@ -233,6 +229,10 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                 answerHoleName.setVisibility(View.VISIBLE);
                 answerHoleName.setText(person.getAnswerFirstName() + "·" + person.getAnswerLastName());
             }
+        }
+        private void closeSofeInputMothed(View view){
+            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

@@ -54,14 +54,16 @@
 
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:clickable="true"
                     android:id="@+id/update_version_imgview"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/news_title_height"
                     android:layout_weight="3"
                     android:gravity="center"
+                    android:layout_marginTop="@dimen/margin_5dip"
+                    android:layout_marginBottom="@dimen/margin_5dip"
                     android:src="@drawable/arrow_right" />
             </RelativeLayout>
 

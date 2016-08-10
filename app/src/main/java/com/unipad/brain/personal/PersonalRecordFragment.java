@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -65,11 +66,14 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private int mRedColor, mBlackColor;
     private TableLayout gridView;
     private List<HisRecord> hisRecords;
+    private List<HisRecord> mRecordData;
+    private List<HisRecord> mExerciseData;
     private ViewGroup viewParent;
     private HisRecord record;
     private PopupWindow mPopupWindows;
     private PopupWindow mPopupWindowsDate;
     private TextView mRightTextView;
+    private TextView null_text;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -87,6 +91,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
         validateDate();
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK, this);
+        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.EXECISE_DATA, this);
 
 
     }
@@ -110,10 +115,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         //获取textview组件
         mRightTextView = mActivity.getmTextRight();
         View mPopupView = LayoutInflater.from(mActivity).inflate(R.layout.item_select_popup, null);
-        final RadioButton radio_competition = (RadioButton) mPopupView.findViewById(R.id.radio_select_competition);
-        RadioButton radio_exercise = (RadioButton) mPopupView.findViewById(R.id.radio_select_exercise);
         RadioGroup mRadioGroup = (RadioGroup) mPopupView.findViewById(R.id.radio_group_popup);
-
 
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -124,23 +126,46 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 
                 switch (group.getCheckedRadioButtonId()){
                     case R.id.radio_select_competition: //比赛模式
-
+                        if(null != mRecordData){
+                            hisRecords = mRecordData;
+                            viewParent.removeAllViews();
+                            viewParent.addView(getGridView());
+                        }
                         break;
                     case R.id.radio_select_exercise: //练习模式
-                        showDialog = new ShowDialog(mActivity);
-                        View view = LayoutInflater.from(mActivity).inflate(R.layout.first_login_dialog, null);
-                        TextView tv_msg = (TextView) view.findViewById(R.id.txt_msg);
-                        ((TextView) view.findViewById(R.id.txt_pname)).setVisibility(View.GONE);
-                        tv_msg.setText(getString(R.string.exercise_not_open));
-                        tv_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
-                        tv_msg.setGravity(Gravity.CENTER_HORIZONTAL);
+                        int requestPager = 1;
+                        int totalItem = 10;
+                        if(null == mExerciseData){
+                            ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
+                                    .getHistoryExerRecord(requestPager, totalItem);
+                        }else {
+                            hisRecords = mExerciseData;
+                            viewParent.removeAllViews();
+                            viewParent.addView(getGridView());
+                        }
+                        /*没有练习的历史成绩*/
+                        if(hisRecords.size() == 0){
+                            showNullData();
+                        }
 
-                        showDialog.showDialog(view, ShowDialog.TYPE_CENTER, mActivity.getWindowManager(), 0.2f, 0.5f);
-                        showDialog.setOnShowDialogClick(PersonalRecordFragment.this);
-                        showDialog.bindOnClickListener(view, new int[]{R.id.img_close});
+//                        showDialog = new ShowDialog(mActivity);
+//                        View view = LayoutInflater.from(mActivity).inflate(R.layout.first_login_dialog, null);
+//                        TextView tv_msg = (TextView) view.findViewById(R.id.txt_msg);
+//                        ((TextView) view.findViewById(R.id.txt_pname)).setVisibility(View.GONE);
+//                        tv_msg.setText(getString(R.string.exercise_not_open));
+//                        tv_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
+//                        tv_msg.setGravity(Gravity.CENTER_HORIZONTAL);
+//
+//                        showDialog.showDialog(view, ShowDialog.TYPE_CENTER, mActivity.getWindowManager(), 0.2f, 0.5f);
+//                        showDialog.setOnShowDialogClick(PersonalRecordFragment.this);
+//                        showDialog.bindOnClickListener(view, new int[]{R.id.img_close});
                         break;
                 }
+                //当数据为空的时候；
+                if( null == hisRecords){
+                    gridView.setVisibility(View.GONE);
 
+                }
                 closePopup();
             }
         });
@@ -215,18 +240,22 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 //                showDialog.showDialog(wheelMainView,ShowDialog.TYPE_BOTTOM,mActivity.getWindowManager(),0.5f,0.6f);
                 break;
             case R.id.group_historry_list:
-               openPersonalIntegration();
+               openPersonalIntegration((HisRecord)v.getTag());
             default:
                 break;
         }
     }
 
 
-    private void openPersonalIntegration() {
+    private void openPersonalIntegration(HisRecord hisRecord) {
         Intent intent=new Intent();
-        intent.setClass(getActivity(),PersonalInfoActivty.class);
-        intent.putExtra("ranking", record.getRanking());
-        startActivity(intent);
+        intent.setClass(mActivity, PersonalInfoActivty.class);
+        if(hisRecord == null)
+            return;
+
+        intent.putExtra("ranking", hisRecord.getRanking());
+        intent.putExtra("projectId", hisRecord.getProjectId());
+        mActivity.startActivity(intent);
     }
 
 
@@ -350,7 +379,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         }
         for (HisRecord record:hisRecords) {
             gridView.addView(createTableRow(record));
-         };
+        };
 
         return gridView;
     }
@@ -365,7 +394,9 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getRectime());
         ((TextView)tableRow.findViewById(R.id.score)).setText(record.getScore());
         ((TextView)tableRow.findViewById(R.id.ranking)).setText(record.getRanking());
-        ((TableRow)tableRow.findViewById(R.id.group_historry_list)).setOnClickListener(this);
+        TableRow tableRow1 = (TableRow) tableRow.findViewById(R.id.group_historry_list);
+        tableRow1.setTag(record);
+        tableRow1.setOnClickListener(this);
         return  tableRow;
     }
 
@@ -417,26 +448,56 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     public void onDestroyView() {
         super.onDestroy();
         if(null != service)
-          service.unregistDataChangeListenerObj(this);
+//          service.unregistDataChangeListenerObj(this);
+          service.unRegisterObserve(HttpConstant.EXECISE_DATA,this);
+          service.unRegisterObserve(HttpConstant.HISRECORD_OK,this);
     }
 
     @Override
     public void update(int key, Object o) {
-        switch (key) {
-            case HttpConstant.HISRECORD_OK:
-                hisRecords = (List<HisRecord>) o;
-                if (mIsBrokenLine) {
+        if(o != null){
+            switch (key) {
+                case HttpConstant.HISRECORD_OK:
+                    hisRecords= (List<HisRecord>) o;
+                   // hisRecords = mRecordData;
+                    if (mIsBrokenLine) {
 
-                } else {
-                    viewParent.removeAllViews();
-                    viewParent.addView(getGridView());
-                }
-                break;
-            default:
-                break;
+                    } else {
+                        viewParent.removeAllViews();
+                        viewParent.addView(getGridView());
+                    }
+                    break;
+
+                case HttpConstant.EXECISE_DATA:
+                   mExerciseData = (List<HisRecord>) o;
+                    hisRecords = mExerciseData;
+                    if (!mIsBrokenLine) {
+                        viewParent.removeAllViews();
+                        viewParent.addView(getGridView());
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }else {
+            showNullData();
         }
     }
+    private void showNullData(){
+        if(null == null_text){
+            null_text = new TextView(mActivity);
+            RelativeLayout.LayoutParams params = new  RelativeLayout.
+                    LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            null_text.setGravity(Gravity.CENTER);
+            null_text.setText(getString(R.string.hostory_null_data));
+            null_text.setTextSize(25);
+            null_text.setLayoutParams(params);
+        }
 
+        viewParent.removeAllViews();
+        viewParent.addView(null_text);
+    }
 
     @Override
     public void onChanging(String changStr) {

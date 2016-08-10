@@ -28,12 +28,13 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.personal_integration_layout);
         lv_integration=(ListView)findViewById(R.id.lv_integration);
         text_myranking=(TextView)findViewById(R.id.text_myranking);
+
         competitionBeans=new ArrayList<CompetitionBean>();
         service=(PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER);
-        service.registerObserver(HttpConstant.LIST_TOP,this);
-        setContentView(R.layout.personal_integration_layout);
+        service.registerObserver(HttpConstant.LIST_TOP, this);
         }
 
     @Override
@@ -64,7 +65,6 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
         super.onStart();
         if (competitionBeans.size()==0){
             service.getTopList(AppContext.instance().loginUser.getUserId());
-
         }
 
     }
@@ -76,9 +76,8 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
 
     @Override
     public void initData() {
-        Intent intent = new Intent();
-        String ranking = intent.getStringExtra("ranking");
+       // Intent intent = new Intent();
+        String ranking = getIntent().getStringExtra("ranking");
         text_myranking.setText(ranking);
-
     }
 }

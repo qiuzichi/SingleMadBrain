@@ -15,6 +15,7 @@ public class HttpConstant {
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String HisRecord="/api/match/history";
+    public static String ExerRecord="api/practice/history";
     public static String GET_NEWS_LIST = "/api/news/list";
     public static String GET_NEWS_VERSION = "/pub/apk/last";
     //赛事排名
@@ -121,6 +122,7 @@ public class HttpConstant {
     public static final int STRAT_MEMORY=0x18011;
     public static final int START_ANSWER = 0x18012;
     public static final int END_ANSWER=0x18013;
+    public static final int EXECISE_DATA=0x18014;
 
     // 获取省份列表
     public static final int GET_PROVINCE = 0x10900;
