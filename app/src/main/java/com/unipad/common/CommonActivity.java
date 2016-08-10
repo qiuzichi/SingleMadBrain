@@ -106,8 +106,9 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
                     case PAUSE_GAME:
                         LogUtil.e(TAG,"PAUSE_GAME");
                         HIDDialog.dismissAll();
-                          gameFragment.pauseGame();
+                        gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
                         break;
                     case RESTAT_GAME:
                         LogUtil.e(TAG,"RESTAT_GAME");

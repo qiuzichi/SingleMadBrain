@@ -5,13 +5,16 @@ import com.unipad.brain.AbsBaseGameService;
 import com.unipad.utils.LogUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
 
     private static SocketThreadManager s_SocketManager = null;
 
+    private List<Request> sendMsgList;
 
     private SocketOutputThread mOutThread = null;
 
@@ -29,7 +32,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
 
     // 单例，不允许在外部构建对象
     private SocketThreadManager() {
-
+        sendMsgList = new CopyOnWriteArrayList<Request>();
     }
 
     /**
@@ -155,4 +158,91 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
     public void setMatchId(String matchId) {
         this.matchId = matchId;
     }
+
+
+    /**
+     * 客户端写消息线程
+     *
+     * @author way
+     */
+    private class SocketOutputThread extends Thread  {
+        private boolean isStart = true;
+        private static final String TAG = "socketOutputThread";
+        public SocketOutputThread() {
+
+
+        }
+
+        public void setStart(boolean isStart) {
+            this.isStart = isStart;
+            synchronized (this) {
+                notify();
+            }
+        }
+
+
+
+        // 使用socket发送消息
+        public void addMsgToSendList(Request request) {
+
+            synchronized (this) {
+                sendMsgList.add(request);
+                notify();
+            }
+        }
+
+        @Override
+        public void run() {
+            while (isStart) {
+                // 锁发送list
+                synchronized (sendMsgList) {
+                    // 发送消息
+                    /**  if (LongTcpClient.instant().init()) {
+                     if (LongTcpClient.instant().)
+                     LongTcpClient.instant().setDataHandler(handler);
+                     }
+                     */
+                    for (Request request : sendMsgList) {
+
+
+                        try {
+                            LongTcpClient.instant().sendMsg(request);
+                            sendMsgList.remove(request);
+                           /** int time = request.getSendTime();
+                            if (time >= 2) {
+                                sendMsgList.remove(request);
+                            }else {
+                                request.setSendTime(time+1);
+                            }
+                            */
+                            // 成功消息，通过hander回传
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            // 错误消息，通过hander回传
+
+
+                        }
+                    }
+                }
+            }
+
+            synchronized (this) {
+                try {
+                    wait();
+
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }// 发送完消息后，线程进入等待状态
+            }
+
+
+        }
+
+
+
+
+    }
+
 }

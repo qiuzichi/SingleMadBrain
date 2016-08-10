@@ -38,7 +38,6 @@ public class HeadService extends AbsBaseGameService{
      */
     public int mode = 0;
 
-
     public ArrayList<Person> data = new ArrayList<>();
 
     private String headResourse = "assets://portraits/";//file:///android_asset/portraits/

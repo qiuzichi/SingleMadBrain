@@ -21,7 +21,6 @@ public class LongNumFragment extends NumberRightFragment {
         super.pauseGame();
         if (mKeyboardDialog != null && mKeyboardDialog.isShowing()) {
             mKeyboardDialog.dismiss();
-            ;
         }
     }
 

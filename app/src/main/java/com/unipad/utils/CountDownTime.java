@@ -57,7 +57,8 @@ public class CountDownTime implements App.HandlerCallback {
     public void startCountTime() {
         if (!mStarted) {
             mStarted = true;
-
+            mHandler.removeMessages(MSG_END_TIME);
+            mHandler.removeMessages(MSG_ADD_TIME);
             mHandler.sendEmptyMessageDelayed(MSG_ADD_TIME, 1000);
         }
     }

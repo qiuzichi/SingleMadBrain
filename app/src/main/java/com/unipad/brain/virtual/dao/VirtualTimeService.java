@@ -6,9 +6,11 @@ import com.unipad.IOperateGame;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.virtual.bean.VirtualEntity;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.utils.LogUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ import java.util.Map;
  * Created by gongkan on 2016/7/4.
  */
 public class VirtualTimeService extends AbsBaseGameService {
-    private IOperateGame operateGame;
+
    public List<VirtualEntity> virtualList = new ArrayList<>();
     @Override
     public void downloadingQuestion(Map<String, String> data) {
@@ -30,17 +32,21 @@ public class VirtualTimeService extends AbsBaseGameService {
     @Override
     public void parseData(String data) {
         super.parseData(data);
-        data = data+","+data+","+data;
+        //data = data+","+data+","+data;
         String [] entity = data.split(",");
         for(int i=0;i<entity.length;i++){
             String[] word=entity[i].split("\\^");
             VirtualEntity virtualEntity=new VirtualEntity();
             virtualEntity.setDate(word[1]);
             virtualEntity.setEvent(word[2]);
-            virtualEntity.setNumber(Integer.valueOf(word[0]));
+           virtualEntity.setNumber(Integer.valueOf(word[0]));
             virtualList.add(virtualEntity);
         }
         initDataFinished();
+    }
+
+    public void shuffData() {
+        Collections.shuffle(virtualList);
     }
 
     @Override
@@ -104,6 +110,8 @@ public class VirtualTimeService extends AbsBaseGameService {
            userdate.append(virtualList.get(i).toString()).append(",");
 
        }
+        userdate.deleteCharAt(userdate.length()-1);
+        LogUtil.e("",userdate.toString());
         return userdate.toString();
     }
  }

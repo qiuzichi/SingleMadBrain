@@ -168,10 +168,12 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     }
                     jianpan_linlayout.setVisibility(View.VISIBLE);
                     entity.itemId = holder.editNUmView.getId();
+                    entity.shuffNum = position+1;
                     holder.tv_date.setVisibility(View.GONE);
                     holder.editNUmView.setVisibility(View.VISIBLE);
                     holder.editNUmView.setText(entity.getAnswerDate());
                     holder.editNUmView.setInputType(InputType.TYPE_NULL);
+                    holder.tv_num.setText(entity.shuffNum+"" );
                     holder.editNUmView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
@@ -231,8 +233,10 @@ public class VirtualRightFragment extends BasicCommonFragment {
      * 开始答题
      */
     public void inAnswerMode() {
-        memoryAdapter.notifyDataSetChanged();
         service.mode=1;
+        service.shuffData();
+        memoryAdapter.notifyDataSetChanged();
+
     }
     /**
      * 结束答题
@@ -383,6 +387,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
     @Override
     public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
         index=0;
         this.inAnswerMode();
         sendMsgToPreper();
@@ -390,6 +395,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
     @Override
     public void rememoryTimeToEnd(int answerTime) {
+        super.rememoryTimeToEnd(answerTime);
         this.endAnswerMode();
     }
 }

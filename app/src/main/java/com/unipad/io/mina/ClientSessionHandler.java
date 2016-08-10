@@ -14,7 +14,6 @@ import java.util.Map;
 public class ClientSessionHandler extends IoHandlerAdapter {
 
     private IDataHandler handler;
-    private boolean isReconect = true;
 
     public ClientSessionHandler(IDataHandler handler){
         this.handler = handler;

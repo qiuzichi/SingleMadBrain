@@ -67,6 +67,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
      */
     @Override
     public void memoryTimeToEnd(int memory) {
+        super.memoryTimeToEnd(memory);
         service.mode = 1;
         current = 0;
         service.shuffle();
@@ -79,6 +80,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     }
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
+        super.rememoryTimeToEnd(answerTime);
         if (isMatchMode()){
             mActivity.finish();
         }else {
@@ -131,12 +133,20 @@ public class AbsFigureFragment extends BasicCommonFragment {
             adapter.getItem(current).setAnswerId(i);
         }
         preAnswer = current;
+        progress = 100+current*100/service.allFigures.size();
+        if (progress < 101){
+            progress = 101;
+        }else if (progress> 199){
+            progress = 199;
+        }
+        if (current == service.allFigures.size() -1){//已经是最后一个，就不需要再往下设置背景了
+            return;
+        }
         current++;
         View curr = gridView.getChildAt(current - visiblePosition);
         if (curr != null) {
             TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
             currTv.setBackgroundColor(getResources().getColor(R.color.blue));
-
         }else{
             gridView.smoothScrollBy(gridView.getVerticalSpacing()+100,0);
         }

@@ -132,7 +132,6 @@ public abstract class BasicCommonFragment extends Fragment implements
     public void memoryTimeToEnd(int memoryTime) {
         if (isMatchMode()) {
             progress = 100;
-
             handler.sendEmptyMessage(MSG_PROGRESS);
         }
     }
