@@ -16,18 +16,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.adapter.MyRecyclerAdapter;
-import com.unipad.brain.consult.adapter.RecyclerViewHeader;
 import com.unipad.brain.consult.entity.AdPictureBean;
 import com.unipad.brain.consult.entity.ConsultTab;
 import com.unipad.brain.consult.listener.DividerDecoration;
@@ -54,7 +51,6 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * 推荐 新闻
@@ -81,6 +77,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     //返回的服务器 apk版本信息
     private VersionBean versionBean;
     private ConfirmUpdateDialog mConfirmDialog;
+    private RelativeLayout mRelativeLayoutVersion;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -99,13 +96,14 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private void initData() {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
+        mRelativeLayoutVersion = (RelativeLayout) getView().findViewById(R.id.rl_reminder_version);
+        ((ImageView) getView().findViewById(R.id.update_version_imgview)).setOnClickListener(this);
 
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWS, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_ADVERT, this);
         service.registerObserver(HttpConstant.NOTIFY_DOWNLOAD_APK, this);
-
 
     }
     private void initRecycler(){
@@ -184,21 +182,23 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
-                newsDatas.clear();
 
-                if(mRecyclerViewAdapter.getIsVisibility()){
-                    newsDatas.add(0, new NewEntity("header"));
-                }
-                requestPagerNum = 1;
-                service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        newsDatas.clear();
 
-                }
-            }, 1000);
+//                        if(mRecyclerViewAdapter.getIsVisibility()){
+//                            newsDatas.add(0, new NewEntity("header"));
+//                        }
+                        requestPagerNum = 1;
+                        service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+
+                    }
+                }, 1000);
             }
+
         });
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mActivity);
@@ -214,20 +214,25 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                if(requestPagerNum == totalPager){
+                   /* 最后一页 直接吐司 不显示下拉加载*/
+                    ToastUtil.showToast(getString(R.string.loadmore_null_data));
+                    return;
+                }
 
+                /*禁用下拉刷新功能    */
+                mSwipeRefreshLayout.setEnabled(false);
                 newsDatas.add(null);
                 mRecyclerViewAdapter.notifyItemInserted(newsDatas.size() - 1);
                 loadMoreData(true);
                 mRecyclerViewAdapter.setLoading(true);
-
-            }
+                }
         });
 
         mRecyclerViewAdapter.setmOnShowUpdateDialgo(new OnShowUpdateDialgo() {
             @Override
             public void showDialogUpdate() {
                 showUpdateVersionDialog(mActivity);
-
             }
         });
 
@@ -248,20 +253,22 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mAdvertLuobo.setAdapter(adAdapter);
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //默认加载第一个页面的时候 设置可见
-        setUserVisibleHint(true);
-    }
-
     private boolean checkVersionIsNew(){
+//        PackageManager pm = mActivity.getPackageManager();
+//        PackageInfo pi = null;
+//        try {
+//            pi = pm.getPackageInfo(mActivity.getPackageName(), 0);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        String versionName = pi.versionName;
+//        String versioncode = pi.versionCode;
         String versionName = getString(R.string.versionName);
 
         if(versionName.equals(versionBean.getVersion())){
             return true;
         }
+        ((TextView)getView().findViewById(R.id.text_update_version)).setText(getString(R.string.check_version) + versionBean.getVersion());
         return  false;
     }
 
@@ -272,7 +279,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             //从网络下载文件
             downloadApkFile(versionBean.getPath());
             //点击确认更新 隐藏提示栏 删除header item
-            mRecyclerViewAdapter.setHeadVisibility(false);
+            mRelativeLayoutVersion.setVisibility(View.GONE);
         }
 
         @Override
@@ -290,7 +297,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     //显示dialog  以及 通知栏 有新版本
     private void showUpdateVersionDialog(Context context) {
-        showNotification();
         mConfirmDialog = new ConfirmUpdateDialog(context, getString(R.string.update_version_title) + versionBean.getVersion(),
                 versionBean.getInfoDescription(), getString(R.string.cancel),  getString(R.string.confirm_update), mDialogListener);
         mConfirmDialog.show();
@@ -340,7 +346,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             if(!isGetData){
                 service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
                 service.getAdverts(ConsultTab.INTRODUCATION.getTypeId());
-
                 service.getApkVersion();
                 Log.d("introduction visit ", "获取消息 界面可见");
                 isGetData = true;
@@ -397,6 +402,13 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        //第一个节目  当节目可见 获取数据
+        setUserVisibleHint(true);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         clear();
@@ -424,29 +436,40 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
     private void loadMoreData(final Boolean isLoading){
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isLoading) {
-                    mRecyclerViewAdapter.setLoading(false);
-                    newsDatas.remove(newsDatas.size() - 1);
-                    mRecyclerViewAdapter.notifyItemRemoved(newsDatas.size());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (isLoading) {
+                        mRecyclerViewAdapter.setLoading(false);
+                        newsDatas.remove(newsDatas.size() - 1);
+                        mRecyclerViewAdapter.notifyItemRemoved(newsDatas.size());
 
-                    if (requestPagerNum != totalPager) {
-                        service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
-                    } else {
-                        mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
-                        //重新加载adapter 不然不更新数据
-                        mRecyclerView.setAdapter(mRecyclerViewAdapter);
-                        ToastUtil.showToast("最后一页  已经没有新的数据了");
+                        if (requestPagerNum != totalPager) {
+                            service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+                        } else {
+                            mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
+                            //重新加载adapter 不然不更新数据
+                            mRecyclerView.setAdapter(mRecyclerViewAdapter);
+                            ToastUtil.showToast(getString(R.string.loadmore_null_data));
+                        }
+                         /*允许下拉刷新    */
+                        mSwipeRefreshLayout.setEnabled(true);
                     }
                 }
-            }
-        }, 3000);
+            }, 3000);
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.update_version_imgview:
+                //
+                showUpdateVersionDialog(mActivity);
+                break;
+            default:
+                break;
+        }
+
     }
 
     //广告轮播图的 adapter
@@ -505,10 +528,15 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     return;
                 }
 
-                if(mRecyclerViewAdapter != null && !checkVersionIsNew()){
-                    mRecyclerViewAdapter.setHeadVisibility(true);
 
+                if(mRecyclerViewAdapter != null && !checkVersionIsNew()) {
+                    //版本不一致的时候 显示textview
+                    mRelativeLayoutVersion.setVisibility(View.VISIBLE);
+                    showNotification();
                 }
+//                if(mRecyclerViewAdapter != null && !checkVersionIsNew()){
+//                    mRecyclerViewAdapter.setHeadVisibility(true);
+//                }
 
                 break;
             default:

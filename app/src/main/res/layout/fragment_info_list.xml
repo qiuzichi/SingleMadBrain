@@ -13,11 +13,10 @@
             android:id="@+id/iv_header"
             android:layout_width="@dimen/head_portrait_width"
             android:layout_height="@dimen/head_portrait_width"
-            android:src="@drawable/user_default_photo"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_10dip"
             android:layout_marginRight="@dimen/margin_10dip"
-            ></ImageView>
+            android:src="@drawable/set_headportrait" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,46 +25,37 @@
             android:layout_toRightOf="@+id/iv_header"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/tv_uese_name_consult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_interval">
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:textSize="@dimen/common_text_24"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/about_us"/>
-            </RelativeLayout>
+                android:text="@string/about_us"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_text_24" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white">
-            </View>
+                android:background="@color/white" />
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/tv_uese_level_consult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_interval"
-                >
+                android:drawableLeft="@drawable/user_favorite"
+                android:drawablePadding="@dimen/margin_5dip"
+                android:layout_gravity="center"
+                android:text="@string/person_level"
+                android:textColor="@color/white"
+                android:textSize="@dimen/person_name_size" />
 
-                <ImageView
-                    android:id="@+id/iv_heart"
-                    android:layout_width="@dimen/favorite_height"
-                    android:layout_height="@dimen/favorite_height"
-                    android:layout_alignBottom="@+id/tv_address"
-                    android:src="@drawable/heart"/>
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/person_name_size"
-                    android:layout_marginLeft="@dimen/margin_interval"
-                    android:layout_toRightOf="@id/iv_heart"
-                    android:text="@string/person_level"/>
-            </RelativeLayout>
         </LinearLayout>
 
     </RelativeLayout>
@@ -75,8 +65,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_header"
+        android:background="@color/cosult_bg_light_blue"
         android:divider="#00000000"
         android:dividerHeight="0dip"
-        android:listSelector="@android:color/transparent"
-        android:background="@color/cosult_bg_light_blue"></ListView>
+        android:listSelector="@android:color/transparent"></ListView>
 </RelativeLayout>

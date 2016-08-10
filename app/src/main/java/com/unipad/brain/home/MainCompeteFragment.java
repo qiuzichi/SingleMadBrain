@@ -1,7 +1,12 @@
 package com.unipad.brain.home;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +15,29 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.slidingmenu.lib.SlidingMenu;
+import com.unipad.AppContext;
+import com.unipad.IcoreTimeChange;
 import com.unipad.brain.R;
+import com.unipad.brain.dialog.ShowDialog;
 import com.unipad.brain.home.bean.HomeBean;
 import com.unipad.brain.home.bean.ProjectBean;
 import com.unipad.brain.home.competitionpj.view.HomePresenter;
-import com.unipad.common.CommonActivity;
 import com.unipad.common.Constant;
-import com.unipad.common.bean.CompeteItemEntity;
+import com.unipad.common.PractiseGameActivity;
+import com.unipad.http.HttpConstant;
+import com.unipad.utils.PicUtil;
+import com.unipad.utils.SharepreferenceUtils;
+import com.unipad.utils.ToastUtil;
+import com.unipad.utils.Util;
+
+import org.xutils.common.Callback;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +45,15 @@ import java.util.List;
 /**
  * yzj----项目:虚拟事件
  */
-public class MainCompeteFragment extends MainBasicFragment {
+public class MainCompeteFragment extends MainBasicFragment  {
     private RelativeLayout relatlayout;
     private ListView lv_project;
     private FrameLayout fl_project;
-    private TextView txt_title;
-    private TextView txt_attention_content;
-    private TextView txt_memory_content;
-    private TextView txt_recall_content;
-    private TextView txt_function_content;
+//    private TextView txt_title;
+//    private TextView txt_attention_content;
+//    private TextView txt_memory_content;
+//    private TextView txt_recall_content;
+//    private TextView txt_function_content;
     //比赛项目
     private TextView txt_pname;
     //城市赛
@@ -45,8 +62,8 @@ public class MainCompeteFragment extends MainBasicFragment {
     private TextView txt_china_memory, txt_china_recall;
     //世界赛
     private TextView txt_world_memory, txt_world_recall;
-    //帮助按钮
-    private ImageView img_phelp;
+    //时间设置
+    private TextView tv_set;
     /**
      * Fragment界面父布局
      */
@@ -58,19 +75,63 @@ public class MainCompeteFragment extends MainBasicFragment {
     private String next = "";
     HomeListAdapter homeListAdapter = new HomeListAdapter();
 
+    private TextView set_tital_slidmenu;
+
+    private long binaryAnswerTime, binaryMemoryTime;
+    private TextView binaryMemoryText, binaryAnswerText;
+    private ShowDialog showDialog;
+    private RelativeLayout rl_competitionMode;
+    private String mCompetitionMode;
+    private RadioGroup mRadioGroup;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
 
+
         this.setSidebar();
+
         lv_project = (ListView) mActivity.findViewById(R.id.lv_project);
         fl_project = (FrameLayout) mActivity.findViewById(R.id.fl_project);
-        txt_title = (TextView) mActivity.findViewById(R.id.txt_title);
-        txt_attention_content = (TextView) mActivity.findViewById(R.id.txt_attention_content);
-        txt_memory_content = (TextView) mActivity.findViewById(R.id.txt_memory_content);
-        txt_recall_content = (TextView) mActivity.findViewById(R.id.txt_recall_content);
-        txt_function_content = (TextView) mActivity.findViewById(R.id.txt_function_content);
+//        txt_title = (TextView) mActivity.findViewById(R.id.txt_title);
+//        txt_attention_content = (TextView) mActivity.findViewById(R.id.txt_attention_content);
+//        txt_memory_content = (TextView) mActivity.findViewById(R.id.txt_memory_content);
+//        txt_recall_content = (TextView) mActivity.findViewById(R.id.txt_recall_content);
+//        txt_function_content = (TextView) mActivity.findViewById(R.id.txt_function_content);
+
+        ((TextView)mActivity.findViewById(R.id.txt_uese_name)).setText(AppContext.instance().loginUser.getUserName());
+        ((TextView)mActivity.findViewById(R.id.txt_uese_level)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
+
+        final ImageView user_photo = (ImageView)mActivity.findViewById(R.id.iv_user_pic);
+
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
+            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map = PicUtil.drawableToBitmap(drawable);
+                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    user_photo.setImageResource(R.drawable.set_headportrait);
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        }else {
+            user_photo.setImageResource(R.drawable.set_headportrait);
+        }
+
         txt_pname = (TextView) mActivity.findViewById(R.id.txt_pname);
         txt_city_memory = (TextView) mActivity.findViewById(R.id.txt_city_memory);
         txt_city_recall = (TextView) mActivity.findViewById(R.id.txt_city_recall);
@@ -78,10 +139,11 @@ public class MainCompeteFragment extends MainBasicFragment {
         txt_china_recall = (TextView) mActivity.findViewById(R.id.txt_china_recall);
         txt_world_memory = (TextView) mActivity.findViewById(R.id.txt_world_memory);
         txt_world_recall = (TextView) mActivity.findViewById(R.id.txt_world_recall);
-        img_phelp = (ImageView) mActivity.findViewById(R.id.img_phelp);
+        tv_set = (TextView) mActivity.findViewById(R.id.txt_set_competition_time);
         relatlayout = (RelativeLayout) mActivity.findViewById(R.id.relatlayout);
         mActivity.findViewById(R.id.btn_apple).setOnClickListener(this);//比赛报名
-        img_phelp.setOnClickListener(this);
+        mActivity.findViewById(R.id.btn_exercise).setOnClickListener(this);//练习模式
+        tv_set.setOnClickListener(this);
 
         relatlayout.setVisibility(View.GONE);
         lv_project.setAdapter(homeListAdapter);//(new nvvervi());
@@ -93,9 +155,12 @@ public class MainCompeteFragment extends MainBasicFragment {
                     relatlayout.setVisibility(View.VISIBLE);
                 }
 
-                     projectindex = position;
+                projectindex = position;
                 homeListAdapter.notifyDataSetChanged();
                 txt_pname.setText(homeBeans.get(position).projectBean.getName());
+                /*侧滑菜单设置*/
+                set_tital_slidmenu.setText(homeBeans.get(position).projectBean.getName());
+
                 txt_city_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[0]);
                 txt_city_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[0]);
                 txt_china_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[1]);
@@ -103,9 +168,15 @@ public class MainCompeteFragment extends MainBasicFragment {
                 txt_world_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[2]);
                 txt_world_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[2]);
 
+
                 if (position == 6 || position == 9) {
                     return;
                 }
+
+                if(position == 1 || position == 2 || position ==4){
+                    rl_competitionMode.setVisibility(View.VISIBLE);
+                }
+
 
 
             }
@@ -135,12 +206,19 @@ public class MainCompeteFragment extends MainBasicFragment {
                 intent.putExtra("projectBean", homeBeans.get(projectindex).projectBean);
                 this.startActivity(intent);
                 break;
-            case R.id.img_phelp:
+            case R.id.txt_set_competition_time:
                 setMenuOpen();
+                //设置时间 每次都会读取本地保存的数据
+                setMemoryTime();
                 break;
             case R.id.img_close:
                 menu.toggle();
                 break;
+            case R.id.btn_exercise:  //练习模式
+                Intent praIntent = new Intent(mActivity, PractiseGameActivity.class);
+                praIntent.putExtra("projectId", homeBeans.get(projectindex).projectBean.getProjectId());
+                this.startActivity(praIntent);
+
             default:
                 break;
         }
@@ -191,6 +269,7 @@ public class MainCompeteFragment extends MainBasicFragment {
         homeBeans.add(sjcyBean);
         homeBeans.add(thnumBean);
         homeBeans.add(kspkBean);
+
     }
 
     class HomeListAdapter extends BaseAdapter {
@@ -269,6 +348,32 @@ public class MainCompeteFragment extends MainBasicFragment {
         menu.setMenu(R.layout.sliding_menu_layout);
         // 得到View对象
         View view = menu.getMenu();
+
+        set_tital_slidmenu = (TextView) view.findViewById(R.id.txt_title_project);
+        rl_competitionMode = (RelativeLayout) view.findViewById(R.id.rl_competition_mode_set);
+        mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_group_competition_mode);
+        mCompetitionMode = "0";
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (group.getCheckedRadioButtonId()) {
+                    case R.id.btn_default_mode:
+                        mCompetitionMode = "2";
+                        break;
+                    case R.id.btn_default_mode_3:
+                        mCompetitionMode = "3";
+                        break;
+                    case R.id.btn_default_mode_4:
+                        mCompetitionMode = "4";
+                        break;
+                }
+            }
+        });
+
+        binaryMemoryText = (TextView) view.findViewById(R.id.binary_memory_set_show);
+        binaryAnswerText = (TextView) view.findViewById(R.id.binary_answer_set_show);
+
         // 设置点击事件
         view.findViewById(R.id.img_close).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,8 +381,80 @@ public class MainCompeteFragment extends MainBasicFragment {
                 menu.toggle();
             }
         });
-        //注意
+
+        view.findViewById(R.id.binary_memory_item).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* 设置记忆比赛时间点击事件*/
+                Util.createSetting(getActivity(),
+                        binaryMemoryTime, new IcoreTimeChange() {
+                            @Override
+                            public void callback(long value) {
+                                binaryMemoryTime = value;
+                                binaryMemoryText.setText(Util
+                                        .dateFormat(binaryMemoryTime));
+                            }
+                        }).show();
+
+            }
+        });
+
+        view.findViewById(R.id.binary_answer_item).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* 设置答题时间点击事件*/
+                Util.createSetting(getActivity(),
+                        binaryAnswerTime, new IcoreTimeChange() {
+                            @Override
+                            public void callback(long value) {
+                                binaryAnswerTime = value;
+                                binaryAnswerText.setText(Util
+                                        .dateFormat(binaryAnswerTime));
+                            }
+                        }).show();
+            }
+        });
+
+
+
+        view.findViewById(R.id.confirm_btn_setting).setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                //当确认修改  保存数据本地  以  _ 分割 2个时间  比赛模式设置
+               String time = binaryMemoryTime + "_" + binaryAnswerTime + "_" + mCompetitionMode;
+               SharepreferenceUtils.writeString(homeBeans.get(projectindex).projectBean.getProjectId(), time);
+               ToastUtil.showToast("设置成功");
+               }
+           }
+        );
         return view;
+    }
+
+
+
+    private void setMemoryTime(){
+        String s  = SharepreferenceUtils.getString(
+                homeBeans.get(projectindex).projectBean.getProjectId(), "300_300_0");
+        String[] time = s.split("_");
+        mCompetitionMode = time[2];
+        binaryAnswerTime = Integer.parseInt(time[1]);
+        binaryMemoryTime = Integer.parseInt(time[0]);
+
+        binaryAnswerText.setText(Util
+                .dateFormat(binaryAnswerTime));
+        binaryMemoryText.setText(Util
+                .dateFormat(binaryMemoryTime));
+        if(rl_competitionMode.getVisibility() == View.VISIBLE){
+           if("0".equals(mCompetitionMode)){
+               mRadioGroup.clearCheck();
+           }else if("2".equals(mCompetitionMode)){
+               mRadioGroup.check(R.id.btn_default_mode);
+            }else if("3".equals(mCompetitionMode)){
+               mRadioGroup.check(R.id.btn_default_mode_3);
+            }else if("4".equals(mCompetitionMode)){
+               mRadioGroup.check(R.id.btn_default_mode_4);
+            }
+        }
     }
 
 }

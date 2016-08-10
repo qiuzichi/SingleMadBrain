@@ -10,9 +10,12 @@ public class HttpConstant {
     public static final String FORGET_PWD = "/api/user/forget";
     public static final String DOWNLOAD_QUESTION ="/api/file/download" ;
     public static final String GET_QUESTION = "/api/match/getQuestion";
+
+
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String HisRecord="/api/match/history";
+    public static String ExerRecord="api/practice/history";
     public static String GET_NEWS_LIST = "/api/news/list";
     public static String GET_NEWS_VERSION = "/pub/apk/last";
     //赛事排名
@@ -42,7 +45,7 @@ public class HttpConstant {
      */
     public static String APPLY_GAME = "/api/match/apply";
     // 获取图片路径 http://192.168.0.104:8090/crazybrain-mng
-    public static final String url = "http://192.168.0.104:8090/crazybrain-mng";
+    public static final String url = "http://192.168.0.200:8090/crazybrain-mng";
 
     public static String PATH_FILE_URL  = url +  "/image/getFile?filePath=";
     // 更新用户信息
@@ -63,8 +66,8 @@ public class HttpConstant {
     public static String GET_CITY_GAME = "/api/match/getMatchByCity";
     // 关注 取消关注
     public static String ATTENTION_HTTP = "/api/match/operate";
-
-
+    /**随机获取题目*/
+    public static String RANDOM_GET_QUESTION = "/api/practice/getQuestion";
 
     public static int JSON_ERREO = -2;
     public static final int LOGIN_UPDATE_UI = 0x10000;
@@ -79,8 +82,8 @@ public class HttpConstant {
     public static final int CHINA_APPLY_GAME = 0x10006;
     public static final int WORD_APPLY_GAME = 0x10007;
     public static final int GET_RULE_NOTIFY = 0x10008;
-
-
+    public static final int GET_RANDOM_QUESTION_ERR = 0x10009;
+    public static final int GET_RANDOM_QUESTION_OK = 0x10010;
 
     // 实名认证
     public static final int USER_AUTH=0x10100;
@@ -119,6 +122,7 @@ public class HttpConstant {
     public static final int STRAT_MEMORY=0x18011;
     public static final int START_ANSWER = 0x18012;
     public static final int END_ANSWER=0x18013;
+    public static final int EXECISE_DATA=0x18014;
 
     // 获取省份列表
     public static final int GET_PROVINCE = 0x10900;

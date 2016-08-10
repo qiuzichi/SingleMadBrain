@@ -291,6 +291,21 @@ public class HeadService extends AbsBaseGameService{
         handDownQuestion(data);
     }
 
+    @Override
+    public void downloadResource(String questionId) {
+        String fileDir = Constant.GAME_FILE_PATH;
+        HitopDownLoad httpDown = new HitopDownLoad();
+        httpDown.buildRequestParams("questionId", questionId);
+        String filePath = fileDir + "/question.zip";
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+        }
+        httpDown.setService(this);
+        httpDown.downLoad(filePath);
+
+    }
+
     private void handDownQuestion(Map<String, String> mData) {
             String fileDir = Constant.GAME_FILE_PATH;
             HitopDownLoad httpDown = new HitopDownLoad();

@@ -20,19 +20,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.adapter.DragAdapter;
 import com.unipad.brain.quickPoker.adapter.OtherAdapter;
 import com.unipad.brain.quickPoker.dao.QuickCardService;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
-import com.unipad.brain.quickPoker.entity.PokerEntity;
 import com.unipad.brain.quickPoker.view.widget.DragGrid;
 import com.unipad.brain.quickPoker.view.widget.OtherGridView;
 import com.unipad.brain.quickPoker.view.widget.QuickPokerBrowseHorizontalView;
 import com.unipad.brain.quickPoker.view.widget.QuickPokerBrowseVerticalView;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
-import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -77,7 +76,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     /**
      * 顶部扑克牌列表
      */
-    ArrayList<ChannelItem> userChannelList;
+    ArrayList<ChannelItem> userChannelList ;
     /**
      * 底部扑克牌列表
      */
@@ -110,7 +109,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         mStubAnswerShade = mViewParent.findViewById(R.id.view_shade_answer);
         mSingleLineLayout = (QuickPokerBrowseHorizontalView) mViewParent
                 .findViewById(R.id.browse_proker_single_mode);
-        service = (QuickCardService) mActivity.getService();
+        service = (QuickCardService) AppContext.instance().getService(Constant.QUICK_POKER_SERVICE);
     }
 
     @Override
@@ -137,8 +136,8 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     @Override
     public void initDataFinished() {
         super.initDataFinished();
-        if (mBrowseLayout.getParent() == null) {
-            mViewParent.addView(mBrowseLayout);
+        if (mBrowseLayout.getParent() != null) {
+            mViewParent.removeView(mBrowseLayout);
         }
         if (answerViewParent != null) {
             mViewParent.removeView(answerViewParent);
@@ -150,6 +149,9 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     @Override
     public void startMemory() {
         super.startMemory();
+        if (mBrowseLayout.getParent() == null) {
+            mViewParent.addView(mBrowseLayout);
+        }
         mStubAnswerShade.setVisibility(View.GONE);
     }
 
@@ -176,11 +178,12 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
             otherGridView = (OtherGridView) answerViewParent
                     .findViewById(R.id.otherGridView);
             leftCards = (TextView) answerViewParent.findViewById(R.id.remain_poker_nums);
-            userAdapter = new DragAdapter(mActivity, userChannelList);
+            userChannelList = new ArrayList<>();
+            userAdapter = new DragAdapter(getActivity(), userChannelList);
 
             userGridView.setAdapter(userAdapter);
             otherChannelList = new ArrayList<>(service.getBottomCards());
-            otherAdapter = new OtherAdapter(mActivity, otherChannelList, R.layout.quick_poker_v_answer_item);
+            otherAdapter = new OtherAdapter(getActivity(), otherChannelList, R.layout.quick_poker_v_answer_item);
             otherGridView.setAdapter(this.otherAdapter);
             leftCards.setText(" " + otherAdapter.getChannnelLst().size() + " ");
             otherGridView.setOnItemClickListener(this);
@@ -197,7 +200,27 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
      * 结束答题
      */
     public void endAnswerMode(int time) {
+        StringBuilder userData = new StringBuilder();
+        for (ChannelItem item:userChannelList){
+            userData.append(item.resId-R.drawable.poker_fangkuai_01+1).append("_");
+        }
+        userData.deleteCharAt(userData.length()-1);
+        service.setUserData(userData.toString());
+        if (service.isLastRound()){
+            ToastUtil.showToast("本场比赛结束，退出比赛");
+            getActivity().finish();
+        }else {
+            ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, "开始准备下一轮").show();
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    service.parseDataByRound();
+                }
+            }.start();
+        }
 
+        /**
         ArrayList<ChannelItem> oringe = PokerEntity.getInstance().getPokerSortArray();
         int answer = 0;
         String errorText = "";
@@ -235,6 +258,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                         }.start();
                     }
                 }).show();
+         */
 
     }
 

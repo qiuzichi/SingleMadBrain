@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
 import com.unipad.brain.quickPoker.entity.PokerEntity;
@@ -107,10 +108,14 @@ public class DragAdapter extends BaseAdapter {
 		Log.d(TAG, "startPostion=" + dragPostion + ";endPosition="
 				+ dropPostion);
 		if (dragPostion < dropPostion) {
-			channelList.add(dropPostion + 1, dragItem);
+			if (dropPostion == getCount()){//落点是不是最后一个位置，
+				channelList.add(dragItem);
+			}else {
+				channelList.add(dropPostion + 1, dragItem);
+			}
 			channelList.remove(dragPostion);
 		} else {
-			channelList.add(dropPostion, dragItem);
+			channelList.add(dropPostion+1, dragItem);
 			channelList.remove(dragPostion + 1);
 		}
 		isChanged = true;

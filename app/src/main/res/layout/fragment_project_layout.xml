@@ -4,280 +4,312 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg">
-    
-   <LinearLayout 
-       android:layout_height="match_parent"
-       android:layout_width="match_parent"
-       android:orientation="vertical">
-       <RelativeLayout 
-           android:layout_height="wrap_content"
-           android:layout_width="match_parent"
-           android:gravity="bottom"
-           android:layout_weight="1">
-           
-           <TextView
-               android:id="@+id/txt_pname"
-               android:layout_height="wrap_content"
-               android:layout_width="wrap_content"
-               android:textColor="@color/main_1"
-               android:textSize="30sp"
-               android:layout_centerHorizontal="true"/>
-       </RelativeLayout>
-       
-       <LinearLayout 
-       android:layout_height="wrap_content"
-       android:layout_width="match_parent"
-       android:orientation="vertical"
-       android:paddingRight="50dp"
-       android:paddingLeft="50dp"
-       android:paddingTop="20dp"
-       android:layout_weight="7">
-           <LinearLayout 
-               android:layout_height="match_parent"
-               android:layout_width="match_parent"
-               android:background="@drawable/item_bg"
-               android:orientation="vertical">
-               <RelativeLayout 
-                   android:layout_height="wrap_content"
-                   android:layout_width="wrap_content"
-                   android:layout_marginTop="10dp">
-                    <TextView 
-                   android:layout_height="wrap_content"
-                   android:layout_width="wrap_content"
-                   android:textColor="@color/black"
-                   android:textSize="30sp"
-                   android:layout_centerInParent="true"
-                   android:text="@string/action_rule"/>
-                    
-                    <ImageView 
-                        android:id="@+id/img_phelp"
-                        android:layout_height="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom">
+
+            <TextView
+                android:id="@+id/txt_pname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/main_1"
+                android:textSize="30sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:paddingTop="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/item_bg"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:src="@drawable/help"
-                        android:layout_marginRight="10dp"
-                        android:layout_alignParentRight="true"/>
-               </RelativeLayout>
-               
-               <TextView
-                   android:id="@+id/txt_target" 
-                   android:layout_height="wrap_content"
-                   android:layout_width="fill_parent"
-                   android:textSize="22sp"
-                   android:padding="5dp"/>
-               
-               
-               <LinearLayout 
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:orientation="horizontal">
-                   
-                   <FrameLayout
-                       android:layout_width="match_parent"
-                   		android:layout_height="match_parent"
-                   		android:layout_weight="3">
-                           <LinearLayout 
-                               android:layout_height="180dp"
-                               android:layout_width="180dp"
-                               android:orientation="vertical"
-                               android:layout_gravity="center"
-                               android:background="@drawable/yj_project_1_bg" 
-                               android:alpha="0.1">
-                               
-                           </LinearLayout>
-                           
-                           <LinearLayout 
-                               android:layout_height="180dp"
-                               android:layout_width="180dp"
-                               android:layout_gravity="center"
-                               android:padding="3dp"
-                               android:orientation="vertical">
-                               <TextView 
-                                      android:layout_height="wrap_content"
-                                      android:layout_width="wrap_content"
-                                      android:textSize="24sp"
-                                      android:textColor="@color/main_1"
-                                      android:layout_gravity="center_horizontal"
-                                      android:layout_weight="3"
-                                      android:paddingTop="3dp"
-                                      android:text="@string/message_city"/>
-                               
-                               <TextView 
-                                   android:id="@+id/txt_city_memory"
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="24sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                               
-                               <TextView 
-                                    android:id="@+id/txt_city_recall"
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="24sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                               
-                               <TextView 
-                                   android:id="@+id/txt_city_num"
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="24sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                           </LinearLayout>
-                       
-                   </FrameLayout>
-                   
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/action_rule"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        >
+                        <ImageView
+                            android:id="@+id/img_phelp"
+                            android:visibility="gone"
+                            android:layout_width="@dimen/margin_30dp"
+                            android:layout_height="@dimen/margin_30dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/help" />
+                        <TextView
+                            android:id="@+id/txt_set_competition_time"
+                            android:clickable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/img_phelp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginRight="@dimen/margin_10dip"
+                            android:text="@string/set_time"
+                            android:textSize="@dimen/common_text_22"
+                            />
+
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/txt_target"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="22sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
                     <FrameLayout
-                       android:layout_width="match_parent"
-                   		android:layout_height="match_parent"
-                   		
-                   		android:layout_weight="3">
-                           <LinearLayout 
-                               android:layout_height="200dp"
-                               android:layout_width="200dp"
-                               android:background="@drawable/yj_project_2_bg"
-                               android:layout_marginTop="50dp"
-                               android:layout_marginLeft="20dp"
-                                android:alpha="0.1">
-                               
-                           </LinearLayout>
-                           
-                           <LinearLayout 
-                               android:layout_height="200dp"
-                               android:layout_width="200dp"
-                               android:layout_marginTop="50dp"
-                               android:layout_marginLeft="20dp"
-                               android:padding="3dp"
-                               android:orientation="vertical">
-                               <TextView 
-                                    
-                                      android:layout_height="wrap_content"
-                                      android:layout_width="wrap_content"
-                                      android:textSize="26sp"
-                                      android:textColor="@color/main_1"
-                                      android:layout_gravity="center_horizontal"
-                                      android:paddingTop="5dp"
-                                      android:layout_weight="3"
-                                      android:text="@string/message_china"/>
-                               
-                                <TextView 
-                                    android:id="@+id/txt_china_memory"
-                                    
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="26sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                               
-                               <TextView 
-                                    android:id="@+id/txt_china_recall"
-                                    
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="26sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                               
-                               <TextView 
-                                   android:id="@+id/txt_china_num"
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="26sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                           </LinearLayout>
-                       
-                   </FrameLayout>
-                   
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3">
+
+                        <LinearLayout
+                            android:layout_width="180dp"
+                            android:layout_height="180dp"
+                            android:layout_gravity="center"
+                            android:alpha="0.1"
+                            android:background="@drawable/yj_project_1_bg"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="180dp"
+                            android:layout_height="180dp"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:padding="3dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:paddingTop="3dp"
+                                android:text="@string/message_city"
+                                android:textColor="@color/main_1"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/txt_city_memory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/txt_city_recall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/txt_city_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="24sp" />
+                        </LinearLayout>
+
+                    </FrameLayout>
+
                     <FrameLayout
-                       android:layout_width="match_parent"
-                   		android:layout_height="match_parent"
-                   		android:layout_weight="3">
-                           <LinearLayout 
-                               android:layout_height="160dp"
-                               android:layout_width="160dp"
-                               android:layout_gravity="center_vertical"
-                               android:background="@drawable/yj_project_3_bg"
-                                android:alpha="0.2"/>
-                           
-                           <LinearLayout 
-                              android:layout_height="160dp"
-                               android:layout_width="160dp"
-                               android:layout_gravity="center_vertical"
-                               android:padding="3dp"
-                               android:orientation="vertical">
-                               <TextView 
-                                      android:layout_height="wrap_content"
-                                      android:layout_width="wrap_content"
-                                      android:textSize="22sp"
-                                      android:textColor="@color/main_1"
-                                      android:layout_gravity="center_horizontal"
-                                      android:paddingTop="3dp"
-                                      android:layout_weight="3"
-                                      android:text="@string/message_world"/>
-                               
-                                <TextView 
-                                    android:id="@+id/txt_world_memory"
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="22sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                               
-                               <TextView 
-                                   android:id="@+id/txt_world_recall"
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="22sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                               
-                               <TextView 
-                                   android:id="@+id/txt_world_num"
-                                   android:layout_height="wrap_content"
-                                   android:layout_width="wrap_content"
-                                    android:textSize="22sp"
-                                   android:textColor="@color/black"
-                                   android:layout_weight="3"
-                                   android:layout_gravity="center_horizontal"/>
-                               
-                           </LinearLayout>
-                       
-                   </FrameLayout>
-               </LinearLayout>
-           </LinearLayout>
-       </LinearLayout>
-       <LinearLayout 
-       android:layout_height="wrap_content"
-       android:layout_width="match_parent"
-       android:orientation="horizontal"
-       android:gravity="center"
-       android:layout_weight="1">
-               <Button 
-                   android:id="@+id/btn_apple"
-              android:layout_height="wrap_content"
-              android:layout_width="wrap_content"      
-              android:layout_marginRight="20dp"   
-              android:background="@drawable/apple"
-              android:textColor="@color/white"
-                android:text="@string/str_apply"/>
-               
-               <Button 
-                   android:layout_height="wrap_content"
-                   android:layout_width="wrap_content"
-                   android:layout_marginLeft="20dp"
-                   android:background="@drawable/exercise"
-                   android:textColor="@color/white"
-                   android:text="@string/str_exercise"/>
-       </LinearLayout>
-   </LinearLayout>
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="3">
+
+                        <LinearLayout
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="50dp"
+                            android:alpha="0.1"
+                            android:background="@drawable/yj_project_2_bg">
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="50dp"
+                            android:orientation="vertical"
+                            android:padding="3dp">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:paddingTop="5dp"
+                                android:text="@string/message_china"
+                                android:textColor="@color/main_1"
+                                android:textSize="26sp" />
+
+                            <TextView
+                                android:id="@+id/txt_china_memory"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="26sp" />
+
+                            <TextView
+                                android:id="@+id/txt_china_recall"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="26sp" />
+
+                            <TextView
+                                android:id="@+id/txt_china_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="26sp" />
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3">
+
+                        <LinearLayout
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center_vertical"
+                            android:alpha="0.2"
+                            android:background="@drawable/yj_project_3_bg" />
+
+                        <LinearLayout
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:padding="3dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:paddingTop="3dp"
+                                android:text="@string/message_world"
+                                android:textColor="@color/main_1"
+                                android:textSize="22sp" />
+
+                            <TextView
+                                android:id="@+id/txt_world_memory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="22sp" />
+
+                            <TextView
+                                android:id="@+id/txt_world_recall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="22sp" />
+
+                            <TextView
+                                android:id="@+id/txt_world_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="3"
+                                android:textColor="@color/black"
+                                android:textSize="22sp" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_apple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10dip"
+                android:background="@drawable/apple"
+                android:text="@string/str_apply"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10dip"
+                android:background="@drawable/exercise"
+                android:text="@string/str_exercise"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

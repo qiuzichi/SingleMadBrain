@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -37,26 +40,27 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     private HeadAdapter adapter;
     private GridView mListView;
     private HeadService service;
-    private ViewStub mStubShade;
+    private View mStubShade;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         LogUtil.e(" HeadPortraitFragment", "--..--onActivityCreated--");
         mListView = (GridView) mViewParent.findViewById(R.id.gridview);
-
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
 
         adapter = new HeadAdapter(mActivity, ((HeadService) service).data, R.layout.list_portrait);
         mListView.setAdapter(adapter);
-        mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+        mStubShade =  mViewParent.findViewById(R.id.view_shade);
     }
 
     @Override
     public void initDataFinished() {
         super.initDataFinished();
         adapter.notifyDataSetChanged();
-    mStubShade.setVisibility(View.VISIBLE);
-
+        mStubShade.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -84,6 +88,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     public void memoryTimeToEnd(int memoryTime) {
         super.memoryTimeToEnd(memoryTime);
         showAnserView();
+        sendMsgToPreper();
     }
 
     private void showAnserView() {
@@ -96,8 +101,12 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-        service.mode = 2;
-        adapter.notifyDataSetChanged();
+        if (isMatchMode()){
+            mActivity.finish();
+        }else {
+            service.mode = 2;
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -136,10 +145,14 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                 firstName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
+                        if (actionId== EditorInfo.IME_ACTION_NEXT){
+                            lastName.requestFocus();
+                            return true;
+                        }
                         return false;
                     }
                 });
+
                 firstName.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -156,6 +169,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                         person.setAnswerFirstName(firstName.getText().toString().trim());
                     }
                 });
+
                 lastName.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -177,10 +191,22 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         int visiblePosition = mListView.getFirstVisiblePosition();
                         View Preview = mListView.getChildAt(holder.getPosition() + 1 - visiblePosition);
+
                         if (null != Preview) {
+                            /*  下一个item 的firstName*/
                             EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
-                            LogUtil.e("","first:"+firstName.getText().toString());
+                            LogUtil.e("", "first:" + firstName.getText().toString());
                             firstName.requestFocus();
+                            if((holder.getPosition()+1) % mListView.getNumColumns() == 0){
+                                mListView.smoothScrollBy(mListView.getVerticalSpacing()+mListView.getChildAt(0).getHeight(),0);
+                            }
+                            return  true;
+
+                        }else if(mDatas.size() - 1 == mListView.getLastVisiblePosition()){
+                             /*到最后完成一个item  关闭软键盘*/
+                            lastName.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                            closeSofeInputMothed(lastName);
+                            return true;
                         }
                         return false;
                     }
@@ -203,6 +229,10 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                 answerHoleName.setVisibility(View.VISIBLE);
                 answerHoleName.setText(person.getAnswerFirstName() + "·" + person.getAnswerLastName());
             }
+        }
+        private void closeSofeInputMothed(View view){
+            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

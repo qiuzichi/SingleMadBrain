@@ -223,8 +223,8 @@ public class HomePresenter implements ISidebar {
 	}
 	
 	
-	@ViewInject(R.id.txt_title)
-	private TextView txt_title;
+//	@ViewInject(R.id.txt_title)
+//	private TextView txt_title;
 
 	
 	/**

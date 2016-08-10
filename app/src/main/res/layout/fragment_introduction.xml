@@ -5,47 +5,78 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_advert_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/adver_lunbo_height"
-        android:id="@+id/rl_advert_view">
+        android:layout_height="@dimen/adver_lunbo_height">
+
         <com.unipad.brain.consult.widget.RecommendGallery
             android:id="@+id/point_gallery"
-            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
             android:spacing="0dp"
             android:unselectedAlpha="1" />
+
         <com.unipad.brain.consult.widget.RecommendPot
             android:id="@+id/ad_pot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp" />
     </RelativeLayout>
-
-    <!--<ListView-->
-        <!--android:id="@+id/lv_introduction_listview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:divider="#00000000"-->
-        <!--android:dividerHeight="0dip"-->
-        <!--android:listSelector="@android:color/transparent"-->
-        <!--android:scrollbars="none" />-->
-
-
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_widget"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/lv_introduction_recyclerview"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cacheColorHint="@null"
-            android:layout_gravity="center_horizontal|top"
-            android:scrollbars="vertical" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_reminder_version"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_30dp"
+                android:background="@color/update_text_bg">
+
+                <TextView
+                    android:id="@+id/text_update_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/margin_10dip"
+                    android:layout_weight="7"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/light_blue2"
+                    android:textSize="@dimen/text_size_18" />
+
+
+                <ImageView
+                    android:id="@+id/update_version_imgview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/news_title_height"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/margin_5dip"
+                    android:layout_marginBottom="@dimen/margin_5dip"
+                    android:src="@drawable/arrow_right" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_below="@id/rl_reminder_version"
+                android:id="@+id/lv_introduction_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|top"
+                android:cacheColorHint="@null"
+                android:scrollbars="vertical" />
+
+        </RelativeLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

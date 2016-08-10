@@ -15,8 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.unipad.brain.R;
-import com.unipad.brain.absPic.bean.SystemBarTintManager;
-import com.unipad.brain.home.SApplication;
+
 
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)

@@ -30,12 +30,6 @@ public class HitopMatchStart extends HitopRequest<Object> {
         this.sevice.noticeDataChange(HttpConstant.USER_IN_GAEM,json);
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
-
     public void setSevice(GlobleObserService sevice) {
         this.sevice = sevice;
     }

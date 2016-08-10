@@ -75,9 +75,4 @@ public class HitopNewsComment extends HitopRequest<List<CommentBean>>{
         ((NewsService)AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(HttpConstant.NOTIFY_GET_COMMENT,newsList);
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

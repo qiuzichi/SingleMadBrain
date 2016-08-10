@@ -2,8 +2,11 @@ package com.unipad.common;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,16 +26,18 @@ import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
+import com.unipad.utils.PicUtil;
 
+import org.xutils.common.Callback;
 import org.xutils.x;
 
 import java.util.Map;
-
 /**
  * Created by Wbj on 2016/4/7.
  */
 public class CommonFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IDataObserver,IOperateGame{
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
+    private static final String TAG = "CommonFragment";
     private CommonActivity mActivity;
     private RelativeLayout mParentLayout;
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
@@ -46,7 +51,6 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     private ICommunicate mICommunicate;
     private SparseArray mColorArray = new SparseArray();
     private int memoryTime;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,7 +87,35 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
           //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}
 
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
+            x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map = PicUtil.drawableToBitmap(drawable);
+                    mIconImageView.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    mIconImageView.setImageResource(R.drawable.set_headportrait);
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        }else {
+            mIconImageView.setImageResource(R.drawable.set_headportrait);
+        }
     }
+
+
 
     /**
      * 获取背景颜色集合并设置示例图片背景
@@ -99,16 +131,6 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
     @Override
     public void onResume() {
@@ -125,6 +147,9 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LogUtil.e(TAG,"onDestory");
+        mActivity = null;
+        mICommunicate = null;
         ((HomeGameHandService)AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).unRegisterObserve(HttpConstant.GET_RULE_NOTIFY, this);
         mCountDownTime.stopCountTime();
         mColorArray.clear();
@@ -146,6 +171,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             }
 
         } else {//回忆模式下才可以提交答案
+
             this.commitAnswer(takeTIme);
         }
     }
@@ -154,25 +180,26 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mBtnCompeteMode.setText(R.string.end_memory);
         mBtnCompeteMode.setEnabled(true);
         mTextCompeteProcess.setText(R.string.memorying);
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round-1],false));
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round - 1], false));
 
     }
     public void startRememoryTimeCount(){
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1],false));
-        LogUtil.e("CommonFragment","第"+(mActivity.getService().round-1)+"轮的回忆时间为="+mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1]);
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round - 1], false));
+        LogUtil.e("CommonFragment", "第" + (mActivity.getService().round - 1) + "轮的回忆时间为=" + mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round - 1]);
     }
     /**
      * 提交答案
      */
-    private void commitAnswer(final int rememoryTime) {
+    private void commitAnswer(final  int rememoryTime) {
         mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
+            final int round = mActivity.getService().round;
             mICommunicate.rememoryTimeToEnd(rememoryTime);
             new Thread(){
                 @Override
                 public void run() {
                     super.run();
-                    SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),mActivity.getService().getScore(),memoryTime,rememoryTime,mActivity.getService().getAnswerData());
+                    SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),mActivity.getService().getScore(),memoryTime,rememoryTime,mActivity.getService().getAnswerData(),round);
                 }
             }.start();
         }
@@ -273,7 +300,6 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     public void finishGame() {
 
     }
-
     /**
      * CommonFragment对外通讯接口
      */

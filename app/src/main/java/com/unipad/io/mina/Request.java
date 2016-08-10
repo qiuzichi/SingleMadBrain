@@ -20,6 +20,7 @@ public class Request {
     /** 请求码*/
     private String textCode;
 
+    private int sendTime;
 
     public Request (String textCode,Map<String,String> body){
         this.textCode = textCode;
@@ -48,8 +49,11 @@ public class Request {
     }
 
 
+    public int getSendTime() {
+        return sendTime;
+    }
 
-
-
-
+    public void setSendTime(int sendTime) {
+        this.sendTime = sendTime;
+    }
 }

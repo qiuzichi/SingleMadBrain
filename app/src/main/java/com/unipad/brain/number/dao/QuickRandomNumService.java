@@ -17,4 +17,5 @@ public class QuickRandomNumService extends  NumService {
     public double getScore() {
         return super.getNumberScore(40f,20f,2f,1f,1)[0];
     }
+
 }

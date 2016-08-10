@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonActivity extends BasicActivity implements IDataObserver,IOperateGame{
+public class CommonActivity extends AbsMatchActivity implements IOperateGame{
     private static final String TAG = "CommonActivity" ;
     private CommonFragment mCommonFragment = new CommonFragment();
 
@@ -106,9 +106,9 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                     case PAUSE_GAME:
                         LogUtil.e(TAG,"PAUSE_GAME");
                         HIDDialog.dismissAll();
-                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
                         break;
                     case RESTAT_GAME:
                         LogUtil.e(TAG,"RESTAT_GAME");
@@ -140,6 +140,11 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
                         new Thread() {
                            @Override
                            public void run() {
+                               try {
+                                   Thread.sleep(5000);
+                               } catch (InterruptedException e) {
+                                   e.printStackTrace();
+                               }
                                SocketThreadManager.sharedInstance().
                                        downLoadQuestionOK(matchId, 100);
                                LogUtil.e("", "-------------下载完成-----------");
@@ -228,8 +233,12 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         super.onDestroy();
         gameFragment = null;
         mCommonFragment = null;
-        AppContext.instance().clearService(service);
+        matchId = null;
+        LogUtil.e(TAG,"destory");
+        service.setOperateGame(null);
         SocketThreadManager.sharedInstance().releaseInstance();
+        AppContext.instance().clearService(service);
+
     }
 
 
@@ -237,10 +246,6 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
         return mCommonFragment;
     }
 
-    @Override
-    public void update(int key, Object o) {
-
-    }
 
     @Override
     public void initDataFinished() {
@@ -255,6 +260,7 @@ public class CommonActivity extends BasicActivity implements IDataObserver,IOper
 
     @Override
     public void startMemory() {
+        progressGame(0);
         handler.sendEmptyMessage(STRAT_MEMORY);
     }
 

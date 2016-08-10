@@ -25,7 +25,7 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
 
     private static LongTcpClient instance;
 
-    private static final String HOSTNAME = "192.168.0.104";
+    private static final String HOSTNAME = "192.168.0.200";
 
     private static final int PORT = 7003;
 
@@ -125,7 +125,7 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
 
                     }
 
-                }catch(RuntimeIoException e){
+                }catch(Exception e){
                     System.err.println("Failed to connect.");
                         try {
                             Thread.sleep(5000);

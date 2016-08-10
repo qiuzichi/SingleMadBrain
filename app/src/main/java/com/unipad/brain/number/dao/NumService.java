@@ -189,13 +189,14 @@ public class NumService extends AbsBaseGameService {
         StringBuilder answerData = new StringBuilder();
         for (int i = 0;i<answer.size();i++) {
             answerData.append(answer.keyAt(i))
-                    .append("\\^")
+                    .append("^")
                     .append(answer.valueAt(i))
                     .append(",");
         }
         int length = answerData.length();
         if (length > 0)
         answerData.deleteCharAt(length-1);
+        LogUtil.e("","快速随机数;"+answerData.toString());
         return answerData.toString();
     }
 }

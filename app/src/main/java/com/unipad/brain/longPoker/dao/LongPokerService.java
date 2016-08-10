@@ -32,7 +32,7 @@ public class LongPokerService extends AbsBaseGameService {
 
     private SparseIntArray mPokerImageArray = new SparseIntArray();
 
-    private ArrayList<LongPokerEntity> pokers = new ArrayList<>();
+    private ArrayList<ChannelItem> pokers = new ArrayList<>();
 
     public ArrayList<LongPokerEntity> pokersQuestion = new ArrayList<>();
 
@@ -180,15 +180,16 @@ public class LongPokerService extends AbsBaseGameService {
     @Override
     public void parseData(String data) {
         super.parseData(data);
+        LogUtil.e("", "long Poker data:" + data);
         pokersQuestion.clear();
-        String [] allQu = textDefault.split(",");
+        String [] allQu = data.split("&");
         howMany = allQu.length;
         for (int i = 0; i < howMany; i++) {
             LongPokerEntity nullPoker = new LongPokerEntity();
             pokersQuestion.add(nullPoker);
             String[] allCard = allQu[i].split("_");
             for (int j = 0; j < allCard.length; j++) {
-                pokersQuestion.add(pokers.get(Integer.valueOf(allCard[j]) - 1));
+                pokersQuestion.add(new LongPokerEntity(pokers.get(Integer.valueOf(allCard[j]) - 1)));
             }
         }
         initDataFinished();
@@ -205,7 +206,21 @@ public class LongPokerService extends AbsBaseGameService {
 
     @Override
     public String getAnswerData() {
-        return null;
+        StringBuilder answerData = new StringBuilder();
+        for(int i = 0;i< pokersQuestion.size();i++){
+            if (i%53 == 0){
+                if (i != 0){
+                    answerData.deleteCharAt(answerData.length() - 1);
+                    answerData.append(",");
+                }
+                answerData.append(i/53).append("^");
+            }else{
+                answerData.append(pokersQuestion.get(i).getUserAnswer()).append("_");
+            }
+        }
+        answerData.deleteCharAt(answerData.length()-1);
+        LogUtil.e("","马拉松扑克牌用户答案："+answerData.toString());
+        return answerData.toString();
     }
 
     private void initCards() {
@@ -219,4 +234,6 @@ public class LongPokerService extends AbsBaseGameService {
             mPokerImageArray.put(index, R.drawable.poker_fangkuai_01 + index);
         }
     }
+
+
 }

@@ -23,7 +23,6 @@ import com.unipad.common.BasicCommonFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * yzj----项目:虚拟事件
  */
@@ -101,24 +100,30 @@ public class VirtualRightFragment extends BasicCommonFragment {
     }
 
     @Override
+    public void initDataFinished() {
+        super.initDataFinished();
+        view.setVisibility(View.VISIBLE);
+        memoryAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void startMemory() {
         super.startMemory();
         view.setVisibility(View.GONE);
-        memoryAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void pauseGame() {
         super.pauseGame();
         view.setVisibility(View.VISIBLE);
-        memoryAdapter.notifyDataSetChanged();
+
     }
 
     @Override
     public void reStartGame() {
         super.reStartGame();
-       view.setVisibility(View.GONE);
-        memoryAdapter.notifyDataSetChanged();
+        view.setVisibility(View.GONE);
+
     }
     /**
      * 记忆的adapter
@@ -139,7 +144,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                //将创建的View注册点击事件
+            //将创建的View注册点击事件
             MyViewHolder holder = new MyViewHolder(LayoutInflater.from(mActivity).inflate(R.layout.virtual_memory_line, parent, false));
             return holder;
         }
@@ -152,8 +157,8 @@ public class VirtualRightFragment extends BasicCommonFragment {
             if (service.mode == 0) {
                 //记忆模式
                 jianpan_linlayout.setVisibility(View.GONE);
-                 holder.tv_date.setText(entity.getDate()+"");
-                 holder.editNUmView.setVisibility(View.GONE);
+                holder.tv_date.setText(entity.getDate()+"");
+                holder.editNUmView.setVisibility(View.GONE);
 
             } else {
                 if (service.mode == 1) {
@@ -163,10 +168,12 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     }
                     jianpan_linlayout.setVisibility(View.VISIBLE);
                     entity.itemId = holder.editNUmView.getId();
+                    entity.shuffNum = position+1;
                     holder.tv_date.setVisibility(View.GONE);
                     holder.editNUmView.setVisibility(View.VISIBLE);
                     holder.editNUmView.setText(entity.getAnswerDate());
                     holder.editNUmView.setInputType(InputType.TYPE_NULL);
+                    holder.tv_num.setText(entity.shuffNum+"" );
                     holder.editNUmView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
@@ -192,14 +199,12 @@ public class VirtualRightFragment extends BasicCommonFragment {
                         holder.tv_date.setTextColor(getResources().getColor(R.color.red));
 
                     }
-
                 }
-
             }
-
         }
 
         public int getItem(){
+
             return itemPosition;
         }
 
@@ -210,7 +215,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-           public TextView tv_num,tv_date,tv_event;
+            public TextView tv_num,tv_date,tv_event;
             public EditText editNUmView;
             public MyViewHolder(final View view) {
                 super(view);
@@ -221,22 +226,24 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
             }
 
-          }
-
         }
+
+    }
     /**
      * 开始答题
      */
     public void inAnswerMode() {
-              memoryAdapter.notifyDataSetChanged();
-              service.mode=1;
-        }
+        service.mode=1;
+        service.shuffData();
+        memoryAdapter.notifyDataSetChanged();
+
+    }
     /**
      * 结束答题
      */
     public void endAnswerMode() {
-            memoryAdapter.notifyDataSetChanged();
-            service.mode=2;
+        memoryAdapter.notifyDataSetChanged();
+        service.mode=2;
     }
 
     @Override
@@ -247,8 +254,8 @@ public class VirtualRightFragment extends BasicCommonFragment {
     }
     /**
      * 输入的索引
-      */
-     int index=0;
+     */
+    int index=0;
     /**
      * 输入的年份
      */
@@ -269,31 +276,31 @@ public class VirtualRightFragment extends BasicCommonFragment {
             case R.id.numButton_0:
                 if(v.getId()==R.id.numButton_1){
                     if (text.length()<4){
-                    text=text+"1";}
+                        text=text+"1";}
                 }else if(v.getId()==R.id.numButton_2){
                     if (text.length()<4) {
                         text = text + "2";}
                 }else if(v.getId()==R.id.numButton_3){
                     if (text.length()<4){
-                    text=text+"3";}
+                        text=text+"3";}
                 }else if(v.getId()==R.id.numButton_4){
                     if (text.length()<4){
-                    text=text+"4";}
+                        text=text+"4";}
                 }else if(v.getId()==R.id.numButton_5){
                     if (text.length()<4){
-                    text=text+"5";}
+                        text=text+"5";}
                 }else if(v.getId()==R.id.numButton_6){
                     if (text.length()<4){
-                    text=text+"6";}
+                        text=text+"6";}
                 }else if(v.getId()==R.id.numButton_7){
                     if (text.length()<4){
-                    text=text+"7";}
+                        text=text+"7";}
                 }else if(v.getId()==R.id.numButton_8){
                     if (text.length()<4){
-                    text=text+"8";}
+                        text=text+"8";}
                 }else if(v.getId()==R.id.numButton_9){
                     if (text.length()<4){
-                    text=text+"9";}
+                        text=text+"9";}
                 }else if(v.getId()==R.id.numButton_0){
                     if (text.length()<4) {
                         text = text + "0";
@@ -307,7 +314,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     service.virtualList.get(index).setAnswerDate(text.substring(0,text.length()-1));
                 }
                 if (index==service.virtualList.size()-1){
-                      break;
+                    break;
                 }
                 if (text.length() == 4) {
                     index++;
@@ -322,35 +329,35 @@ public class VirtualRightFragment extends BasicCommonFragment {
 
                 break;
             case R.id.numButton_clear:
-                            //在第一个格子时index不做处理
-                           if(index==0 &&TextUtils.isEmpty(text)){
+                //在第一个格子时index不做处理
+                if(index==0 &&TextUtils.isEmpty(text)){
 
-                               }else {
-                               if (!TextUtils.isEmpty(text)) {
-                                   if (holder != null) {
-                                       holder.editNUmView.requestFocus();
-                                       text = text.substring(0, text.length() - 1);
-                                       service.virtualList.get(index).setAnswerDate(text);
-                                       holder.editNUmView.setText(text);
-                                   }
-                                 }
-                               //格子里的数为空且不在第一个position时 index--
-                           } if (holder.editNUmView.getText().length()==0&&holder!=null&&index!=0){
-                VirtualMemoryAdapter.MyViewHolder nextHolder = (VirtualMemoryAdapter.MyViewHolder) (memoryRv.findViewHolderForAdapterPosition(index));
-                           if (null == nextHolder) {
-
-                         int lastVisibleItem = ((GridLayoutManager) mLayoutmanager).findLastVisibleItemPosition() - 2;
-                         moveToPosition(lastVisibleItem,(GridLayoutManager)mLayoutmanager);
-                            } else {
-                          nextHolder.editNUmView.requestFocus();
-                           }
-                                index--;
-            }
-                              break;
-                        default:
-                             break;
+                }else {
+                    if (!TextUtils.isEmpty(text)) {
+                        if (holder != null) {
+                            holder.editNUmView.requestFocus();
+                            text = text.substring(0, text.length() - 1);
+                            service.virtualList.get(index).setAnswerDate(text);
+                            holder.editNUmView.setText(text);
+                        }
                     }
-               }
+                    //格子里的数为空且不在第一个position时 index--
+                } if (holder.editNUmView.getText().length()==0&&holder!=null&&index!=0){
+                VirtualMemoryAdapter.MyViewHolder nextHolder = (VirtualMemoryAdapter.MyViewHolder) (memoryRv.findViewHolderForAdapterPosition(index));
+                if (null == nextHolder) {
+
+                    int lastVisibleItem = ((GridLayoutManager) mLayoutmanager).findLastVisibleItemPosition() - 2;
+                    moveToPosition(lastVisibleItem,(GridLayoutManager)mLayoutmanager);
+                } else {
+                    nextHolder.editNUmView.requestFocus();
+                }
+                index--;
+            }
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     public int getLayoutId() {
@@ -373,20 +380,22 @@ public class VirtualRightFragment extends BasicCommonFragment {
             //当要置顶的项在当前显示的最后一项的后面时
             memoryRv.scrollToPosition(n);
             //这里这个变量是用在RecyclerView滚动监听里面的
-           // move = true;
+            // move = true;
         }
 
     }
 
     @Override
     public void memoryTimeToEnd(int memoryTime) {
-            index=0;
-            this.inAnswerMode();
-        }
+        super.memoryTimeToEnd(memoryTime);
+        index=0;
+        this.inAnswerMode();
+        sendMsgToPreper();
+    }
 
     @Override
     public void rememoryTimeToEnd(int answerTime) {
-
-            this.endAnswerMode();
+        super.rememoryTimeToEnd(answerTime);
+        this.endAnswerMode();
     }
 }

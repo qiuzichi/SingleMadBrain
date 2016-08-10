@@ -9,7 +9,9 @@ public class VirtualEntity {
     /**
      * 序号
      */
-    public int number;
+    private int number;
+
+    public int shuffNum;
 
     public int getNumber() {
         return number;
@@ -71,6 +73,12 @@ public class VirtualEntity {
     }
 
     public void setAnswerDate(String answerDate) {
+
         this.answerDate = answerDate;
+    }
+
+    @Override
+    public String toString() {
+        return shuffNum+"^"+number+"^"+ answerDate+"^"+event;
     }
 }

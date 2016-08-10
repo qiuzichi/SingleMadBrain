@@ -2,12 +2,15 @@ package com.unipad.brain.virtual.dao;
 
 import android.text.TextUtils;
 
+import com.unipad.IOperateGame;
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.virtual.bean.VirtualEntity;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.utils.LogUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,26 +32,32 @@ public class VirtualTimeService extends AbsBaseGameService {
     @Override
     public void parseData(String data) {
         super.parseData(data);
-        data = data+","+data+","+data;
+        //data = data+","+data+","+data;
         String [] entity = data.split(",");
         for(int i=0;i<entity.length;i++){
             String[] word=entity[i].split("\\^");
             VirtualEntity virtualEntity=new VirtualEntity();
             virtualEntity.setDate(word[1]);
             virtualEntity.setEvent(word[2]);
-            virtualEntity.setNumber(Integer.valueOf(word[0]));
+           virtualEntity.setNumber(Integer.valueOf(word[0]));
             virtualList.add(virtualEntity);
         }
         initDataFinished();
     }
 
+    public void shuffData() {
+        Collections.shuffle(virtualList);
+    }
+
+    @Override
+    public void clear() {
+        virtualList.clear();
+    }
 
     @Override
     public double getScore() {
         return getVirtualTimeScore(1.0f,0.5f)[0];
     }
-
-
     /**
      * @描述：  虚拟日期时间和日期 计分。
      *
@@ -94,9 +103,15 @@ public class VirtualTimeService extends AbsBaseGameService {
         return new int[]{lastScore,errorNum};
     }
 
-
     @Override
     public String getAnswerData() {
-        return null;
+        StringBuilder userdate=new StringBuilder();
+       for (int i=0;i<virtualList.size();i++){
+           userdate.append(virtualList.get(i).toString()).append(",");
+
+       }
+        userdate.deleteCharAt(userdate.length()-1);
+        LogUtil.e("",userdate.toString());
+        return userdate.toString();
     }
-}
+ }

@@ -23,6 +23,7 @@ private GlobleObserService service;
 
     public HitopTopList(String path) {
         super(path);
+        mParams.addBodyParameter("matchId",path);
     }
 
     public HitopTopList(){
@@ -73,12 +74,6 @@ private GlobleObserService service;
         }
         return null;
     }
-
-    @Override
-    public void buildRequestParams() {
-
-    }
-
     public void setSevice(PersonCenterService sevice) {
         this.service=sevice;
 

@@ -78,8 +78,4 @@ public class HitopGetRule extends HitopRequest<RuleGame> {
         return rule;
     }
 
-    @Override
-    public void buildRequestParams() {
-
-    }
 }

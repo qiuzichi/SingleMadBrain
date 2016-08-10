@@ -17,7 +17,6 @@ import java.util.List;
  */
 public class DbUtils {
 
-
     public Person findPerson(String firstName,String lastName ){
 
         DbManager db = x.getDb(AppContext.instance().getDaoConfig());

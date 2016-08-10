@@ -15,6 +15,7 @@
 		android:text="@string/ui_please_wait"
 		android:gravity="center"></TextView>
 	<ProgressBar
+		android:id="@+id/wait_progress"
 		style="@style/wait_progressbar_rotate"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

@@ -2,9 +2,8 @@ package com.unipad.brain.number;
 
 import android.view.View;
 
-import com.unipad.brain.R;
-import com.unipad.brain.number.dao.QuickRandomNumService;
 import com.unipad.brain.number.view.KeyboardDialog;
+import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.ToastUtil;
@@ -31,6 +30,12 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
     }
 
     @Override
+    public void initMemoryView() {
+        frameLayout.removeAllViews();
+        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+    }
+
+    @Override
     public void startRememory() {
         super.startRememory();
         if (mKeyboardDialog != null) {
@@ -51,26 +56,19 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
         super.rememoryTimeToEnd(answerTime);
         getAnswer();
         mKeyboardDialog.dismiss();
-        String buttonText = service.isLastRound()?null:"准备下一轮";
-        ToastUtil.createOnlyOkDialog(mActivity, Constant.SHOW_SOCRE_CONFIRM_DLG, "您本轮得分：", "得分：" + service.getScore(), buttonText,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        HIDDialog.dismissAll();
-                        if (service.isLastRound()) {
-                            mActivity.finish();
-                        }else {
-                            ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "准备中").show();
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    super.run();
-                                    service.parseDataByNextRound();
-                                }
-                            }.start();
-                        }
-                    }
-                }).show();
+        if (service.isLastRound()){
+            ToastUtil.showToast("本场比赛结束，退出比赛");
+            mActivity.finish();
+        }else {
+            ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "开始准备下一轮").show();
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    service.parseDataByNextRound();
+                }
+            }.start();
+        }
 
     }
 

@@ -2,6 +2,7 @@ package com.unipad.brain.longPoker.entity;
 
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
 
 /**
@@ -17,7 +18,13 @@ public class LongPokerEntity extends ChannelItem {
     public LongPokerEntity() {
 
     }
+    public LongPokerEntity(ChannelItem longPokerEntity) {
+        this.name = longPokerEntity.name;
 
+        this.id = longPokerEntity.id;
+
+        this.resId = longPokerEntity.resId;
+    }
     public int getUserAnswer() {
         return userAnswer;
     }
@@ -28,6 +35,17 @@ public class LongPokerEntity extends ChannelItem {
 
     public int getNum() {
         return num;
+    }
+
+    private int huaseId = R.drawable.heitao;
+
+
+    public int getHuaseId() {
+        return huaseId;
+    }
+
+    public void setHuaseId(int huaseId) {
+        this.huaseId = huaseId;
     }
 
 }

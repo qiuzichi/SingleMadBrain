@@ -16,6 +16,8 @@ import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.common.widget.HIDDialog;
+import com.unipad.utils.ToastUtil;
 
 import org.xutils.x;
 
@@ -32,7 +34,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     private int current;
     private int preAnswer;
     private View buttonArea;
-    private ViewStub mStubShade;
+    private View mStubShade;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -44,9 +46,9 @@ public class AbsFigureFragment extends BasicCommonFragment {
         mViewParent.findViewById(R.id.answer_3).setOnClickListener(this);
         mViewParent.findViewById(R.id.answer_4).setOnClickListener(this);
         mViewParent.findViewById(R.id.answer_5).setOnClickListener(this);
-        mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+        mStubShade =  mViewParent.findViewById(R.id.view_shade);
         service = (FigureService) (AppContext.instance().getService(Constant.ABS_FIGURE));
-        adapter = new FigureAdapter(mActivity, service.allFigures, R.layout.list_item_abs_figure);
+        adapter = new FigureAdapter(getActivity(), service.allFigures, R.layout.list_item_abs_figure);
         gridView.setAdapter(adapter);
         current = gridView.getFirstVisiblePosition();
         setButtonArea();
@@ -59,24 +61,36 @@ public class AbsFigureFragment extends BasicCommonFragment {
             buttonArea.setVisibility(View.GONE);
         }
     }
+
     /**
-     *
+     *结束记忆后由管控端统一开始
      */
     @Override
     public void memoryTimeToEnd(int memory) {
+        super.memoryTimeToEnd(memory);
         service.mode = 1;
         current = 0;
         service.shuffle();
         setButtonArea();
+       //ToastUtil.createTipDialog(mActivity,Constant.SHOW_GAME_PAUSE,"等待裁判开始").show();
+       //mStubShade.setVisibility(View.VISIBLE);
         adapter.notifyDataSetChanged();
-    }
+        sendMsgToPreper();
 
+    }
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-        service.mode = 2;
-        setButtonArea();
-        adapter.notifyDataSetChanged();
+        super.rememoryTimeToEnd(answerTime);
+        if (isMatchMode()){
+            mActivity.finish();
+        }else {
+            service.mode = 2;
+            setButtonArea();
+            adapter.notifyDataSetChanged();
+        }
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -119,14 +133,26 @@ public class AbsFigureFragment extends BasicCommonFragment {
             adapter.getItem(current).setAnswerId(i);
         }
         preAnswer = current;
+        progress = 100+current*100/service.allFigures.size();
+        if (progress < 101){
+            progress = 101;
+        }else if (progress> 199){
+            progress = 199;
+        }
+        if (current == service.allFigures.size() -1){//已经是最后一个，就不需要再往下设置背景了
+            return;
+        }
         current++;
-        gridView.smoothScrollToPosition(current+1);
-
         View curr = gridView.getChildAt(current - visiblePosition);
         if (curr != null) {
             TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
             currTv.setBackgroundColor(getResources().getColor(R.color.blue));
+        }else{
+            gridView.smoothScrollBy(gridView.getVerticalSpacing()+100,0);
         }
+        if (current%5 == 0)
+            gridView.smoothScrollBy(gridView.getVerticalSpacing()+100,0);
+       // gridView.smoothScrollToPosition(current+5,);
     }
 
     @Override
@@ -138,6 +164,12 @@ public class AbsFigureFragment extends BasicCommonFragment {
     @Override
     public void startMemory() {
         mStubShade.setVisibility(View.GONE);
+      //  HIDDialog.dismissAll();
+    }
+
+    @Override
+    public void startRememory() {
+       mStubShade.setVisibility(View.GONE);
     }
 
     @Override
@@ -155,16 +187,14 @@ public class AbsFigureFragment extends BasicCommonFragment {
     private class FigureAdapter extends CommonAdapter<Figure> {
         public FigureAdapter(Context context, List<Figure> datas, int layoutId) {
             super(context, datas, layoutId);
-        }
+            }
         /**
          * @param holder
          * @param figure
          */
         @Override
-
         public void convert(final ViewHolder holder, final Figure figure) {
             ImageView headView = (ImageView) holder.getView(R.id.icon_absfigure);
-
             x.image().bind(headView, figure.getPath());
             //Log.e("---", "path = " + person.getHeadPortraitPath() + ",name=" + person.getFirstName() + person.getLastName());
             final TextView orginNum = (TextView) holder.getView(R.id.orgin_num);
@@ -183,7 +213,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
                             TextView tv = (TextView) Preview.findViewById(R.id.answer_num);
                             tv.setBackgroundColor(getResources().getColor(R.color.white));
                         }
-                       v.findViewById(R.id.answer_num).setBackgroundColor(getResources().getColor(R.color.blue));
+                        v.findViewById(R.id.answer_num).setBackgroundColor(getResources().getColor(R.color.blue));
                         preAnswer = current;
                         current = holder.getPosition();
 

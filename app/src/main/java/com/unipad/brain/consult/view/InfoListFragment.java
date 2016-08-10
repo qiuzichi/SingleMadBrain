@@ -50,8 +50,8 @@ public class InfoListFragment extends ConsultBaseFragment implements AdapterView
     }
 
     private void  initTitleBar(){
-        ((TextView)mInfoListView.findViewById(R.id.tv_name)).setText(AppContext.instance().loginUser.getUserName());
-        ((TextView)mInfoListView.findViewById(R.id.tv_address)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
+        ((TextView)mInfoListView.findViewById(R.id.tv_uese_name_consult)).setText(AppContext.instance().loginUser.getUserName());
+        ((TextView)mInfoListView.findViewById(R.id.tv_uese_level_consult)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
 
         final ImageView user_photo = (ImageView)mInfoListView.findViewById(R.id.iv_header);
 

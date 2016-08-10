@@ -11,100 +11,283 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:orientation="vertical">
-            <RelativeLayout 
+            <RelativeLayout
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent">
-                 <TextView 
-                  android:id="@+id/txt_title"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textSize="29sp"
-                  android:textColor="@color/main_1"
-                  android:layout_marginTop="20dp"
-                  android:layout_centerInParent="true"/>
-                 
-                 <ImageView 
+
+                <TextView
+                    android:id="@+id/txt_title_project"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/margin_10dip"
+                    android:text="@string/project_1"
+                    android:textColor="@color/main_1"
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
                      android:id="@+id/img_close"
-                     android:layout_height="wrap_content"
-                     android:layout_width="wrap_content"
+                     android:layout_height="@dimen/margin_30dp"
+                     android:layout_width="@dimen/margin_30dp"
                      android:src="@drawable/close_menu"
                      android:layout_alignParentRight="true"
                      android:layout_centerVertical="true"
-                     android:layout_marginRight="10dp"/>
+                     android:layout_marginRight="@dimen/margin_30dp"/>
             </RelativeLayout>
-             
-              
-              <TextView 
-                  android:id="@+id/txt_attention"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/main_1"
-                  android:text="@string/attention"
-                  android:textSize="18sp"
-                  android:padding="5dp"
-                  android:layout_marginTop="20dp"/>
-              
-                <TextView 
-                  android:id="@+id/txt_attention_content"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-                  android:padding="5dp"/>
-                
-                <TextView 
-                  android:id="@+id/txt_memory_part"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/main_1"
-                  android:text="@string/memory_part"
-                  android:padding="5dp"
-                  android:textSize="18sp"
-                  android:layout_marginTop="20dp"/>
-              
-                <TextView 
-                  android:id="@+id/txt_memory_content"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-                  android:padding="5dp"/>
-                
-                <TextView 
-                  android:id="@+id/txt_recall_part"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/main_1"
-                  android:text="@string/recall_part"
-                  android:textSize="18sp"
-                  android:padding="5dp"
-                  android:layout_marginTop="20dp"/>
-              
-                <TextView 
-                  android:id="@+id/txt_recall_content"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-                  android:padding="5dp"/>
-                
-                 <TextView 
-                  android:id="@+id/txt_function"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/main_1"
-                  android:text="@string/jf_function"
-                  android:padding="5dp"
-                  android:textSize="18sp"
-                  android:layout_marginTop="20dp"/>
-              
-                <TextView 
-                  android:id="@+id/txt_function_content"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:textColor="@color/black"
-                  android:textSize="18sp"
-                  android:padding="5dp"/>
+
+            <TextView
+                android:id="@+id/txt_title_exercise"
+                android:layout_below="@id/txt_title_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_10dip"
+                android:text="@string/exercise_mode_set"
+                android:textColor="@color/main_1"
+                android:textSize="@dimen/text_size_competition" />
+
+
+            <LinearLayout
+                android:id="@+id/binary_memory_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/newlist_height"
+                android:clickable="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/setting_project_height"
+                    android:layout_weight="100"
+                    android:textColor="@color/main_2"
+                    android:text="@string/set_memorytime"
+                    android:textSize="@dimen/common_text_24" />
+
+                <TextView
+                    android:id="@+id/binary_memory_set_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:textColor="@color/time_setting"
+
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:background="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1dp"
+                android:background="@color/view_divide_line" >
+            </View>
+
+            <LinearLayout
+                android:id="@+id/binary_answer_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10dip"
+                android:clickable="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/setting_project_height"
+                    android:layout_weight="100"
+                    android:text="@string/set_answertime"
+                    android:textColor="@color/main_2"
+                    android:textSize="@dimen/common_text_24" />
+
+                <TextView
+                    android:id="@+id/binary_answer_set_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:textColor="@color/time_setting"
+
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:background="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_competition_mode_set"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_30dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_title_competition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/margin_10dip"
+                    android:text="@string/competition_mode_set"
+                    android:textColor="@color/main_1"
+                    android:textSize="@dimen/text_size_competition" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/radio_group_competition_mode"
+                    android:layout_below="@id/txt_title_competition"
+                    android:paddingTop="@dimen/margin_10dip"
+                    android:gravity="center_horizontal"
+                    >
+
+
+                    <RadioButton
+                        android:id="@+id/btn_default_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_marginRight="@dimen/margin_30dp"
+                        android:background="@drawable/sel_mode_group_bg"
+                        android:button="@color/transparent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textSize="@dimen/common_text_24"
+                        android:textColor="@color/white"
+                        />
+                    <RadioButton
+                        android:id="@+id/btn_default_mode_3"
+                        android:layout_toRightOf="@+id/btn_default_mode"
+                        android:layout_marginRight="@dimen/margin_30dp"
+                        android:layout_width="wrap_content"
+                        android:background="@drawable/sel_mode_group_bg"
+                        android:button="@color/transparent"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="3"
+                        android:textSize="@dimen/common_text_24"
+                        android:textColor="@color/white"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/btn_default_mode_4"
+                        android:layout_width="wrap_content"
+                        android:layout_toRightOf="@+id/btn_default_mode_3"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/sel_mode_group_bg"
+                        android:button="@color/transparent"
+                        android:gravity="center"
+                        android:layout_marginRight="@dimen/margin_30dp"
+                        android:text="4"
+                        android:textSize="@dimen/common_text_24"
+                        android:textColor="@color/white"
+                        />
+                </RadioGroup>
+
+
+            </RelativeLayout>
+              <!-- -->
+              <!--<TextView -->
+                  <!--android:id="@+id/txt_attention"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/main_1"-->
+                  <!--android:text="@string/attention"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"-->
+                  <!--android:layout_marginTop="20dp"/>-->
+              <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_attention_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/black"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"/>-->
+                <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_memory_part"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/main_1"-->
+                  <!--android:text="@string/memory_part"-->
+                  <!--android:padding="5dp"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:layout_marginTop="20dp"/>-->
+              <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_memory_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/black"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"/>-->
+                <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_recall_part"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/main_1"-->
+                  <!--android:text="@string/recall_part"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"-->
+                  <!--android:layout_marginTop="20dp"/>-->
+              <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_recall_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/black"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"/>-->
+                <!-- -->
+                 <!--<TextView -->
+                  <!--android:id="@+id/txt_function"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/main_1"-->
+                  <!--android:text="@string/jf_function"-->
+                  <!--android:padding="5dp"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:layout_marginTop="20dp"/>-->
+              <!-- -->
+                <!--<TextView -->
+                  <!--android:id="@+id/txt_function_content"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_width="wrap_content"-->
+                  <!--android:textColor="@color/black"-->
+                  <!--android:textSize="18sp"-->
+                  <!--android:padding="5dp"/>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/confirm_btn_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/news_title_height"
+                    android:paddingLeft="@dimen/margin_30dp"
+                    android:paddingRight="@dimen/margin_30dp"
+                    android:background="@drawable/apple"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/confirm_modify"
+                    android:textColor="@color/white"
+                    />
+
+            </RelativeLayout>
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

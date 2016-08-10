@@ -86,19 +86,16 @@ public class NumberRememoryLayout extends LinearLayout implements
         mInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (mCompeteType.equals(mContext.getString(R.string.project_3))
-                || mCompeteType.equals(mContext.getString(R.string.project_5))||mCompeteType.equals(mContext.getString(R.string.project_9))) {
-            mRows = RandomNumberEntity.rows;
-            mLines = RandomNumberEntity.lines;
-            mTotalNumbers = mLines * mRows;
-            mRowNumber = "";
-            mTextSize = 23.0f;
+            if (mCompeteType.equals(mContext.getString(R.string.project_2))) {
+                mRowNumber = "";
+                mTextSize = 23.0f;
+            }else {
+                mLeftCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_left_anim);
+                mRightCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_right_anim);
+                mLeftCursorAnim = (AnimationDrawable) mLeftCursorBg;
+                mRightCursorAnim = (AnimationDrawable) mRightCursorBg;
+            }
 
-            mLeftCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_left_anim);
-            mRightCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_right_anim);
-            mLeftCursorAnim = (AnimationDrawable) mLeftCursorBg;
-            mRightCursorAnim = (AnimationDrawable) mRightCursorBg;
-        }
         if (callback != null) {
             callback.begin();
         }
@@ -193,9 +190,11 @@ public class NumberRememoryLayout extends LinearLayout implements
                     mHandler.removeMessages(NumService.MSG_REFRESH_UI);
 
                     //快速随机、马拉松数字项目的回忆界面需要显示光标
-                    if (mCompeteType.equals(mContext.getString(R.string.project_3))
+                    /**if (mCompeteType.equals(mContext.getString(R.string.project_3))
                             || mCompeteType.equals(mContext.getString(R.string.project_5))||mCompeteType.equals(mContext.getString(R.string.project_9))) {
-                        ViewGroup viewGroup = (ViewGroup) getChildAt(0);// 获取行号
+                        */
+                if (!mContext.getString(R.string.project_2).equals(mCompeteType)){
+                     ViewGroup viewGroup = (ViewGroup) getChildAt(0);// 获取行号
                         viewGroup = (ViewGroup) viewGroup.getChildAt(0);
                         TextView textNumber = (TextView) viewGroup
                                 .getChildAt(0);// 获取行中第几个格子
@@ -291,11 +290,11 @@ public class NumberRememoryLayout extends LinearLayout implements
     }
 
     public void cleanCursor(){
-        if (mLeftCursorAnim.isRunning()) {
+        if (mLeftCursorAnim != null && mLeftCursorAnim.isRunning()) {
             mLeftCursorAnim.stop();
         }
 
-        if (mRightCursorAnim.isRunning()) {
+        if (mRightCursorAnim != null &&mRightCursorAnim.isRunning()) {
             mRightCursorAnim.stop();
         }
     }
@@ -309,7 +308,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                     TextView textNumber = (TextView) viewGroup.getChildAt(j);
                     String userAnswer = textNumber.getText().toString().trim();
                     if (TextUtils.isEmpty(userAnswer)) {
-                        userAnswer = " ";
+                        userAnswer = "X";
                     }
                     answerLine.append(userAnswer);
                 }
@@ -325,12 +324,12 @@ public class NumberRememoryLayout extends LinearLayout implements
             ViewGroup viewGroup = (ViewGroup) getChildAt(i);
             viewGroup = (ViewGroup) viewGroup.getChildAt(0);
             StringBuilder answerLine = new StringBuilder();
-            for (int j = 0; j <viewGroup.getChildCount(); j++) {
+            for (int j = 0; j < viewGroup.getChildCount(); j++) {
                 TextView textNumber = (TextView) viewGroup.getChildAt(j);
                 String userAnswer  = textNumber.getText().toString().trim();
                 String o = String.valueOf(orgin.charAt(j));
                 if (TextUtils.isEmpty(userAnswer)){
-                    userAnswer = " ";
+                    userAnswer = "X";
                 }
                 answerLine.append(userAnswer);
                 textNumber.setText(o+"\n"+userAnswer);

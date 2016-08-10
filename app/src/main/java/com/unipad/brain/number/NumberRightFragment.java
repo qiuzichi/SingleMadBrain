@@ -25,6 +25,7 @@ import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
+import com.unipad.common.widget.VibrateAndRadio;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -51,7 +52,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
      * 遮罩层
      */
     private ViewStub mStubShade;
-    View mMemoryLayout;
+
     /**
      * 记录mScrollAnswerView滑动了多少次
      */
@@ -66,7 +67,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     private String mCompeteItem = "";
     protected NumService service;
-    private FrameLayout frameLayout;
+    protected FrameLayout frameLayout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -77,10 +78,8 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         frameLayout = (FrameLayout) mViewParent.findViewById(R.id.binary_rememory_layout);
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
-        ViewStub mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
-        if (mCompeteItem.equals(getString(R.string.project_9))) {
-            mMemoryLayout = mStubListen.inflate();
-        }
+        mScrollAnswerView = (ScrollView) mRememoryLayout
+                .findViewById(R.id.scroll_rememory_layout);
     }
 
     @Override
@@ -94,20 +93,9 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
                 mTotalNumbers += service.lineNumbers.valueAt(i).length();
             }
             LogUtil.e("", "mLines = " + mLines + "--mRows = " + mRows + "--mTotalNumbers = " + mTotalNumbers);
-            frameLayout.removeAllViews();
-            if (mCompeteItem.equals(getString(R.string.project_9))) {
-                final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
-                mMemoryLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        animationDrawable.start();
-                        return true;
-                    }
-                });
 
-            } else {
-                frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
-            }
+            initMemoryView();
+            mScrollAnswerView.smoothScrollTo(0,0);
             mStubShade.setVisibility(View.VISIBLE);
         }
     }
@@ -116,7 +104,6 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public void startMemory() {
         super.startMemory();
         mStubShade.setVisibility(View.GONE);
-        mMemoryLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -145,7 +132,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void onClick(View view) {
-
+        VibrateAndRadio.instance().vibratorAndSpeak();
         switch (view.getId()) {
             case R.id.ibtn_binary_0:
             case R.id.ibtn_binary_1:
@@ -177,8 +164,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             case R.id.listen_keyboard_7:
             case R.id.listen_keyboard_8:
             case R.id.listen_keyboard_9:
-                progress = 100 + mCursorPosition * 100 / mTotalNumbers;
-                LogUtil.e("", "Quick num:" + progress);
+
                 this.setGridText(mNumberArray.get(view.getId()));
                 break;
             case R.id.listen_keyboard_delete:
@@ -199,7 +185,13 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             //ToastUtil.showToast("您已填满所有空白");
             return;
         }
-
+        progress = 100+ mCursorPosition * 100 / mTotalNumbers;
+        if (progress <= 101){
+            progress = 101;
+        }else if (progress >= 199){
+            progress = 199;
+        }
+        LogUtil.e("", "Quick num:" + progress);
         mNumberRememoryLayout.setGridText(mCursorPosition++, numberText);
 
         int lineIndex = mCursorPosition / mRows;
@@ -243,7 +235,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public abstract String getCompeteItem();
 
     public abstract void initAnswerView();
-
+    public abstract void initMemoryView();
     private NumberRememoryLayout createReMemoryLayout() {
         return new NumberRememoryLayout(mActivity, getCompeteItem(), mRows, mLines, mTotalNumbers, new IInitRememoryCallBack() {
             @Override
@@ -260,7 +252,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             @Override
             public void finish() {
                 LogUtil.e("", "finish...");
-                HIDDialog.dismissDialog(Constant.INIT_REMEMORY_DLG);
+                HIDDialog.dismissAll();
                 sendMsgToPreper();
             }
         });
@@ -271,39 +263,23 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         // mStubShade.setVisibility(View.GONE);// 隐藏遮罩层
         // 再加载回忆界面
         mCursorPosition = 0;
-        mScrollAnswerView = (ScrollView) mRememoryLayout
-                .findViewById(R.id.scroll_rememory_layout);
         frameLayout.removeAllViews();
+
         if (mNumberRememoryLayout == null) {
             mNumberRememoryLayout = createReMemoryLayout();
         } else {
             mNumberRememoryLayout.clearText();
+            mScrollAnswerView.smoothScrollTo(0, 0);
+            mNumberRememoryLayout.setCursorPosition(mCursorPosition);
         }
         frameLayout.addView(mNumberRememoryLayout);
         initAnswerView();
-        if (mCompeteItem.equals(getString(R.string.project_3))
-                || mCompeteItem.equals(getString(R.string.project_5))) {
-            LogUtil.e("--", "");
-
-        } else if (mCompeteItem.equals(getString(R.string.project_2))) {
-
-        } else if (mCompeteItem.equals(getString(R.string.project_9))) {
-            mMemoryLayout.setVisibility(View.GONE);
-//            View.inflate(mActivity, R.layout.listen_v_bottom, mLayoutBottom);
-//            mLayoutBottom.findViewById(R.id.listen_keyboard_0).setOnClickListener(this);
-//            mLayoutBottom.findViewById(R.id.listen_keyboard_delete).setOnClickListener(this);
-//            int number = 0;
-//            mNumberArray.put(R.id.listen_keyboard_0, (number++) + "");
-//            for (int id = R.id.listen_keyboard_1; id <= R.id.listen_keyboard_9; ++id) {
-//                mNumberArray.put(id, (number++) + "");
-//                mLayoutBottom.findViewById(id).setOnClickListener(this);
-//            }
-        }
     }
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
         super.rememoryTimeToEnd(answerTime);
+        mNumberRememoryLayout.cleanCursor();
         //mStubShade.setVisibility(View.VISIBLE);
     }
 
@@ -317,6 +293,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void numberKey(String keyValue) {
+        VibrateAndRadio.instance().vSimple();
         if (mCursorPosition == mTotalNumbers) {
             progress = 100 + mCursorPosition * 100 / mTotalNumbers - 1;
         } else {
@@ -345,6 +322,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void downKey() {
+        VibrateAndRadio.instance().play();
         int tempPosition = mCursorPosition;
         mCursorPosition += mRows;
         if (mCursorPosition < mTotalNumbers) {
@@ -357,6 +335,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void leftKey() {
+        VibrateAndRadio.instance().vibratorAndSpeak();
         --mCursorPosition;
         if (mCursorPosition >= 0) {
             mNumberRememoryLayout.setCursorPosition(mCursorPosition);
@@ -367,6 +346,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void rightKey() {
+        VibrateAndRadio.instance().vibratorAndSpeak();
         ++mCursorPosition;
         if (mCursorPosition < mTotalNumbers) {
             mNumberRememoryLayout.setCursorPosition(mCursorPosition);
@@ -377,6 +357,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void deleteKey() {
+        VibrateAndRadio.instance().vibratorAndSpeak();
         this.deleteGirdText();
     }
 

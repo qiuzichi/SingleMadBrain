@@ -78,7 +78,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private OnLoadMoreListener onLoadMoreListener;
     private OnShowUpdateDialgo mOnShowUpdateDialgo;
     private NewsService service;
-    //private BitmapUtils bitmapUtils;
+
 
 
     public MyRecyclerAdapter(Activity mActivity, final RecyclerView mRecyclerView, List<NewEntity> datas ,int pageId) {
@@ -98,8 +98,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
+                    if(mRecyclerView.getAdapter().getItemCount() == 1){
+                        lastVisibleItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                        firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+                    }
+
                     if (!isLoadMoreData && newState == RecyclerView.SCROLL_STATE_IDLE
-                            && lastVisibleItem + 1 == mRecyclerView.getAdapter().getItemCount()) {
+                            && lastVisibleItem + 1  == mRecyclerView.getAdapter().getItemCount()) {
                             onLoadMoreListener.onLoadMore();
                     }
                 }
@@ -268,10 +273,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //        if(position == 0){
 //            return TYPE_HEADER;
 //        }
-Log.e("myadapter", position + "");
-        if(position == firstVisibleItem && isShowVersion){
-            return TYPE_HEADER;
-        }
+Log.e("myadapter", position + "" + "     lastVisibleItem =" + lastVisibleItem );
+//        if(position == firstVisibleItem && isShowVersion){
+//            return TYPE_HEADER;
+//        }
         return newsDatas.get(position) != null ? super.getItemViewType(position) : TYPE_FOOTER;
     }
 

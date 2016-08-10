@@ -2,10 +2,13 @@ package com.unipad.brain.personal;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -25,6 +28,7 @@ import com.unipad.utils.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.common.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,7 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
 
     // 个人中心模块 服务器交互 服务
     private PersonCenterService service;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // 获取规则
     @Override
@@ -47,12 +52,35 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
         super.onActivityCreated(savedInstanceState);
         mTitleBarRightText = mActivity.getString(R.string.clear);
         lv_apple =(ListView) mActivity.findViewById(R.id.lv_competition);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout)mActivity.findViewById(R.id.swipe_refresh_widget_msg);
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.light_blue2,
+                R.color.red,
+                R.color.stroke_color,
+                R.color.black
+        );
+        mSwipeRefreshLayout.setProgressViewOffset(false, 0, DensityUtil.dip2px(24));
+        mSwipeRefreshLayout.setRefreshing(false);
+
         competitionBeans = new ArrayList<CompetitionBean>();
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         service.registerObserver(HttpConstant.USER_APPLYED,this);
         service.registerObserver(HttpConstant.USER_IN_GAEM, this);
         service.registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
         service.getApplyList(AppContext.instance().loginUser.getUserId());
+
+        initEvent();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        thisShowView = 6;
+    }
+
+    private void initEvent(){
 
         lv_apple.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -61,12 +89,38 @@ public class PersonalMsgFragment extends PersonalCommonFragment implements IData
                     service.getRule(competitionBeans.get(position).getComId());
             }
         });
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        thisShowView = 6;
+         /*避免出现item太大 之后 避免冲突scroll*/
+        lv_apple.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    /*第一项可见 的时候 才可以响应swipe的滑动刷新事件*/
+                    mSwipeRefreshLayout.setEnabled(true);
+                else
+                    mSwipeRefreshLayout.setEnabled(false);
+            }
+        });
+
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        competitionBeans.clear();
+                        service.getApplyList(AppContext.instance().loginUser.getUserId());
+                    }
+                }, 2000);
+            }
+        });
     }
 
     @Override

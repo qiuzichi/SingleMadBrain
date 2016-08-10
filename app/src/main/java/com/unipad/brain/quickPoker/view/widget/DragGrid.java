@@ -179,7 +179,6 @@ public class DragGrid extends GridView {
 		if (tempPostion == -1) {
 			return;
 		}
-		tempPostion ++;
 		// if (tempPostion != AdapterView.INVALID_POSITION) {
 		dropPosition = tempPostion;
 

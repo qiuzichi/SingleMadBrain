@@ -64,7 +64,7 @@
                         android:id="@+id/txt_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="@dimen/margin_edge"
                         android:layout_gravity="center"
                         android:text="如果您是老用户，可用原始密码登录，之后在个人信息修改密码即可哦~"
                         android:textColor="@color/black"

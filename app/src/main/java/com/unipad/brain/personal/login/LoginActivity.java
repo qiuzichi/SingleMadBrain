@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.unipad.AppContext;
 import com.unipad.UserDetailEntity;
@@ -21,8 +20,6 @@ import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.MD5Utils;
 import com.unipad.utils.ToastUtil;
-
-import java.math.BigDecimal;
 
 /**
  * Created by LiuPeng on 2016/4/14.

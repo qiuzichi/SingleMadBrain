@@ -83,6 +83,8 @@
     <dimen name="update_dialog_height_60dp">60dp</dimen>
     <dimen name="update_notification_height_80dp">80dp</dimen>
     <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="text_size_competition">30sp</dimen>
+    <dimen name="view_divide_line_height">0.5dip</dimen>
 
 
 
@@ -94,6 +96,8 @@
     <dimen name="portraits_image_height">176dp</dimen>
     <dimen name="news_title_size">30sp</dimen>
     <dimen name="news_title_height">50dip</dimen>
+    <dimen name="dialog_confirm_wight">45dip</dimen>
+    <dimen name="setting_project_height">70dip</dimen>
 
     <dimen name="random_word_item_width">130dp</dimen>
     <dimen name="poker_line_magin">22dp</dimen>

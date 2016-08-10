@@ -5,6 +5,7 @@ import android.widget.ScrollView;
 
 import com.unipad.brain.R;
 import com.unipad.brain.number.view.KeyboardDialog;
+import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.Constant;
 import com.unipad.utils.LogUtil;
@@ -12,21 +13,21 @@ import com.unipad.utils.LogUtil;
 /**
  * Created by gongkan on 2016/7/4.
  */
-public class LongNumFragment extends NumberRightFragment{
+public class LongNumFragment extends NumberRightFragment {
     private KeyboardDialog mKeyboardDialog;
 
     @Override
     public void pauseGame() {
         super.pauseGame();
-        if (mKeyboardDialog != null && mKeyboardDialog.isShowing()){
-            mKeyboardDialog.dismiss();;
+        if (mKeyboardDialog != null && mKeyboardDialog.isShowing()) {
+            mKeyboardDialog.dismiss();
         }
     }
 
     @Override
     public void reStartGame() {
         super.reStartGame();
-        if (mKeyboardDialog != null && !mKeyboardDialog.isShowing()){
+        if (mKeyboardDialog != null && !mKeyboardDialog.isShowing()) {
             mKeyboardDialog.show();
         }
     }
@@ -50,22 +51,47 @@ public class LongNumFragment extends NumberRightFragment{
     @Override
     public void initAnswerView() {
         mKeyboardDialog = new KeyboardDialog(mActivity);
-        mKeyboardDialog.show();
         mKeyboardDialog.setKeyboardClickListener(this);
+    }
+
+    @Override
+    public void startMemory() {
+        super.startMemory();
+    }
+
+    private void initDialog() {
+        if (mKeyboardDialog == null) {
+            mKeyboardDialog = new KeyboardDialog(mActivity);
+            mKeyboardDialog.setKeyboardClickListener(this);
+            mKeyboardDialog.show();
+        } else if (!mKeyboardDialog.isShowing()) {
+            mKeyboardDialog.show();
+        }
+    }
+
+    @Override
+    public void initMemoryView() {
+        frameLayout.removeAllViews();
+        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
     }
 
     @Override
     public void startRememory() {
         super.startRememory();
-        mKeyboardDialog.setKeyboardClickListener(this);
+        initDialog();
     }
 
     @Override
     public void rememoryTimeToEnd(int answerTime) {
         super.rememoryTimeToEnd(answerTime);
-        showAnswer();
         if (mKeyboardDialog != null && mKeyboardDialog.isShowing()) {
             mKeyboardDialog.dismiss();
+        }
+        if (isMatchMode()) {
+            getAnswer();
+            exitActivity();
+        } else {
+            showAnswer();
         }
     }
 
@@ -73,6 +99,7 @@ public class LongNumFragment extends NumberRightFragment{
     public void onDestroy() {
         super.onDestroy();
         if (mKeyboardDialog != null) {
+            mKeyboardDialog.setKeyboardClickListener(null);
             if (mKeyboardDialog.isShowing()) {
                 mKeyboardDialog.dismiss();
             }
