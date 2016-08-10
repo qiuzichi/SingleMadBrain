@@ -260,6 +260,7 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
 
     @Override
     public void startMemory() {
+        progressGame(0);
         handler.sendEmptyMessage(STRAT_MEMORY);
     }
 

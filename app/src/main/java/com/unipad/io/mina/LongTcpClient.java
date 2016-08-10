@@ -125,7 +125,7 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
 
                     }
 
-                }catch(RuntimeIoException e){
+                }catch(Exception e){
                     System.err.println("Failed to connect.");
                         try {
                             Thread.sleep(5000);

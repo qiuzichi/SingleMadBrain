@@ -92,9 +92,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
         Request request = new Request(IOConstant.END_GAME_BY_Client,body);
         sendMsg(request);
         }
-    public void finishedGameByUser(String matchId,double score,int memoryTime,int answerTime,String answer){
-        finishedGameByUser(matchId,score,memoryTime,answerTime,answer,1);
-       }
+
     public void downLoadQuestionOK(String id,int progress) {
         Map<String, String> body = new HashMap<String, String>();
         body.put("USERID", AppContext.instance().loginUser.getUserId());

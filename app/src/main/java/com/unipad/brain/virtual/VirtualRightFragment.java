@@ -385,6 +385,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
     public void memoryTimeToEnd(int memoryTime) {
         index=0;
         this.inAnswerMode();
+        sendMsgToPreper();
     }
 
     @Override

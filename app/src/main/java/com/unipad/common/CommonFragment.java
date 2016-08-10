@@ -147,12 +147,12 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mBtnCompeteMode.setText(R.string.end_memory);
         mBtnCompeteMode.setEnabled(true);
         mTextCompeteProcess.setText(R.string.memorying);
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round-1],false));
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round - 1], false));
 
     }
     public void startRememoryTimeCount(){
-        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1],false));
-        LogUtil.e("CommonFragment","第"+(mActivity.getService().round-1)+"轮的回忆时间为="+mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round-1]);
+        mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round - 1], false));
+        LogUtil.e("CommonFragment", "第" + (mActivity.getService().round - 1) + "轮的回忆时间为=" + mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round - 1]);
     }
     /**
      * 提交答案
@@ -160,12 +160,13 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
     private void commitAnswer(final  int rememoryTime) {
         mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
+            final int round = mActivity.getService().round;
             mICommunicate.rememoryTimeToEnd(rememoryTime);
             new Thread(){
                 @Override
                 public void run() {
                     super.run();
-                    SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),mActivity.getService().getScore(),memoryTime,rememoryTime,mActivity.getService().getAnswerData());
+                    SocketThreadManager.sharedInstance().finishedGameByUser(mActivity.getMatchId(),mActivity.getService().getScore(),memoryTime,rememoryTime,mActivity.getService().getAnswerData(),round);
                 }
             }.start();
         }

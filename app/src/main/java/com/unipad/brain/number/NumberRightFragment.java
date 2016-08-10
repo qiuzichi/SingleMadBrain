@@ -25,6 +25,7 @@ import com.unipad.brain.number.view.NumberRememoryLayout;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
+import com.unipad.common.widget.VibrateAndRadio;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -77,7 +78,8 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         frameLayout = (FrameLayout) mViewParent.findViewById(R.id.binary_rememory_layout);
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
-
+        mScrollAnswerView = (ScrollView) mRememoryLayout
+                .findViewById(R.id.scroll_rememory_layout);
     }
 
     @Override
@@ -93,7 +95,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             LogUtil.e("", "mLines = " + mLines + "--mRows = " + mRows + "--mTotalNumbers = " + mTotalNumbers);
 
             initMemoryView();
-
+            mScrollAnswerView.smoothScrollTo(0,0);
             mStubShade.setVisibility(View.VISIBLE);
         }
     }
@@ -130,7 +132,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void onClick(View view) {
-
+        VibrateAndRadio.instance().vibratorAndSpeak();
         switch (view.getId()) {
             case R.id.ibtn_binary_0:
             case R.id.ibtn_binary_1:
@@ -162,8 +164,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             case R.id.listen_keyboard_7:
             case R.id.listen_keyboard_8:
             case R.id.listen_keyboard_9:
-                progress = 100 + mCursorPosition * 100 / mTotalNumbers;
-                LogUtil.e("", "Quick num:" + progress);
+
                 this.setGridText(mNumberArray.get(view.getId()));
                 break;
             case R.id.listen_keyboard_delete:
@@ -184,7 +185,13 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             //ToastUtil.showToast("您已填满所有空白");
             return;
         }
-
+        progress = 100+ mCursorPosition * 100 / mTotalNumbers;
+        if (progress <= 101){
+            progress = 101;
+        }else if (progress >= 199){
+            progress = 199;
+        }
+        LogUtil.e("", "Quick num:" + progress);
         mNumberRememoryLayout.setGridText(mCursorPosition++, numberText);
 
         int lineIndex = mCursorPosition / mRows;
@@ -256,14 +263,14 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         // mStubShade.setVisibility(View.GONE);// 隐藏遮罩层
         // 再加载回忆界面
         mCursorPosition = 0;
-        mScrollAnswerView = (ScrollView) mRememoryLayout
-                .findViewById(R.id.scroll_rememory_layout);
         frameLayout.removeAllViews();
 
         if (mNumberRememoryLayout == null) {
             mNumberRememoryLayout = createReMemoryLayout();
         } else {
             mNumberRememoryLayout.clearText();
+            mScrollAnswerView.smoothScrollTo(0, 0);
+            mNumberRememoryLayout.setCursorPosition(mCursorPosition);
         }
         frameLayout.addView(mNumberRememoryLayout);
         initAnswerView();
@@ -272,6 +279,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
         super.rememoryTimeToEnd(answerTime);
+        mNumberRememoryLayout.cleanCursor();
         //mStubShade.setVisibility(View.VISIBLE);
     }
 
@@ -285,6 +293,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void numberKey(String keyValue) {
+        VibrateAndRadio.instance().vSimple();
         if (mCursorPosition == mTotalNumbers) {
             progress = 100 + mCursorPosition * 100 / mTotalNumbers - 1;
         } else {
@@ -313,6 +322,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void downKey() {
+        VibrateAndRadio.instance().play();
         int tempPosition = mCursorPosition;
         mCursorPosition += mRows;
         if (mCursorPosition < mTotalNumbers) {
@@ -325,6 +335,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void leftKey() {
+        VibrateAndRadio.instance().vibratorAndSpeak();
         --mCursorPosition;
         if (mCursorPosition >= 0) {
             mNumberRememoryLayout.setCursorPosition(mCursorPosition);
@@ -335,6 +346,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void rightKey() {
+        VibrateAndRadio.instance().vibratorAndSpeak();
         ++mCursorPosition;
         if (mCursorPosition < mTotalNumbers) {
             mNumberRememoryLayout.setCursorPosition(mCursorPosition);
@@ -345,6 +357,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
 
     @Override
     public void deleteKey() {
+        VibrateAndRadio.instance().vibratorAndSpeak();
         this.deleteGirdText();
     }
 
