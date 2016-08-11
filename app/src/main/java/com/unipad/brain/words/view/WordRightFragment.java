@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -79,7 +80,7 @@ public class WordRightFragment extends BasicCommonFragment {
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         mData = Arrays.asList(service.wordEntities);
-        mStubShade.setVisibility(View.GONE);
+        //mStubShade.setVisibility(View.GONE);
 
         manager = new GridLayoutManager(getActivity(), 20);
         manager.setOrientation(GridLayoutManager.HORIZONTAL);
@@ -87,6 +88,7 @@ public class WordRightFragment extends BasicCommonFragment {
         wordRvAdapter = new WordRvAdapter();
         wordRv.setAdapter(wordRvAdapter);
         wordRv.setHasFixedSize(true);
+        mStubShade.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -145,6 +147,10 @@ public class WordRightFragment extends BasicCommonFragment {
                                 progress = 101;
                             }else if (progress >= 199){
                                 progress = 199;
+                            }
+                            if(position==wordRvAdapter.getItemCount()-1){
+                                holder.userAnswerEdit.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                                closeSofeInputMothed(holder.userAnswerEdit);
                             }
                             LogUtil.e("", "word:" + progress);
                             return true;
