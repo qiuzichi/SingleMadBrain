@@ -21,12 +21,14 @@ import com.unipad.IOperateGame;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.PicUtil;
+import com.unipad.utils.ToastUtil;
 
 import org.xutils.common.Callback;
 import org.xutils.x;
@@ -82,7 +84,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextName.setText(AppContext.instance().loginUser.getUserName());
         mIconImageView = (ImageView) mParentLayout.findViewById(R.id.user_photo);
         ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).registerObserver(HttpConstant.GET_RULE_NOTIFY, this);
-        x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
+       // x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
         //if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
           //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}
@@ -195,6 +197,14 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         if (mICommunicate != null) {
             final int round = mActivity.getService().round;
             mICommunicate.rememoryTimeToEnd(rememoryTime);
+            if (mActivity.getService().isLastRound()) {
+                ToastUtil.createOnlyOkDialog(mActivity, Constant.MATCH_OVER_DLG, "比赛结束", "请等待裁判公布结果", null, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        HIDDialog.dismissAll();
+                    }
+                });
+            }
             new Thread(){
                 @Override
                 public void run() {

@@ -206,9 +206,9 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
         }
         userData.deleteCharAt(userData.length()-1);
         service.setUserData(userData.toString());
+        if (isMatchMode()){
         if (service.isLastRound()){
-            ToastUtil.showToast("本场比赛结束，退出比赛");
-            getActivity().finish();
+
         }else {
             ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, "开始准备下一轮").show();
             new Thread() {
@@ -218,6 +218,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                     service.parseDataByRound();
                 }
             }.start();
+        }
         }
 
         /**
@@ -369,7 +370,12 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
                     newTextView.getLocationInWindow(startLocation);
                     final ChannelItem channel = ((OtherAdapter) parent.getAdapter())
                             .getItem(position);
-
+                    progress = userChannelList.size()*100/52;
+                    if (progress < 101){
+                        progress = 101;
+                    }else if (progress> 199){
+                        progress = 199;
+                    }
                     // 添加到最后一个
                     userAdapter.addItem(channel);
                     new Handler().postDelayed(new Runnable() {

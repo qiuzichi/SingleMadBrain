@@ -46,6 +46,6 @@ public class BinaryRightFragment extends NumberRightFragment{
     @Override
     public void rememoryTimeToEnd(int answerTime) {
         super.rememoryTimeToEnd(answerTime);
-        showAnswer();
+        getAnswer();
     }
 }

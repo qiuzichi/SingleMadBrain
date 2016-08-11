@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.apache.mina.core.session.IoSession;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.Map;
 
@@ -20,7 +21,6 @@ public class Request {
     /** 请求码*/
     private String textCode;
 
-    private int sendTime;
 
     public Request (String textCode,Map<String,String> body){
         this.textCode = textCode;
@@ -40,7 +40,12 @@ public class Request {
         if (session != null) {
             String xmlString = XmlUtil.buildXmlString(textCode, body);
             DecimalFormat df = new DecimalFormat("00000000");
-            String xmlLength = df.format( xmlString.getBytes().length);
+            String xmlLength = null;
+            try {
+                xmlLength = df.format( xmlString.getBytes("GBK").length);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             Log.e("request",xmlLength+xmlString);
             session.write(xmlLength+xmlString);
         }else {
@@ -49,11 +54,8 @@ public class Request {
     }
 
 
-    public int getSendTime() {
-        return sendTime;
-    }
 
-    public void setSendTime(int sendTime) {
-        this.sendTime = sendTime;
-    }
+
+
+
 }

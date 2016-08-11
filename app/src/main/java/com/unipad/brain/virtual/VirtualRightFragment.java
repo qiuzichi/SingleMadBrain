@@ -173,7 +173,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
                     holder.editNUmView.setVisibility(View.VISIBLE);
                     holder.editNUmView.setText(entity.getAnswerDate());
                     holder.editNUmView.setInputType(InputType.TYPE_NULL);
-                    holder.tv_num.setText(entity.shuffNum+"" );
+                    holder.tv_num.setText(entity.shuffNum + "");
                     holder.editNUmView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
@@ -242,14 +242,18 @@ public class VirtualRightFragment extends BasicCommonFragment {
      * 结束答题
      */
     public void endAnswerMode() {
-        memoryAdapter.notifyDataSetChanged();
-        service.mode=2;
+        if (isMatchMode()) {
+            service.mode = 2;
+            memoryAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public void onDestroyView() {
-        if(null != service)
+        if(null != service) {
             service.clear();
+            service = null;
+        }
         super.onDestroyView();
     }
     /**
@@ -315,6 +319,12 @@ public class VirtualRightFragment extends BasicCommonFragment {
                 }
                 if (index==service.virtualList.size()-1){
                     break;
+                }
+                progress = 100+index*100/service.virtualList.size();
+                if (progress < 101){
+                    progress = 101;
+                }else if (progress> 199){
+                    progress = 199;
                 }
                 if (text.length() == 4) {
                     index++;

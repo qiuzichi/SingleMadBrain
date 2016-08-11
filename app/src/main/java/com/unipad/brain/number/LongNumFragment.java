@@ -89,7 +89,6 @@ public class LongNumFragment extends NumberRightFragment {
         }
         if (isMatchMode()) {
             getAnswer();
-            exitActivity();
         } else {
             showAnswer();
         }
