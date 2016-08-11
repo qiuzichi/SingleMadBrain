@@ -10,8 +10,8 @@ import com.unipad.brain.App;
  * Created by Weibj on 2016/4/7.
  */
 public class CountDownTime implements App.HandlerCallback {
-    private static final int MSG_ADD_TIME = 0;
-    private static final int MSG_END_TIME = 1;
+    private static final int MSG_ADD_TIME = 0X1001;
+    private static final int MSG_END_TIME = 0X1002;
     /**
      * 倒时的总时间，单位：秒
      */
@@ -57,6 +57,7 @@ public class CountDownTime implements App.HandlerCallback {
     public void startCountTime() {
         if (!mStarted) {
             mStarted = true;
+            LogUtil.e("","---startCountTime");
             mHandler.removeMessages(MSG_END_TIME);
             mHandler.removeMessages(MSG_ADD_TIME);
             mHandler.sendEmptyMessageDelayed(MSG_ADD_TIME, 1000);
@@ -67,7 +68,8 @@ public class CountDownTime implements App.HandlerCallback {
      * 暂停倒计时
      */
     public void pauseCountTime() {
-        if (!mPausing) {
+        if (!mPausing && mStarted) {
+            LogUtil.e("","---pauseCountTime");
             mPausing = true;
             mHandler.removeMessages(MSG_END_TIME);
             mHandler.removeMessages(MSG_ADD_TIME);
@@ -79,6 +81,7 @@ public class CountDownTime implements App.HandlerCallback {
      */
     public void resumeCountTime() {
         if (mPausing) {
+            LogUtil.e("","---resumeCountTime");
             mPausing = false;
             mHandler.sendEmptyMessageDelayed(MSG_ADD_TIME, 1000);
         }
@@ -91,6 +94,7 @@ public class CountDownTime implements App.HandlerCallback {
      */
     public int stopCountTime() {
         if (mStarted) {
+            LogUtil.e("","---stopCountTime");
             mHandler.removeMessages(MSG_END_TIME);
             mHandler.removeMessages(MSG_ADD_TIME);
         }
@@ -117,6 +121,8 @@ public class CountDownTime implements App.HandlerCallback {
         mStarted = false;
         mPausing = false;
         takeTime = 0;
+        mHandler.removeMessages(MSG_END_TIME);
+        mHandler.removeMessages(MSG_ADD_TIME);
         if (isAuto) {
             this.startCountTime();
         }

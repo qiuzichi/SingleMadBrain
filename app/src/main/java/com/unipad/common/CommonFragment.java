@@ -185,7 +185,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getMemoryTime()[mActivity.getService().round - 1], false));
 
     }
-    public void startRememoryTimeCount(){
+    private void startRememoryTimeCount(){
         mTextTime.setText(mCountDownTime.setNewSeconds(mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round - 1], false));
         LogUtil.e("CommonFragment", "第" + (mActivity.getService().round - 1) + "轮的回忆时间为=" + mActivity.getService().rule.getReMemoryTime()[mActivity.getService().round - 1]);
     }
@@ -202,8 +202,9 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
                     @Override
                     public void onClick(View v) {
                         HIDDialog.dismissAll();
+                        mICommunicate.exitActivity();
                     }
-                });
+                }).show();
             }
             new Thread(){
                 @Override

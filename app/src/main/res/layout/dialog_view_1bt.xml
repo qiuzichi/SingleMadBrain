@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 注：修改该文件需要同步修改dialog_view_0bt.xml dialog_view_1bt.xml dialog_view_2bt.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
 
     android:gravity="center_horizontal"
     android:orientation="vertical" >
@@ -79,24 +79,21 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:src="#e5e5e5" >
-    </ImageView>
+
     <!-- 按钮 -->
 
     <LinearLayout
         android:id="@+id/dialog_firstbutton_area"
         android:layout_width="match_parent"
-        android:layout_height="52dip" >
+        android:layout_height="52dip"
+        android:layout_marginBottom="20dp">
 
         <!-- 第一个按钮 -->
 
         <Button
             android:id="@+id/dialog_first_button"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/sel_dlg_btn_normal"
             android:gravity="center"

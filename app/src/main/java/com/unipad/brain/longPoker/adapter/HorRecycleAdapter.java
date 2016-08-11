@@ -70,7 +70,7 @@ public class HorRecycleAdapter extends RecyclerView.Adapter<HorRecycleAdapter.Po
     }
     @Override
     public int getItemCount() {
-        return mDatas.size();
+        return mDatas == null?0:mDatas.size();
     }
 
      class PokerViewHolder extends  RecyclerView.ViewHolder {

@@ -156,7 +156,6 @@ public abstract class BasicCommonFragment extends Fragment implements
         if (isMatchMode()) {
             isNeedStartGame = true;
             ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
-            handler.sendEmptyMessage(MSG_PROGRESS);
         }
     }
 
