@@ -124,14 +124,15 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
                         LogUtil.e("","onOnCheckedChange :"+position);
-                        LogUtil.e("",",resPosition:"+(checkedId-group.getChildAt(1).getId()));
+                        LogUtil.e("", ",resPosition:" + (checkedId - group.getChildAt(1).getId()));
                         poker.setHuaseId(resDrawableId[checkedId-group.getChildAt(1).getId()]);
                         mCurrentPosition = position;
-                        int dian = poker.getUserAnswer()%13;
+
+                        LogUtil.e("","onCheck userAnswer:"+poker.getUserAnswer());
                         if (poker.getUserAnswer() == 0) {
                             return;
                         }
-
+                        int dian = (poker.getUserAnswer()-1)%13 + 1;
                         if (group.getChildAt(1).getId() == checkedId) {
                             poker.setUserAnswer(13+dian);
 
