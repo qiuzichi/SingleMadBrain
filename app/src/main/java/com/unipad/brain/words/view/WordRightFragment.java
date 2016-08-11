@@ -13,9 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
@@ -24,23 +23,17 @@ import com.unipad.brain.words.bean.WordEntity;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
-import com.unipad.common.ViewHolder;
-import com.unipad.common.adapter.CommonAdapter;
-import com.unipad.io.mina.SocketThreadManager;
-import com.unipad.utils.LogUtil;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * liupeng
+ * 随机词语
  */
 public class WordRightFragment extends BasicCommonFragment {
-    private GridView listView;
-    private WordAdapter adapter;
     private WordsService service;
     private ViewStub mStubShade;
-    private HorizontalScrollView scrollView;
     private RecyclerView wordRv;
     private List<WordEntity> mData;
     private WordRvAdapter wordRvAdapter;
@@ -58,7 +51,6 @@ public class WordRightFragment extends BasicCommonFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        listView = (GridView) mViewParent.findViewById(R.id.word_listview);
         service = (WordsService) AppContext.instance().getService(Constant.WORDS_SERVICE);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
         mStubShade.setVisibility(View.VISIBLE);
@@ -85,20 +77,7 @@ public class WordRightFragment extends BasicCommonFragment {
         super.initDataFinished();
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        float density = dm.density;
-        int allWidth = (int) (260 * service.lines * density);
-        int itemWidth = (int) (250 * density);
-
         mData = Arrays.asList(service.wordEntities);
-//        adapter = new WordAdapter(mActivity, Arrays.asList(service.wordEntities), R.layout.list_item_random_words);
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                allWidth, LinearLayout.LayoutParams.MATCH_PARENT);
-//        listView.setLayoutParams(params);
-//        listView.setColumnWidth(itemWidth);
-//        listView.setHorizontalSpacing(10);
-//        listView.setStretchMode(GridView.NO_STRETCH);
-//        listView.setNumColumns(service.lines);
-//        listView.setAdapter(adapter);
         mStubShade.setVisibility(View.GONE);
 
         manager = new GridLayoutManager(getActivity(), 20);
@@ -112,78 +91,16 @@ public class WordRightFragment extends BasicCommonFragment {
     @Override
     public void memoryTimeToEnd(int memoryTime) {
         super.memoryTimeToEnd(memoryTime);
-
         service.mode = 1;
         wordRvAdapter.notifyDataSetChanged();
+        sendMsgToPreper();
     }
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
         if (isMatchMode()) {
             service.mode = 2;
-            ///adapter.notifyDataSetChanged();
             wordRvAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private class WordAdapter extends CommonAdapter<WordEntity> {
-
-
-        public WordAdapter(Context context, List<WordEntity> datas, int layoutId) {
-            super(context, datas, layoutId);
-        }
-
-        @Override
-        public void convert(ViewHolder holder, final WordEntity wordEntity) {
-            if (wordEntity != null) {
-                TextView textNum = holder.getView(R.id.words_num);
-                TextView textWord = holder.getView(R.id.words);
-                LogUtil.e("", "" + wordEntity.getNumber());
-                textNum.setText("" + wordEntity.getNumber());
-                final EditText userAnswerEdit = holder.getView(R.id.words_answer);
-                switch (service.mode) {
-                    case 0:
-                        userAnswerEdit.setVisibility(View.GONE);
-                        textWord.setText(wordEntity.getWord());
-                        break;
-                    case 1:
-                        textWord.setVisibility(View.GONE);
-                        userAnswerEdit.setVisibility(View.VISIBLE);
-                        userAnswerEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                            @Override
-                            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                                return false;
-                            }
-                        });
-                        userAnswerEdit.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                wordEntity.setAnswer(userAnswerEdit.getText().toString().trim());
-                            }
-                        });
-                        break;
-                    case 2:
-                        userAnswerEdit.setVisibility(View.GONE);
-                        textWord.setVisibility(View.VISIBLE);
-                        if (TextUtils.isEmpty(wordEntity.getAnswer()) || !wordEntity.getAnswer().equals(wordEntity.getWord())) {
-                            textWord.setTextColor(getResources().getColor(R.color.red));
-                        }
-                        textWord.setText(wordEntity.getWord() + "/" + wordEntity.getAnswer());
-                        break;
-                    default:
-                        break;
-                }
-            }
         }
     }
 
@@ -222,23 +139,6 @@ public class WordRightFragment extends BasicCommonFragment {
                             return true;
                         }
                     });
-//                    holder.userAnswerEdit.addTextChangedListener(new TextWatcher() {
-//                        @Override
-//                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                        }
-//
-//                        @Override
-//                        public void afterTextChanged(Editable s) {
-//                            System.out.println("jinruafterTextChanged");
-//                            mData.get(position).setAnswer(holder.userAnswerEdit.getText().toString().trim());
-//                        }
-//                    });
                     break;
                 case 2:
                     holder.userAnswerEdit.setVisibility(View.GONE);
@@ -293,5 +193,10 @@ public class WordRightFragment extends BasicCommonFragment {
             public void afterTextChanged(Editable editable) {
             }
         }
+    }
+
+    private void closeSofeInputMothed(View view){
+        InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
