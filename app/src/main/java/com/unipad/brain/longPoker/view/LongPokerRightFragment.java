@@ -171,7 +171,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
 
     @Override
     public void rememoryTimeToEnd(int answerTime) {
-
+        super.rememoryTimeToEnd(answerTime);
     }
 
     @Override

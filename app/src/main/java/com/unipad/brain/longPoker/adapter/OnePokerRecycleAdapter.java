@@ -108,9 +108,11 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                 public void onClick(View v) {
                     mCurrentPosition = position;
                     if (progress != null){
-                        int pro= (start+position)*100/mDatas.size();
-                        if (pro ==100){
-                            pro--;
+                        int pro=100+ (start+position)*100/mDatas.size();
+                        if (pro <=101){
+                            pro = 101;
+                        }else if (pro>199){
+                            pro = 199;
                         }
                         progress.setProgress(pro+100);
                     }
