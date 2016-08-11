@@ -23,6 +23,7 @@ import com.unipad.brain.words.bean.WordEntity;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
+import com.unipad.utils.LogUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -98,7 +99,10 @@ public class WordRightFragment extends BasicCommonFragment {
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-        if (isMatchMode()) {
+        super.rememoryTimeToEnd(answerTime);
+        if (isMatchMode()){
+
+        }else {
             service.mode = 2;
             wordRvAdapter.notifyDataSetChanged();
         }
@@ -136,6 +140,13 @@ public class WordRightFragment extends BasicCommonFragment {
                                 System.out.println("" + position + "--" + (wordRvAdapter.getItemCount() - 1));
                                 wordRv.getChildAt(position + 1 - manager.findFirstVisibleItemPosition()).requestFocus();
                             }
+                            progress = 100 + (position + 1 ) * 100 / wordRvAdapter.getItemCount();
+                            if (progress <= 101){
+                                progress = 101;
+                            }else if (progress >= 199){
+                                progress = 199;
+                            }
+                            LogUtil.e("", "word:" + progress);
                             return true;
                         }
                     });
