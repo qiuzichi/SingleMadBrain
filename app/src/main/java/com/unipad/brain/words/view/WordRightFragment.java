@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.unipad.brain.words.bean.WordEntity;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
+import com.unipad.utils.LogUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,7 +80,7 @@ public class WordRightFragment extends BasicCommonFragment {
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         mData = Arrays.asList(service.wordEntities);
-        mStubShade.setVisibility(View.GONE);
+        //mStubShade.setVisibility(View.GONE);
 
         manager = new GridLayoutManager(getActivity(), 20);
         manager.setOrientation(GridLayoutManager.HORIZONTAL);
@@ -86,6 +88,7 @@ public class WordRightFragment extends BasicCommonFragment {
         wordRvAdapter = new WordRvAdapter();
         wordRv.setAdapter(wordRvAdapter);
         wordRv.setHasFixedSize(true);
+        mStubShade.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -98,7 +101,10 @@ public class WordRightFragment extends BasicCommonFragment {
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-        if (isMatchMode()) {
+        super.rememoryTimeToEnd(answerTime);
+        if (isMatchMode()){
+
+        }else {
             service.mode = 2;
             wordRvAdapter.notifyDataSetChanged();
         }
@@ -136,6 +142,17 @@ public class WordRightFragment extends BasicCommonFragment {
                                 System.out.println("" + position + "--" + (wordRvAdapter.getItemCount() - 1));
                                 wordRv.getChildAt(position + 1 - manager.findFirstVisibleItemPosition()).requestFocus();
                             }
+                            progress = 100 + (position + 1 ) * 100 / wordRvAdapter.getItemCount();
+                            if (progress <= 101){
+                                progress = 101;
+                            }else if (progress >= 199){
+                                progress = 199;
+                            }
+                            if(position==wordRvAdapter.getItemCount()-1){
+                                holder.userAnswerEdit.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                                closeSofeInputMothed(holder.userAnswerEdit);
+                            }
+                            LogUtil.e("", "word:" + progress);
                             return true;
                         }
                     });
