@@ -80,6 +80,17 @@ public class WordsService extends AbsBaseGameService {
 
     @Override
     public String getAnswerData() {
-        return null;
+        StringBuilder answerData = new StringBuilder();
+        for (int i = 0;i<entitys.size();i++) {
+            answerData.append(entitys.get(i).getNumber())
+                    .append("^")
+                    .append(entitys.get(i).getAnswer())
+                    .append(",");
+        }
+        int length = answerData.length();
+        if (length > 0)
+            answerData.deleteCharAt(length-1);
+        LogUtil.e("","随机词语;"+answerData.toString());
+        return answerData.toString();
     }
 }
