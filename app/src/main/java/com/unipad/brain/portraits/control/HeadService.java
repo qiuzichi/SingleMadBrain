@@ -281,6 +281,7 @@ public class HeadService extends AbsBaseGameService{
 
     @Override
     public String getAnswerData() {
+
         return data.toString();
     }
 

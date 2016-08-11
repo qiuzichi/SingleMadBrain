@@ -55,6 +55,7 @@ public class QuickCardService extends AbsBaseGameService{
 		LogUtil.e(TAG,data);
 		roundData = data.split("&");
 		allround = roundData.length;
+		round = 0;
 		parseDataByRound();
 	}
 
@@ -64,7 +65,8 @@ public class QuickCardService extends AbsBaseGameService{
 		}
 		ArrayList<ChannelItem> orgin = PokerEntity.getInstance().getPokerSortArray();
 		orgin.clear();
-		round1 = roundData[round];
+		round++;
+		round1 = roundData[round-1];
 		try {
 			if (bottomCards.size() == 0) {
 				initCards();
