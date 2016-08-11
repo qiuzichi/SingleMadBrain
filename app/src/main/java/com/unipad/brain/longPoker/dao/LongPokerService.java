@@ -213,7 +213,7 @@ public class LongPokerService extends AbsBaseGameService {
                     answerData.deleteCharAt(answerData.length() - 1);
                     answerData.append(",");
                 }
-                answerData.append(i/53).append("^");
+                answerData.append(i/53+1).append("^");
             }else{
                 answerData.append(pokersQuestion.get(i).getUserAnswer()).append("_");
             }
