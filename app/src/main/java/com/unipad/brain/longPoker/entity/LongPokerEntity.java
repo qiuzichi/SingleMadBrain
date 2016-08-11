@@ -4,6 +4,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.unipad.brain.R;
 import com.unipad.brain.quickPoker.entity.ChannelItem;
+import com.unipad.utils.LogUtil;
 
 /**
  * Created by gongkan on 2016/7/13.
@@ -30,6 +31,7 @@ public class LongPokerEntity extends ChannelItem {
     }
 
     public void setUserAnswer(int userAnswer) {
+        LogUtil.e("","setUserAnswer:"+userAnswer);
         this.userAnswer = userAnswer;
     }
 
