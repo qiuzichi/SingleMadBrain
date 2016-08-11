@@ -119,10 +119,11 @@ public class WordRightFragment extends BasicCommonFragment {
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
-
-        service.mode = 2;
-        ///adapter.notifyDataSetChanged();
-        wordRvAdapter.notifyDataSetChanged();
+        if (isMatchMode()) {
+            service.mode = 2;
+            ///adapter.notifyDataSetChanged();
+            wordRvAdapter.notifyDataSetChanged();
+        }
     }
 
     private class WordAdapter extends CommonAdapter<WordEntity> {

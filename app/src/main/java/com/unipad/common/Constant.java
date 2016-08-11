@@ -35,6 +35,7 @@ public class Constant {
     public static final String QUICK_RANDOM_DLG = "quick_random_dlg";
     public static final String SHOW_SOCRE_CONFIRM_DLG = "show_socre_confirm_dlg";
     public static final String MATCH_RESULT_DLG = "match_result_dlg";
+    public static final String MATCH_OVER_DLG = "match_over_dlg";
     public static final String HOME_GAME_HAND_SERVICE = "com.unipad.brain.home.dao.HomeGameHandService";
     public static final String LONG_SERVICE = "com.unipad.brain.number.dao.NumService";
 

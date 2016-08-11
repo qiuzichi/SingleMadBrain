@@ -56,20 +56,20 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
         super.rememoryTimeToEnd(answerTime);
         getAnswer();
         mKeyboardDialog.dismiss();
-        if (service.isLastRound()){
-            ToastUtil.showToast("本场比赛结束，退出比赛");
-            mActivity.finish();
-        }else {
-            ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "开始准备下一轮").show();
-            new Thread() {
-                @Override
-                public void run() {
-                    super.run();
-                    service.parseDataByNextRound();
-                }
-            }.start();
-        }
+        if (isMatchMode()) {
+            if (service.isLastRound()) {
 
+            } else {
+                ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "开始准备下一轮").show();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        service.parseDataByNextRound();
+                    }
+                }.start();
+            }
+        }
     }
 
     @Override

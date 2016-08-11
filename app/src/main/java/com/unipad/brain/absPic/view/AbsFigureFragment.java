@@ -82,7 +82,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     public void rememoryTimeToEnd(final int answerTime) {
         super.rememoryTimeToEnd(answerTime);
         if (isMatchMode()){
-            mActivity.finish();
+
         }else {
             service.mode = 2;
             setButtonArea();

@@ -102,7 +102,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
         if (isMatchMode()){
-            mActivity.finish();
+
         }else {
             service.mode = 2;
             adapter.notifyDataSetChanged();
