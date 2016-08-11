@@ -1,5 +1,7 @@
 package com.unipad.brain.words.dao;
 
+import android.text.TextUtils;
+
 import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.words.bean.WordEntity;
 import com.unipad.http.HitopGetQuestion;
@@ -82,6 +84,9 @@ public class WordsService extends AbsBaseGameService {
     public String getAnswerData() {
         StringBuilder answerData = new StringBuilder();
         for (int i = 0;i<entitys.size();i++) {
+            if(TextUtils.isEmpty(entitys.get(i).getAnswer())){
+                entitys.get(i).setAnswer("@");
+            }
             answerData.append(entitys.get(i).getNumber())
                     .append("^")
                     .append(entitys.get(i).getAnswer())
