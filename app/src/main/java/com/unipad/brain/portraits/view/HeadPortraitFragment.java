@@ -101,6 +101,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
+        super.rememoryTimeToEnd(answerTime);
         if (isMatchMode()){
 
         }else {
