@@ -5,9 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -489,6 +487,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             null_text = new TextView(mActivity);
             RelativeLayout.LayoutParams params = new  RelativeLayout.
                     LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(0,100,0,0);
             null_text.setGravity(Gravity.CENTER);
             null_text.setText(getString(R.string.hostory_null_data));
             null_text.setTextSize(25);

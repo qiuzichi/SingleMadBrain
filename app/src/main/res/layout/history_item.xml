@@ -8,53 +8,53 @@
     android:orientation="horizontal">
     <TextView
         android:id="@+id/matchId"
-        android:textSize="@dimen/hisrecord_text_size"
+        android:textSize="@dimen/setting_text_18sp"
         android:layout_width="180dp"
         android:layout_height="match_parent"
-        android:background="@drawable/number_text_bg"
+        android:background="@drawable/shapee"
         android:gravity="center"/>
     <TextView
         android:id="@+id/projectId"
-        android:textSize="@dimen/hisrecord_text_size"
+        android:textSize="@dimen/setting_text_18sp"
         android:layout_width="80dp"
         android:layout_height="match_parent"
-        android:background="@drawable/number_text_bg"
+        android:background="@drawable/shapee"
         android:gravity="center"/>
     <TextView
         android:id="@+id/startDate"
-        android:textSize="@dimen/hisrecord_game_date"
+        android:textSize="@dimen/setting_text_18sp"
         android:layout_width="@dimen/hisrecord_widht_answer"
         android:layout_height="match_parent"
-        android:background="@drawable/number_text_bg"
+        android:background="@drawable/shapee"
         android:gravity="center"/>
     <TextView
         android:id="@+id/rectime"
-        android:textSize="@dimen/hisrecord_text_size"
+        android:textSize="@dimen/setting_text_18sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/number_text_bg"
+        android:background="@drawable/shapee"
         android:gravity="center"/>
     <TextView
         android:id="@+id/memtime"
-        android:textSize="@dimen/hisrecord_text_size"
+        android:textSize="@dimen/setting_text_18sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/number_text_bg"
+        android:background="@drawable/shapee"
         android:gravity="center"
         />
     <TextView
         android:id="@+id/score"
-        android:textSize="@dimen/hisrecord_text_size"
+        android:textSize="@dimen/setting_text_18sp"
         android:layout_width="@dimen/hisrecord_widht_answer_mode"
         android:layout_height="match_parent"
-        android:background="@drawable/number_text_bg"
+        android:background="@drawable/shapee"
         android:gravity="center"
         />
     <TextView
         android:id="@+id/ranking"
-        android:textSize="@dimen/hisrecord_text_size"
+        android:textSize="@dimen/setting_text_18sp"
         android:layout_width="@dimen/hisrecord_widht_answer_mode"
-        android:background="@drawable/number_text_bg"
+        android:background="@drawable/shapee"
         android:layout_height="match_parent"
         android:gravity="center"
         />
