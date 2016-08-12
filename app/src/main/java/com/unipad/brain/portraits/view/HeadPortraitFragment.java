@@ -1,14 +1,12 @@
 package com.unipad.brain.portraits.view;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -18,20 +16,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
-import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.R;;
+import com.unipad.brain.R;
+import com.unipad.brain.portraits.bean.Person;
+import com.unipad.brain.portraits.control.HeadService;
 import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
-import com.unipad.brain.portraits.bean.Person;
-import com.unipad.brain.portraits.control.HeadService;
-import com.unipad.io.mina.SocketThreadManager;
 import com.unipad.utils.LogUtil;
 
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
+
+;
 
 /**
  * Created by gongkan on 2016/4/11.
@@ -41,6 +40,8 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     private GridView mListView;
     private HeadService service;
     private View mStubShade;
+    private ArrayList<Person> mData;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -50,8 +51,8 @@ public class HeadPortraitFragment extends BasicCommonFragment{
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         service = (HeadService) (AppContext.instance().getService(Constant.HEADSERVICE));
-
-        adapter = new HeadAdapter(mActivity, ((HeadService) service).data, R.layout.list_portrait);
+        mData = ((HeadService) service).data;
+        adapter = new HeadAdapter(mActivity, mData, R.layout.list_portrait);
         mListView.setAdapter(adapter);
         mStubShade =  mViewParent.findViewById(R.id.view_shade);
     }
@@ -143,10 +144,15 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                 holeName.setVisibility(View.GONE);
                 firstName.setVisibility(View.VISIBLE);
                 lastName.setVisibility(View.VISIBLE);
+
+                Person bean = mData.get(holder.getPosition());
+                firstName.setText(bean.getAnswerFirstName());
+                lastName.setText(bean.getAnswerLastName());
+Log.e("header", bean.toString() +"           position =" + holder.getPosition());
                 firstName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId== EditorInfo.IME_ACTION_NEXT){
+                        if (actionId == EditorInfo.IME_ACTION_NEXT) {
                             lastName.requestFocus();
                             return true;
                         }
@@ -164,17 +170,17 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                     }
-
                     @Override
                     public void afterTextChanged(Editable s) {
-                        person.setAnswerFirstName(firstName.getText().toString().trim());
+                        String first_name = firstName.getText().toString().trim();
+                        mData.get(holder.getPosition()).setAnswerFirstName(first_name);
                     }
                 });
 
                 lastName.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     }
 
                     @Override
@@ -184,7 +190,8 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        person.setAnswerLastName(lastName.getText().toString().trim());
+                        String last_name = lastName.getText().toString().trim();
+                        mData.get(holder.getPosition()).setAnswerLastName(last_name);
                     }
                 });
                 lastName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -198,12 +205,12 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                             EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
                             LogUtil.e("", "first:" + firstName.getText().toString());
                             firstName.requestFocus();
-                            if((holder.getPosition()+1) % mListView.getNumColumns() == 0){
-                                mListView.smoothScrollBy(mListView.getVerticalSpacing()+mListView.getChildAt(0).getHeight(),0);
+                            if ((holder.getPosition() + 1) % mListView.getNumColumns() == 0) {
+                                mListView.smoothScrollBy(mListView.getVerticalSpacing() + mListView.getChildAt(0).getHeight(), 0);
                             }
-                            return  true;
+                            return true;
 
-                        }else if(mDatas.size() - 1 == mListView.getLastVisiblePosition()){
+                        } else if (mDatas.size() - 1 == mListView.getLastVisiblePosition()) {
                              /*到最后完成一个item  关闭软键盘*/
                             lastName.setImeOptions(EditorInfo.IME_ACTION_DONE);
                             closeSofeInputMothed(lastName);

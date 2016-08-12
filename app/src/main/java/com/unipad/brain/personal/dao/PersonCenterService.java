@@ -218,8 +218,8 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
      * @param
      * @描述：查询练习模式成绩
      */
-    public void getHistoryExerRecord(int requestPage, int totalItem) {
-        HitopHistRecord hitopRecord = new HitopHistRecord(requestPage, totalItem);
+    public void getHistoryExerRecord() {
+        HitopHistRecord hitopRecord = new HitopHistRecord();
         hitopRecord.post();
     }
 

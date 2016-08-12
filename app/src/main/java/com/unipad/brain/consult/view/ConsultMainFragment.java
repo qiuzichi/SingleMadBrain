@@ -78,6 +78,8 @@ public class ConsultMainFragment extends ConsultBaseFragment{
     }
 
     private void initMyTabWidget(){
+           /*去掉分割线*/
+        mTabWidget.setDividerDrawable(null);
         mConsultTabs = ConsultTab.values();
         LayoutInflater layoutInflater = LayoutInflater.from(getmContext());
         if(mConsultTabs != null){

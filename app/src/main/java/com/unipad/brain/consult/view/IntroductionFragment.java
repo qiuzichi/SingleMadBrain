@@ -96,6 +96,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private void initData() {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
+
         mRelativeLayoutVersion = (RelativeLayout) getView().findViewById(R.id.rl_reminder_version);
         ((ImageView) getView().findViewById(R.id.update_version_imgview)).setOnClickListener(this);
 
@@ -201,7 +202,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         });
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mActivity);
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.addItemDecoration(new DividerDecoration(mActivity));
@@ -211,22 +212,33 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         mRecyclerViewAdapter = new MyRecyclerAdapter(mActivity, mRecyclerView, newsDatas, 0);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mSwipeRefreshLayout.setEnabled(mLayoutManager.findFirstVisibleItemPosition() == 0);
+//                int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+//                if(topRowVerticalPosition>0){
+//                    mSwipeRefreshLayout.setRefreshing(false);
+//                }
+            }
+        });
         mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                if(requestPagerNum == totalPager){
+                /*禁用下拉刷新功能    */
+                mSwipeRefreshLayout.setEnabled(false);
+                if (requestPagerNum == totalPager) {
                    /* 最后一页 直接吐司 不显示下拉加载*/
                     ToastUtil.showToast(getString(R.string.loadmore_null_data));
                     return;
                 }
-
-                /*禁用下拉刷新功能    */
-                mSwipeRefreshLayout.setEnabled(false);
                 newsDatas.add(null);
                 mRecyclerViewAdapter.notifyItemInserted(newsDatas.size() - 1);
                 loadMoreData(true);
                 mRecyclerViewAdapter.setLoading(true);
-                }
+            }
         });
 
         mRecyclerViewAdapter.setmOnShowUpdateDialgo(new OnShowUpdateDialgo() {
@@ -280,6 +292,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             downloadApkFile(versionBean.getPath());
             //点击确认更新 隐藏提示栏 删除header item
             mRelativeLayoutVersion.setVisibility(View.GONE);
+//            mRecyclerViewAdapter.setHeadVisibility(false);
         }
 
         @Override
@@ -293,6 +306,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         server.putExtra("loadPath", path);
         mActivity.startService(server);
 //      LoadService.handler.obtainMessage(1,path).sendToTarget();
+
     }
 
     //显示dialog  以及 通知栏 有新版本
@@ -328,8 +342,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
     private PendingIntent getDefalutIntent(String path){
-//        Intent intent = new Intent(mActivity, MainHomeFragment.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         Intent server = new Intent("com.loaddown.application");
         server.putExtra("loadPath", path);
         PendingIntent pendingIntent= PendingIntent.getService(mActivity, 1, server, PendingIntent.FLAG_ONE_SHOT);
@@ -337,7 +349,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
 
-    //对于用户不可见 与 不可见  会被调用；
+   /* 对于用户不可见 与 不可见  会被调用；*/
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -452,7 +464,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                             mRecyclerView.setAdapter(mRecyclerViewAdapter);
                             ToastUtil.showToast(getString(R.string.loadmore_null_data));
                         }
-                         /*允许下拉刷新    */
+                         /*允许下拉刷新  */
                         mSwipeRefreshLayout.setEnabled(true);
                     }
                 }
@@ -495,7 +507,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             case HttpConstant.NOTIFY_GET_NEWS:
                 //获取新闻页面数据
                 List<NewEntity> databean = (List<NewEntity>) o;
-
                 if(requestPagerNum == 1 && databean.size() != 0){
                     totalPager = databean.get(0).getTotalPager();
                 }
@@ -516,7 +527,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 //获取轮播图数据
                 newsAdvertDatas.clear();
                 newsAdvertDatas.addAll((List<AdPictureBean>) o);
-
                 adAdapter.notifyDataSetChanged();
                 break;
 
@@ -524,20 +534,16 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
             case HttpConstant.NOTIFY_DOWNLOAD_APK:
                 versionBean = (VersionBean) o;
                 if(versionBean == null){
-                    //没有网络 网络异常的时候 直接返回什么都不做
+                    /*没有网络 网络异常的时候 直接返回什么都不做*/
                     return;
                 }
 
-
                 if(mRecyclerViewAdapter != null && !checkVersionIsNew()) {
-                    //版本不一致的时候 显示textview
+                    /*版本不一致的时候 显示textview*/
                     mRelativeLayoutVersion.setVisibility(View.VISIBLE);
+//                    mRecyclerViewAdapter.setHeadVisibility(true);
                     showNotification();
                 }
-//                if(mRecyclerViewAdapter != null && !checkVersionIsNew()){
-//                    mRecyclerViewAdapter.setHeadVisibility(true);
-//                }
-
                 break;
             default:
                 break;

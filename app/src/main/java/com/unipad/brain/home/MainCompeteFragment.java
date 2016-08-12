@@ -175,6 +175,8 @@ public class MainCompeteFragment extends MainBasicFragment  {
 
                 if(position == 1 || position == 2 || position ==4){
                     rl_competitionMode.setVisibility(View.VISIBLE);
+                }else {
+                    rl_competitionMode.setVisibility(View.GONE);
                 }
 
 

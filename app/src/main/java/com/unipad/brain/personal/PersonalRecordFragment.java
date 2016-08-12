@@ -121,9 +121,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(group.getCheckedRadioButtonId());
-
                 mRightTextView.setText(rb.getText().toString());
-
                 switch (group.getCheckedRadioButtonId()){
                     case R.id.radio_select_competition: //比赛模式
                         if(null != mRecordData){
@@ -133,19 +131,15 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                         }
                         break;
                     case R.id.radio_select_exercise: //练习模式
-                        int requestPager = 1;
-                        int totalItem = 10;
+//                        int requestPager = 1;
+//                        int totalItem = 10;
                         if(null == mExerciseData){
                             ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
-                                    .getHistoryExerRecord(requestPager, totalItem);
+                                    .getHistoryExerRecord();
                         }else {
                             hisRecords = mExerciseData;
                             viewParent.removeAllViews();
                             viewParent.addView(getGridView());
-                        }
-                        /*没有练习的历史成绩*/
-                        if(hisRecords.size() == 0){
-                            showNullData();
                         }
 
 //                        showDialog = new ShowDialog(mActivity);
@@ -160,11 +154,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 //                        showDialog.setOnShowDialogClick(PersonalRecordFragment.this);
 //                        showDialog.bindOnClickListener(view, new int[]{R.id.img_close});
                         break;
-                }
-                //当数据为空的时候；
-                if( null == hisRecords){
-                    gridView.setVisibility(View.GONE);
-
                 }
                 closePopup();
             }
@@ -368,7 +357,6 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 
 
     private View getGridView(){
-
         if (gridView == null) {
             gridView = (TableLayout) LayoutInflater.from(getActivity()).inflate(R.layout.history_answer, null);
         } else {
@@ -469,7 +457,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                     break;
 
                 case HttpConstant.EXECISE_DATA:
-                   mExerciseData = (List<HisRecord>) o;
+                    mExerciseData = (List<HisRecord>) o;
                     hisRecords = mExerciseData;
                     if (!mIsBrokenLine) {
                         viewParent.removeAllViews();

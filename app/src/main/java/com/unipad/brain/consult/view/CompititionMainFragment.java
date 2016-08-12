@@ -50,7 +50,6 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWCOMPETITION, this);
         //默认加载第一页的数据 10条 分页加载数据
         service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, 1, 10);
-
         ListView mListView = (ListView)view.findViewById(R.id.listview_compitition_main);
         mListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 

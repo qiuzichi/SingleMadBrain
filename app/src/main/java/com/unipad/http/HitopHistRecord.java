@@ -41,12 +41,10 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
 
     }
 
-    public HitopHistRecord(int page, int size) {
+    public HitopHistRecord() {
         super(HttpConstant.ExerRecord);
         key = HttpConstant.EXECISE_DATA;
         mParams.addBodyParameter("userId", AppContext.instance().loginUser.getUserId());
-        mParams.addBodyParameter("page", "" + page);
-        mParams.addBodyParameter("size", "" + size);
     }
 
     @Override

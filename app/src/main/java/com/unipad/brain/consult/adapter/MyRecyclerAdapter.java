@@ -273,8 +273,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //        if(position == 0){
 //            return TYPE_HEADER;
 //        }
-Log.e("myadapter", position + "" + "     lastVisibleItem =" + lastVisibleItem );
-//        if(position == firstVisibleItem && isShowVersion){
+//Log.e("myadapter", position + "" + "     lastVisibleItem =" + lastVisibleItem );
+//        if(position == 0 && isShowVersion){
 //            return TYPE_HEADER;
 //        }
         return newsDatas.get(position) != null ? super.getItemViewType(position) : TYPE_FOOTER;
