@@ -26,7 +26,47 @@ public class CompetitionBean {
 	private String projectId;
 	//用户ID
 	private String userId;
+	//比赛分数
+	private int score;
+	//记忆时间
+	private int rectime;
+	//回忆时间
+	private int memtime;
+	//回忆时间
+	private int rank;
 
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getRectime() {
+		return rectime;
+	}
+
+	public void setRectime(int rectime) {
+		this.rectime = rectime;
+	}
+
+	public int getMemtime() {
+		return memtime;
+	}
+
+	public void setMemtime(int memtime) {
+		this.memtime = memtime;
+	}
 
 	public String getUserId() {
 		return userId;

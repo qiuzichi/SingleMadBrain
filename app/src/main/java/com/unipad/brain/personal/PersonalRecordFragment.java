@@ -6,8 +6,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -18,6 +20,7 @@ import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -55,6 +58,9 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private BrokenLineView mViewBrokenLine;
     private ShowDialog showDialog;
+    private final int PAGESIZE = 10;
+    private int requestExercisePager = 1;
+    private boolean isLoadMoreData = false;
     private PersonCenterService service;
     private WheelMainView wheelMainView;
     /**
@@ -72,13 +78,23 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private PopupWindow mPopupWindowsDate;
     private TextView mRightTextView;
     private TextView null_text;
+    private RadioButton mRadioExercise;
+    private RelativeLayout rl_select_time;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mExerciseData = new ArrayList<HisRecord>();
+        mRecordData = new ArrayList<HisRecord>();
+
         mTitleBarRightText = mActivity.getString(R.string.race_mode);
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mBlackColor = mActivity.getResources().getColor(R.color.black);
+        viewParent = (ViewGroup) mActivity.findViewById(R.id.record_histogram_container);
+        rl_select_time = (RelativeLayout) mActivity.findViewById(R.id.rl_search_time_visit);
+        final ScrollView mScrollView =  (ScrollView) mActivity.findViewById(R.id.scrollview_tablayout_record);
+
         (mEditSearchBeginDate = (Button) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
         (mEditSearchEndDate = (Button) mActivity.findViewById(R.id.record_search_end_data)).setOnClickListener(this);
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
@@ -87,10 +103,51 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mActivity.findViewById(R.id.text_record_city).setVisibility(View.GONE);
         mActivity.findViewById(R.id.text_record_china).setVisibility(View.GONE);
         mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
-        validateDate();
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK, this);
         ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.EXECISE_DATA, this);
 
+        ((ScrollView) mActivity.findViewById(R.id.scrollview_tablayout_record)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        break;
+                    case MotionEvent.ACTION_MOVE :
+                        int scrollY = v.getScrollY();
+                        int height = v.getHeight();
+                        int scrollViewMeasuredHeight = mScrollView.getChildAt(0).getMeasuredHeight();
+                        if((scrollY + height) == scrollViewMeasuredHeight){
+                            //滑动到底部
+                            if( null != mRadioExercise && mRadioExercise.isChecked()){
+                                if(null == mExerciseData){
+                                    return false;
+                                }
+                                if(requestExercisePager > Integer.parseInt(mExerciseData.get(0).getTotalPage())){
+                                    ToastUtil.showToast(getString(R.string.loadmore_null_data));
+                                    return false;
+                                }
+
+                                if(isLoadMoreData){
+                                    ToastUtil.showToast(getString(R.string.loadmore_data));
+                                    return false;
+                                }
+
+                                ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
+                                        .getHistoryExerRecord(requestExercisePager, PAGESIZE);
+                                isLoadMoreData = true;
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+
+                return false;
+            }
+        });
+        validateDate();
 
     }
     @Override
@@ -114,43 +171,36 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mRightTextView = mActivity.getmTextRight();
         View mPopupView = LayoutInflater.from(mActivity).inflate(R.layout.item_select_popup, null);
         RadioGroup mRadioGroup = (RadioGroup) mPopupView.findViewById(R.id.radio_group_popup);
+        mRadioExercise = (RadioButton) mPopupView.findViewById(R.id.radio_select_exercise);
 
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(group.getCheckedRadioButtonId());
-                mRightTextView.setText(rb.getText().toString());
+                mTitleBarRightText = rb.getText().toString();
+                mRightTextView.setText(mTitleBarRightText);
                 switch (group.getCheckedRadioButtonId()){
                     case R.id.radio_select_competition: //比赛模式
-                        if(null != mRecordData){
+                        rl_select_time.setVisibility(View.VISIBLE);
+                        viewParent.removeAllViews();
+                        if (mRecordData.size() != 0) {
                             hisRecords = mRecordData;
-                            viewParent.removeAllViews();
                             viewParent.addView(getGridView());
                         }
                         break;
                     case R.id.radio_select_exercise: //练习模式
-//                        int requestPager = 1;
-//                        int totalItem = 10;
-                        if(null == mExerciseData){
-                            ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
-                                    .getHistoryExerRecord();
-                        }else {
+                        rl_select_time.setVisibility(View.GONE);
+                        viewParent.removeAllViews();
+
+                        if (mExerciseData.size() == 0) {
+                            requestExercisePager = 1;
+                            ((PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER))
+                                    .getHistoryExerRecord(requestExercisePager, PAGESIZE);
+                        } else {
                             hisRecords = mExerciseData;
-                            viewParent.removeAllViews();
                             viewParent.addView(getGridView());
                         }
 
-//                        showDialog = new ShowDialog(mActivity);
-//                        View view = LayoutInflater.from(mActivity).inflate(R.layout.first_login_dialog, null);
-//                        TextView tv_msg = (TextView) view.findViewById(R.id.txt_msg);
-//                        ((TextView) view.findViewById(R.id.txt_pname)).setVisibility(View.GONE);
-//                        tv_msg.setText(getString(R.string.exercise_not_open));
-//                        tv_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
-//                        tv_msg.setGravity(Gravity.CENTER_HORIZONTAL);
-//
-//                        showDialog.showDialog(view, ShowDialog.TYPE_CENTER, mActivity.getWindowManager(), 0.2f, 0.5f);
-//                        showDialog.setOnShowDialogClick(PersonalRecordFragment.this);
-//                        showDialog.bindOnClickListener(view, new int[]{R.id.img_close});
                         break;
                 }
                 closePopup();
@@ -174,22 +224,18 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     }
 
     private void showSelectStartDatePopup(View positionView){
-
         ScaleAnimation sa = new ScaleAnimation(1f, 1f, 0f, 1f,
                 Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f);
         sa.setDuration(300);
         positionView.startAnimation(sa);
-
-
         mPopupWindowsDate = new PopupWindow(positionView, mEditSearchBeginDate.getWidth() + DensityUtil.dip2px(mActivity, 400), DensityUtil.dip2px(mActivity,300));
         // 设置点击外部可以被关闭
         mPopupWindowsDate.setOutsideTouchable(true);
         mPopupWindowsDate.setBackgroundDrawable(new BitmapDrawable());
-
         // 设置popupWindow可以得到焦点
         mPopupWindowsDate.setFocusable(true);
         //显示位置
-        mPopupWindowsDate.showAsDropDown(mEditSearchBeginDate, - DensityUtil.dip2px(mActivity, 40), 5);
+        mPopupWindowsDate.showAsDropDown(mEditSearchBeginDate, -DensityUtil.dip2px(mActivity, 40), 5);
     }
 
     @Override
@@ -201,7 +247,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.record_text_search:
-               this.validateDate();
+                this.validateDate();
                 break;
             case R.id.record_text_delete:
                 break;
@@ -242,6 +288,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 
         intent.putExtra("ranking", hisRecord.getRanking());
         intent.putExtra("projectId", hisRecord.getProjectId());
+        intent.putExtra("matchId", hisRecord.getMatchId());
         mActivity.startActivity(intent);
     }
 
@@ -373,16 +420,31 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 
     private TableRow createTableRow(HisRecord record){
         TableRow tableRow = (TableRow) LayoutInflater.from(getActivity()).inflate(R.layout.history_item,null);
+        if(TextUtils.isEmpty(record.getGradeId())){
+            ((TextView)tableRow.findViewById(R.id.projectId)).setText(getString(R.string.null_data));
+        }else{
+            ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
+        }
         ((TextView)tableRow.findViewById(R.id.matchId)).setText(Constant.getProjectName(record.getProjectId()));
-        ((TextView)tableRow.findViewById(R.id.projectId)).setText(Constant.getGradeId(record.getGradeId()));
         ((TextView)tableRow.findViewById(R.id.startDate)).setText(record.getStartDate());
         ((TextView)tableRow.findViewById(R.id.rectime)).setText(record.getMemtime());
         ((TextView)tableRow.findViewById(R.id.memtime)).setText(record.getRectime());
         ((TextView)tableRow.findViewById(R.id.score)).setText(record.getScore());
-        ((TextView)tableRow.findViewById(R.id.ranking)).setText(record.getRanking());
+
+        if(TextUtils.isEmpty(record.getRanking())){
+            ((TextView)tableRow.findViewById(R.id.ranking)).setText(getString(R.string.null_data));
+        }else{
+            ((TextView)tableRow.findViewById(R.id.ranking)).setText(record.getRanking());
+        }
+
         TableRow tableRow1 = (TableRow) tableRow.findViewById(R.id.group_historry_list);
         tableRow1.setTag(record);
-        tableRow1.setOnClickListener(this);
+
+        if (null != mRadioExercise && mRadioExercise.isChecked()) {
+            tableRow1.setClickable(false);
+        } else {
+            tableRow1.setOnClickListener(this);
+        }
         return  tableRow;
     }
 
@@ -441,11 +503,11 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 
     @Override
     public void update(int key, Object o) {
-        if(o != null){
+        if (o != null) {
             switch (key) {
                 case HttpConstant.HISRECORD_OK:
-                    hisRecords= (List<HisRecord>) o;
-                   // hisRecords = mRecordData;
+                    mRecordData = (List<HisRecord>) o;
+                    hisRecords = mRecordData;
                     if (mIsBrokenLine) {
 
                     } else {
@@ -455,18 +517,21 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                     break;
 
                 case HttpConstant.EXECISE_DATA:
-                    mExerciseData = (List<HisRecord>) o;
+                    mExerciseData.addAll((List<HisRecord>) o);
                     hisRecords = mExerciseData;
+                    requestExercisePager++;
                     if (!mIsBrokenLine) {
                         viewParent.removeAllViews();
                         viewParent.addView(getGridView());
                     }
+                    /*数据加载完成*/
+                    isLoadMoreData = false;
                     break;
 
                 default:
                     break;
             }
-        }else {
+        } else {
             showNullData();
         }
     }
@@ -475,7 +540,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             null_text = new TextView(mActivity);
             RelativeLayout.LayoutParams params = new  RelativeLayout.
                     LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            params.setMargins(0,100,0,0);
+            params.setMargins(0,150,0,0);
             null_text.setGravity(Gravity.CENTER);
             null_text.setText(getString(R.string.hostory_null_data));
             null_text.setTextSize(25);
@@ -483,6 +548,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         }
 
         viewParent.removeAllViews();
+        ((RelativeLayout)viewParent).setGravity(Gravity.CENTER);
         viewParent.addView(null_text);
     }
 

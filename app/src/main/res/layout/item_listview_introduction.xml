@@ -79,7 +79,7 @@
                             android:layout_marginLeft="@dimen/margin_10dip"
                             android:layout_toRightOf="@id/iv_item_introduction_zan"
                             android:scaleType="fitXY"
-                            android:src="@drawable/favorite_introduction_normal" />
+                            android:src="@drawable/comment_introduction_normal" />
 
                         <TextView
                             android:id="@+id/tv_item_introduction_updatetime"

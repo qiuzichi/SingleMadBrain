@@ -68,25 +68,25 @@
                         android:id="@+id/text_myranking"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="我的排名:"
+                        android:text="@string/ranking"
                         android:textColor="@color/black"
                         android:textSize="30sp" />
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/text_myranking" >
+                        android:gravity="center"
+                        android:layout_toRightOf="@id/text_myranking">
 
                         <TextView
                             android:id="@+id/txt_editIntegration"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="10dip"
                             android:textColor="@color/red"
                             android:textSize="30dip" />
 
                         <ImageView
-                            android:layout_width="180dp"
+                            android:layout_width="@dimen/margin_30dp"
                             android:layout_height="1dp"
                             android:layout_below="@id/txt_editIntegration"
                             android:src="@color/red" />
@@ -99,13 +99,31 @@
                     android:layout_marginLeft="40dip"
                     android:layout_marginTop="50dip" >
 
+
                     <TextView
-                    android:id="@+id/txt_rule"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="赛事规则："
-                    android:textColor="@color/black"
-                    android:textSize="30sp" />
+                        android:id="@+id/txt_rule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/set_rule"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/common_text_24" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/txt_rule"
+                        android:layout_margin="@dimen/common_lf_margin"
+                        android:scrollbars="none">
+
+                        <TextView
+                            android:id="@+id/txt_rule_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_10dip"
+                            android:text="赛事规则："
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_18" />
+                    </ScrollView>
 
                 </RelativeLayout>
             </LinearLayout>

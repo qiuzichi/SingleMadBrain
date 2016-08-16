@@ -227,13 +227,13 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                /*禁用下拉刷新功能    */
-                mSwipeRefreshLayout.setEnabled(false);
                 if (requestPagerNum == totalPager) {
                    /* 最后一页 直接吐司 不显示下拉加载*/
                     ToastUtil.showToast(getString(R.string.loadmore_null_data));
                     return;
                 }
+                /*禁用下拉刷新功能    */
+                mSwipeRefreshLayout.setEnabled(false);
                 newsDatas.add(null);
                 mRecyclerViewAdapter.notifyItemInserted(newsDatas.size() - 1);
                 loadMoreData(true);
@@ -286,7 +286,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
     private BaseConfirmDialog.OnActionClickListener mDialogListener = new BaseConfirmDialog.OnActionClickListener() {
         @Override
-        public void onActionRight(BaseConfirmDialog dialog) {
+         public void onActionRight(BaseConfirmDialog dialog) {
             mConfirmDialog.dismiss();
             //从网络下载文件
             downloadApkFile(versionBean.getPath());

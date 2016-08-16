@@ -41,9 +41,11 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
 
     }
 
-    public HitopHistRecord() {
+    public HitopHistRecord(int requestPager, int pageSize) {
         super(HttpConstant.ExerRecord);
         key = HttpConstant.EXECISE_DATA;
+        mParams.addBodyParameter("page", requestPager + "");
+        mParams.addBodyParameter("pageSize", pageSize + "");
         mParams.addBodyParameter("userId", AppContext.instance().loginUser.getUserId());
     }
 
@@ -65,28 +67,35 @@ public class HitopHistRecord extends HitopRequest<List<HisRecord>>{
 
                     JSONObject data = jsObj.getJSONObject("data");
                     JSONArray jsonArray = data.getJSONArray("resultList");
+                    String  totalPage = data.optString("totalPage");
                     int iSize = jsonArray.length();
-
-                    if (!(iSize==0)){
+                    if (!(iSize == 0)) {
                         hisRecords = new ArrayList<>();
                     }
                     for (int i = 0; i < iSize; i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         HisRecord bean = new HisRecord();
                         //{"memoryTime":7,"rank":1,"recallTime":155,"score":100}  "memoryTime":7,"rank":1,"recallTime":155,"score":100}
-                        bean.setMatchId(jsonObject.optString("matchId"));
+                        if (key == HttpConstant.HISRECORD_OK) {
+                            bean.setMatchId(jsonObject.optString("matchId"));
+                            bean.setGroupId(jsonObject.optString("groupId"));
+                            bean.setGradeId(jsonObject.optString("gradeId"));
+                            bean.setRanking(jsonObject.optString("ranking"));
+                        }
+                        if (i == 0) {
+                            bean.setTotalPage(totalPage);
+                        }
                         bean.setProjectId(jsonObject.optString("projectId"));
-                        bean.setGroupId(jsonObject.optString("groupId"));
-                        bean.setGradeId(jsonObject.optString("gradeId"));
                         bean.setStartDate(jsonObject.optString("startDate"));
                         bean.setRectime(jsonObject.optString("rectime"));
                         bean.setMemtime(jsonObject.optString("memtime"));
                         bean.setScore(jsonObject.optString("score"));
-                        bean.setRanking(jsonObject.optString("ranking"));
                         hisRecords.add(bean);
                     }
                 }
-        }catch (Exception e){
+
+
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

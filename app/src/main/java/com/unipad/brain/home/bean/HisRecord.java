@@ -21,7 +21,18 @@ public class HisRecord extends MyFollow {
     private String score;
     /*排名*/
     private String ranking;
-    
+    /*总页数*/
+    private String totalPage;
+
+    public String getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(String totalPage) {
+        this.totalPage = totalPage;
+    }
+
+
 
     public String getMatchId(){
         return matchId;

@@ -218,8 +218,8 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
      * @param
      * @描述：查询练习模式成绩
      */
-    public void getHistoryExerRecord() {
-        HitopHistRecord hitopRecord = new HitopHistRecord();
+    public void getHistoryExerRecord(int requestPager, int pageSize) {
+        HitopHistRecord hitopRecord = new HitopHistRecord(requestPager, pageSize);
         hitopRecord.post();
     }
 
@@ -235,10 +235,11 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
     /*
     *排名列表
     */
-    public void getTopList(String uid){
-        HitopTopList hitopTopList=new HitopTopList();
-        hitopTopList.buildRequestParams("matchId",uid);
-        hitopTopList.setSevice(this);
+    public void getTopList(String matchId){
+        HitopTopList hitopTopList = new HitopTopList();
+//        hitopTopList.addBodyParameter("matchId",matchId);
+        hitopTopList.buildRequestParams("matchId",matchId);
+//        hitopTopList.setSevice(this);
         hitopTopList.post();
     }
 

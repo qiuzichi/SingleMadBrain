@@ -250,8 +250,9 @@
     <string name="update_version_title">更新版本号：</string>
     <string name="confirm_update">确认更新</string>
     <string name="exercise_not_open">练习模式暂未开通</string>
-    <string name="exercise_mode_set">练习模式规则设置</string>
-    <string name="competition_mode_set">比赛模式规则设置</string>
+    <string name="exercise_mode_set">时间设置</string>
+    <string name="competition_mode_set">记忆方式（划线）设置</string>
+    <string name="null_data">无</string>
     <!-- apk版本号；-->
     <string name="versionName">1.0.0</string>
     <string name="check_version">检查到最新版本 :</string>
@@ -273,7 +274,7 @@
     <string name="site_time">记忆时间</string>
     <string name="recall_time">回忆时间</string>
     <string name="score">得分</string>
-    <string name="ranking">排名</string>
+    <string name="ranking">我的排名：</string>
     <string name="icon">人名头像记忆</string>
 
     <string name="consult_present">最新资讯</string>

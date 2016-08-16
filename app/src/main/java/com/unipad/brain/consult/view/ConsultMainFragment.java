@@ -120,7 +120,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             ImageView mSearchButton = (ImageView) field.get(mSearchView);
             //设置搜索的 button 背景图片
             mSearchButton.setImageResource(R.drawable.search_button_blue);
-
+            mSearchButton.setPadding(0,0,0,3);
         } catch (Exception e) {
             e.printStackTrace();
         }
