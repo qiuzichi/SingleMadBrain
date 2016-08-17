@@ -55,4 +55,9 @@ public HitopForgetPwd(){
                 noticeDataChange(HttpConstant.REGIST_FILED,null);
         return null;
     }
+
+    @Override
+    protected boolean isNeedToken() {
+        return false;
+    }
 }

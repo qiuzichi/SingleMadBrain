@@ -143,7 +143,6 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         switch (key) {
             case HttpConstant.LOGIN_UPDATE_UI:
                 HIDDialog.dismissAll();
-                AppContext.instance().loginUser = (UserDetailEntity)o;
                 AppContext.instance().loginUser.setLoginPwd(MD5Utils.MD5_two(userPwd.getText().toString().trim()));
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

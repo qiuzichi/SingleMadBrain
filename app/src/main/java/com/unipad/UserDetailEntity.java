@@ -33,6 +33,8 @@ public class UserDetailEntity {
 
     private String level;   // 等级
 
+    private String token;
+
     public String getLevel() {
         return level;
     }
@@ -149,4 +151,11 @@ public class UserDetailEntity {
         this.roleId = roleId;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

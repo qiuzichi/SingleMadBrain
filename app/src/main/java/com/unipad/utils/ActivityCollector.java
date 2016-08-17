@@ -20,6 +20,14 @@ public class ActivityCollector {
         mActivityList.add(activity);
     }
 
+    public static Activity getTopActivity(){
+        if (mActivityList.size()!=0){
+            return mActivityList.get(mActivityList.size()-1);
+        }else{
+            LogUtil.e("ActivityCollector","topActivity is null"+new RuntimeException("topActivity is null"));
+            return null;
+        }
+    }
     /**
      * 从集合中移除Activity
      */
