@@ -204,7 +204,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                         mTextDiffBg = textNumber;
                     }
                     if (callback != null) {
-                        callback.finish();
+                       callback.finish();
                     }
                 } else {
                     mHandler.sendEmptyMessage(NumService.MSG_OPEN_THREAD);

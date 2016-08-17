@@ -88,7 +88,7 @@ public class OtherAdapter extends CommonAdapter<ChannelItem> {
 
 	/** 删除频道列表 */
 	public void remove(int position) {
-		if (position > 0 &&  position < mDatas.size()) {
+		if (position >= 0 &&  position < mDatas.size()) {
 			mDatas.remove(position);
 
 			notifyDataSetChanged();

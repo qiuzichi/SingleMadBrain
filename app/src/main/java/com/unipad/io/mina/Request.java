@@ -3,7 +3,15 @@ package com.unipad.io.mina;
 import android.util.Log;
 
 
+import com.unipad.utils.LogUtil;
+import com.unipad.utils.ToastUtil;
+
+import org.apache.mina.core.future.DefaultWriteFuture;
+import org.apache.mina.core.session.AbstractIoSession;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.core.write.DefaultWriteRequest;
+import org.apache.mina.core.write.WriteToClosedSessionException;
+import org.apache.mina.util.ExceptionMonitor;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
@@ -46,8 +54,17 @@ public class Request {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            Log.e("request",xmlLength+xmlString);
-            session.write(xmlLength+xmlString);
+            Log.e("request", xmlLength + xmlString);
+            Throwable e =  session.write(xmlLength + xmlString).getException();
+                if (null != e){
+                    LogUtil.e("", "请求失败。。。", new Exception(e));
+                    AbstractIoSession s = (AbstractIoSession)session;
+                    try {
+                        s.getHandler().exceptionCaught(s,e);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
         }else {
             Log.e("uipad","send msg err! session is null");
         }

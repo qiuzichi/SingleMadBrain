@@ -125,12 +125,12 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        LogUtil.e("","onOnCheckedChange :"+position);
-                        LogUtil.e("", ",resPosition:" + (checkedId - group.getChildAt(1).getId()));
+                       // LogUtil.e("","onOnCheckedChange :"+position);
+                       // LogUtil.e("", ",resPosition:" + (checkedId - group.getChildAt(1).getId()));
                         poker.setHuaseId(resDrawableId[checkedId-group.getChildAt(1).getId()]);
                         mCurrentPosition = position;
 
-                        LogUtil.e("","onCheck userAnswer:"+poker.getUserAnswer());
+                        //LogUtil.e("","onCheck userAnswer:"+poker.getUserAnswer());
                         if (poker.getUserAnswer() == 0) {
                             return;
                         }
@@ -161,7 +161,7 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
                     break;
                 }
             }
-            LogUtil.e("","第"+position+"个，"+poker.getUserAnswer());
+           // LogUtil.e("","第"+position+"个，"+poker.getUserAnswer());
             }
 
     }

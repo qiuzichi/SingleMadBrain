@@ -106,6 +106,7 @@ public class LongTcpClient implements ClientSessionHandler.IDataHandler {
             //��������Ƶ��
             heartBeat.setRequestInterval(HEARTBEATRATE);
             connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30000);  //读写都空闲时间:30秒
+            connector.getSessionConfig().setWriteTimeout(5000);
             connector.getSessionConfig().setIdleTime(IdleStatus.READER_IDLE, 40000);//读(接收通道)空闲时间:40秒
             connector.getSessionConfig().setIdleTime(IdleStatus.WRITER_IDLE, 50000);//写(发送通道)空闲时间:50秒
             connector.getFilterChain().addLast("keeplive", new KeepAliveFilter(new ClientKeepAliveMessageFactoryImp(), IdleStatus.READER_IDLE, KeepAliveRequestTimeoutHandler.DEAF_SPEAKER, 10, 5));

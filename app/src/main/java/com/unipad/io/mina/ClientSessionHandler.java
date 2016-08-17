@@ -7,9 +7,11 @@ import com.unipad.utils.LogUtil;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.core.write.WriteToClosedSessionException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 public class ClientSessionHandler extends IoHandlerAdapter {
 
@@ -19,6 +21,18 @@ public class ClientSessionHandler extends IoHandlerAdapter {
     public ClientSessionHandler(IDataHandler handler){
         this.handler = handler;
     }
+
+    @Override
+    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
+        super.exceptionCaught(session, cause);
+        if (cause instanceof TimeoutException){
+            LogUtil.e("","Timeout Exception l");
+        }else if (cause instanceof WriteToClosedSessionException){
+            LogUtil.e("","WriteToClosedSessionException----");
+        }
+        new Exception(cause).printStackTrace();
+    }
+
     @Override
     public void sessionOpened(IoSession session) throws Exception {
         // TODO Auto-generated method stub

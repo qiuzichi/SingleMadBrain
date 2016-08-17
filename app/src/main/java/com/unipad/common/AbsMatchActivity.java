@@ -1,6 +1,7 @@
 package com.unipad.common;
 
 import com.unipad.ICoreService;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.BasicActivity;
 
 /**
@@ -8,7 +9,7 @@ import com.unipad.brain.BasicActivity;
  */
 public abstract class AbsMatchActivity extends BasicActivity{
 
-    public abstract ICoreService getService();
+    public abstract AbsBaseGameService getService();
 
     public abstract String getProjectId();
 }

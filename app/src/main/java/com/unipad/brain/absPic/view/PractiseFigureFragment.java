@@ -14,6 +14,12 @@ public class PractiseFigureFragment extends  AbsFigureFragment{
     }
 
     @Override
+    public void memoryTimeToEnd(int memory) {
+        super.memoryTimeToEnd(memory);
+        mActivity.getService().starRememory();
+    }
+
+    @Override
     public void rememoryTimeToEnd(int answerTime) {
         super.rememoryTimeToEnd(answerTime);
     }

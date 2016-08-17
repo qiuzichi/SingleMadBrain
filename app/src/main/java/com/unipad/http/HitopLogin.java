@@ -5,6 +5,7 @@ import android.util.Log;
 import com.unipad.AppContext;
 import com.unipad.UserDetailEntity;
 import com.unipad.observer.GlobleObserService;
+import com.unipad.utils.MD5Utils;
 
 import org.json.JSONObject;
 
@@ -28,6 +29,11 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
     @Override
     public String buildRequestURL() {
         return null;
+    }
+
+    @Override
+    protected boolean isNeedToken() {
+        return false;
     }
 
     /**
@@ -61,6 +67,8 @@ public class HitopLogin extends HitopRequest<UserDetailEntity> {
                         user.setRoleId(dataJson.optString("roleId"));
                         user.setLevel(dataJson.optString("level"));
                         user.setSex(dataJson.getInt("sex") == 0 ? "男" : "女");
+                        user.setToken(dataJson.optString("token"));
+                        AppContext.instance().loginUser = user;
                         if (sevice != null) {
                             sevice.noticeDataChange(HttpConstant.LOGIN_UPDATE_UI, user);
                             return user;

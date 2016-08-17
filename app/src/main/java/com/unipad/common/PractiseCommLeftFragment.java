@@ -29,14 +29,17 @@ import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.SharepreferenceUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.x;
 
 import java.util.Map;
+
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class PractiseCommLeftFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener,IOperateGame{
+public class PractiseCommLeftFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener, IOperateGame {
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
     private PractiseGameActivity mActivity;
     private RelativeLayout mParentLayout;
@@ -52,6 +55,7 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
     private SparseArray mColorArray = new SparseArray();
     private int memoryTime;
     private int reMemoryTime;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,7 +90,7 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
         //if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
         //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}
-        String s  = SharepreferenceUtils.getString(
+        String s = SharepreferenceUtils.getString(
                 mActivity.getProjectId(),
                 "300_300");
         String[] time = s.split("_");
@@ -151,7 +155,6 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
                 startRememoryTimeCount();
                 memoryTime = takeTIme;
                 mICommunicate.memoryTimeToEnd(memoryTime);
-                mActivity.getService().starRememory();
             }
 
         } else {//回忆模式下才可以提交答案
@@ -159,7 +162,8 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
             this.commitAnswer(takeTIme);
         }
     }
-    private void reset(){
+
+    private void reset() {
         isRememoryStatus = false;
         mBtnCompeteMode.setText(R.string.end_memory);
         mBtnCompeteMode.setEnabled(true);
@@ -167,28 +171,30 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
         mTextTime.setText(mCountDownTime.setNewSeconds(memoryTime, false));
 
     }
-    public void startRememoryTimeCount(){
+
+    public void startRememoryTimeCount() {
         mTextTime.setText(mCountDownTime.setNewSeconds(reMemoryTime, false));
     }
+
     /**
      * 提交答案
      */
-    private void commitAnswer(final  int rememoryTime) {
+    private void commitAnswer(final int rememoryTime) {
         mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
             mICommunicate.rememoryTimeToEnd(rememoryTime);
             final HIDDialog WaitingDialog = new HIDDialog(mActivity, R.style.dialog_wait, Constant.MATCH_RESULT_DLG);
-            WaitingDialog.setContentView(R.layout.ui_waiting_confirm,
-                    (int) mActivity.getResources().getDimension(R.dimen.wait_dialog_width), (int) mActivity.getResources()
-                            .getDimension(R.dimen.wait_dialog_height));
+            WaitingDialog.setContentView(R.layout.ui_waiting_confirm);
 
             // 必须放在设置 view之后,自定义的view是不能设置该方法的，注释掉
-           final TextView contentView = (TextView) WaitingDialog.findViewById(R.id.dialog_text);
+            final TextView contentView = (TextView) WaitingDialog.findViewById(R.id.dialog_text);
             Button confirmButton = (Button) WaitingDialog.findViewById(R.id.confirm_btn);
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     WaitingDialog.dismiss();
+                    //mActivity.finish();
+                    ;
                 }
             });
             contentView.setText(mActivity.getResources().getString(R.string.commit_score));
@@ -200,29 +206,48 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
             win.setAttributes(lp);
             WaitingDialog.show();
             mActivity.sendMsgGetSocre(memoryTime, rememoryTime, new Callback.CommonCallback<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    String content = mActivity.getResources().getString(R.string.memory_score,memoryTime,rememoryTime,result);
-                    contentView.setText(content);
-                    WaitingDialog.findViewById(R.id.wait_progress).setVisibility(View.GONE);
-                }
+                        @Override
+                        public void onSuccess(String result) {
+                            String content = "";
 
-                @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-                    new Exception(ex).printStackTrace();
-                    WaitingDialog.dismiss();
-                }
+                            JSONObject jsObj = null;
+                            try {
+                                jsObj = new JSONObject(result);
 
-                @Override
-                public void onCancelled(CancelledException cex) {
-                    WaitingDialog.dismiss();
-                }
+                                if (jsObj != null && jsObj.toString().length() != 0) {
+                                    if (jsObj.optInt("ret_code", -1) == 0) {
+                                        jsObj.getString("data");
+                                        content = mActivity.getResources().getString(R.string.memory_score, memoryTime, rememoryTime, result);
+                                    }else{
+                                        content = jsObj.getString("ret_msg");
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            contentView.setText(content);
+                            WaitingDialog.findViewById(R.id.wait_progress).setVisibility(View.GONE);
+                        }
 
-                @Override
-                public void onFinished() {
 
-                }
-            });
+                        @Override
+                        public void onError(Throwable ex, boolean isOnCallback) {
+                            new Exception(ex).printStackTrace();
+                            WaitingDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onCancelled(CancelledException cex) {
+                            WaitingDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFinished() {
+
+                        }
+                    }
+
+            );
         }
     }
 
