@@ -54,8 +54,8 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
                 if (status == TextToSpeech.SUCCESS) {
                     // 设置使用美式英语朗读
                     tts.setLanguage(Locale.ENGLISH);
-                    tts.setSpeechRate(0.3f);
-                    tts.setPitch(0.8f);
+                    tts.setSpeechRate(0.9f);
+                    tts.setPitch(1f);
                 }
             }
         });
@@ -79,9 +79,9 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
         super.startMemory();
         mMemoryLayout.setVisibility(View.VISIBLE);
         if(!isMatchMode()){
-            StringBuilder answerData = new StringBuilder();
+            StringBuilder answerData = new StringBuilder("a,b,c,");
             for (int i = 0; i < service.lineNumbers.size(); i++) {
-                answerData.append("abc").append(service.lineNumbers.valueAt(i));
+                answerData.append(service.lineNumbers.valueAt(i).replaceAll("\\d{1}(?!$)", "$0,"));
             }
             LogUtil.e("qzc","size = " + service.lineNumbers.size() + "---tostring=" + answerData.toString());
             // 执行朗读

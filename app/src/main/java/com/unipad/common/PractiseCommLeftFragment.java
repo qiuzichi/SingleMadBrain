@@ -216,8 +216,7 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
 
                                 if (jsObj != null && jsObj.toString().length() != 0) {
                                     if (jsObj.optInt("ret_code", -1) == 0) {
-                                        jsObj.getString("data");
-                                        content = mActivity.getResources().getString(R.string.memory_score, memoryTime, rememoryTime, result);
+                                        content = mActivity.getResources().getString(R.string.memory_score, memoryTime, rememoryTime, jsObj.getString("data"));
                                     }else{
                                         content = jsObj.getString("ret_msg");
                                     }

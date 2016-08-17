@@ -286,4 +286,6 @@
     <string name="single_browse_note">单行浏览</string>
     <string name="memory_score">记忆用时：<xliff:g id="NUM">%1d</xliff:g>秒，回忆用时：<xliff:g id="NUM">%2d</xliff:g>，得分：<xliff:g id="STRING">%3s</xliff:g></string>
     <string name="commit_score">提交答案中，请稍后！</string>
+    <string name="login_in_other_place">您的账号在其它地方登录，请修改密码！</string>
+    <string name="login_in_by_sever">服务器更新，请重新登录！</string>
 </resources>
