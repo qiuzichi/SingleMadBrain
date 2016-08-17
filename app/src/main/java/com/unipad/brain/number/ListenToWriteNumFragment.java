@@ -2,7 +2,6 @@ package com.unipad.brain.number;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.ViewTreeObserver;
@@ -10,10 +9,7 @@ import android.view.ViewTreeObserver;
 import com.unipad.brain.R;
 import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.common.Constant;
-import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
-
-import java.util.Locale;
 
 /**
  * 听记数字界面
@@ -21,7 +17,6 @@ import java.util.Locale;
 public class ListenToWriteNumFragment extends NumberRightFragment{
     private KeyboardDialog mKeyboardDialog;
     private View mMemoryLayout;
-    private TextToSpeech tts;
 
     @Override
     public boolean isNeedShowCurrent() {
@@ -45,20 +40,6 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
         super.onActivityCreated(savedInstanceState);
         ViewStub mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
             mMemoryLayout = mStubListen.inflate();
-        // 初始化TextToSpeech对象
-        tts = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
-
-            @Override
-            public void onInit(int status) {
-                // 如果装载TTS引擎成功
-                if (status == TextToSpeech.SUCCESS) {
-                    // 设置使用美式英语朗读
-                    tts.setLanguage(Locale.ENGLISH);
-                    tts.setSpeechRate(0.9f);
-                    tts.setPitch(1f);
-                }
-            }
-        });
     }
 
     @Override
@@ -78,15 +59,6 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
     public void startMemory() {
         super.startMemory();
         mMemoryLayout.setVisibility(View.VISIBLE);
-        if(!isMatchMode()){
-            StringBuilder answerData = new StringBuilder("a,b,c,");
-            for (int i = 0; i < service.lineNumbers.size(); i++) {
-                answerData.append(service.lineNumbers.valueAt(i).replaceAll("\\d{1}(?!$)", "$0,"));
-            }
-            LogUtil.e("qzc","size = " + service.lineNumbers.size() + "---tostring=" + answerData.toString());
-            // 执行朗读
-            tts.speak(answerData.toString(), TextToSpeech.QUEUE_ADD, null);
-        }
     }
 
     @Override
@@ -139,12 +111,4 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // 关闭TextToSpeech对象
-        if (tts != null) {
-            tts.shutdown();
-        }
-    }
 }
