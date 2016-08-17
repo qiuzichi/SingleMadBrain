@@ -34,7 +34,7 @@ import java.util.List;
 public class ChinaCompetitionFragment extends BaseFragment implements ICompetition ,IDataObserver{
 
 	
-	final public static String TAG = "ChinaCompetitionFragment";
+	final public static String TAG = "ChinaCompetitionFaragment";
 	
 	private static ChinaCompetitionFragment chinaCompetitionFragment;
 	

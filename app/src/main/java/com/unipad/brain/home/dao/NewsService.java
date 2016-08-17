@@ -1,7 +1,9 @@
 package com.unipad.brain.home.dao;
 
+import com.unipad.AppContext;
 import com.unipad.ICoreService;
 import com.unipad.http.HitopAdList;
+import com.unipad.http.HitopApplyGame;
 import com.unipad.http.HitopNewsComment;
 import com.unipad.http.HitopNewsList;
 import com.unipad.http.HitopNewsOperate;
@@ -25,9 +27,15 @@ public class NewsService extends GlobleObserService implements ICoreService{
         HitopNewsList newsList = new HitopNewsList(key ,contentType,title,page,size);
         newsList.post();
     }
-    public void getNewCompetition(String userId, String projectId,String gradeId,int page,int size ){
-        HittopGetUserGame  newsList = new HittopGetUserGame(userId, projectId,gradeId,page,size);
+
+    public void getNewCompetition(String userId, String projectId, String gradeId, int page, int size) {
+        HittopGetUserGame newsList = new HittopGetUserGame(userId, projectId, gradeId, page, size);
         newsList.get();
+    }
+
+    public void getApplyCompetition(String userId, int key, String matchId, String projectId, String gradeId, int isPay) {
+        HitopApplyGame applyGame = new HitopApplyGame(userId, key, matchId, projectId, gradeId, isPay);
+        applyGame.get();
     }
     public void getAdverts(String positionId ){
         HitopAdList advertList = new HitopAdList(positionId);

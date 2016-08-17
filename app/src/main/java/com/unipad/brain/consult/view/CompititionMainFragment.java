@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lidroid.xutils.http.client.multipart.MultipartEntity;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
@@ -24,6 +25,8 @@ import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+
+import org.xutils.common.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
 
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWCOMPETITION, this);
+        service.registerObserver(HttpConstant.NOTIFY_APPLY_NEWCOMPETITION, this);
         //默认加载第一页的数据 10条 分页加载数据
         service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, 1, 10);
         ListView mListView = (ListView)view.findViewById(R.id.listview_compitition_main);
@@ -66,7 +70,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         }
 
         @Override
-        public void convert(ViewHolder holder, CompetitionBean competitionBean) {
+        public void convert(final ViewHolder holder, final CompetitionBean competitionBean) {
             //比赛项目名称
             TextView race_model = (TextView) holder.getView(R.id.tv_competion_info_model_item);
             race_model.setText(Constant.getProjectName(competitionBean.getProjectId()));
@@ -96,23 +100,19 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
             ((TextView) holder.getView(R.id.tv_competion_info_fee_item)).setText("￥ " + competitionBean.getCost());
             //参加报名
             final RadioButton btn_apply = (RadioButton) holder.getView(R.id.btn_input_competition);
-            if("0".equals(competitionBean.getApplyState())){
+            if (0 == competitionBean.getApplyState()) {
                 btn_apply.setChecked(false);
-            }else if("1".equals(competitionBean.getApplyState())){
-                btn_apply.setChecked(true);
-            }
-
-            btn_apply.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (btn_apply.isChecked()) {
-                        return;
-                    } else {
-                        btn_apply.setChecked(true);
+                btn_apply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        service.getApplyCompetition(AppContext.instance().loginUser.getUserId(), HttpConstant.NOTIFY_APPLY_NEWCOMPETITION,
+                                competitionBean.getId(), competitionBean.getProjectId(), competitionBean.getGradeId(), 0);
                     }
-                }
-            });
-
+                });
+            } else {
+                btn_apply.setChecked(true);
+                btn_apply.setOnClickListener(null);
+            }
         }
     }
 
@@ -123,6 +123,22 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
                 //获取数据
                 mNewCompetitionDatas.addAll((List<CompetitionBean>) o);
                 mNewCompetitionAdapter.notifyDataSetChanged();
+                break;
+
+            case HttpConstant.NOTIFY_APPLY_NEWCOMPETITION:
+                CompetitionBean bean = (CompetitionBean) o;
+                if (null != bean) {
+                    for (int i = 0; i < mNewCompetitionDatas.size(); i++) {
+                        CompetitionBean compet = mNewCompetitionDatas.get(i);
+                        if (compet.getId().equals(bean.getId())) {
+                            compet.setApplyState(bean.getApplyState());
+                            break;
+                        } else {
+                            continue;
+                        }
+                    }
+                    mNewCompetitionAdapter.notifyDataSetChanged();
+                }
                 break;
             default:
                 break;
@@ -138,5 +154,6 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
     }
     private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWCOMPETITION, this);
+        service.unRegisterObserve(HttpConstant.NOTIFY_APPLY_NEWCOMPETITION, this);
     }
 }

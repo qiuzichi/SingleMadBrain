@@ -34,7 +34,8 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
         setContentView(R.layout.personal_integration_layout);
         lv_integration=(ListView)findViewById(R.id.lv_integration);
         ((TextView)findViewById(R.id.title_bar_left_text)).setOnClickListener(this);
-
+        ((TextView)findViewById(R.id.title_rank_center)).setText(Constant.getProjectName(getIntent().
+                getStringExtra("projectId")) + getString(R.string.ranking_list));
         text_myranking=(TextView)findViewById(R.id.text_myranking);
         txt_Rule=(TextView)findViewById(R.id.txt_rule);
         txt_Edit=(TextView)findViewById(R.id.txt_editIntegration);
@@ -64,7 +65,6 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
                     public void convert(ViewHolder holder, CompetitionBean competitionBean) {
                         holder.setText(R.id.txt_list_username,competitionBean.getName() + "");
                         holder.setText(R.id.txt_list_scort, competitionBean.getScore() + "");
-
                         TextView tv_rank = holder.getView(R.id.txt_list_rank);
                         if(holder.getPosition() == 0) {
                             tv_rank.setBackgroundResource(R.drawable.textview_shape);
@@ -74,7 +74,7 @@ public class PersonalInfoActivty extends BasicActivity implements IDataObserver 
                         }else if (holder.getPosition() == 1){
                             tv_rank.setBackgroundResource(R.drawable.textview_shape);
                             GradientDrawable drawable = (GradientDrawable) tv_rank.getBackground();
-                            drawable.setColor(Color.YELLOW);
+                            drawable.setColor(getResources().getColor(R.color.yellow_light));
                             tv_rank.setTextColor(Color.WHITE);
                         }else if (holder.getPosition() == 3){
                             tv_rank.setBackgroundResource(R.drawable.textview_shape);

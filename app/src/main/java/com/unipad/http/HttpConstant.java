@@ -159,4 +159,7 @@ public class HttpConstant {
     //下载apk 请求
     public static final int NOTIFY_DOWNLOAD_APK = 0x20010;
 
+    //最新赛事报名
+    public static final int NOTIFY_APPLY_NEWCOMPETITION = 0x20011;
+
 }

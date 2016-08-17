@@ -58,17 +58,17 @@ public class HittopGetUserGame extends HitopRequest<List<CompetitionBean>> {
                     for (int i = 0; i < iSize; i++) {
                         CompetitionBean bean = new CompetitionBean();
                         JSONObject jsonObj2 = jsonArray.getJSONObject(i);
-                        bean.setId(jsonObj2.getString("id"));
-                        bean.setApplyState(jsonObj2.getInt("isApply"));
-                        bean.setAddress(jsonObj2.getString("city"));
-                        String dataAndTime = jsonObj2.getString("startDate");
+                        bean.setId(jsonObj2.optString("id"));
+                        bean.setApplyState(jsonObj2.optInt("isApply"));
+                        bean.setAddress(jsonObj2.optString("city"));
+                        String dataAndTime = jsonObj2.optString("startDate");
                         String[] datasTime = dataAndTime.split(" ");
                         bean.setCompetitionDate(datasTime[0]);
                         bean.setCompetitionTime(datasTime[1]);
-                        bean.setCost(jsonObj2.getString("applyMoney"));
-                        bean.setName(jsonObj2.getString("name"));
-                        bean.setGradeId(jsonObj2.getString("gradeId"));
-                        bean.setProjectId(jsonObj2.getString("projectId"));
+                        bean.setCost(jsonObj2.optString("applyMoney"));
+                        bean.setName(jsonObj2.optString("name"));
+                        bean.setGradeId(jsonObj2.optString("gradeId"));
+                        bean.setProjectId(jsonObj2.optString("projectId"));
                         bean.setAttention(jsonObj2.optInt("isAttention") == 0 ? false : true);
                         competitionBeanArrayList.add(bean);
 
