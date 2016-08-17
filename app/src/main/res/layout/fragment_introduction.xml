@@ -37,10 +37,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_reminder_version"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_30dp"
-                android:background="@color/update_text_bg">
+                android:background="@color/update_text_bg"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/text_update_version"
@@ -57,21 +57,21 @@
                     android:id="@+id/update_version_imgview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/news_title_height"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/margin_5dip"
                     android:layout_marginBottom="@dimen/margin_5dip"
+                    android:layout_marginRight="@dimen/news_title_height"
+                    android:layout_marginTop="@dimen/margin_5dip"
+                    android:layout_weight="3"
+                    android:clickable="true"
+                    android:gravity="center"
                     android:src="@drawable/arrow_right" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:layout_below="@id/rl_reminder_version"
                 android:id="@+id/lv_introduction_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@id/rl_reminder_version"
                 android:layout_gravity="center_horizontal|top"
                 android:cacheColorHint="@null"
                 android:scrollbars="vertical" />

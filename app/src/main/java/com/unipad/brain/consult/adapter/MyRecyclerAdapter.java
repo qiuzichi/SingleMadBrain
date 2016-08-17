@@ -183,7 +183,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 @Override
                 public void onClick(View v) {
 
-                    Log.e("", "dianzao kai shi !!!!");
                     service.getNewsOperate(bean.getId(), OPERATE_ZAN, String.valueOf(!bean.getIsLike()), null, pageId,
                             new Callback.CommonCallback<String>() {
                                 @Override
@@ -239,13 +238,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
             });
 
-        }else if(holder instanceof FooterViewHolder){
+        } else if (holder instanceof FooterViewHolder) {
             ((FooterViewHolder) holder).pr_moreData.setIndeterminate(true);
-        }else if(holder instanceof HeaderViewHolder){
+        } else if (holder instanceof HeaderViewHolder) {
 
-            ((HeaderViewHolder) holder).text_version.setText("检查到最新版本" );
+            ((HeaderViewHolder) holder).text_version.setText("检查到最新版本");
 
-           ((HeaderViewHolder) holder).ll_version.setOnClickListener(new View.OnClickListener() {
+            ((HeaderViewHolder) holder).ll_version.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isShowVersion && mOnShowUpdateDialgo != null) {
@@ -273,8 +272,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //        if(position == 0){
 //            return TYPE_HEADER;
 //        }
-Log.e("myadapter", position + "" + "     lastVisibleItem =" + lastVisibleItem );
-//        if(position == firstVisibleItem && isShowVersion){
+//Log.e("myadapter", position + "" + "     lastVisibleItem =" + lastVisibleItem );
+//        if(position == 0 && isShowVersion){
 //            return TYPE_HEADER;
 //        }
         return newsDatas.get(position) != null ? super.getItemViewType(position) : TYPE_FOOTER;
@@ -311,9 +310,7 @@ Log.e("myadapter", position + "" + "     lastVisibleItem =" + lastVisibleItem );
             super(view);
             text_loadMore = (TextView) view.findViewById(R.id.tv_item_introduction_footer);
             pr_moreData = (ProgressBar) view.findViewById(R.id.progressbar_loadmore_footer);
-
         }
-
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {

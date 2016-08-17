@@ -64,15 +64,14 @@
         android:textColor="@color/black"
         android:gravity="center"
         />
-    <Button
+    <RadioButton
         android:id="@+id/btn_input_competition"
         android:layout_weight="1"
+        android:textSize="@dimen/margin_1dp"
         android:layout_width="0dp"
+        android:button="@color/transparent"
+        android:drawableTop="@drawable/sel_apply_competiton_bg"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/common_text_24"
-        android:singleLine="true"
-        android:text="@string/person_entry_fee"
-        android:textColor="@color/black"
-        android:gravity="center"
+        android:layout_gravity="center"
         />
 </LinearLayout>

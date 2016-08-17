@@ -223,6 +223,7 @@ public class HeadService extends AbsBaseGameService{
                 person.setContent(detail[1]);
                 person.setFirstName(detail[2]);
                 person.setLastName(detail[3]);
+                person.setId(i+1);
                 this.data.add(person);
             } else {
                 person = this.data.get(i);
@@ -260,6 +261,7 @@ public class HeadService extends AbsBaseGameService{
                if (this.data.size() < i+1) {
                    person = new Person();
                    person.setHeadPortraitPath(dir+File.separator+fileList[i]);
+                   person.setId(i+1);
                    this.data.add(person);
                }else {
 
@@ -281,8 +283,35 @@ public class HeadService extends AbsBaseGameService{
 
     @Override
     public String getAnswerData() {
+        StringBuilder sb = new StringBuilder();
+        for (int i=1; i <= data.size(); i++){
+            Person person = data.get(i-1);
+            /*序号^原序号^姓^名,*/
+            sb.append(i + "^");
+            sb.append(person.getId() + "^");
 
-        return data.toString();
+            if(TextUtils.isEmpty(person.getAnswerFirstName())){
+                sb.append("@"+ "^");
+            } else{
+                sb.append(person.getAnswerFirstName() + "^");
+            }
+
+            if(TextUtils.isEmpty(person.getAnswerLastName())){
+                if(i == data.size()){
+                    sb.append("@");
+                }else {
+                    sb.append("@"+ ",");
+                }
+            }else {
+                if(i == data.size()){
+                    sb.append(person.getAnswerLastName());
+                }else {
+                    sb.append(person.getAnswerLastName()+ ",");
+                }
+            }
+
+        }
+        return sb.toString();
     }
 
     @Override

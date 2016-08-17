@@ -6,7 +6,7 @@ import org.xutils.db.annotation.Table;
  */
 @Table(name = "un_person")
 public class Person {
-    @Column(name = "_id", isId = true)
+     @Column(name = "_id", isId = true)
     private int id;
     /**
      * 人物的姓
@@ -95,6 +95,16 @@ public class Person {
         this.lastName = lastName;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+
 
     public String getHeadPortraitPath() {
         return headPortraitPath;
@@ -133,7 +143,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return content+"^"+firstName+"^"+lastName+"^"+answerFirstName+"^"+answerLastName;
+        return  "id = " + id   + "   tag =" +  tag + " content=" + content +"^"+firstName+"^"+lastName+"^"+answerFirstName+"^"+answerLastName;
     }
 
     public String getTag() {

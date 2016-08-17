@@ -5,15 +5,54 @@
     android:padding="10dp"
     android:layout_height="match_parent" >
     <LinearLayout
-        android:layout_height="140dp"
-        android:layout_width="fill_parent"
-        android:background="@color/competition"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/newlist_height"
+        android:layout_marginRight="@dimen/newlist_height"
         android:orientation="horizontal">
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/txt_list_top"
-            />
+            android:id="@+id/txt_list_rank"
+            android:layout_width="@dimen/news_title_height"
+            android:layout_height="@dimen/news_title_height"
+            android:gravity="center"
+            android:text="排名"
+            android:textSize="@dimen/common_text_22" />
+
+        <TextView
+            android:id="@+id/txt_list_username"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:text="@string/user_type"
+            android:textSize="@dimen/text_size_18"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txt_list_scort"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/score"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="@dimen/text_size_18"
+            android:layout_marginLeft="@dimen/margin_10dip"
+            android:layout_marginRight="@dimen/margin_10dip"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txt_list_jifen"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:layout_gravity="center"
+            android:text="积分"
+            android:textSize="@dimen/text_size_18"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </RelativeLayout>

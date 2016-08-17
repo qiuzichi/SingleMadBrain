@@ -1,22 +1,22 @@
 package com.unipad.brain.consult.entity;
 
 import com.unipad.brain.R;
+import com.unipad.common.Constant;
 
 /**
  * Created by hasee on 2016/7/4.
  */
 public enum ListCompetitionEnum {
     PROJECTONE(R.string.project_1, R.drawable.person_icon),
-    PROJECTTWO(R.string.project_2, R.drawable.person_icon),
-    PROJECTTHREE(R.string.project_3, R.drawable.person_icon),
-    PROJECTFOUR(R.string.project_4, R.drawable.person_icon),
-    PROJECTFIVE(R.string.project_5, R.drawable.person_icon),
-    PROJECTSIX(R.string.project_6, R.drawable.person_icon),
-    PROJECTSEVEN(R.string.project_7, R.drawable.person_icon),
-    PROJECTEIGHT(R.string.project_8, R.drawable.person_icon),
-    PROJECTNIGHT(R.string.project_9, R.drawable.person_icon),
-    PROJECTTEN(R.string.project_10, R.drawable.person_icon);
-
+    PROJECTTWO(R.string.project_2, R.drawable. binary_num),
+    PROJECTTHREE(R.string.project_3, R.drawable.long_num),
+    PROJECTFOUR(R.string.project_4, R.drawable.abs_picture),
+    PROJECTFIVE(R.string.project_5, R.drawable.random_num),
+    PROJECTSIX(R.string.project_6, R.drawable.virtual_date),
+    PROJECTSEVEN(R.string.project_7, R.drawable.quickiy_pocker),
+    PROJECTEIGHT(R.string.project_8, R.drawable.random_words),
+    PROJECTNIGHT(R.string.project_9, R.drawable.liston_and_memory),
+    PROJECTTEN(R.string.project_10, R.drawable.quickiy_pocker);
 
     private int nameResId;
     private int labelResId;

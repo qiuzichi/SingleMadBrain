@@ -15,7 +15,7 @@ public class HttpConstant {
     public static String Regist = "/api/user/regist";
     public static String UPLOAD = "/api/file/upload";
     public static String HisRecord="/api/match/history";
-    public static String ExerRecord="api/practice/history";
+    public static String ExerRecord="/api/practice/history";
     public static String GET_NEWS_LIST = "/api/news/list";
     public static String GET_NEWS_VERSION = "/pub/apk/last";
     //赛事排名

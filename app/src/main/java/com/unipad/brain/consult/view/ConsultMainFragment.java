@@ -78,6 +78,8 @@ public class ConsultMainFragment extends ConsultBaseFragment{
     }
 
     private void initMyTabWidget(){
+           /*去掉分割线*/
+        mTabWidget.setDividerDrawable(null);
         mConsultTabs = ConsultTab.values();
         LayoutInflater layoutInflater = LayoutInflater.from(getmContext());
         if(mConsultTabs != null){
@@ -118,7 +120,7 @@ public class ConsultMainFragment extends ConsultBaseFragment{
             ImageView mSearchButton = (ImageView) field.get(mSearchView);
             //设置搜索的 button 背景图片
             mSearchButton.setImageResource(R.drawable.search_button_blue);
-
+            mSearchButton.setPadding(0,0,0,3);
         } catch (Exception e) {
             e.printStackTrace();
         }

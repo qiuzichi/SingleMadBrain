@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +51,6 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWCOMPETITION, this);
         //默认加载第一页的数据 10条 分页加载数据
         service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, 1, 10);
-
         ListView mListView = (ListView)view.findViewById(R.id.listview_compitition_main);
         mListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 
@@ -94,11 +94,22 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
             ((TextView) holder.getView(R.id.tv_competion_info_time_item)).setText(competitionBean.getCompetitionTime());
             //比赛费用
             ((TextView) holder.getView(R.id.tv_competion_info_fee_item)).setText("￥ " + competitionBean.getCost());
-           //参加报名
-            ((Button) holder.getView(R.id.btn_input_competition)).setOnClickListener(new View.OnClickListener() {
+            //参加报名
+            final RadioButton btn_apply = (RadioButton) holder.getView(R.id.btn_input_competition);
+            if("0".equals(competitionBean.getApplyState())){
+                btn_apply.setChecked(false);
+            }else if("1".equals(competitionBean.getApplyState())){
+                btn_apply.setChecked(true);
+            }
+
+            btn_apply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (btn_apply.isChecked()) {
+                        return;
+                    } else {
+                        btn_apply.setChecked(true);
+                    }
                 }
             });
 

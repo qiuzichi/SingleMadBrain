@@ -99,38 +99,7 @@ public class MainCompeteFragment extends MainBasicFragment  {
 //        txt_memory_content = (TextView) mActivity.findViewById(R.id.txt_memory_content);
 //        txt_recall_content = (TextView) mActivity.findViewById(R.id.txt_recall_content);
 //        txt_function_content = (TextView) mActivity.findViewById(R.id.txt_function_content);
-
-        ((TextView)mActivity.findViewById(R.id.txt_uese_name)).setText(AppContext.instance().loginUser.getUserName());
-        ((TextView)mActivity.findViewById(R.id.txt_uese_level)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
-
-        final ImageView user_photo = (ImageView)mActivity.findViewById(R.id.iv_user_pic);
-
-        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
-            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
-                @Override
-                public void onSuccess(Drawable drawable) {
-                    Bitmap map = PicUtil.drawableToBitmap(drawable);
-                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
-                }
-
-                @Override
-                public void onError(Throwable throwable, boolean b) {
-                    user_photo.setImageResource(R.drawable.set_headportrait);
-                }
-
-                @Override
-                public void onCancelled(CancelledException e) {
-
-                }
-
-                @Override
-                public void onFinished() {
-
-                }
-            });
-        }else {
-            user_photo.setImageResource(R.drawable.set_headportrait);
-        }
+        initUserName();
 
         txt_pname = (TextView) mActivity.findViewById(R.id.txt_pname);
         txt_city_memory = (TextView) mActivity.findViewById(R.id.txt_city_memory);
@@ -175,6 +144,8 @@ public class MainCompeteFragment extends MainBasicFragment  {
 
                 if(position == 1 || position == 2 || position ==4){
                     rl_competitionMode.setVisibility(View.VISIBLE);
+                }else {
+                    rl_competitionMode.setVisibility(View.GONE);
                 }
 
 
@@ -186,6 +157,46 @@ public class MainCompeteFragment extends MainBasicFragment  {
     @Override
     public int getLayoutId() {
         return R.layout.main_compete_fragment;
+    }
+
+    private void initUserName(){
+        ((TextView)mActivity.findViewById(R.id.txt_uese_name)).setText(AppContext.instance().loginUser.getUserName());
+        ((TextView)mActivity.findViewById(R.id.txt_uese_level)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
+
+        final ImageView user_photo = (ImageView)mActivity.findViewById(R.id.iv_user_pic);
+
+        if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
+            x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    Bitmap map = PicUtil.drawableToBitmap(drawable);
+                    user_photo.setImageBitmap(PicUtil.getRoundedCornerBitmap(map, 360));
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    user_photo.setImageResource(R.drawable.set_headportrait);
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        }else {
+            user_photo.setImageResource(R.drawable.set_headportrait);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initUserName();
     }
 
     public static int TmpSeconds = 10;
@@ -218,7 +229,6 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 Intent praIntent = new Intent(mActivity, PractiseGameActivity.class);
                 praIntent.putExtra("projectId", homeBeans.get(projectindex).projectBean.getProjectId());
                 this.startActivity(praIntent);
-
             default:
                 break;
         }
