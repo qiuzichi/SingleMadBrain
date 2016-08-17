@@ -13,6 +13,12 @@ public class PrictisePokerFragment extends QuickPokerRightFragment{
     }
 
     @Override
+    public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
+        mActivity.getService().starRememory();
+    }
+
+    @Override
     protected boolean isMatchMode() {
         return false;
     }

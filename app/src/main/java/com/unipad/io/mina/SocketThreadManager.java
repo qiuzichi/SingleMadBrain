@@ -160,6 +160,32 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
     }
 
 
+    private class DataThread extends Thread{
+        private Thread outputThead;
+        private boolean start = true;
+       public DataThread(Thread outputThead){
+            this.outputThead= outputThead;
+        }
+        @Override
+        public void run() {
+            super.run();
+            while (start) {
+                if (sendMsgList.size() != 0) {
+                    outputThead.notify();
+                } else {
+                    try {
+                        sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        public void setStart(boolean start) {
+            this.start = start;
+        }
+    }
     /**
      * 客户端写消息线程
      *
@@ -202,6 +228,7 @@ public class SocketThreadManager implements ClientSessionHandler.IDataHandler {
                      LongTcpClient.instant().setDataHandler(handler);
                      }
                      */
+
                     for (Request request : sendMsgList) {
 
 

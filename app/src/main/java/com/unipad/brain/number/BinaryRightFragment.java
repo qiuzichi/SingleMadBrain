@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.unipad.brain.R;
 import com.unipad.brain.number.view.NumberMemoryLayout;
+import com.unipad.common.AbsMatchActivity;
 import com.unipad.common.CommonActivity;
 import com.unipad.common.Constant;
 
@@ -20,11 +21,7 @@ public class BinaryRightFragment extends NumberRightFragment{
 
     @Override
     public String getCompeteItem() {
-        if (isMatchMode()) {
-            return Constant.getProjectName(((CommonActivity)getActivity()).getProjectId());
-        } else{
-            return "";
-        }
+        return Constant.getProjectName(((AbsMatchActivity) getActivity()).getProjectId());
     }
 
     @Override

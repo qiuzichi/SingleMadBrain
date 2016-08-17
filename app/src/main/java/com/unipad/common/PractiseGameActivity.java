@@ -19,13 +19,19 @@ import com.unipad.brain.R;
 import com.unipad.brain.absPic.view.AbsFigureFragment;
 import com.unipad.brain.absPic.view.PractiseFigureFragment;
 import com.unipad.brain.home.dao.HomeGameHandService;
+import com.unipad.brain.longPoker.view.LongPokerPracticeFragment;
+import com.unipad.brain.number.BinaryPracticeFragment;
 import com.unipad.brain.number.BinaryRightFragment;
 import com.unipad.brain.number.LongNumFragment;
+import com.unipad.brain.number.LongPracticeNumFragment;
 import com.unipad.brain.number.NumberRightFragment;
 import com.unipad.brain.number.PractiseQuickRandomFragment;
 import com.unipad.brain.portraits.view.HeadPortraitFragment;
+import com.unipad.brain.portraits.view.HeadPracticeFragment;
 import com.unipad.brain.quickPoker.view.PrictisePokerFragment;
+import com.unipad.brain.virtual.VirtualPracticeFragment;
 import com.unipad.brain.virtual.VirtualRightFragment;
+import com.unipad.brain.words.view.WordPracticeFragment;
 import com.unipad.brain.words.view.WordRightFragment;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HitopGetRandomQuestion;
@@ -142,7 +148,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
                 randomQuestion.setService(service);
                 randomQuestion.post();
 
-        handler.sendEmptyMessageDelayed(SHOW_WAIT_DLG, 100);
+        handler.sendEmptyMessage(SHOW_WAIT_DLG);
 
         /** handler.post(new Runnable() {
         @Override public void run() {
@@ -172,22 +178,22 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.common_lfg_container, mCommonFragment);
         if (Constant.GAME_BINARY_NUM.equals(projectId)) {
-            gameFragment = new BinaryRightFragment();
+            gameFragment = new BinaryPracticeFragment();
         } else if (Constant.GAME_VIRTUAL_DATE.equals(projectId)) {
-            gameFragment = new VirtualRightFragment();
+            gameFragment = new VirtualPracticeFragment();
         } else if (Constant.GAME_RANDOM_WORDS.equals(projectId)) {
-            gameFragment = new WordRightFragment();
+            gameFragment = new WordPracticeFragment();
         } else if (Constant.GAME_PORTRAITS.equals(projectId)) {
-            gameFragment = new HeadPortraitFragment();
+            gameFragment = new HeadPracticeFragment();
 
         } else if (Constant.GAME_ABS_PICTURE.equals(projectId)) {
             gameFragment = new PractiseFigureFragment();
         } else if (Constant.GAME_LONG_NUM.equals(projectId)) {
-            gameFragment = new LongNumFragment();
+            gameFragment = new LongPracticeNumFragment();
         } else if (Constant.GAME_QUICKIY_POCKER.equals(projectId)) {
             gameFragment = new PrictisePokerFragment();
         } else if (Constant.GAME_LONG_POCKER.equals(projectId)) {
-
+            gameFragment = new LongPokerPracticeFragment();
         } else if (Constant.GAME_RANDOM_NUM.equals(projectId)) {
             gameFragment = new PractiseQuickRandomFragment();
         }
@@ -215,6 +221,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
         switch (key) {
             case HttpConstant.GET_RANDOM_QUESTION_ERR:
                 HIDDialog.dismissAll();
+                handler.removeMessages(SHOW_WAIT_DLG);
                 HIDDialog dialog = ToastUtil.createOnlyOkDialog(this, Constant.GET_RANDOM_QUESTION_ERROR_DLG, "error", (String) o, null, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

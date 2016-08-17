@@ -4,6 +4,8 @@ package com.unipad.http;
 import android.util.Log;
 
 import com.unipad.brain.App;
+import com.unipad.common.widget.HIDDialog;
+import com.unipad.utils.LogUtil;
 import com.unipad.utils.NetWorkUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -13,6 +15,8 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.File;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.Locale;
 import java.util.Map;
 
@@ -78,7 +82,15 @@ public abstract class HitopRequest<T>{
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-
+                HIDDialog.dismissAll();
+                if (throwable instanceof ConnectException) {
+                    ToastUtil.showToast("服务器异常");
+                }else if (throwable instanceof SocketTimeoutException){
+                    ToastUtil.showToast("请求超时");
+                }else {
+                    ToastUtil.showToast("IO异常");
+                }
+                LogUtil.e("","请求异常："+throwable);
             }
 
             @Override

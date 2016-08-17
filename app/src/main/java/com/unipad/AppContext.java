@@ -21,12 +21,14 @@ import com.unipad.brain.virtual.dao.VirtualTimeService;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.Constant;
 import com.unipad.observer.GlobleHandle;
+import com.unipad.observer.IDataObserver;
 
 import org.xutils.DbManager;
 import org.xutils.image.ImageOptions;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -255,9 +257,16 @@ public class AppContext {
     }
 
     public void clearService(ICoreService service) {
-        if (serviceList.containsValue(service)) {
-            service.clear();
-            serviceList.remove(service);
+        Iterator<Map.Entry<String, ICoreService>> it = serviceList.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry<String, ICoreService> entry=it.next();
+            String key=entry.getKey();
+            ICoreService  iCoreService = entry.getValue();
+            if (service == iCoreService){
+                service.clear();
+                serviceList.remove(key);
+                break;
+            }
         }
     }
 
