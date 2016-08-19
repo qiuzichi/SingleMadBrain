@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.ViewTreeObserver;
+import android.widget.TextView;
 
 import com.unipad.brain.R;
 import com.unipad.brain.number.view.KeyboardDialog;
@@ -17,6 +18,7 @@ import com.unipad.utils.ToastUtil;
 public class ListenToWriteNumFragment extends NumberRightFragment{
     private KeyboardDialog mKeyboardDialog;
     private View mMemoryLayout;
+    private TextView musicName;
 
     @Override
     public boolean isNeedShowCurrent() {
@@ -40,11 +42,12 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
         super.onActivityCreated(savedInstanceState);
         ViewStub mStubListen = (ViewStub) mViewParent.findViewById(R.id.view_listen);
             mMemoryLayout = mStubListen.inflate();
+        musicName = (TextView) mMemoryLayout.findViewById(R.id.music_name);
     }
 
     @Override
     public void initMemoryView() {
-        final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.getBackground();
+        final AnimationDrawable animationDrawable = (AnimationDrawable) mMemoryLayout.findViewById(R.id.play_music).getBackground();
         mMemoryLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -59,6 +62,15 @@ public class ListenToWriteNumFragment extends NumberRightFragment{
     public void startMemory() {
         super.startMemory();
         mMemoryLayout.setVisibility(View.VISIBLE);
+        String str = "第一轮";
+        if(service.round == 1){
+            str = "第一轮";
+        }else if(service.round == 2){
+            str = "第二轮";
+        }else if(service.round == 3){
+            str = "第三轮";
+        }
+        musicName.setText(str);
     }
 
     @Override
