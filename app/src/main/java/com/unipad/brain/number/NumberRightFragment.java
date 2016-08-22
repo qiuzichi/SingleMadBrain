@@ -142,12 +142,6 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
                 }
                 this.setGridText(text);
                 break;
-            case R.id.btn_vibrate:
-                Vibrator vibrator = (Vibrator) mActivity.getApplication().getSystemService(Service.VIBRATOR_SERVICE);
-                vibrator.vibrate(new long[]{100, 10, 100, 1000}, -1);//设备震动
-                Animation shakeAnim = AnimationUtils.loadAnimation(mActivity, R.anim.shake);
-                mViewParent.startAnimation(shakeAnim); //控件震动的动画效果
-                break;
             case R.id.btn_delete:
                 this.deleteGirdText();
                 break;

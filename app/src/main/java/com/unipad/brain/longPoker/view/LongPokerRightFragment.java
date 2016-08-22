@@ -1,6 +1,5 @@
 package com.unipad.brain.longPoker.view;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,14 +10,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.longPoker.IProgress;
-import com.unipad.brain.longPoker.adapter.AllPokerAnswerAdapter;
 import com.unipad.brain.longPoker.adapter.HorRecycleAdapter;
+import com.unipad.brain.longPoker.adapter.NormalSpinerAdapter;
 import com.unipad.brain.longPoker.adapter.OnePokerRecycleAdapter;
 import com.unipad.brain.longPoker.dao.LongPokerService;
 import com.unipad.common.BasicCommonFragment;
@@ -43,6 +44,11 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
         return R.layout.long_poker_frg_right;
     }
 
+    private ListView dianListView;
+
+    private NormalSpinerAdapter listAdapter;
+
+    private TextView numTextView;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -52,8 +58,8 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
         //setMemoryAdapter();
         shadeView = mViewParent.findViewById(R.id.view_shade_answer);
         memoryLayout = (LinearLayout) mViewParent.findViewById(R.id.browse_proker_hlayout);
-    }
 
+    }
     @Override
     public void startMemory() {
         mViewParent.addView(memoryLayout);
@@ -100,15 +106,112 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         return layoutManager;
     }
+    private void moveToPosition(int n,GridLayoutManager mLinearLayoutManager,RecyclerView recyclerView) {
+        //先从RecyclerView的LayoutManager中获取第一项和最后一项的Position
+        int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+        int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+        //然后区分情况
+        if (n <= firstItem ){
+            //当要置顶的项在当前显示的第一个项的前面时
+            recyclerView.scrollToPosition(n);
+        }else if ( n <= lastItem ){
+            //当要置顶的项已经在屏幕上显示时
+            int top = recyclerView.getChildAt(n - firstItem).getTop();
+            recyclerView.scrollBy(0, top);
+        }else{
+            //当要置顶的项在当前显示的最后一项的后面时
+            recyclerView.scrollToPosition(n);
+            //这里这个变量是用在RecyclerView滚动监听里面的
+            // move = true;
+        }
+
+    }
 
     private void setRememoryAdapter() {
         ViewStub viewStub = (ViewStub) mViewParent.findViewById(R.id.browse_proker_muti_stub);
-        viewpager = (ViewPager) viewStub.inflate();
+        View view = viewStub.inflate();
+        viewpager = (ViewPager) view.findViewById(R.id.rememory_viewpager);
+        dianListView = (ListView) view.findViewById(R.id.poker_dianshu_listview);
+        numTextView = (TextView) view.findViewById(R.id.poker_id_tip);
+        numTextView.setText(mActivity.getResources().getString(R.string.long_poker_answer_num_tip,1));
+        dianListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RecyclerView v = rememoryPokerRecycle[viewpager.getCurrentItem()];
+                OnePokerRecycleAdapter recycleAdapter = (OnePokerRecycleAdapter) v.getAdapter();
+
+                int current = recycleAdapter.getCurrent();
+                OnePokerRecycleAdapter.APokerViewHolder viewholderCurrent = (OnePokerRecycleAdapter.APokerViewHolder) v.findViewHolderForAdapterPosition(current);
+                if (viewholderCurrent != null) {
+                    recycleAdapter.onItemClick(position, (TextView) viewholderCurrent.view.findViewById(R.id.tv_value));
+                }
+                if (recycleAdapter.getPositionItem(current).getUserAnswer() == 0){
+                    return;
+                }
+                int next = recycleAdapter.getCurrent();
+                if (next > 53) {
+                    numTextView.setText("");
+                }else{
+                    numTextView.setText(mActivity.getResources().getString(R.string.long_poker_answer_num_tip,recycleAdapter.getCurrent()));
+                }
+                OnePokerRecycleAdapter.APokerViewHolder viewholderNext = (OnePokerRecycleAdapter.APokerViewHolder) v.findViewHolderForAdapterPosition(++current);
+                if (null == viewholderNext) {
+                    int lastVisibleItem = ((GridLayoutManager) v.getLayoutManager()).findLastVisibleItemPosition() - 2;
+                    moveToPosition(lastVisibleItem,(GridLayoutManager)v.getLayoutManager(),v);
+                } else {
+                    viewholderNext.view.findViewById(R.id.tv_value).requestFocus();
+                }
+
+            }
+        });
+        viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                LogUtil.e("","pager on onPageSelected " +position);
+                for(int i =0;i<rememoryPokerRecycle.length;i++){
+                    RecyclerView v = rememoryPokerRecycle[i];
+                    OnePokerRecycleAdapter recycleAdapter = (OnePokerRecycleAdapter) v.getAdapter();
+                    if (recycleAdapter == null){
+                        recycleAdapter= new OnePokerRecycleAdapter(getActivity(), service.pokersQuestion, position * 53, 53,numTextView);
+                        recycleAdapter.setProgress(LongPokerRightFragment.this);
+                        v.setAdapter(recycleAdapter);
+                    }
+                    if (position == i){
+                        recycleAdapter.setIsCurrentPage(true);
+                        int current = recycleAdapter.getCurrent();
+                        OnePokerRecycleAdapter.APokerViewHolder viewholderCurrent = (OnePokerRecycleAdapter.APokerViewHolder) v.findViewHolderForAdapterPosition(current);
+                        if (viewholderCurrent != null){
+                            viewholderCurrent.view.findViewById(R.id.tv_value).requestFocus();
+                        }
+                        numTextView.setText(mActivity.getResources().getString(R.string.long_poker_answer_num_tip,current));
+                    }else{
+                        recycleAdapter.setIsCurrentPage(false);
+                    }
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        listAdapter = new NormalSpinerAdapter(mActivity);
+        dianListView.setAdapter(listAdapter);
         rememoryPokerRecycle = new RecyclerView[service.howMany];
 
         for (int i = 0; i < service.howMany; i++) {
             RecyclerView recyclerView = new RecyclerView(getActivity());
             recyclerView.setLayoutManager(createGridLayoutManager());
+            recyclerView.setItemAnimator(new NoAlphaItemAnimator());
             rememoryPokerRecycle[i] = recyclerView;
         }
         PagerAdapter pagerAdapter = new PagerAdapter() {
@@ -137,8 +240,8 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
                 // TODO Auto-generated method stub
                 RecyclerView recyclerView = rememoryPokerRecycle[position];
                 if (recyclerView.getAdapter() == null) {
-                    LogUtil.e("","viewpager postion = "+position);
-                    OnePokerRecycleAdapter onePokerRecycleAdapter = new OnePokerRecycleAdapter(getActivity(), service.pokersQuestion, position * 53, 53);
+                    LogUtil.e("", "viewpager postion = " + position);
+                    OnePokerRecycleAdapter onePokerRecycleAdapter = new OnePokerRecycleAdapter(getActivity(), service.pokersQuestion, position * 53, 53,numTextView);
                     onePokerRecycleAdapter.setProgress(LongPokerRightFragment.this);
                     recyclerView.setAdapter(onePokerRecycleAdapter);
                 }
@@ -152,6 +255,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
 
         viewpager.setAdapter(pagerAdapter);
         //设置布局管理器
+
     }
 
     private void setMemoryAdapter() {

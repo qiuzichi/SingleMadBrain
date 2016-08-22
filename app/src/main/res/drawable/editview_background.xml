@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 取消按钮效果 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 选中未up时 -->
+    <item android:state_focused="true"  android:drawable="@drawable/edittext"></item>
+    <!-- 焦点 -->
+    <item android:drawable="@drawable/ed1"></item>
+
+</selector>

@@ -66,6 +66,7 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 		service = (HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE);
 		service.registerObserver(HttpConstant.GET_RULE_NOTIFY,this);
 		initView(null);
+		changeTitleUI(0);
 		
 	}
 

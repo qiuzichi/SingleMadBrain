@@ -54,9 +54,10 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
     @Override
     public void rememoryTimeToEnd(int answerTime) {
         super.rememoryTimeToEnd(answerTime);
-        getAnswer();
+
         mKeyboardDialog.dismiss();
         if (isMatchMode()) {
+            getAnswer();
             if (service.isLastRound()) {
 
             } else {
@@ -69,6 +70,8 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
                     }
                 }.start();
             }
+        }else{
+            showAnswer();
         }
     }
 

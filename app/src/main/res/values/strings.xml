@@ -288,4 +288,6 @@
     <string name="commit_score">提交答案中，请稍后！</string>
     <string name="login_in_other_place">您的账号在其它地方登录，请修改密码！</string>
     <string name="login_in_by_sever">服务器更新，请重新登录！</string>
+    <string name="long_poker_answer_tip">第<xliff:g id="NUM">%1d</xliff:g>牌最后一个已填完！</string>
+    <string name="long_poker_answer_num_tip">第<xliff:g id="NUM">%1d</xliff:g>张</string>
 </resources>

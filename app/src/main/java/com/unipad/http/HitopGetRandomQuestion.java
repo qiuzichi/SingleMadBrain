@@ -21,6 +21,7 @@ public class HitopGetRandomQuestion extends HitopRequest<String> {
     public HitopGetRandomQuestion(String projectId) {
         super(HttpConstant.RANDOM_GET_QUESTION);
         mParams.addQueryStringParameter("projectId", projectId);
+        mParams.setCacheMaxAge(5000);
     }
 
     @Override

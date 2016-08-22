@@ -14,14 +14,8 @@ import com.unipad.brain.R;
 
 public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
 
-    public static interface IOnItemSelectListener {
-        public void onItemClick(int pos);
-    }
-
-    ;
-
     private Context mContext;
-    private List<T> mObjects = new ArrayList<T>();
+    protected List<T> mObjects = new ArrayList<T>();
     private int mSelectItem = 0;
 
     private LayoutInflater mInflater;

@@ -34,7 +34,7 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
 
     @Override
     public List<AdPictureBean> handleJsonData(String json) {
-        List<AdPictureBean> adList = null;
+        List<AdPictureBean> adList = new ArrayList<AdPictureBean>();
         JSONObject jsObj = null;
 
         try {
@@ -45,7 +45,6 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
 
                     JSONArray jsonArray = jsObj.getJSONArray("lists");
                     int iSize = jsonArray.length();
-                    adList = new ArrayList<AdPictureBean>();
                     for (int i = 0; i < iSize; i++) {
                         AdPictureBean bean = new AdPictureBean();
                         JSONObject jsonObj2 = jsonArray.getJSONObject(i);
