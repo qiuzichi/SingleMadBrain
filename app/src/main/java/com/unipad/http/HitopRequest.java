@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.unipad.AppContext;
 import com.unipad.brain.App;
+import com.unipad.brain.R;
 import com.unipad.brain.personal.login.LoginActivity;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.ActivityCollector;
@@ -89,14 +90,26 @@ public abstract class HitopRequest<T> {
                 Log.e("", result);
                 try {
                     JSONObject jsObj = new JSONObject(result);
-                    if (jsObj.optInt("ret_code", -1) == -3) {
+                    int retCode = jsObj.optInt("ret_code", -1);
+                    if ( retCode == -3) {
+                        ToastUtil.showToast(R.string.login_in_other_place);
                         Activity activity = ActivityCollector.getTopActivity();
                         if (activity instanceof LoginActivity) {
 
                         } else {
                             Intent intent = new Intent(activity, LoginActivity.class);
                             activity.startActivity(intent);
-                            activity.finish();
+                            ActivityCollector.finishAllActivityExceptTop();
+                        }
+                    } else if (retCode == -4){
+                        ToastUtil.showToast(R.string.login_in_by_sever);
+                        Activity activity = ActivityCollector.getTopActivity();
+                        if (activity instanceof LoginActivity) {
+
+                        } else {
+                            Intent intent = new Intent(activity, LoginActivity.class);
+                            activity.startActivity(intent);
+                            ActivityCollector.finishAllActivityExceptTop();
                         }
                     } else {
                         handleJsonData(result);

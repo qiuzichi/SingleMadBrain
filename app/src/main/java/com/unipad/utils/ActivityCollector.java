@@ -28,6 +28,9 @@ public class ActivityCollector {
             return null;
         }
     }
+    public static List<Activity> getmActivityList(){
+        return mActivityList;
+    }
     /**
      * 从集合中移除Activity
      */
@@ -45,5 +48,12 @@ public class ActivityCollector {
             }
         }
     }
-
+    public static void finishAllActivityExceptTop(){
+        if (mActivityList.size()<2){
+            return;
+        }
+        for(int i = 0;i<mActivityList.size()-2;i++){
+            mActivityList.get(i).finish();
+        }
+    }
 }
