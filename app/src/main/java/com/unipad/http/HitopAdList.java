@@ -36,25 +36,24 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>>{
     public List<AdPictureBean> handleJsonData(String json) {
         List<AdPictureBean> adList = null;
         JSONObject jsObj = null;
-
         try {
             jsObj = new JSONObject(json);
             if (jsObj != null && jsObj.toString().length() != 0) {
-                if( jsObj.getInt("ret_code") == 0) {
-
-
+                if (jsObj.getInt("ret_code") == 0) {
                     JSONArray jsonArray = jsObj.getJSONArray("lists");
                     int iSize = jsonArray.length();
                     adList = new ArrayList<AdPictureBean>();
-                    for (int i = 0; i < iSize; i++) {
-                        AdPictureBean bean = new AdPictureBean();
-                        JSONObject jsonObj2 = jsonArray.getJSONObject(i);
-                        bean.setAdvertName(jsonObj2.getString("advertName"));
-                        bean.setAdvertId(jsonObj2.getString("id"));
-                        bean.setJumpType(jsonObj2.getString("jumpType"));
-                        bean.setJumpUrl(jsonObj2.getString("jumpUrl"));
-                        bean.setAdvertPath(HttpConstant.PATH_FILE_URL+jsonObj2.getString("path"));
-                        adList.add(bean);
+                    if (iSize != 0) {
+                        for (int i = 0; i < iSize; i++) {
+                            AdPictureBean bean = new AdPictureBean();
+                            JSONObject jsonObj2 = jsonArray.getJSONObject(i);
+                            bean.setAdvertName(jsonObj2.getString("advertName"));
+                            bean.setAdvertId(jsonObj2.getString("id"));
+                            bean.setJumpType(jsonObj2.getString("jumpType"));
+                            bean.setJumpUrl(jsonObj2.getString("jumpUrl"));
+                            bean.setAdvertPath(HttpConstant.PATH_FILE_URL + jsonObj2.getString("path"));
+                            adList.add(bean);
+                        }
                     }
                 }
             }

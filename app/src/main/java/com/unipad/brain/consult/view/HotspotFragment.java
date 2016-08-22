@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -66,51 +67,84 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private MyRecyclerAdapter mRecyclerViewAdapter;
-    //是否是 最后一页
-    private boolean isLastPage = false;
     //广告轮播图adapter
     private AdViewPagerAdapter adAdapter;
     //总页面大小
-    private int totalPager = 0;
+    private int totalPager = 1;
+    private TextView tv_error;
+    private Boolean isNoAdvertData = false;
 
     @Override
     public void update(int key, Object o) {
+        if(null != o){
+            switch (key) {
+                case HttpConstant.NOTIFY_GET_HOTSPOT:
+                    if(null == o){
+                        //网络访问错误 刷新数据
+                        tv_error.setVisibility(View.VISIBLE);
+                        tv_error.setClickable(true);
+                        tv_error.setText(getString(R.string.net_error_refrush_data));
+                        tv_error.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mSwipeRefreshLayout.setRefreshing(true);
+                                tv_error.setClickable(false);
+                            }
+                        });
+                        return;
+                    }
+                    //获取新闻页面数据
+                    List<NewEntity> databean = (List<NewEntity>) o;
+                    if(databean.size() == 0){
+                        //数据为空 显示默认 刷新数据
+                        tv_error.setVisibility(View.VISIBLE);
+                        tv_error.setClickable(false);
+                        tv_error.setText(getString(R.string.not_news_data));
+                        return;
+                    }
 
-        switch (key) {
-            case HttpConstant.NOTIFY_GET_HOTSPOT:
-                //发送网络请求 获取热点页面数据
-                //获取新闻页面数据
-                List<NewEntity> databean = (List<NewEntity>) o;
+                    tv_error.setVisibility(View.GONE);
 
-                if(requestPagerNum == 1 && databean.size() != 0){
-                    totalPager = databean.get(0).getTotalPager();
-                }
+                    if(requestPagerNum == 1 && databean.size() != 0){
+                        totalPager = databean.get(0).getTotalPager();
+                    }
 
-                if(totalPager == requestPagerNum){
-                    isLastPage = true;
-                }else{
-                    //始终记录是最后一页的  页数
-                    requestPagerNum++;
-                }
-                newsDatas.addAll(databean);
-                mRecyclerViewAdapter.notifyDataSetChanged();
-                break;
+                    if(!(totalPager == requestPagerNum)){
+                        //始终记录是最后一页的  页数
+                        requestPagerNum++;
+                    }
+                    newsDatas.addAll(databean);
+                    mRecyclerViewAdapter.notifyDataSetChanged();
+                    break;
 
-            case HttpConstant.NOTIFY_GET_HOTADVERT:
-                //获取轮播图数据
-                newsAdvertDatas.clear();
-                newsAdvertDatas.addAll((List<AdPictureBean>) o);
+                case HttpConstant.NOTIFY_GET_HOTADVERT:
+                    if(null == o ){
+                        //网络访问错误；可以刷新 重新请求数据
+                        startLunPic(R.drawable.error_remind);
+                        return;
+                    }
 
-                adAdapter .notifyDataSetChanged();
-                break;
-            case HttpConstant.NOTIFY_GET_OPERATE:
-                //获取喜欢 点赞 评论 信息
-                mRecyclerViewAdapter.notifyDataSetChanged();
-                break;
-            default:
-                break;
+                    if(((List<AdPictureBean>)o).size() == 0){
+                        //服务器数据为null 没有数据
+                        isNoAdvertData = true;
+                        startLunPic(R.drawable.default_advert_pic);
+                        return;
+                    }
+
+                    //获取轮播图数据
+                    newsAdvertDatas.clear();
+                    newsAdvertDatas.addAll((List<AdPictureBean>) o);
+
+                    adAdapter .notifyDataSetChanged();
+                    break;
+                case HttpConstant.NOTIFY_GET_OPERATE:
+                    //获取喜欢 点赞 评论 信息
+                    mRecyclerViewAdapter.notifyDataSetChanged();
+                    break;
+                default:
+                    break;
+            }
         }
-
     }
     @Override
     public int getLayoutId() {
@@ -127,7 +161,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         initData();
         initRecycler();
         //播放轮播广告
-        startLunPic();
+        startLunPic(R.drawable.default_advert_pic);
     }
 
 
@@ -141,6 +175,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
 
     private void initRecycler(){
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
+        tv_error = (TextView) getView().findViewById(R.id.tv_load_error_show);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.light_blue2,
@@ -181,7 +216,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
             @Override
             public void onLoadMore() {
 
-                if(requestPagerNum == totalPager){
+                if(totalPager == requestPagerNum){
                    /* 最后一页 直接吐司 不显示下拉加载*/
                     ToastUtil.showToast(getString(R.string.loadmore_null_data));
                     return;
@@ -237,7 +272,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                     newsDatas.remove(newsDatas.size() - 1);
                     mRecyclerViewAdapter.notifyItemRemoved(newsDatas.size());
 
-                    if (!isLastPage) {
+                    if (!(totalPager == requestPagerNum)) {
                         service.getNews(ConsultTab.HOTSPOT.getTypeId(), null, requestPagerNum, perPageDataNumber);
                     } else {
                         mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
@@ -289,27 +324,37 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                     intent.setData(Uri.parse(bean.getJumpUrl()));
                     startActivity(intent);
                 }
+            }else {
+                if(isNoAdvertData){  //没有广告数据  打开公司网页
+                    Intent intent = new Intent(mActivity, PagerDetailActivity.class);
+                    //公司网址
+                    intent.putExtra("pagerId", "http://www.baidu.com/");
+                    intent.putExtra("isAdvert", true);
+                    startActivity(intent);
+                } else { //刷新广告数据
+                    service.getAdverts("00002");
+                }
+
             }
         }
     };
 
     private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_HOTSPOT, this);
-
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_HOTADVERT, this);
     }
 
     //播放轮播图；
-    private void startLunPic(){
+    private void startLunPic(int loadingDrawableId){
 
         imageOptions = new ImageOptions.Builder()
                 // 加载中或错误图片的ScaleType;
                 //.setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
                 .setImageScaleType(ImageView.ScaleType.FIT_XY)
                         //设置加载过程中的图片
-                .setLoadingDrawableId(R.drawable.default_advert_pic)
+                .setLoadingDrawableId(loadingDrawableId)
                         //设置加载失败后的图片
-                .setFailureDrawableId(R.drawable.default_advert_pic)
+                .setFailureDrawableId(loadingDrawableId)
                         //设置使用缓存
                 .build();
     }

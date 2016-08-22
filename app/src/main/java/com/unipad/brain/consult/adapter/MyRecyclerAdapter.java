@@ -146,14 +146,16 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             iv_icon.setTag(bean.getThumbUrl());
             getThumbIcon(bean.getThumbUrl(), iv_icon);
 
-            if(iv_icon.isClickable()){
+            if (iv_icon.isClickable()) {
                 iv_icon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         getThumbIcon(bean.getThumbUrl(), iv_icon);
                     }
                 });
+
             }
+
 
             final ImageView iv_zan = ((ItemViewHolder) holder).iv_pager_zan;
             if (bean.getIsLike()) {
@@ -218,7 +220,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 public void onClick(View v) {
                     //查看详情的界面
                     Intent intent = new Intent(mActivity, PagerDetailActivity.class);
-                    intent.putExtra("pagerId", bean.getId());
                     intent.putExtra("pagerId", bean.getId());
                     mActivity.startActivity(intent);
                 }

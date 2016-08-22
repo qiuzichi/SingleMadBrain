@@ -148,7 +148,6 @@ public class HeadPortraitFragment extends BasicCommonFragment{
                 Person bean = mData.get(holder.getPosition());
                 firstName.setText(bean.getAnswerFirstName());
                 lastName.setText(bean.getAnswerLastName());
-Log.e("header", bean.toString() +"           position =" + holder.getPosition());
                 firstName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

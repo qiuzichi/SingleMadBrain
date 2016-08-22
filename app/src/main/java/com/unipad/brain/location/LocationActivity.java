@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import com.unipad.AppContext;
 import com.unipad.brain.BasicActivity;
 import com.unipad.brain.R;
+import com.unipad.brain.dialog.ShowDialog;
 import com.unipad.brain.location.bean.CityBean;
 import com.unipad.brain.location.bean.CompetitionBean;
 import com.unipad.brain.location.bean.ProvinceBean;
@@ -64,6 +64,7 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
         service.registerObserver(HttpConstant.GET_PROVINCE, this);
         service.registerObserver(HttpConstant.GET_CITY, this);
         service.registerObserver(HttpConstant.CITY_GAME, this);
+        service.registerObserver(HttpConstant.LOCATION_APPLY_GAME, this);
         ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
         service.getProvinceList();
     }
@@ -143,21 +144,72 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
                     competitionBeans = (List<CompetitionBean>) o;
                     lv_com.setAdapter(new CommonAdapter<CompetitionBean>(this, competitionBeans, R.layout.personal_msg_item_layout) {
                         @Override
-                        public void convert(ViewHolder holder, CompetitionBean competitionBean) {
+                        public void convert(ViewHolder holder, final CompetitionBean competitionBean) {
                             holder.setText(R.id.txt_year, competitionBean.getCompetitionDate());
                             holder.setText(R.id.txt_name, competitionBean.getName() + "/" + competitionBean.getProjecNname());
                             holder.setText(R.id.txt_addr, competitionBean.getAddr());
                             holder.setText(R.id.txt_cost, competitionBean.getCost());
                             TextView in_game = (TextView)holder.getView(R.id.in_game);
-                            in_game.setText(competitionBean.getIsApply() == 0 ? getString(R.string.my_apply) : getString(R.string.applied) );
+//                            in_game.setText(competitionBean.getIsApply() == 0 ? getString(R.string.my_apply) : getString(R.string.applied) );
                            // holder.getView(R.id.in_game).setVisibility(competitionBean.getApplyState() == 0 ? View.VISIBLE : View.GONE);
                             //holder.setImageResource(R.id.img_photo, homeBean.isSelect ? homeBean.selImgId : homeBean.norImgId);
                             //holder.setTextColor(R.id.txt_name, homeBean.isSelect ? iHome.getContext().getResources().getColor(R.color.main_1) : iHome.getContext().getResources().getColor(R.color.black));
                             /////////----- 以下两行代码表示 设置某个控件的点击事件-----////
-                           // holder.getView(R.id.in_game).setTag(competitionBean);
-                            //holder.getView(R.id.in_game).setOnClickListener(new OnClickApply());
+//                            holder.getView(R.id.in_game).setTag(competitionBean);
+//                            holder.getView(R.id.in_game).setOnClickListener(new OnClickApply());
+
+                            if (0 == competitionBean.getIsApply()) {  //选手报名
+                                in_game.setBackgroundResource(R.drawable.button_apply_competition);
+                                in_game.setClickable(true);
+                                in_game.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        service.getApplyCompetition(AppContext.instance().loginUser.getUserId(), HttpConstant.LOCATION_APPLY_GAME,
+                                                competitionBean.getComId(), competitionBean.getProjectId(), null, 0);
+                                    }
+                                });
+                            } else {  //已报名
+                                in_game.setBackgroundResource(R.drawable.button_competitioned);
+                                in_game.setClickable(false);
+                                in_game.setOnClickListener(null);
+                            }
                         }
                     });
+                }
+                break;
+            case HttpConstant.LOCATION_APPLY_GAME:
+                CompetitionBean bean = (CompetitionBean) o;
+                if (null != bean) {
+                    for (int i = 0; i < competitionBeans.size(); i++) {
+                        CompetitionBean compet = competitionBeans.get(i);
+                        if (compet.getComId().equals(bean.getComId())) {
+                            compet.setApplyState(bean.getApplyState());
+                            break;
+                        } else {
+                            continue;
+                        }
+                    }
+                    ((BaseAdapter)lv_com.getAdapter()).notifyDataSetChanged();
+                } else { //用户没有实名认证
+                    if(AppContext.instance().loginUser.getAuth() == 0 || AppContext.instance().loginUser.getAuth() == 3) {
+                        View dialogView = View.inflate(this, R.layout.first_login_dialog, null);
+                        TextView txt_msg = (TextView) dialogView.findViewById(R.id.txt_msg);
+                        txt_msg.setText(AppContext.instance().loginUser.getAuth() == 0 ? this.getString(R.string.auth_hint) : this.getString(R.string.auth_fail_hint));
+                        final ShowDialog showDialog = new ShowDialog(this);
+                        showDialog.showDialog(dialogView, ShowDialog.TYPE_CENTER, this.getWindowManager(), 0.4f, 0.5f);
+
+                        showDialog.setOnShowDialogClick(new ShowDialog.OnShowDialogClick() {
+                            @Override
+                            public void dialogClick(int id) {
+                                if(null != showDialog && showDialog.isShowing()){
+                                    showDialog.dismiss();
+                                }
+                            }
+                        });
+                        showDialog.bindOnClickListener(dialogView, new int[]{R.id.img_close});
+                    } else {
+                        ToastUtil.showToast(getString(R.string.submit_fail));
+                    }
                 }
                 break;
         }

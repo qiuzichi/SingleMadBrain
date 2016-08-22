@@ -45,7 +45,7 @@ public class HttpConstant {
      */
     public static String APPLY_GAME = "/api/match/apply";
     // 获取图片路径 http://192.168.0.104:8090/crazybrain-mng
-    public static final String url = "http://192.168.0.200:8090/crazybrain-mng";
+    public static final String url = "http://192.168.0.117:8090/crazybrain-mng";
 
     public static String PATH_FILE_URL  = url +  "/image/getFile?filePath=";
     // 更新用户信息
@@ -130,6 +130,9 @@ public class HttpConstant {
     public static final int GET_CITY = 0x11000;
     // 根据城市id 获取比赛列表
     public static final int CITY_GAME=0x11100;
+
+    // 赛事id  报名比赛
+    public static final int LOCATION_APPLY_GAME=0x11101;
 
     //获取news数据的 key
     public static final int NOTIFY_GET_NEWS = 0x20000;

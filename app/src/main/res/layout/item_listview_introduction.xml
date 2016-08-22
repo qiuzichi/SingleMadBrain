@@ -67,7 +67,7 @@
                             android:layout_height="@dimen/favorite_width"
                             android:scaleType="fitXY"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/margin_10dip"
+                            android:layout_marginLeft="@dimen/margin_30dp"
                             android:src="@drawable/select__favorite_introduction"
                         />
 
@@ -76,7 +76,7 @@
                             android:layout_width="@dimen/favorite_width"
                             android:layout_height="@dimen/favorite_width"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/margin_10dip"
+                            android:layout_marginLeft="@dimen/margin_30dp"
                             android:layout_toRightOf="@id/iv_item_introduction_zan"
                             android:scaleType="fitXY"
                             android:src="@drawable/comment_introduction_normal" />

@@ -4,6 +4,7 @@ import com.unipad.AppContext;
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.dao.NewsService;
+import com.unipad.brain.location.dao.LocationService;
 import com.unipad.common.Constant;
 
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import java.io.UnsupportedEncodingException;
  */
 public class HitopApplyGame extends HitopRequest<CompetitionBean> {
     private int applyGameKey;
+    private int isPay;
     public HitopApplyGame(String path) {
         super(path);
     }
@@ -32,6 +34,7 @@ public class HitopApplyGame extends HitopRequest<CompetitionBean> {
     public HitopApplyGame(String userId, int key, String matchId, String projectId, String gradeId, int isPay) {
         super(HttpConstant.APPLY_GAME);
         applyGameKey = key;
+        this.isPay = isPay;
         mParams.addQueryStringParameter("match_id", matchId);
         mParams.addQueryStringParameter("user_id", userId);
         mParams.addQueryStringParameter("pay", "" + isPay);
@@ -71,14 +74,19 @@ public class HitopApplyGame extends HitopRequest<CompetitionBean> {
             e.printStackTrace();
             competitionBean = null;
         }
-        int key = HttpConstant.CITY_APPLY_GAME;
 
-        if (applyGameKey != 0) {
+
+        if (applyGameKey == HttpConstant.LOCATION_APPLY_GAME) {
+            ((LocationService) AppContext.instance().getService(Constant.LOCATION_SERVICE)).noticeDataChange(applyGameKey, competitionBean);
+            applyGameKey = 0;
+            return null;
+        } else if (applyGameKey == HttpConstant.NOTIFY_APPLY_NEWCOMPETITION) {
             ((NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE)).noticeDataChange(applyGameKey, competitionBean);
             applyGameKey = 0;
             return null;
         }
 
+        int key = HttpConstant.CITY_APPLY_GAME;
         if (competitionBean != null) {
             if (Constant.CHIMA_GAME.equals(competitionBean.getGradeId())) {
                 key = HttpConstant.CHINA_APPLY_GAME;

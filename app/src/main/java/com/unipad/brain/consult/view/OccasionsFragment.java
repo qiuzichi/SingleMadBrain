@@ -61,30 +61,49 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
     private int requestPagerNum = 1;
     private final int perPageDataNumber = 10;
     //总页面大小
-    private int totalPager = 0;
+    private int totalPager = 1;
     private boolean isGetData;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private MyRecyclerAdapter mRecyclerViewAdapter;
-    //是否是 最后一页
-    private boolean isLastPage = false;
+    private TextView tv_error;
 
 
     @Override
     public void update(int key, Object o) {
+
         switch (key) {
             case HttpConstant.NOTIFY_GET_COMPETITION:
-                //发送网络请求 获取热点页面数据
+                if(null == o){
+                    //网络访问错误 刷新数据
+                    tv_error.setVisibility(View.VISIBLE);
+                    tv_error.setClickable(true);
+                    tv_error.setText(getString(R.string.net_error_refrush_data));
+                    tv_error.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mSwipeRefreshLayout.setRefreshing(true);
+                            tv_error.setClickable(false);
+                        }
+                    });
+                    return;
+                }
                 //获取新闻页面数据
                 List<NewEntity> databean = (List<NewEntity>) o;
-                if(requestPagerNum == 1 && databean.size() != 0){
+                if(databean.size() == 0){
+                    //数据为空 显示默认 刷新数据
+                    tv_error.setVisibility(View.VISIBLE);
+                    tv_error.setText(getString(R.string.not_news_data));
+                    return;
+                }
+
+                tv_error.setVisibility(View.GONE);
+
+                if (requestPagerNum == 1 && databean.size() != 0) {
                     totalPager = databean.get(0).getTotalPager();
                 }
 
-
-                if(requestPagerNum == totalPager){
-                    isLastPage = true;
-                }else{
+                if(!(requestPagerNum == totalPager)){
                     //始终记录是最后一页的  页数
                     requestPagerNum++;
                 }
@@ -114,8 +133,11 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
         RelativeLayout mLunBoPic = (RelativeLayout) getView().findViewById(R.id.rl_advert_view);
         mLunBoPic.setVisibility(View.GONE);
 
-        initData();
+        tv_error = (TextView) getView().findViewById(R.id.tv_load_error_show);
+        mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
 
+        initData();
         initRecycler();
 
     }
@@ -127,12 +149,11 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_COMPETITION, this);
         service.registerObserver(HttpConstant.NOTIFY_GET_OPERATE, this);
+
     }
 
     private void initRecycler(){
 
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.light_blue2,
                 R.color.red,
@@ -209,7 +230,7 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
                     newsDatas.remove(newsDatas.size() - 1);
                     mRecyclerViewAdapter.notifyItemRemoved(newsDatas.size());
 
-                    if (!isLastPage) {
+                    if (!(totalPager == requestPagerNum)) {
                         getNews(ConsultTab.OCCASIONS.getTypeId(), null, requestPagerNum, perPageDataNumber);
                     } else {
                         mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());

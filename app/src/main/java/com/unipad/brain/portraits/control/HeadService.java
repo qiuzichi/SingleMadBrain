@@ -290,26 +290,25 @@ public class HeadService extends AbsBaseGameService{
             sb.append(i + "^");
             sb.append(person.getId() + "^");
 
-            if(TextUtils.isEmpty(person.getAnswerFirstName())){
-                sb.append("@"+ "^");
-            } else{
+            if (TextUtils.isEmpty(person.getAnswerFirstName())) {
+                sb.append("@" + "^");
+            } else {
                 sb.append(person.getAnswerFirstName() + "^");
             }
 
-            if(TextUtils.isEmpty(person.getAnswerLastName())){
-                if(i == data.size()){
+            if (TextUtils.isEmpty(person.getAnswerLastName())) {
+                if (i == data.size()) {
                     sb.append("@");
-                }else {
-                    sb.append("@"+ ",");
+                } else {
+                    sb.append("@" + ",");
                 }
-            }else {
-                if(i == data.size()){
+            } else {
+                if (i == data.size()) {
                     sb.append(person.getAnswerLastName());
-                }else {
-                    sb.append(person.getAnswerLastName()+ ",");
+                } else {
+                    sb.append(person.getAnswerLastName() + ",");
                 }
             }
-
         }
         return sb.toString();
     }
@@ -317,7 +316,6 @@ public class HeadService extends AbsBaseGameService{
     @Override
     public void downloadingQuestion(Map<String, String> data) {
         super.downloadingQuestion(data);
-
         handDownQuestion(data);
     }
 
