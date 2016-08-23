@@ -91,6 +91,7 @@
     <string name="set_memorytime">设置比赛记忆时间</string>
     <string name="set_rule">规则设置</string>
     <string name="set_time">设置</string>
+    <string name="ranking_list">排行榜</string>
 
     <string name="commit">提交</string>
     <string name="mad_crazy_describe">\t\t\t 世界记忆力锦标赛（World Memory Championships）是由“世界记忆之父” 托尼·博赞于1991年发起，
@@ -259,6 +260,8 @@
 
     <string name="loadmore_data">正在加载数据......</string>
     <string name="loadmore_null_data">最后一页  已经没有新的数据了</string>
+    <string name="not_news_data">没有新数据</string>
+    <string name="net_error_refrush_data">访问网络失败 点击重新刷新数据 </string>
     <string name="hostory_null_data">没有历史战绩数据</string>
 
 

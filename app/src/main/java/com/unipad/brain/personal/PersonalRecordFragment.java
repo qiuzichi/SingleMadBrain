@@ -60,7 +60,9 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     private ShowDialog showDialog;
     private final int PAGESIZE = 10;
     private int requestExercisePager = 1;
+    private int requestRecordPager = 1;
     private boolean isLoadMoreData = false;
+    private boolean isLoadMoreRecordData = false;
     private PersonCenterService service;
     private WheelMainView wheelMainView;
     /**
@@ -93,7 +95,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mBlackColor = mActivity.getResources().getColor(R.color.black);
         viewParent = (ViewGroup) mActivity.findViewById(R.id.record_histogram_container);
         rl_select_time = (RelativeLayout) mActivity.findViewById(R.id.rl_search_time_visit);
-        final ScrollView mScrollView =  (ScrollView) mActivity.findViewById(R.id.scrollview_tablayout_record);
+        ScrollView mScrollView = (ScrollView) mActivity.findViewById(R.id.scrollview_tablayout_record);
 
         (mEditSearchBeginDate = (Button) mActivity.findViewById(R.id.record_search_begin_data)).setOnClickListener(this);
         (mEditSearchEndDate = (Button) mActivity.findViewById(R.id.record_search_end_data)).setOnClickListener(this);
@@ -103,38 +105,58 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         mActivity.findViewById(R.id.text_record_city).setVisibility(View.GONE);
         mActivity.findViewById(R.id.text_record_china).setVisibility(View.GONE);
         mActivity.findViewById(R.id.text_record_world).setVisibility(View.GONE);
-        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK, this);
-        ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.EXECISE_DATA, this);
+        ((PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.HISRECORD_OK, this);
+        ((PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER)).registerObserver(HttpConstant.EXECISE_DATA, this);
 
-        ((ScrollView) mActivity.findViewById(R.id.scrollview_tablayout_record)).setOnTouchListener(new View.OnTouchListener() {
+        initScrollView(mScrollView);
+
+        validateDate();
+
+    }
+
+    private void initScrollView(final ScrollView mScrollView) {
+         /*下滑加载更多数据 滑动事件*/
+        mScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         break;
-                    case MotionEvent.ACTION_MOVE :
+                    case MotionEvent.ACTION_MOVE:
                         int scrollY = v.getScrollY();
                         int height = v.getHeight();
                         int scrollViewMeasuredHeight = mScrollView.getChildAt(0).getMeasuredHeight();
-                        if((scrollY + height) == scrollViewMeasuredHeight){
+                        if ((scrollY + height) == scrollViewMeasuredHeight) {
                             //滑动到底部
-                            if( null != mRadioExercise && mRadioExercise.isChecked()){
-                                if(null == mExerciseData){
+                            if (null != mRadioExercise && mRadioExercise.isChecked()) {
+                                if (null == mExerciseData || mExerciseData.size() == 0) {
                                     return false;
                                 }
-                                if(requestExercisePager > Integer.parseInt(mExerciseData.get(0).getTotalPage())){
+                                if (requestExercisePager > Integer.parseInt(mExerciseData.get(0).getTotalPage())) {
                                     ToastUtil.showToast(getString(R.string.loadmore_null_data));
                                     return false;
                                 }
 
-                                if(isLoadMoreData){
+                                if (isLoadMoreData) {
                                     ToastUtil.showToast(getString(R.string.loadmore_data));
                                     return false;
                                 }
 
-                                ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
-                                        .getHistoryExerRecord(requestExercisePager, PAGESIZE);
+                                service.getHistoryExerRecord(requestExercisePager, PAGESIZE);
                                 isLoadMoreData = true;
+                            } else if (mRecordData.size() != 0) {
+
+                                if (requestRecordPager > Integer.parseInt(mRecordData.get(0).getTotalPage())) {
+                                    ToastUtil.showToast(getString(R.string.loadmore_null_data));
+                                    return false;
+                                }
+
+                                if (isLoadMoreRecordData) {
+                                    ToastUtil.showToast(getString(R.string.loadmore_data));
+                                    return false;
+                                }
+                                validateDate();
+                                isLoadMoreRecordData = true;
                             }
                         }
                         break;
@@ -143,13 +165,11 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                         break;
                 }
 
-
                 return false;
             }
         });
-        validateDate();
-
     }
+
     @Override
     public int getLayoutId() {
        return R.layout.personal_frg_record;
@@ -186,6 +206,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                         if (mRecordData.size() != 0) {
                             hisRecords = mRecordData;
                             viewParent.addView(getGridView());
+                        }else {
+                            validateDate();
                         }
                         break;
                     case R.id.radio_select_exercise: //练习模式
@@ -194,8 +216,8 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
 
                         if (mExerciseData.size() == 0) {
                             requestExercisePager = 1;
-                            ((PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER))
-                                    .getHistoryExerRecord(requestExercisePager, PAGESIZE);
+                            isLoadMoreData = true;
+                            service.getHistoryExerRecord(requestExercisePager, PAGESIZE);
                         } else {
                             hisRecords = mExerciseData;
                             viewParent.addView(getGridView());
@@ -247,7 +269,10 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.record_text_search:
-                this.validateDate();
+                requestRecordPager = 1;
+                if(!isLoadMoreRecordData){
+                    this.validateDate();
+                }
                 break;
             case R.id.record_text_delete:
                 break;
@@ -381,9 +406,9 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
                 viewParent.addView(mViewBrokenLine);
             }
 
-            ((PersonCenterService)AppContext.instance().getService(Constant.PERSONCENTER))
-                    .getHistoryRecord(mEditSearchBeginDate.getText().toString().trim(),mEditSearchEndDate.getText().toString().trim()
-                    ,AppContext.instance().loginUser.getUserId());
+            service.getHistoryRecord(mEditSearchBeginDate.getText().toString().trim(), mEditSearchEndDate.getText().toString().trim()
+                    , requestRecordPager, PAGESIZE);
+            isLoadMoreRecordData = true;
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -506,14 +531,15 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
         if (o != null) {
             switch (key) {
                 case HttpConstant.HISRECORD_OK:
-                    mRecordData = (List<HisRecord>) o;
+                    mRecordData.addAll((List<HisRecord>) o);
                     hisRecords = mRecordData;
-                    if (mIsBrokenLine) {
-
-                    } else {
+                    requestRecordPager ++ ;
+                    if (!mIsBrokenLine){
                         viewParent.removeAllViews();
                         viewParent.addView(getGridView());
                     }
+                    /*数据加载完成*/
+                    isLoadMoreRecordData = false;
                     break;
 
                 case HttpConstant.EXECISE_DATA:

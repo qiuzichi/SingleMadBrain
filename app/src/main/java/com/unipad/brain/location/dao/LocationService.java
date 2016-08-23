@@ -2,6 +2,7 @@ package com.unipad.brain.location.dao;
 
 import com.unipad.AppContext;
 import com.unipad.ICoreService;
+import com.unipad.http.HitopApplyGame;
 import com.unipad.http.HitopGetCityGame;
 import com.unipad.http.HitopGetCityList;
 import com.unipad.http.HitopGetProvinceList;
@@ -53,5 +54,19 @@ public class LocationService extends GlobleObserService implements ICoreService 
         getCityGame.buildRequestParams("userId", AppContext.instance().loginUser.getUserId());
         getCityGame.setSevice(this);
         getCityGame.post();
+    }
+
+    /**报名 赛事
+     * @param userId 用户id
+     * @param key  请求key
+     * @param matchId 赛事matchid
+     * @param projectId
+     * @param gradeId
+     * @param isPay  是否支付
+     */
+
+    public void getApplyCompetition(String userId, int key, String matchId, String projectId, String gradeId, int isPay) {
+        HitopApplyGame applyGame = new HitopApplyGame(userId, key, matchId, projectId, gradeId, isPay);
+        applyGame.get();
     }
 }

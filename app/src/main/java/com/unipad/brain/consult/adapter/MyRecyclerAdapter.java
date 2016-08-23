@@ -143,31 +143,19 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((ItemViewHolder) holder).text_updatetime.setText(bean.getPublishDate());
 
             final ImageView iv_icon = ((ItemViewHolder) holder).iv_picture;
-            if(!TextUtils.isEmpty(bean.getThumbUrl())){
-                x.image().bind(iv_icon, bean.getThumbUrl(), new Callback.CommonCallback<Drawable>() {
+            iv_icon.setTag(bean.getThumbUrl());
+            getThumbIcon(bean.getThumbUrl(), iv_icon);
+
+            if (iv_icon.isClickable()) {
+                iv_icon.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onSuccess(Drawable result) {
-                        iv_icon.setImageBitmap(PicUtil.drawableToBitmap(result));
-                    }
-
-                    @Override
-                    public void onError(Throwable ex, boolean isOnCallback) {
-                        iv_icon.setImageResource(R.drawable.error_remind);
-                    }
-
-                    @Override
-                    public void onCancelled(CancelledException cex) {
-
-                    }
-
-                    @Override
-                    public void onFinished() {
-
+                    public void onClick(View v) {
+                        getThumbIcon(bean.getThumbUrl(), iv_icon);
                     }
                 });
-            }else {
-                iv_icon.setImageResource(R.drawable.error_remind);
+
             }
+
 
             final ImageView iv_zan = ((ItemViewHolder) holder).iv_pager_zan;
             if (bean.getIsLike()) {
@@ -233,7 +221,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     //查看详情的界面
                     Intent intent = new Intent(mActivity, PagerDetailActivity.class);
                     intent.putExtra("pagerId", bean.getId());
-                    intent.putExtra("pagerId", bean.getId());
                     mActivity.startActivity(intent);
                 }
             });
@@ -253,6 +240,39 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 }
             });
+        }
+    }
+
+    private void getThumbIcon(final String ThumbUrl, final ImageView iv_icon) {
+        if(!TextUtils.isEmpty(ThumbUrl)){
+            x.image().bind(iv_icon, ThumbUrl, new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable result) {
+                    String url = iv_icon.getTag().toString();
+                    if (!TextUtils.isEmpty(url) && url.equals(ThumbUrl)) {
+                        iv_icon.setImageBitmap(PicUtil.drawableToBitmap(result));
+                    }
+                }
+
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+                    iv_icon.setImageResource(R.drawable.error_remind);
+                    iv_icon.setClickable(true);
+                }
+
+                @Override
+                public void onCancelled(CancelledException cex) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        }else {
+            iv_icon.setImageResource(R.drawable.error_remind);
+            iv_icon.setClickable(true);
         }
     }
 

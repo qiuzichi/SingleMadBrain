@@ -11,11 +11,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lidroid.xutils.http.client.multipart.MultipartEntity;
 import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.ConsultBaseFragment;
 import com.unipad.brain.consult.entity.ListAreaEnum;
 import com.unipad.brain.consult.entity.ListCompetitionEnum;
+import com.unipad.brain.dialog.ShowDialog;
 import com.unipad.brain.home.MainBasicFragment;
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.dao.NewsService;
@@ -24,6 +26,9 @@ import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
+import com.unipad.utils.ToastUtil;
+
+import org.xutils.common.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +36,12 @@ import java.util.List;
 /**
  * Created by 63 on 2016/6/28.
  */
-public class CompititionMainFragment  extends ConsultBaseFragment  implements IDataObserver {
+public class CompititionMainFragment  extends ConsultBaseFragment  implements IDataObserver,  ShowDialog.OnShowDialogClick {
 
     private NewsService service;
     private List<CompetitionBean> mNewCompetitionDatas = new ArrayList<CompetitionBean>();
     private NewCompetitionAdapter mNewCompetitionAdapter;
+    private ShowDialog showDialog;
 
 
     @Override
@@ -49,6 +55,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
 
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWCOMPETITION, this);
+        service.registerObserver(HttpConstant.NOTIFY_APPLY_NEWCOMPETITION, this);
         //默认加载第一页的数据 10条 分页加载数据
         service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, 1, 10);
         ListView mListView = (ListView)view.findViewById(R.id.listview_compitition_main);
@@ -59,6 +66,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
     }
 
 
+
     private class NewCompetitionAdapter extends CommonAdapter<CompetitionBean>{
 
         public NewCompetitionAdapter(Context context, List<CompetitionBean> datas, int layoutId) {
@@ -66,7 +74,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         }
 
         @Override
-        public void convert(ViewHolder holder, CompetitionBean competitionBean) {
+        public void convert(final ViewHolder holder, final CompetitionBean competitionBean) {
             //比赛项目名称
             TextView race_model = (TextView) holder.getView(R.id.tv_competion_info_model_item);
             race_model.setText(Constant.getProjectName(competitionBean.getProjectId()));
@@ -94,25 +102,22 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
             ((TextView) holder.getView(R.id.tv_competion_info_time_item)).setText(competitionBean.getCompetitionTime());
             //比赛费用
             ((TextView) holder.getView(R.id.tv_competion_info_fee_item)).setText("￥ " + competitionBean.getCost());
-            //参加报名
-            final RadioButton btn_apply = (RadioButton) holder.getView(R.id.btn_input_competition);
-            if("0".equals(competitionBean.getApplyState())){
-                btn_apply.setChecked(false);
-            }else if("1".equals(competitionBean.getApplyState())){
-                btn_apply.setChecked(true);
-            }
+            //选手报名
+            final Button btn_apply = (Button) holder.getView(R.id.btn_input_competition);
 
-            btn_apply.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (btn_apply.isChecked()) {
-                        return;
-                    } else {
-                        btn_apply.setChecked(true);
+            if (0 == competitionBean.getApplyState()) {  //选手报名
+                btn_apply.setBackgroundResource(R.drawable.button_apply_competition);
+                btn_apply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        service.getApplyCompetition(AppContext.instance().loginUser.getUserId(), HttpConstant.NOTIFY_APPLY_NEWCOMPETITION,
+                                competitionBean.getId(), competitionBean.getProjectId(), competitionBean.getGradeId(), 0);
                     }
-                }
-            });
-
+                });
+            } else {  //已报名
+                btn_apply.setBackgroundResource(R.drawable.button_competitioned);
+                btn_apply.setOnClickListener(null);
+            }
         }
     }
 
@@ -124,19 +129,54 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
                 mNewCompetitionDatas.addAll((List<CompetitionBean>) o);
                 mNewCompetitionAdapter.notifyDataSetChanged();
                 break;
+
+            case HttpConstant.NOTIFY_APPLY_NEWCOMPETITION:
+                CompetitionBean bean = (CompetitionBean) o;
+                if (null != bean) {
+                    for (int i = 0; i < mNewCompetitionDatas.size(); i++) {
+                        CompetitionBean compet = mNewCompetitionDatas.get(i);
+                        if (compet.getId().equals(bean.getId())) {
+                            compet.setApplyState(bean.getApplyState());
+                            break;
+                        } else {
+                            continue;
+                        }
+                    }
+                    mNewCompetitionAdapter.notifyDataSetChanged();
+                } else { //用户没有实名认证
+                    if(AppContext.instance().loginUser.getAuth() == 0 || AppContext.instance().loginUser.getAuth() == 3) {
+                        View dialogView = View.inflate(getmContext(), R.layout.first_login_dialog, null);
+                        TextView txt_msg = (TextView) dialogView.findViewById(R.id.txt_msg);
+                        txt_msg.setText(AppContext.instance().loginUser.getAuth() == 0 ? this.getString(R.string.auth_hint) : this.getString(R.string.auth_fail_hint));
+                        showDialog = new ShowDialog(getmContext());
+                        showDialog.showDialog(dialogView, ShowDialog.TYPE_CENTER, getActivity().getWindowManager(), 0.4f, 0.5f);
+                        showDialog.setOnShowDialogClick(this);
+                        showDialog.bindOnClickListener(dialogView, new int[]{R.id.img_close});
+                    } else {
+                        ToastUtil.showToast(getString(R.string.submit_fail));
+                    }
+                }
+                break;
             default:
                 break;
         }
     }
-    // 单击搜索按钮时激发该方法
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         clear();
     }
+
+    @Override
+    public void dialogClick(int id) {
+        if(null != showDialog && showDialog.isShowing()){
+            showDialog.dismiss();
+        }
+    }
+
     private void clear(){
         service.unRegisterObserve(HttpConstant.NOTIFY_GET_NEWCOMPETITION, this);
+        service.unRegisterObserve(HttpConstant.NOTIFY_APPLY_NEWCOMPETITION, this);
     }
 }

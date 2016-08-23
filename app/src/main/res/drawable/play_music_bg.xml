@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item
+        android:drawable="@drawable/play_music_01"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_02"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_03"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_04"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_05"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_06"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_07"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_08"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_09"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/play_music_10"
+        android:duration="100" />
+</animation-list><!--
+duration:播放时间间隔
+oneshot:false循环播放，true播放一次
+-->
+

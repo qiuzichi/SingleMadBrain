@@ -324,7 +324,7 @@ public class NumberRememoryLayout extends LinearLayout implements
             ViewGroup viewGroup = (ViewGroup) getChildAt(i);
             viewGroup = (ViewGroup) viewGroup.getChildAt(0);
             StringBuilder answerLine = new StringBuilder();
-            for (int j = 0; j < viewGroup.getChildCount(); j++) {
+            for (int j = 0; j < orgin.length(); j++) {
                 TextView textNumber = (TextView) viewGroup.getChildAt(j);
                 String userAnswer  = textNumber.getText().toString().trim();
                 String o = String.valueOf(orgin.charAt(j));

@@ -197,6 +197,10 @@ public class ConsultMainFragment extends ConsultBaseFragment{
                     FragmentManager.getFragment(mConsultTabs[mCurrentIndex]);
             List<String> titleTip = baseFragment.getNewsDatas();
 
+            if(null == titleTip){
+                return true;
+            }
+
             if(result == null){
                 result = new ArrayList<String>();
             }

@@ -103,7 +103,7 @@ public class AppContext {
                     public void onUpgrade(DbManager db, int oldVersion, int newVersion) {
                         // TODO: ...
                         // db.addColumn(...);
-                        // db.dropTable(...);
+                        // db.dropTable(...);http://localhost:8091/crazybrain-monitor-mng/auth/login_admin?r=/system/index
                         // ...
                     }
                 });//数据库更新操作

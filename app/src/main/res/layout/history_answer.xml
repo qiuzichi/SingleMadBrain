@@ -52,7 +52,7 @@
             <TextView android:text="@string/ranking"
                 android:background="@drawable/shapee"
                 android:textSize="@dimen/setting_text_18sp"
-                android:layout_width="@dimen/hisrecord_widht_answer_mode"
+                android:layout_width="@dimen/project_name"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 />

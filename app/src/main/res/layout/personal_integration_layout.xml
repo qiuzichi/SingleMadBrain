@@ -24,6 +24,7 @@
             android:textSize="@dimen/common_text_22" />
 
         <TextView
+            android:id="@+id/title_rank_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

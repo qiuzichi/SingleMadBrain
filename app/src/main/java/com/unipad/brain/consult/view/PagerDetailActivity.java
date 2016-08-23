@@ -84,8 +84,9 @@ public class PagerDetailActivity extends BasicActivity implements IDataObserver{
             htmlDatas = getIntent().getStringExtra("pagerId");
         }else {
             String  id = getIntent().getStringExtra("pagerId");
-            htmlDatas = HttpConstant.url +HttpConstant.GET_NEWS_DETAIL + "?id=" +
-                    getIntent().getStringExtra("pagerId") + "&userId=" + AppContext.instance().loginUser.getUserId();
+            htmlDatas = HttpConstant.url +HttpConstant.GET_NEWS_DETAIL + "?id=" + getIntent().getStringExtra("pagerId") + "&userId=" +
+                    AppContext.instance().loginUser.getUserId() +
+                    "&unipadId=" + AppContext.instance().loginUser.getUserId() + "&token=" + AppContext.instance().loginUser.getToken();
         }
         //新闻部分的 webview
         mWebView = (WebView) findViewById(R.id.pager_detail_webview);

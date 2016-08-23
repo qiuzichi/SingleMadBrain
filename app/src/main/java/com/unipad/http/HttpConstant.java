@@ -131,6 +131,9 @@ public class HttpConstant {
     // 根据城市id 获取比赛列表
     public static final int CITY_GAME=0x11100;
 
+    // 赛事id  报名比赛
+    public static final int LOCATION_APPLY_GAME=0x11101;
+
     //获取news数据的 key
     public static final int NOTIFY_GET_NEWS = 0x20000;
     //获取评论 收藏 点赞数据的 key
@@ -158,5 +161,8 @@ public class HttpConstant {
     public static final int NOTIFY_GET_SEARCH_HOTSPOT = 0x20012;
     //下载apk 请求
     public static final int NOTIFY_DOWNLOAD_APK = 0x20010;
+
+    //最新赛事报名
+    public static final int NOTIFY_APPLY_NEWCOMPETITION = 0x20011;
 
 }
