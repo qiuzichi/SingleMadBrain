@@ -53,6 +53,7 @@ import com.unipad.utils.DensityUtil;
 import com.unipad.utils.PicUtil;
 
 import org.xutils.common.Callback;
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private OnLoadMoreListener onLoadMoreListener;
     private OnShowUpdateDialgo mOnShowUpdateDialgo;
     private NewsService service;
-
+    private ImageOptions imageOptions;
 
 
     public MyRecyclerAdapter(Activity mActivity, final RecyclerView mRecyclerView, List<NewEntity> datas ,int pageId) {
@@ -143,19 +144,18 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((ItemViewHolder) holder).text_updatetime.setText(bean.getPublishDate());
 
             final ImageView iv_icon = ((ItemViewHolder) holder).iv_picture;
-            iv_icon.setTag(bean.getThumbUrl());
-            getThumbIcon(bean.getThumbUrl(), iv_icon);
-
-            if (iv_icon.isClickable()) {
-                iv_icon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getThumbIcon(bean.getThumbUrl(), iv_icon);
-                    }
-                });
-
+            if(null == imageOptions){
+                imageOptions = new ImageOptions.Builder()
+    //                    .setSize(DensityUtil.dip2px(120), DensityUtil.dip2px(120))//图片大小
+    //                    .setRadius(DensityUtil.dip2px(5))//ImageView圆角半径
+                        .setCrop(true)// 如果ImageView的大小不是定义为wrap_content, 不要crop.
+                        .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+    //                    .setLoadingDrawableId(R.mipmap.iv_icon)//加载中默认显示图片
+                        .setFailureDrawableId(R.drawable.error_remind)//加载失败后默认显示图片
+                        .build();
             }
 
+            x.image().bind(iv_icon, bean.getThumbUrl(), imageOptions);
 
             final ImageView iv_zan = ((ItemViewHolder) holder).iv_pager_zan;
             if (bean.getIsLike()) {
@@ -198,7 +198,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                 public void onFinished() {
 
                                 }
-
                             });
                 }
             });
@@ -240,39 +239,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 }
             });
-        }
-    }
-
-    private void getThumbIcon(final String ThumbUrl, final ImageView iv_icon) {
-        if(!TextUtils.isEmpty(ThumbUrl)){
-            x.image().bind(iv_icon, ThumbUrl, new Callback.CommonCallback<Drawable>() {
-                @Override
-                public void onSuccess(Drawable result) {
-                    String url = iv_icon.getTag().toString();
-                    if (!TextUtils.isEmpty(url) && url.equals(ThumbUrl)) {
-                        iv_icon.setImageBitmap(PicUtil.drawableToBitmap(result));
-                    }
-                }
-
-                @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-                    iv_icon.setImageResource(R.drawable.error_remind);
-                    iv_icon.setClickable(true);
-                }
-
-                @Override
-                public void onCancelled(CancelledException cex) {
-
-                }
-
-                @Override
-                public void onFinished() {
-
-                }
-            });
-        }else {
-            iv_icon.setImageResource(R.drawable.error_remind);
-            iv_icon.setClickable(true);
         }
     }
 

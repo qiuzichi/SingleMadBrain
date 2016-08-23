@@ -33,6 +33,7 @@
         android:gravity="center"
         android:text="@string/not_news_data"
         android:textSize="@dimen/common_text_24"
+        android:textColor="@color/text_gray_hint"
         android:visibility="gone" />
 
     <android.support.v4.widget.SwipeRefreshLayout

@@ -78,28 +78,25 @@ public class HitopNewsList extends HitopRequest<List<NewEntity>>{
                     JSONArray jsonArray = data.getJSONArray("resultList");
                     int iSize = jsonArray.length();
                     newsList = new ArrayList<>();
-                    if(iSize != 0) {
-                        for (int i = 0; i < iSize; i++) {
-                            JSONObject jsonObj2 = jsonArray.getJSONObject(i);
-                            NewEntity bean = new NewEntity();
-                            if (i == 0) {
-                                bean.setTotalPager(totalPage);
-                                bean.setTotalCount(totalCount);
-                            }
-                            bean.setBrief(jsonObj2.getString("brief"));
-                            if (!TextUtils.isEmpty(jsonObj2.getString("pictureUrl"))) {
-                            /*如果不为空 补齐  为空什么都不做*/
-                                bean.setThumbUrl(HttpConstant.PATH_FILE_URL + jsonObj2.getString("pictureUrl"));
-                            }
-                            bean.setPublishDate(jsonObj2.getString("createDate"));
-                            bean.setTitle(jsonObj2.getString("title"));
-                            bean.setId(jsonObj2.getString("id"));
-                            bean.setIsLike(jsonObj2.getInt("isLike") == 1 ? true : false);
-                            newsList.add(bean);
+                    for (int i = 0; i < iSize; i++) {
+                        JSONObject jsonObj2 = jsonArray.getJSONObject(i);
+                        NewEntity bean = new NewEntity();
+                        if (i == 0) {
+                            bean.setTotalPager(totalPage);
+                            bean.setTotalCount(totalCount);
                         }
+                        bean.setBrief(jsonObj2.getString("brief"));
+                        if (!TextUtils.isEmpty(jsonObj2.getString("pictureUrl"))) {
+                            /*如果不为空 补齐  为空什么都不做*/
+                            bean.setThumbUrl(HttpConstant.PATH_FILE_URL + jsonObj2.getString("pictureUrl"));
+                        }
+                        bean.setPublishDate(jsonObj2.getString("createDate"));
+                        bean.setTitle(jsonObj2.getString("title"));
+                        bean.setId(jsonObj2.getString("id"));
+                        bean.setIsLike(jsonObj2.getInt("isLike") == 1 ? true : false);
+                        newsList.add(bean);
                     }
                 }
-
             }
         }catch (Exception e) {
             return null;

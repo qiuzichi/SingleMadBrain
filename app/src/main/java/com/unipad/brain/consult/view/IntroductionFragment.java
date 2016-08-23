@@ -195,8 +195,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         //轮播图的点的视图;
         adPotView = (RecommendPot) getView().findViewById(R.id.ad_pot);
         newsAdvertDatas.add(new AdPictureBean());
-        newsAdvertDatas.add(new AdPictureBean());
-        newsAdvertDatas.add(new AdPictureBean());
         adPotView.setIndicatorChildCount(newsAdvertDatas.size());
         mAdvertLuobo.initSelectePoint(adPotView);
         mAdvertLuobo.setOnItemClickListener(mOnItemClickListener);
@@ -345,7 +343,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 if(isNoAdvertData){  //没有广告数据  打开公司网页
                     Intent intent = new Intent(mActivity, PagerDetailActivity.class);
                     //公司网址
-                    intent.putExtra("pagerId", "http://www.baidu.com/");
+                    intent.putExtra("pagerId", "https://www.sogou.com/");
                     intent.putExtra("isAdvert", true);
                     startActivity(intent);
                 } else { //刷新广告数据

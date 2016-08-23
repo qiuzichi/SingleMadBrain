@@ -28,7 +28,17 @@ public class CompetitionBean {
 	private int applyState;
 	// 0 城市赛 | 1中国赛  | 2 世界赛
 	private int competitionLevel;
-	
+	//总的页数
+	private int totalPage;
+
+	public int getTotalPage() {
+		return totalPage;
+	}
+
+	public void setTotalPage(int totalPage) {
+		this.totalPage = totalPage;
+	}
+
 	public int getCompetitionLevel() {
 		return competitionLevel;
 	}
