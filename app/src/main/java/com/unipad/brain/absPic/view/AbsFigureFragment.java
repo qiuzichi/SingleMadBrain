@@ -163,13 +163,15 @@ public class AbsFigureFragment extends BasicCommonFragment {
 
     @Override
     public void startMemory() {
+        super.startMemory();
         mStubShade.setVisibility(View.GONE);
       //  HIDDialog.dismissAll();
     }
 
     @Override
     public void startRememory() {
-       mStubShade.setVisibility(View.GONE);
+       super.startRememory();
+        mStubShade.setVisibility(View.GONE);
     }
 
     @Override

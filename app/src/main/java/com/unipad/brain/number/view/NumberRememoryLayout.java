@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
+import android.support.v4.widget.Space;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -125,7 +126,8 @@ public class NumberRememoryLayout extends LinearLayout implements
 
         LinearLayout layoutNums = (LinearLayout) parent.getChildAt(0);
         layoutNums.setId(ID + index);
-        this.addNumText(layoutNums);
+        ((LayoutParams)layoutNums.getLayoutParams()).weight = mRows;
+        this.addNumText(layoutNums,index);
 
         TextView textNum = (TextView) parent.findViewById(R.id.tv_row);
 
@@ -134,7 +136,7 @@ public class NumberRememoryLayout extends LinearLayout implements
         addView(parent, index);
     }
 
-    private void addNumText(LinearLayout parent) {
+    private void addNumText(LinearLayout parent,int line) {
         TextView textNum;
         LayoutParams params;
         for (int i = 0; i < mRows; i++) {
@@ -142,18 +144,25 @@ public class NumberRememoryLayout extends LinearLayout implements
                     LayoutParams.WRAP_CONTENT);
             params.weight = 1;
             params.gravity = Gravity.CENTER;
-            textNum = new TextView(mContext);
-            textNum.setLayoutParams(params);
-            textNum.setTextSize(mTextSize);
-            textNum.setTextColor(mContext.getResources().getColor(
-                    R.color.main_lf_bg));
-            textNum.setGravity(Gravity.CENTER);
-            textNum.setBackground(mContext.getResources().getDrawable(
-                    R.drawable.number_text_bg));
-            if (mCompeteType.equals(mContext.getString(R.string.project_2))) {
-                textNum.setOnClickListener(this);
+            if (mTotalNumbers < line*mRows +i + 1){
+                Space pace = new Space(mContext);
+                pace.setLayoutParams(params);
+                parent.addView(pace, i);
+            }else {
+                textNum = new TextView(mContext);
+                textNum.setLayoutParams(params);
+                textNum.setTextSize(mTextSize);
+                textNum.setTextColor(mContext.getResources().getColor(
+                        R.color.main_lf_bg));
+                textNum.setGravity(Gravity.CENTER);
+                textNum.setBackground(mContext.getResources().getDrawable(
+                        R.drawable.number_text_bg));
+                if (mCompeteType.equals(mContext.getString(R.string.project_2))) {
+                    textNum.setOnClickListener(this);
+                }
+
+                parent.addView(textNum, i);
             }
-            parent.addView(textNum, i);
         }
     }
 
