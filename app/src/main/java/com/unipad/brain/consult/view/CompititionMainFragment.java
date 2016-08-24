@@ -3,8 +3,11 @@ package com.unipad.brain.consult.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -29,6 +32,7 @@ import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
 
 import org.xutils.common.Callback;
+import org.xutils.common.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +46,10 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
     private List<CompetitionBean> mNewCompetitionDatas = new ArrayList<CompetitionBean>();
     private NewCompetitionAdapter mNewCompetitionAdapter;
     private ShowDialog showDialog;
+    private TextView tv_error;
+    private int requestPagerNum = 1;
+    private int totalPager = 1;
+    private Boolean isLoadMoreData;
 
 
     @Override
@@ -52,17 +60,86 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
     @Override
     protected void initView(View view) {
         super.initView(view);
+        mNewCompetitionDatas = new ArrayList<CompetitionBean>();
 
         service = (NewsService) AppContext.instance().getService(Constant.NEWS_SERVICE);
         service.registerObserver(HttpConstant.NOTIFY_GET_NEWCOMPETITION, this);
         service.registerObserver(HttpConstant.NOTIFY_APPLY_NEWCOMPETITION, this);
         //默认加载第一页的数据 10条 分页加载数据
-        service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, 1, 10);
-        ListView mListView = (ListView)view.findViewById(R.id.listview_compitition_main);
+        service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, requestPagerNum, 10);
+        final ListView mListView = (ListView)view.findViewById(R.id.listview_compitition_main);
+        tv_error = (TextView) view.findViewById(R.id.tv_load_error_show);
+
+        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) view .findViewById(R.id.swipe_refresh_newcompetition);
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.light_blue2,
+                R.color.red,
+                R.color.stroke_color,
+                R.color.black
+        );
+        mSwipeRefreshLayout.setProgressViewOffset(false, 0, DensityUtil.dip2px(24));
+        mSwipeRefreshLayout.setRefreshing(false);
+
         mListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 
         mNewCompetitionAdapter = new NewCompetitionAdapter(getmContext(), mNewCompetitionDatas, R.layout.layout_compition_info_item);
         mListView.setAdapter(mNewCompetitionAdapter);
+        /*避免出现item太大 之后 避免冲突scroll*/
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+                switch (i) {
+                    // 当不滚动时
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                        // 判断滚动到底部
+                        if (mListView.getLastVisiblePosition() == (mListView.getCount() - 1)) {
+                            if(requestPagerNum == totalPager){
+                                ToastUtil.showToast(getString(R.string.loadmore_null_data));
+                                return;
+                            }else {
+                                if(isLoadMoreData){
+                                    ToastUtil.showToast(getString(R.string.loadmore_data));
+                                    return;
+                                }
+                                isLoadMoreData = true;
+                                service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, requestPagerNum, 10);
+                            }
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    /*第一项可见 的时候 才可以响应swipe的滑动刷新事件*/
+                    mSwipeRefreshLayout.setEnabled(true);
+                else{
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+
+
+            }
+        });
+
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        mNewCompetitionDatas.clear();
+                        //默认加载第一页的数据 10条 分页加载数据
+                        requestPagerNum = 1;
+                        service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, requestPagerNum, 10);
+                    }
+                }, 2000);
+            }
+        });
     }
 
 
@@ -82,7 +159,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
             if(Constant.GAME_QUICKIY_POCKER.equals(competitionBean.getProjectId())){
                 projectEnum = ListCompetitionEnum.values()[9];
             }else {
-                projectEnum = ListCompetitionEnum.values()[Integer.parseInt(competitionBean.getGradeId().substring(competitionBean.getGradeId().lastIndexOf("0") + 1)) - 1];
+                projectEnum = ListCompetitionEnum.values()[Integer.parseInt(competitionBean.getProjectId().substring(competitionBean.getProjectId().lastIndexOf("0") + 1)) - 1];
             }
             Drawable drawable_model = getResources().getDrawable(projectEnum.getLabelResId());
             drawable_model.setBounds(0, 0, drawable_model.getMinimumWidth(), drawable_model.getMinimumHeight());
@@ -106,7 +183,9 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
             final Button btn_apply = (Button) holder.getView(R.id.btn_input_competition);
 
             if (0 == competitionBean.getApplyState()) {  //选手报名
-                btn_apply.setBackgroundResource(R.drawable.button_apply_competition);
+                btn_apply.setBackgroundResource(R.drawable.entry_btn_shape);
+                btn_apply.setText(getString(R.string.person_entry_fee));
+
                 btn_apply.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -115,10 +194,15 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
                     }
                 });
             } else {  //已报名
-                btn_apply.setBackgroundResource(R.drawable.button_competitioned);
+                btn_apply.setBackgroundResource(R.drawable.entryed_btn_shape);
+                btn_apply.setText(getString(R.string.applied));
                 btn_apply.setOnClickListener(null);
             }
         }
+    }
+
+    private void initEvent(){
+
     }
 
     @Override
@@ -126,8 +210,28 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         switch (key) {
             case HttpConstant.NOTIFY_GET_NEWCOMPETITION:
                 //获取数据
-                mNewCompetitionDatas.addAll((List<CompetitionBean>) o);
+                if(null == o && ((List<CompetitionBean> )o).size() == 0){
+                    //数据为空 显示默认 刷新数据
+                    tv_error.setVisibility(View.VISIBLE);
+                    tv_error.setClickable(false);
+                    tv_error.setText(getString(R.string.not_news_data));
+                    return;
+                }
+
+                tv_error.setVisibility(View.GONE);
+
+                List<CompetitionBean> databean=  (List<CompetitionBean>) o;
+
+                if (requestPagerNum == 1 && databean.size() != 0) {
+                    totalPager = databean.get(0).getTotalPage();
+                }
+
+                if (requestPagerNum != totalPager) {
+                    requestPagerNum++;
+                }
+                mNewCompetitionDatas.addAll(databean);
                 mNewCompetitionAdapter.notifyDataSetChanged();
+                isLoadMoreData = false;
                 break;
 
             case HttpConstant.NOTIFY_APPLY_NEWCOMPETITION:

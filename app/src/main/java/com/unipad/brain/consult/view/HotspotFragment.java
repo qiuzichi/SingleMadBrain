@@ -236,7 +236,6 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         //轮播图的点的视图;
         RecommendPot adPotView = (RecommendPot) getView().findViewById(R.id.ad_pot);
         newsAdvertDatas.add(new AdPictureBean());
-        newsAdvertDatas.add(new AdPictureBean());
         adPotView.setIndicatorChildCount(newsAdvertDatas.size());
         mAdvertLuobo.initSelectePoint(adPotView);
         mAdvertLuobo.setOnItemClickListener(mOnItemClickListener);

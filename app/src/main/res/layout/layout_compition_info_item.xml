@@ -69,6 +69,8 @@
         android:layout_weight="1"
         android:layout_margin="@dimen/margin_10dip"
         android:textSize="@dimen/common_text_24"
+        android:textColor="@color/white"
+        android:text="@string/person_entry_fee"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

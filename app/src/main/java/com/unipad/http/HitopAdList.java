@@ -43,6 +43,7 @@ public class HitopAdList extends HitopRequest<List<AdPictureBean>> {
                 if (jsObj.getInt("ret_code") == 0) {
                     JSONArray jsonArray = jsObj.getJSONArray("lists");
                     int iSize = jsonArray.length();
+                    adList = new ArrayList<AdPictureBean>();
                     for (int i = 0; i < iSize; i++) {
                         AdPictureBean bean = new AdPictureBean();
                         JSONObject jsonObj2 = jsonArray.getJSONObject(i);

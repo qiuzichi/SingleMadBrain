@@ -1,5 +1,6 @@
 package com.unipad.brain.location;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -67,6 +68,9 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
         service.registerObserver(HttpConstant.LOCATION_APPLY_GAME, this);
         ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
         service.getProvinceList();
+
+
+
     }
 
 
@@ -159,8 +163,11 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
 //                            holder.getView(R.id.in_game).setOnClickListener(new OnClickApply());
 
                             if (0 == competitionBean.getIsApply()) {  //选手报名
-                                in_game.setBackgroundResource(R.drawable.button_apply_competition);
+//                                in_game.setBackgroundResource(R.drawable.button_apply_competition);
                                 in_game.setClickable(true);
+                                in_game.setBackgroundResource(R.drawable.entry_btn_shape);
+                                in_game.setText(getString(R.string.person_entry_fee));
+                                in_game.setTextColor(Color.WHITE);
                                 in_game.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -169,8 +176,10 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
                                     }
                                 });
                             } else {  //已报名
-                                in_game.setBackgroundResource(R.drawable.button_competitioned);
                                 in_game.setClickable(false);
+                                in_game.setBackgroundResource(R.drawable.entryed_btn_shape);
+                                in_game.setText(getString(R.string.applied));
+                                in_game.setTextColor(Color.WHITE);
                                 in_game.setOnClickListener(null);
                             }
                         }

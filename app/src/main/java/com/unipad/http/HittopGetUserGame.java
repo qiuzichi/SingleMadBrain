@@ -54,9 +54,13 @@ public class HittopGetUserGame extends HitopRequest<List<CompetitionBean>> {
                 if (jsObj.getInt("ret_code") == 0) {
                     JSONObject data = new JSONObject(jsObj.getString("data"));
                     JSONArray jsonArray = data.getJSONArray("resultList");
+                    int totalPage = data.getInt("totalPage");
                     int iSize = jsonArray.length();
                     for (int i = 0; i < iSize; i++) {
                         CompetitionBean bean = new CompetitionBean();
+                        if (i == 0) {
+                            bean.setTotalPage(totalPage);
+                        }
                         JSONObject jsonObj2 = jsonArray.getJSONObject(i);
                         bean.setId(jsonObj2.optString("id"));
                         bean.setApplyState(jsonObj2.optInt("isApply"));

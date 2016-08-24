@@ -60,9 +60,9 @@ public class HitopApplyGame extends HitopRequest<CompetitionBean> {
                     JSONObject dataJson = new JSONObject(jsObj.getString("data"));
                     if (dataJson != null) {
                         competitionBean = new CompetitionBean();
-                        competitionBean.setGradeId(dataJson.getString("gradeId"));
-                        competitionBean.setProjectId(dataJson.getString("projectId"));
-                        competitionBean.setId(dataJson.getString("matchId"));
+                        competitionBean.setGradeId(dataJson.optString("gradeId"));
+                        competitionBean.setProjectId(dataJson.optString("projectId"));
+                        competitionBean.setId(dataJson.optString("matchId"));
                         competitionBean.setApplyState(1);
                     }
                 }

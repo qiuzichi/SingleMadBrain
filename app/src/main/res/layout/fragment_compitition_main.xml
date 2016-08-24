@@ -69,14 +69,29 @@
 
     </LinearLayout>
 
-    <ListView
-
-        android:id="@+id/listview_compitition_main"
+    <TextView
+        android:id="@+id/tv_load_error_show"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/new_competition_bg"
-        />
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/not_news_data"
+        android:textColor="@color/text_gray_hint"
+        android:textSize="@dimen/common_text_24"
+        android:visibility="gone" />
 
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_newcompetition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:id="@+id/listview_compitition_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/new_competition_bg" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </LinearLayout>
