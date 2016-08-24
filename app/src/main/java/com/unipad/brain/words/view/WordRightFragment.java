@@ -79,7 +79,7 @@ public class WordRightFragment extends BasicCommonFragment {
         super.initDataFinished();
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        mData = Arrays.asList(service.wordEntities);
+        mData = service.entitys;
         //mStubShade.setVisibility(View.GONE);
 
         manager = new GridLayoutManager(getActivity(), 20);

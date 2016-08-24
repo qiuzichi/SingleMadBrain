@@ -126,7 +126,7 @@ public class NumberRememoryLayout extends LinearLayout implements
 
         LinearLayout layoutNums = (LinearLayout) parent.getChildAt(0);
         layoutNums.setId(ID + index);
-        ((LayoutParams)layoutNums.getLayoutParams()).weight = mRows;
+        layoutNums.setWeightSum(mRows);
         this.addNumText(layoutNums,index);
 
         TextView textNum = (TextView) parent.findViewById(R.id.tv_row);
@@ -140,7 +140,7 @@ public class NumberRememoryLayout extends LinearLayout implements
         TextView textNum;
         LayoutParams params;
         for (int i = 0; i < mRows; i++) {
-            params = new LayoutParams(LayoutParams.WRAP_CONTENT,
+            params = new LayoutParams(0,
                     LayoutParams.WRAP_CONTENT);
             params.weight = 1;
             params.gravity = Gravity.CENTER;
