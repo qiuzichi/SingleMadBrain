@@ -202,6 +202,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             mActivity.getService().state = AbsBaseGameService.GO_IN_MATCH_END_RE_MEMORY;
             mICommunicate.rememoryTimeToEnd(rememoryTime);
             if (mActivity.getService().isLastRound()) {
+                mActivity.getService().state = AbsBaseGameService.GO_IN_MATCH_OVER;
                 ToastUtil.createOnlyOkDialog(mActivity, Constant.MATCH_OVER_DLG, "比赛结束", "请等待裁判公布结果", null, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

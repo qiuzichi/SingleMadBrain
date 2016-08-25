@@ -31,6 +31,9 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     /**回忆结束*/
     public static final int GO_IN_MATCH_END_RE_MEMORY = 6;
 
+    /**正常比赛结束*/
+    public static final int GO_IN_MATCH_OVER = 7;
+
     protected boolean isInitQuestionAready;
 
     private IOperateGame operateGame;
@@ -96,9 +99,11 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     @Override
     public void pauseGame() {
-        isPause = true;
-        if (operateGame != null) {
-            operateGame.pauseGame();
+        if (!(state == GO_IN_MATCH_OVER)) {
+            isPause = true;
+            if (operateGame != null) {
+                operateGame.pauseGame();
+            }
         }
     }
 
@@ -122,9 +127,11 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     @Override
     public void reStartGame() {
-        isPause = false;
-        if (operateGame != null) {
-            operateGame.reStartGame();
+        if (!(state == GO_IN_MATCH_OVER)) {
+            isPause = false;
+            if (operateGame != null) {
+                operateGame.reStartGame();
+            }
         }
     }
 

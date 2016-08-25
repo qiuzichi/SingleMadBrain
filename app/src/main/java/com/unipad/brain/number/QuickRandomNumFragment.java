@@ -2,6 +2,7 @@ package com.unipad.brain.number;
 
 import android.view.View;
 
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.brain.number.view.NumberMemoryLayout;
 import com.unipad.common.Constant;
@@ -46,7 +47,8 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
     @Override
     public void reStartGame() {
         super.reStartGame();
-        if (mKeyboardDialog != null ){
+
+        if (service.state == AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY){
             mKeyboardDialog.show();
         }
     }

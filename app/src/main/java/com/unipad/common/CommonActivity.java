@@ -35,16 +35,19 @@ import java.util.Map;
 /**
  * Created by Wbj on 2016/4/7.
  */
-public class CommonActivity extends AbsMatchActivity implements IOperateGame{
-    private static final String TAG = "CommonActivity" ;
+public class CommonActivity extends AbsMatchActivity implements IOperateGame {
+    private static final String TAG = "CommonActivity";
     private CommonFragment mCommonFragment = new CommonFragment();
 
     private AbsBaseGameService service;
+
     public String getMatchId() {
         return matchId;
     }
+
     private Handler handler;
     private BasicCommonFragment gameFragment;
+
     public void setMatchId(String matchId) {
         this.matchId = matchId;
     }
@@ -64,7 +67,6 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
     long startTime;
 
 
-
     private static final int DOWNLOAD_QUESTION = 1;
     private static final int PAUSE_GAME = 2;
     private static final int RESTAT_GAME = 3;
@@ -73,6 +75,7 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
     private static final int STRAT_REMEMORY = 6;
     private static final int STRAT_MEMORY = 7;
     private static final int DLG_DELAY_DISMISS = 8;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,47 +85,47 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
         projectId = getIntent().getStringExtra("projectId");
         service = (AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId);
         service.setOperateGame(this);
-        handler  = new Handler() {
+        handler = new Handler() {
             @Override
             public void dispatchMessage(Message msg) {
                 int what = msg.what;
                 switch (msg.what) {
                     case STRAT_MEMORY:
-                        LogUtil.e(TAG,"STRAT_MEMORY");
+                        LogUtil.e(TAG, "STRAT_MEMORY");
                         HIDDialog.dismissAll();
                         gameFragment.startMemory();
                         mCommonFragment.startMemory();
                         break;
                     case STRAT_REMEMORY:
-                        LogUtil.e(TAG,"STRAT_REMEMORY");
+                        LogUtil.e(TAG, "STRAT_REMEMORY");
                         HIDDialog.dismissAll();
                         gameFragment.startRememory();
                         mCommonFragment.startRememory();
                         break;
                     case DOWNLOAD_QUESTION:
-                        LogUtil.e(TAG,"DOWNLOAD_QUESTION");
+                        LogUtil.e(TAG, "DOWNLOAD_QUESTION");
                         ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
                         break;
                     case PAUSE_GAME:
-                        LogUtil.e(TAG,"PAUSE_GAME");
+                        LogUtil.e(TAG, "PAUSE_GAME");
                         HIDDialog.dismissAll();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
                         ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
                         break;
                     case RESTAT_GAME:
-                        LogUtil.e(TAG,"RESTAT_GAME");
+                        LogUtil.e(TAG, "RESTAT_GAME");
                         HIDDialog.dismissAll();
                         gameFragment.reStartGame();
                         mCommonFragment.reStartGame();
                         break;
                     case FINISH_GAME:
-                        LogUtil.e(TAG,"FINISH_GAME");
+                        LogUtil.e(TAG, "FINISH_GAME");
                         gameFragment.finishGame();
                         mCommonFragment.finishGame();
                         break;
                     case DLG_DELAY_DISMISS:
-                        LogUtil.e("","DLG_DELAY_DISMISS");
+                        LogUtil.e("", "DLG_DELAY_DISMISS");
                         HIDDialog dialog = HIDDialog.getExistDialog(Constant.SHOW_GAME_PAUSE);
                         if (dialog == null) {
                             HIDDialog.dismissAll();
@@ -132,54 +135,53 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
                         }
                         break;
                     case INIT_DATA_FINISH:
-                        LogUtil.e("","INIT_DATA_FINISH");
+                        LogUtil.e("", "INIT_DATA_FINISH");
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
                         handler.sendEmptyMessageDelayed(DLG_DELAY_DISMISS, 5000);
 
                         new Thread() {
-                           @Override
-                           public void run() {
-                               try {
-                                   Thread.sleep(5000);
-                               } catch (InterruptedException e) {
-                                   e.printStackTrace();
-                               }
-                               SocketThreadManager.sharedInstance().
-                                       downLoadQuestionOK(matchId, 100);
-                               LogUtil.e("", "-------------下载完成-----------");
-                           }
-                       }.start();;
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(5000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                SocketThreadManager.sharedInstance().
+                                        downLoadQuestionOK(matchId, 100);
+                                LogUtil.e("", "-------------下载完成-----------");
+                            }
+                        }.start();
+                        ;
                         break;
                 }
             }
         };
 
-       /** handler.post(new Runnable() {
-                         @Override
-                         public void run() {
-                             dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "签到，等待裁判下发试题");
-                             dialog.show();
-                         }
-                     }
-        );*/
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
-                        SocketThreadManager.sharedInstance().setService(service);
-                        SocketThreadManager.sharedInstance().setMatchId(matchId);
-                        try {
-                            Thread.sleep(300);
-                            SocketThreadManager.sharedInstance().startThreads();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+        /** handler.post(new Runnable() {
+        @Override public void run() {
+        dialog = ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "签到，等待裁判下发试题");
+        dialog.show();
+        }
+        }
+         );*/
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ((HomeGameHandService) AppContext.instance().getService(Constant.HOME_GAME_HAND_SERVICE)).getRule(matchId);
+                SocketThreadManager.sharedInstance().setService(service);
+                SocketThreadManager.sharedInstance().setMatchId(matchId);
+                try {
+                    Thread.sleep(300);
+                    SocketThreadManager.sharedInstance().startThreads();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
 
-
-                    }
-                }).start();
+            }
+        }).start();
 
 
     }
@@ -191,9 +193,10 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
     @Override
     protected void onResume() {
         super.onResume();
-        startTime = startTime- System.currentTimeMillis();
+        startTime = startTime - System.currentTimeMillis();
         LogUtil.e("-------", "time = " + startTime);
     }
+
     @Override
     public void initData() {
         FrameLayout view = (FrameLayout) findViewById(R.id.common_rfg_container);
@@ -211,15 +214,15 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
             gameFragment = new HeadPortraitFragment();
         } else if (competeItem.equals(getString(R.string.project_4))) {
             gameFragment = new AbsFigureFragment();
-        } else if (competeItem.equals(getString(R.string.project_3))){
+        } else if (competeItem.equals(getString(R.string.project_3))) {
             gameFragment = new LongNumFragment();
         } else if (competeItem.equals(getString(R.string.project_5))) {
             gameFragment = new QuickRandomNumFragment();
-        }  else if (competeItem.equals(getString(R.string.project_9))) {
+        } else if (competeItem.equals(getString(R.string.project_9))) {
             gameFragment = new ListenToWriteNumFragment();
-        } else if (competeItem.equals(getResources().getString(R.string.project_10))){
+        } else if (competeItem.equals(getResources().getString(R.string.project_10))) {
             gameFragment = new QuickPokerRightFragment();
-        } else if (competeItem.equals(getResources().getString(R.string.project_7))){
+        } else if (competeItem.equals(getResources().getString(R.string.project_7))) {
             gameFragment = new LongPokerRightFragment();
         }
 
@@ -234,7 +237,7 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
         gameFragment = null;
         mCommonFragment = null;
         matchId = null;
-        LogUtil.e(TAG,"destory");
+        LogUtil.e(TAG, "destory");
         service.setOperateGame(null);
         SocketThreadManager.sharedInstance().releaseInstance();
         AppContext.instance().clearService(service);
@@ -253,7 +256,7 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
     }
 
     @Override
-    public void downloadingQuestion(Map<String,String> data) {
+    public void downloadingQuestion(Map<String, String> data) {
         handler.sendEmptyMessage(DOWNLOAD_QUESTION);
 
     }
@@ -268,7 +271,6 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
     public void startRememory() {
         handler.sendEmptyMessage(STRAT_REMEMORY);
     }
-
 
 
     @Override
@@ -289,14 +291,14 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame{
 
     }
 
-    public void progressGame(final int progress){
-        LogUtil.e(TAG,"progress = "+progress);
-        new Thread(){
+    public void progressGame(final int progress) {
+        LogUtil.e(TAG, "progress = " + progress);
+        new Thread() {
             @Override
             public void run() {
                 super.run();
-                LogUtil.e("CommonActivity","10007发送进度给管控端progress="+progress+"--round="+service.round);
-                SocketThreadManager.sharedInstance().progressGame(matchId,progress,service.round);
+                LogUtil.e("CommonActivity", "10007发送进度给管控端progress=" + progress + "--round=" + service.round);
+                SocketThreadManager.sharedInstance().progressGame(matchId, progress, service.round);
             }
         }.start();
     }
