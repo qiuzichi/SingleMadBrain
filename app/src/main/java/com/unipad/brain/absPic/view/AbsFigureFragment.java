@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.R;
 import com.unipad.brain.absPic.bean.Figure;
 import com.unipad.brain.absPic.dao.FigureService;
@@ -46,7 +47,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
         mViewParent.findViewById(R.id.answer_3).setOnClickListener(this);
         mViewParent.findViewById(R.id.answer_4).setOnClickListener(this);
         mViewParent.findViewById(R.id.answer_5).setOnClickListener(this);
-        mStubShade =  mViewParent.findViewById(R.id.view_shade);
+        mStubShade = mViewParent.findViewById(R.id.view_shade);
         service = (FigureService) (AppContext.instance().getService(Constant.ABS_FIGURE));
         adapter = new FigureAdapter(getActivity(), service.allFigures, R.layout.list_item_abs_figure);
         gridView.setAdapter(adapter);
@@ -55,7 +56,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     }
 
     private void setButtonArea() {
-        if (service.mode == 1) {
+        if (service.state == AbsBaseGameService.GO_IN_MATCH_END_MEMORY || service.state == AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY) {
             buttonArea.setVisibility(View.VISIBLE);
         } else {
             buttonArea.setVisibility(View.GONE);
@@ -63,33 +64,31 @@ public class AbsFigureFragment extends BasicCommonFragment {
     }
 
     /**
-     *结束记忆后由管控端统一开始
+     * 结束记忆后由管控端统一开始
      */
     @Override
     public void memoryTimeToEnd(int memory) {
         super.memoryTimeToEnd(memory);
-        service.mode = 1;
         current = 0;
         service.shuffle();
         setButtonArea();
-       //ToastUtil.createTipDialog(mActivity,Constant.SHOW_GAME_PAUSE,"等待裁判开始").show();
-       //mStubShade.setVisibility(View.VISIBLE);
+        //ToastUtil.createTipDialog(mActivity,Constant.SHOW_GAME_PAUSE,"等待裁判开始").show();
+        //mStubShade.setVisibility(View.VISIBLE);
         adapter.notifyDataSetChanged();
         sendMsgToPreper();
 
     }
+
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
         super.rememoryTimeToEnd(answerTime);
-        if (isMatchMode()){
+        if (isMatchMode()) {
 
-        }else {
-            service.mode = 2;
+        } else {
             setButtonArea();
             adapter.notifyDataSetChanged();
         }
     }
-
 
 
     @Override
@@ -102,6 +101,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
     public int getLayoutId() {
         return R.layout.fragment_abs_figure;
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -123,6 +123,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
 
         }
     }
+
     private void setText(int i) {
         int visiblePosition = gridView.getFirstVisiblePosition();
         View pre = gridView.getChildAt(current - visiblePosition);
@@ -133,13 +134,13 @@ public class AbsFigureFragment extends BasicCommonFragment {
             adapter.getItem(current).setAnswerId(i);
         }
         preAnswer = current;
-        progress = 100+current*100/service.allFigures.size();
-        if (progress < 101){
+        progress = 100 + current * 100 / service.allFigures.size();
+        if (progress < 101) {
             progress = 101;
-        }else if (progress> 199){
+        } else if (progress > 199) {
             progress = 199;
         }
-        if (current == service.allFigures.size() -1){//已经是最后一个，就不需要再往下设置背景了
+        if (current == service.allFigures.size() - 1) {//已经是最后一个，就不需要再往下设置背景了
             return;
         }
         current++;
@@ -147,12 +148,12 @@ public class AbsFigureFragment extends BasicCommonFragment {
         if (curr != null) {
             TextView currTv = (TextView) curr.findViewById(R.id.answer_num);
             currTv.setBackgroundColor(getResources().getColor(R.color.blue));
-        }else{
-            gridView.smoothScrollBy(gridView.getVerticalSpacing()+100,0);
+        } else {
+            gridView.smoothScrollBy(gridView.getVerticalSpacing() + 100, 0);
         }
-        if (current%5 == 0)
-            gridView.smoothScrollBy(gridView.getVerticalSpacing()+100,0);
-       // gridView.smoothScrollToPosition(current+5,);
+        if (current % 5 == 0)
+            gridView.smoothScrollBy(gridView.getVerticalSpacing() + 100, 0);
+        // gridView.smoothScrollToPosition(current+5,);
     }
 
     @Override
@@ -165,12 +166,12 @@ public class AbsFigureFragment extends BasicCommonFragment {
     public void startMemory() {
         super.startMemory();
         mStubShade.setVisibility(View.GONE);
-      //  HIDDialog.dismissAll();
+        //  HIDDialog.dismissAll();
     }
 
     @Override
     public void startRememory() {
-       super.startRememory();
+        super.startRememory();
         mStubShade.setVisibility(View.GONE);
     }
 
@@ -189,7 +190,8 @@ public class AbsFigureFragment extends BasicCommonFragment {
     private class FigureAdapter extends CommonAdapter<Figure> {
         public FigureAdapter(Context context, List<Figure> datas, int layoutId) {
             super(context, datas, layoutId);
-            }
+        }
+
         /**
          * @param holder
          * @param figure
@@ -201,44 +203,50 @@ public class AbsFigureFragment extends BasicCommonFragment {
             //Log.e("---", "path = " + person.getHeadPortraitPath() + ",name=" + person.getFirstName() + person.getLastName());
             final TextView orginNum = (TextView) holder.getView(R.id.orgin_num);
             final TextView answerNum = (TextView) holder.getView(R.id.answer_num);
-            if (service.mode == 0) {
-                orginNum.setVisibility(View.GONE);
-                answerNum.setVisibility(View.GONE);
-            } else if (service.mode == 1) {
-                holder.getConvertView().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            switch (service.state) {
+                case AbsBaseGameService.GO_IN_MATCH_DOWNLOADED:
+                case AbsBaseGameService.GO_IN_MATCH_START_MEMORY:
+                    orginNum.setVisibility(View.GONE);
+                    answerNum.setVisibility(View.GONE);
+                    break;
+                case AbsBaseGameService.GO_IN_MATCH_END_MEMORY:
+                case AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY:
+                    holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                        int visiblePosition = gridView.getFirstVisiblePosition();
-                        View Preview = gridView.getChildAt(current - visiblePosition);
-                        if (null != Preview) {
-                            TextView tv = (TextView) Preview.findViewById(R.id.answer_num);
-                            tv.setBackgroundColor(getResources().getColor(R.color.white));
+                            int visiblePosition = gridView.getFirstVisiblePosition();
+                            View Preview = gridView.getChildAt(current - visiblePosition);
+                            if (null != Preview) {
+                                TextView tv = (TextView) Preview.findViewById(R.id.answer_num);
+                                tv.setBackgroundColor(getResources().getColor(R.color.white));
+                            }
+                            v.findViewById(R.id.answer_num).setBackgroundColor(getResources().getColor(R.color.blue));
+                            preAnswer = current;
+                            current = holder.getPosition();
+
                         }
-                        v.findViewById(R.id.answer_num).setBackgroundColor(getResources().getColor(R.color.blue));
-                        preAnswer = current;
-                        current = holder.getPosition();
-
+                    });
+                    orginNum.setVisibility(View.GONE);
+                    answerNum.setVisibility(View.VISIBLE);
+                    if (holder.getPosition() == current) {
+                        answerNum.setBackgroundColor(getResources().getColor(R.color.blue));
+                    } else {
+                        answerNum.setBackgroundColor(getResources().getColor(R.color.white));
                     }
-                });
-                orginNum.setVisibility(View.GONE);
-                answerNum.setVisibility(View.VISIBLE);
-                if (holder.getPosition() == current) {
-                    answerNum.setBackgroundColor(getResources().getColor(R.color.blue));
-                }else {
+                    break;
+                case AbsBaseGameService.GO_IN_MATCH_END_RE_MEMORY:
+                    orginNum.setVisibility(View.VISIBLE);
+                    answerNum.setVisibility(View.VISIBLE);
+                    orginNum.setText("" + figure.getRawId());
+                    holder.getConvertView().setOnClickListener(null);
                     answerNum.setBackgroundColor(getResources().getColor(R.color.white));
-                }
-            } else if (service.mode == 2) {
-                orginNum.setVisibility(View.VISIBLE);
-                answerNum.setVisibility(View.VISIBLE);
-                orginNum.setText("" + figure.getRawId());
-                holder.getConvertView().setOnClickListener(null);
-                answerNum.setBackgroundColor(getResources().getColor(R.color.white));
-                if (figure.getRawId() == figure.getAnswerId()) {
-                    answerNum.setTextColor(getResources().getColor(R.color.black));
-                } else {
-                    answerNum.setTextColor(getResources().getColor(R.color.red));
-                }
+                    if (figure.getRawId() == figure.getAnswerId()) {
+                        answerNum.setTextColor(getResources().getColor(R.color.black));
+                    } else {
+                        answerNum.setTextColor(getResources().getColor(R.color.red));
+                    }
+                    break;
             }
         }
     }

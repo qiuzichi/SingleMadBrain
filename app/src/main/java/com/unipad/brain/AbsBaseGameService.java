@@ -13,6 +13,24 @@ import java.util.Map;
  */
 public abstract  class AbsBaseGameService extends GlobleObserService implements ICoreService.IGameHand {
 
+    /**进入比赛，签到*/
+    public static final int GO_IN_MATCH_SIGN = 1;
+
+    /**进入比赛，试题下载完成*/
+    public static final int GO_IN_MATCH_DOWNLOADED = 2;
+
+    /**记忆阶段*/
+    public static final int GO_IN_MATCH_START_MEMORY = 3;
+
+    /**记忆结束，还没有开始回忆*/
+    public static final int GO_IN_MATCH_END_MEMORY = 4;
+
+    /**已经开始回忆*/
+    public static final int GO_IN_MATCH_START_RE_MEMORY = 5;
+
+    /**回忆结束*/
+    public static final int GO_IN_MATCH_END_RE_MEMORY = 6;
+
     protected boolean isInitQuestionAready;
 
     private IOperateGame operateGame;
@@ -24,7 +42,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     public int allround = 1;
 
-    public boolean gameMode = true;//true为比赛模式，false为练习模式
+    public boolean isPause;
 
     public boolean isInitResourseAready() {
         return isInitResourseAready;
@@ -44,7 +62,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     protected boolean isInitResourseAready;
 
-    public int mode;
+    public int state = GO_IN_MATCH_SIGN;
     @Override
     public void parseData(String data) {
         isInitQuestionAready = true;
@@ -58,7 +76,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     @Override
     public void clear() {
         rule = null;
-        mode = 0;
+        state = GO_IN_MATCH_SIGN;
         round = 1;
         allround = 1;
         isInitResourseAready = false;
@@ -78,6 +96,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
 
     @Override
     public void pauseGame() {
+        isPause = true;
         if (operateGame != null) {
             operateGame.pauseGame();
         }
@@ -90,6 +109,7 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
         if (operateGame != null) {
             operateGame.startMemory();
         }
+        state = GO_IN_MATCH_START_MEMORY;
     }
 
     @Override
@@ -97,10 +117,12 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
         if (operateGame != null) {
             operateGame.startRememory();
         }
+        state = GO_IN_MATCH_START_RE_MEMORY;
     }
 
     @Override
     public void reStartGame() {
+        isPause = false;
         if (operateGame != null) {
             operateGame.reStartGame();
         }
@@ -110,11 +132,11 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
         this.operateGame = operateGame;
     }
 
-
     public void initDataFinished() {
         if (operateGame != null) {
             operateGame.initDataFinished();
         }
+        state = GO_IN_MATCH_DOWNLOADED;
     }
     public void finishGame(){
         if (operateGame != null) {

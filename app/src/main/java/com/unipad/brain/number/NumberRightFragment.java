@@ -234,24 +234,32 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         return new NumberRememoryLayout(mActivity, getCompeteItem(), mRows, mLines, mTotalNumbers, new IInitRememoryCallBack() {
             @Override
             public void begin() {
-                LogUtil.e("","begin...");
+                LogUtil.e("", "begin...");
+                if (!service.isPause)
                 ToastUtil.createWaitingDlg(mActivity, "加载答题卡中", Constant.INIT_REMEMORY_DLG).show();
             }
 
             @Override
             public void loading(int progress) {
                 LogUtil.e("", "loading :" + progress);
-                ((TextView)HIDDialog.getExistDialog(Constant.INIT_REMEMORY_DLG).findViewById(R.id.dialog_text)).setText("加载答题卡中:" + progress);
+                if (!service.isPause) {
+                    HIDDialog waitDialog = HIDDialog.getExistDialog(Constant.INIT_REMEMORY_DLG);
+                    if (waitDialog != null) {
+                        ((TextView) waitDialog.findViewById(R.id.dialog_text)).setText("加载答题卡中:" + progress);
+                    }
+                }
             }
 
             @Override
             public void finish() {
                 LogUtil.e("", "finish...");
-                HIDDialog.dismissAll();
-                if (isMatchMode()) {
-                    sendMsgToPreper();
-                }else{
-                    service.starRememory();
+                if (!service.isPause) {
+                    HIDDialog.dismissAll();
+                    if (isMatchMode()) {
+                        sendMsgToPreper();
+                    } else {
+                        service.starRememory();
+                    }
                 }
             }
         });

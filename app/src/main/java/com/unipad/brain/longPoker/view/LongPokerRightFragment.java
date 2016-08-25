@@ -282,7 +282,6 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
     public void memoryTimeToEnd(int memoryTime) {
         super.memoryTimeToEnd(memoryTime);
         clearMemoryRecycle();
-        service.mode = 1;
         sendMsgToPreper();
     }
 

@@ -36,6 +36,22 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
     }
 
     @Override
+    public void pauseGame() {
+        super.pauseGame();
+        if (mKeyboardDialog != null) {
+            mKeyboardDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void reStartGame() {
+        super.reStartGame();
+        if (mKeyboardDialog != null ){
+            mKeyboardDialog.show();
+        }
+    }
+
+    @Override
     public void startRememory() {
         super.startRememory();
         if (mKeyboardDialog != null) {

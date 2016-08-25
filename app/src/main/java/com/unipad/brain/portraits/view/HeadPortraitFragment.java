@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.R;
 import com.unipad.brain.portraits.bean.Person;
 import com.unipad.brain.portraits.control.HeadService;
@@ -77,7 +78,12 @@ public class HeadPortraitFragment extends BasicCommonFragment{
 
     @Override
     public void reStartGame() {
-        mStubShade.setVisibility(View.GONE);
+        super.reStartGame();
+        if (service.state == AbsBaseGameService.GO_IN_MATCH_END_MEMORY || service.state == AbsBaseGameService.GO_IN_MATCH_DOWNLOADED){
+            mStubShade.setVisibility(View.VISIBLE);
+        } else {
+            mStubShade.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -90,6 +96,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
         super.memoryTimeToEnd(memoryTime);
         showAnserView();
         sendMsgToPreper();
+        mStubShade.setVisibility(View.VISIBLE);
     }
 
     private void showAnserView() {

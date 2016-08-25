@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.R;
 import com.unipad.brain.words.bean.WordEntity;
 import com.unipad.brain.words.dao.WordsService;
@@ -94,7 +95,6 @@ public class WordRightFragment extends BasicCommonFragment {
     @Override
     public void memoryTimeToEnd(int memoryTime) {
         super.memoryTimeToEnd(memoryTime);
-        service.mode = 1;
         wordRvAdapter.notifyDataSetChanged();
         sendMsgToPreper();
     }
@@ -105,7 +105,6 @@ public class WordRightFragment extends BasicCommonFragment {
         if (isMatchMode()){
 
         }else {
-            service.mode = 2;
             wordRvAdapter.notifyDataSetChanged();
         }
     }
@@ -122,12 +121,12 @@ public class WordRightFragment extends BasicCommonFragment {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.textNum.setText(mData.get(position).getNumber() + "");
-            switch (service.mode) {
-                case 0:
+            switch (service.state) {
+                case AbsBaseGameService.GO_IN_MATCH_DOWNLOADED:
                     holder.userAnswerEdit.setVisibility(View.GONE);
                     holder.textWord.setText(mData.get(position).getWord());
                     break;
-                case 1:
+                case AbsBaseGameService.GO_IN_MATCH_END_MEMORY:
                     holder.textWord.setVisibility(View.GONE);
                     holder.userAnswerEdit.setVisibility(View.VISIBLE);
                     holder.myCustomEditTextListener.updatePosition(position);
@@ -157,7 +156,7 @@ public class WordRightFragment extends BasicCommonFragment {
                         }
                     });
                     break;
-                case 2:
+                case AbsBaseGameService.GO_IN_MATCH_END_RE_MEMORY:
                     holder.userAnswerEdit.setVisibility(View.GONE);
                     holder.textWord.setVisibility(View.VISIBLE);
                     if (TextUtils.isEmpty(mData.get(position).getAnswer()) || !mData.get(position).getAnswer().equals(mData.get(position).getWord())) {

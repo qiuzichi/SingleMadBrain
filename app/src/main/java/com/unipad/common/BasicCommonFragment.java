@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.unipad.IOperateGame;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.App;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
@@ -39,7 +40,7 @@ public abstract class BasicCommonFragment extends Fragment implements
                 @Override
                 public void dispatchMessage(Message msg) {
                     ((CommonActivity) getActivity()).progressGame(progress);
-                    if ( progress == 100 ||progress == 200 || progress == 201) {
+                    if (progress == 100 || progress == 200 || progress == 201) {
 
                     } else {
                         LogUtil.e("", "Rememory progress :" + progress);
@@ -56,7 +57,7 @@ public abstract class BasicCommonFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         if (isMatchMode()) {
             ((CommonActivity) getActivity()).getCommonFragment().setICommunicate(this);
-        } else{
+        } else {
             ((PractiseGameActivity) getActivity()).getCommonFragment().setICommunicate(this);
         }
 
@@ -104,9 +105,18 @@ public abstract class BasicCommonFragment extends Fragment implements
 
     @Override
     public void reStartGame() {
+        if (isMatchMode()) {
+            if (isNeedStartGame) {
+                ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
+                return;
+            }
 
-        if (isNeedStartGame) {
-            ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
+            switch (mActivity.getService().state) {
+                case AbsBaseGameService.GO_IN_MATCH_DOWNLOADED:
+                case AbsBaseGameService.GO_IN_MATCH_END_MEMORY:
+                    ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
+                    break;
+            }
         }
     }
 
@@ -130,10 +140,7 @@ public abstract class BasicCommonFragment extends Fragment implements
 
     @Override
     public void memoryTimeToEnd(int memoryTime) {
-        if (isMatchMode()) {
-            progress = 100;
-            handler.sendEmptyMessage(MSG_PROGRESS);
-        }
+
     }
 
     @Override
@@ -155,6 +162,10 @@ public abstract class BasicCommonFragment extends Fragment implements
     public void sendMsgToPreper() {
         if (isMatchMode()) {
             isNeedStartGame = true;
+
+                progress = 100;
+                handler.sendEmptyMessage(MSG_PROGRESS);
+
             ToastUtil.createTipDialog(mActivity, Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
         }
     }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
@@ -154,6 +155,7 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
             if (mICommunicate != null) {
                 startRememoryTimeCount();
                 memoryTime = takeTIme;
+                mActivity.getService().state = AbsBaseGameService.GO_IN_MATCH_END_MEMORY;
                 mICommunicate.memoryTimeToEnd(memoryTime);
             }
 
@@ -182,6 +184,7 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
     private void commitAnswer(final int rememoryTime) {
         mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
+            mActivity.getService().state = AbsBaseGameService.GO_IN_MATCH_END_RE_MEMORY;
             mICommunicate.rememoryTimeToEnd(rememoryTime);
             final HIDDialog WaitingDialog = new HIDDialog(mActivity, R.style.dialog_wait, Constant.MATCH_RESULT_DLG);
             WaitingDialog.setContentView(R.layout.ui_waiting_confirm);

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.R;
 import com.unipad.brain.home.bean.RuleGame;
 import com.unipad.brain.home.dao.HomeGameHandService;
@@ -169,7 +170,9 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
             if (mICommunicate != null) {
                 startRememoryTimeCount();
                 memoryTime = takeTIme;
+                mActivity.getService().state = AbsBaseGameService.GO_IN_MATCH_END_MEMORY;
                 mICommunicate.memoryTimeToEnd(memoryTime);
+
             }
 
         } else {//回忆模式下才可以提交答案
@@ -196,6 +199,7 @@ public class CommonFragment extends Fragment implements View.OnClickListener, Co
         mBtnCompeteMode.setEnabled(false);
         if (mICommunicate != null) {
             final int round = mActivity.getService().round;
+            mActivity.getService().state = AbsBaseGameService.GO_IN_MATCH_END_RE_MEMORY;
             mICommunicate.rememoryTimeToEnd(rememoryTime);
             if (mActivity.getService().isLastRound()) {
                 ToastUtil.createOnlyOkDialog(mActivity, Constant.MATCH_OVER_DLG, "比赛结束", "请等待裁判公布结果", null, new View.OnClickListener() {

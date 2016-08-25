@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.R;
 import com.unipad.brain.virtual.bean.DividerGridItemDecoration;
 import com.unipad.brain.virtual.bean.VirtualEntity;
@@ -154,14 +155,14 @@ public class VirtualRightFragment extends BasicCommonFragment {
             final VirtualEntity entity = virtualList.get(position);
             holder.tv_num.setText(entity.getNumber()+"" );
             holder.tv_event.setText(entity.getEvent()+"");
-            if (service.mode == 0) {
+            if (service.state == AbsBaseGameService.GO_IN_MATCH_DOWNLOADED) {
                 //记忆模式
                 jianpan_linlayout.setVisibility(View.GONE);
                 holder.tv_date.setText(entity.getDate()+"");
                 holder.editNUmView.setVisibility(View.GONE);
 
             } else {
-                if (service.mode == 1) {
+                if (service.state == AbsBaseGameService.GO_IN_MATCH_END_MEMORY) {
                     //回忆模式
                     if (position == index) {
                         holder.editNUmView.requestFocus();
@@ -185,7 +186,7 @@ public class VirtualRightFragment extends BasicCommonFragment {
                         }
                     });
 
-                } else if (service.mode == 2) {
+                } else if (service.state == AbsBaseGameService.GO_IN_MATCH_END_RE_MEMORY) {
                     //回忆结束
                     jianpan_linlayout.setVisibility(View.GONE);
                     holder.editNUmView.setVisibility(View.GONE);
@@ -233,7 +234,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
      * 开始答题
      */
     public void inAnswerMode() {
-        service.mode=1;
         service.shuffData();
         memoryAdapter.notifyDataSetChanged();
 
@@ -243,7 +243,6 @@ public class VirtualRightFragment extends BasicCommonFragment {
      */
     public void endAnswerMode() {
         if (isMatchMode()) {
-            service.mode = 2;
             memoryAdapter.notifyDataSetChanged();
         }
     }
