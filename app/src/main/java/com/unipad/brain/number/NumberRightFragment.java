@@ -51,7 +51,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     /**
      * 遮罩层
      */
-    private ViewStub mStubShade;
+    private View mStubShade;
 
     /**
      * 记录mScrollAnswerView滑动了多少次
@@ -77,7 +77,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         mRememoryLayout = (RelativeLayout) mViewParent.findViewById(R.id.answer_layout);
         frameLayout = (FrameLayout) mViewParent.findViewById(R.id.binary_rememory_layout);
         mLayoutBottom = (ViewGroup) mRememoryLayout.findViewById(R.id.bottom_layout);
-        mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
+        mStubShade = mViewParent.findViewById(R.id.view_shade);
         mScrollAnswerView = (ScrollView) mRememoryLayout
                 .findViewById(R.id.scroll_rememory_layout);
     }
@@ -95,7 +95,7 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             LogUtil.e("", "mLines = " + mLines + "--mRows = " + mRows + "--mTotalNumbers = " + mTotalNumbers);
 
             initMemoryView();
-            mScrollAnswerView.smoothScrollTo(0,0);
+            mScrollAnswerView.smoothScrollTo(0, 0);
             mStubShade.setVisibility(View.VISIBLE);
         }
     }
@@ -179,10 +179,10 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
             //ToastUtil.showToast("您已填满所有空白");
             return;
         }
-        progress = 100+ mCursorPosition * 100 / mTotalNumbers;
-        if (progress <= 101){
+        progress = 100 + mCursorPosition * 100 / mTotalNumbers;
+        if (progress <= 101) {
             progress = 101;
-        }else if (progress >= 199){
+        } else if (progress >= 199) {
             progress = 199;
         }
         LogUtil.e("", "Quick num:" + progress);
@@ -198,6 +198,13 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
         if (isNeedShowCurrent()) {
             mNumberRememoryLayout.setCursorPosition(mCursorPosition);
         }
+
+    }
+
+    @Override
+    public void startRememory() {
+        super.startRememory();
+        mStubShade.setVisibility(View.GONE);
 
     }
 
@@ -229,14 +236,16 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
     public abstract String getCompeteItem();
 
     public abstract void initAnswerView();
+
     public abstract void initMemoryView();
+
     private NumberRememoryLayout createReMemoryLayout() {
         return new NumberRememoryLayout(mActivity, getCompeteItem(), mRows, mLines, mTotalNumbers, new IInitRememoryCallBack() {
             @Override
             public void begin() {
                 LogUtil.e("", "begin...");
                 if (!service.isPause)
-                ToastUtil.createWaitingDlg(mActivity, "加载答题卡中", Constant.INIT_REMEMORY_DLG).show();
+                    ToastUtil.createWaitingDlg(mActivity, "加载答题卡中", Constant.INIT_REMEMORY_DLG).show();
             }
 
             @Override
@@ -255,11 +264,11 @@ public abstract class NumberRightFragment extends BasicCommonFragment implements
                 LogUtil.e("", "finish...");
                 if (!service.isPause) {
                     HIDDialog.dismissAll();
-                    if (isMatchMode()) {
-                        sendMsgToPreper();
-                    } else {
-                        service.starRememory();
-                    }
+                }
+                if (isMatchMode()) {
+                    sendMsgToPreper();
+                } else {
+                    service.starRememory();
                 }
             }
         });
