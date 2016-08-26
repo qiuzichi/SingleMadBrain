@@ -1,9 +1,11 @@
 package com.unipad.http;
 
 import com.unipad.AppContext;
+
 import com.unipad.brain.home.bean.CompetitionBean;
 import com.unipad.brain.home.dao.HomeGameHandService;
 import com.unipad.brain.home.dao.NewsService;
+
 import com.unipad.brain.location.dao.LocationService;
 import com.unipad.common.Constant;
 
@@ -56,6 +58,8 @@ public class HitopApplyGame extends HitopRequest<CompetitionBean> {
             response = new String(json.getBytes(), "utf-8");
             jsObj = new JSONObject(response);
             if (jsObj != null && jsObj.toString().length() != 0) {
+
+                //{"data":{"isNow":0,"matchId":"B4D3CE9A840043769801E05BAB6F238C","projectId":"00002"},"ret_code":"0"}
                 if (jsObj.getInt("ret_code") == 0) {
                     JSONObject dataJson = new JSONObject(jsObj.getString("data"));
                     if (dataJson != null) {

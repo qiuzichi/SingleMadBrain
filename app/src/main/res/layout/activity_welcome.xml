@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:scaleType="fitEnd"
+        android:src="@drawable/welcome"
+        />
+
+    <TextView
+        android:id="@+id/txt_jump_over"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_30dp"
+        android:layout_marginTop="@dimen/news_title_height"
+        android:background="@drawable/entryed_btn_shape"
+        android:clickable="true"
+        android:gravity="center"
+        android:paddingBottom="@dimen/margin_5dip"
+        android:paddingLeft="@dimen/margin_10dip"
+        android:paddingRight="@dimen/margin_10dip"
+        android:paddingTop="@dimen/margin_5dip"
+        android:text="时间跳过"
+        android:textColor="@color/white_light" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/txt_count_down_time"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginRight="@dimen/margin_30dp"-->
+        <!--android:layout_marginTop="@dimen/margin_5dip"-->
+        <!--android:text="倒计时"-->
+        <!--android:textSize="@dimen/text_size_18"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:textColor="@color/black"-->
+       <!--android:layout_below="@id/txt_jump_over"-->
+        <!--/>-->
+
+</RelativeLayout>

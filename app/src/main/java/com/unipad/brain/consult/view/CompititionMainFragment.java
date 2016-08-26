@@ -27,6 +27,7 @@ import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
@@ -50,6 +51,8 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
     private int requestPagerNum = 1;
     private int totalPager = 1;
     private Boolean isLoadMoreData;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ListView mListView;
 
 
     @Override
@@ -67,10 +70,10 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         service.registerObserver(HttpConstant.NOTIFY_APPLY_NEWCOMPETITION, this);
         //默认加载第一页的数据 10条 分页加载数据
         service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, requestPagerNum, 10);
-        final ListView mListView = (ListView)view.findViewById(R.id.listview_compitition_main);
+        mListView = (ListView)view.findViewById(R.id.listview_compitition_main);
         tv_error = (TextView) view.findViewById(R.id.tv_load_error_show);
 
-        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) view .findViewById(R.id.swipe_refresh_newcompetition);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view .findViewById(R.id.swipe_refresh_newcompetition);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.light_blue2,
                 R.color.red,
@@ -84,7 +87,12 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
 
         mNewCompetitionAdapter = new NewCompetitionAdapter(getmContext(), mNewCompetitionDatas, R.layout.layout_compition_info_item);
         mListView.setAdapter(mNewCompetitionAdapter);
-        /*避免出现item太大 之后 避免冲突scroll*/
+        initEvent();
+
+    }
+
+    private void initEvent() {
+    /*避免出现item太大 之后 避免冲突scroll*/
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
 
@@ -95,11 +103,11 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
                     case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
                         // 判断滚动到底部
                         if (mListView.getLastVisiblePosition() == (mListView.getCount() - 1)) {
-                            if(requestPagerNum == totalPager){
+                            if (requestPagerNum == totalPager) {
                                 ToastUtil.showToast(getString(R.string.loadmore_null_data));
                                 return;
-                            }else {
-                                if(isLoadMoreData){
+                            } else {
+                                if (isLoadMoreData) {
                                     ToastUtil.showToast(getString(R.string.loadmore_data));
                                     return;
                                 }
@@ -116,7 +124,7 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
                 if (firstVisibleItem == 0)
                     /*第一项可见 的时候 才可以响应swipe的滑动刷新事件*/
                     mSwipeRefreshLayout.setEnabled(true);
-                else{
+                else {
                     mSwipeRefreshLayout.setEnabled(false);
                 }
 
@@ -140,8 +148,16 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
                 }, 2000);
             }
         });
-    }
 
+        tv_error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { //点击重新加载数据
+                ToastUtil.createWaitingDlg(getmContext(),null,Constant.LOGIN_WAIT_DLG).show(15);
+                requestPagerNum = 1;
+                service.getNewCompetition(AppContext.instance().loginUser.getUserId(), null, null, requestPagerNum, 10);
+            }
+        });
+    }
 
 
     private class NewCompetitionAdapter extends CommonAdapter<CompetitionBean>{
@@ -201,25 +217,21 @@ public class CompititionMainFragment  extends ConsultBaseFragment  implements ID
         }
     }
 
-    private void initEvent(){
-
-    }
 
     @Override
     public void update(int key, Object o) {
         switch (key) {
             case HttpConstant.NOTIFY_GET_NEWCOMPETITION:
-                //获取数据
-                if(null == o && ((List<CompetitionBean> )o).size() == 0){
+                //获取数据  关闭dialog
+                HIDDialog.dismissAll();
+                if(null == o || ((List<CompetitionBean> )o).size() == 0){
                     //数据为空 显示默认 刷新数据
                     tv_error.setVisibility(View.VISIBLE);
-                    tv_error.setClickable(false);
                     tv_error.setText(getString(R.string.not_news_data));
                     return;
                 }
 
                 tv_error.setVisibility(View.GONE);
-
                 List<CompetitionBean> databean=  (List<CompetitionBean>) o;
 
                 if (requestPagerNum == 1 && databean.size() != 0) {

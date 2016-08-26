@@ -5,12 +5,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/ll_item_city_bg"
         android:orientation="vertical">
         <TextView
             android:id="@+id/txt_name"
             android:layout_width="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_gravity="center"
             android:paddingLeft="3dp"
+            android:gravity="center"
+            android:text="@string/about_us"
             android:layout_height="55dp" />
         <include layout="@layout/personal_view_divide_line" />
     </LinearLayout>
@@ -21,4 +24,12 @@
         android:layout_height="55dp"
         android:layout_gravity="right"
         android:src="@drawable/line_location"/>
+
+
+    <ImageView
+        android:id="@+id/img_bian_left"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_gravity="left"
+        android:src="@drawable/line_location_left" />
 </FrameLayout>

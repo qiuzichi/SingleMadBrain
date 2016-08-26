@@ -137,16 +137,16 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 txt_world_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[2]);
                 txt_world_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[2]);
 
-
-                if (position == 6 || position == 9) {
-                    return;
-                }
-
                 if(position == 1 || position == 2 || position ==4){
                     rl_competitionMode.setVisibility(View.VISIBLE);
                 }else {
                     rl_competitionMode.setVisibility(View.GONE);
                 }
+
+                if (position == 6 || position == 9) {
+                    return;
+                }
+
 
 
 

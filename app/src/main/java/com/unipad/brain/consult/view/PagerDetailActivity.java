@@ -88,6 +88,7 @@ public class PagerDetailActivity extends BasicActivity implements IDataObserver{
                     AppContext.instance().loginUser.getUserId() +
                     "&unipadId=" + AppContext.instance().loginUser.getUserId() + "&token=" + AppContext.instance().loginUser.getToken();
         }
+        Log.d("pagerDetatil activity", htmlDatas.toString());
         //新闻部分的 webview
         mWebView = (WebView) findViewById(R.id.pager_detail_webview);
         mProgressBar = (ProgressBar) findViewById(R.id.pager_load_progressBar);

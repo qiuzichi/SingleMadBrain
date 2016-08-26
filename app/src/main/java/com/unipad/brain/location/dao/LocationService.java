@@ -7,6 +7,7 @@ import com.unipad.http.HitopGetCityGame;
 import com.unipad.http.HitopGetCityList;
 import com.unipad.http.HitopGetProvinceList;
 
+import com.unipad.http.LoactionApplyGame;
 import com.unipad.observer.GlobleObserService;
 
 /**
@@ -67,6 +68,21 @@ public class LocationService extends GlobleObserService implements ICoreService 
 
     public void getApplyCompetition(String userId, int key, String matchId, String projectId, String gradeId, int isPay) {
         HitopApplyGame applyGame = new HitopApplyGame(userId, key, matchId, projectId, gradeId, isPay);
+        applyGame.get();
+    }
+
+
+
+    /**报名 赛事  定位
+     * @param userId 用户id
+     * @param key  请求key
+     * @param matchId 赛事matchid
+     * @param projectId
+     * @param gradeId
+     * @param isPay  是否支付
+     */
+    public void getLoactionApplyCompetition(String userId, int key, String matchId, String projectId, String gradeId, int isPay) {
+        LoactionApplyGame applyGame = new LoactionApplyGame(userId, key, matchId, projectId, gradeId, isPay);
         applyGame.get();
     }
 }
