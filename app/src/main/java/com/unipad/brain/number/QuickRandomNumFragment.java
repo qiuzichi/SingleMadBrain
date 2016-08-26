@@ -50,6 +50,10 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
 
         if (service.state == AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY){
             mKeyboardDialog.show();
+        } else {
+            if (mKeyboardDialog != null){
+                mKeyboardDialog.dismiss();
+            }
         }
     }
 

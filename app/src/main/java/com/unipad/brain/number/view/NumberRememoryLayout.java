@@ -33,8 +33,8 @@ public class NumberRememoryLayout extends LinearLayout implements
     private Context mContext;
     private LayoutInflater mInflater;
     private App.AppHandler mHandler = new App.AppHandler(this);
-    private int mRows ;
-    private int mLines ;
+    private int mRows;
+    private int mLines;
     /**
      * 数字总数
      */
@@ -69,8 +69,10 @@ public class NumberRememoryLayout extends LinearLayout implements
     public NumberRememoryLayout(Context context) {
         super(context);
     }
+
     private IInitRememoryCallBack callback;
-    public NumberRememoryLayout(Context context, String competeType,int rows,int lines,int mTotalNumbers,IInitRememoryCallBack callback) {
+
+    public NumberRememoryLayout(Context context, String competeType, int rows, int lines, int mTotalNumbers, IInitRememoryCallBack callback) {
         super(context);
         mContext = context;
         mCompeteType = competeType;
@@ -87,15 +89,15 @@ public class NumberRememoryLayout extends LinearLayout implements
         mInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            if (mCompeteType.equals(mContext.getString(R.string.project_2))) {
-                mRowNumber = "";
-                mTextSize = 23.0f;
-            }else {
-                mLeftCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_left_anim);
-                mRightCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_right_anim);
-                mLeftCursorAnim = (AnimationDrawable) mLeftCursorBg;
-                mRightCursorAnim = (AnimationDrawable) mRightCursorBg;
-            }
+        if (mCompeteType.equals(mContext.getString(R.string.project_2))) {
+            mRowNumber = "";
+            mTextSize = 23.0f;
+        } else {
+            mLeftCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_left_anim);
+            mRightCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_right_anim);
+            mLeftCursorAnim = (AnimationDrawable) mLeftCursorBg;
+            mRightCursorAnim = (AnimationDrawable) mRightCursorBg;
+        }
 
         if (callback != null) {
             callback.begin();
@@ -103,18 +105,19 @@ public class NumberRememoryLayout extends LinearLayout implements
         mHandler.sendEmptyMessage(NumService.MSG_OPEN_THREAD);
     }
 
-    public void clearText(){
+    public void clearText() {
         for (int i = 0; i < mLines; i++) {
             ViewGroup viewGroup = (ViewGroup) getChildAt(i);
             viewGroup = (ViewGroup) viewGroup.getChildAt(0);
             StringBuilder answerLine = new StringBuilder();
             for (int j = 0; j < viewGroup.getChildCount(); j++) {
                 TextView textNumber = (TextView) viewGroup.getChildAt(j);
-                    textNumber.setText("");
+                textNumber.setText("");
             }
 
         }
     }
+
     private void addLineLayout(int index) {
         RelativeLayout parent = (RelativeLayout) mInflater.inflate(
                 R.layout.number_v_line, null);
@@ -127,7 +130,7 @@ public class NumberRememoryLayout extends LinearLayout implements
         LinearLayout layoutNums = (LinearLayout) parent.getChildAt(0);
         layoutNums.setId(ID + index);
         layoutNums.setWeightSum(mRows);
-        this.addNumText(layoutNums,index);
+        this.addNumText(layoutNums, index);
 
         TextView textNum = (TextView) parent.findViewById(R.id.tv_row);
 
@@ -136,7 +139,7 @@ public class NumberRememoryLayout extends LinearLayout implements
         addView(parent, index);
     }
 
-    private void addNumText(LinearLayout parent,int line) {
+    private void addNumText(LinearLayout parent, int line) {
         TextView textNum;
         LayoutParams params;
         for (int i = 0; i < mRows; i++) {
@@ -144,11 +147,11 @@ public class NumberRememoryLayout extends LinearLayout implements
                     LayoutParams.WRAP_CONTENT);
             params.weight = 1;
             params.gravity = Gravity.CENTER;
-            if (mTotalNumbers < line*mRows +i + 1){
+            if (mTotalNumbers < line * mRows + i + 1) {
                 Space pace = new Space(mContext);
                 pace.setLayoutParams(params);
                 parent.addView(pace, i);
-            }else {
+            } else {
                 textNum = new TextView(mContext);
                 textNum.setLayoutParams(params);
                 textNum.setTextSize(mTextSize);
@@ -190,7 +193,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                 for (int index = msg.arg1; index < mLoadedItem; index++) {
                     this.addLineLayout(index);
                     if (callback != null) {
-                        callback.loading(mLoadedItem*100/mLines);
+                        callback.loading(mLoadedItem * 100 / mLines);
                     }
                 }
 
@@ -200,10 +203,10 @@ public class NumberRememoryLayout extends LinearLayout implements
 
                     //快速随机、马拉松数字项目的回忆界面需要显示光标
                     /**if (mCompeteType.equals(mContext.getString(R.string.project_3))
-                            || mCompeteType.equals(mContext.getString(R.string.project_5))||mCompeteType.equals(mContext.getString(R.string.project_9))) {
-                        */
-                if (!mContext.getString(R.string.project_2).equals(mCompeteType)){
-                     ViewGroup viewGroup = (ViewGroup) getChildAt(0);// 获取行号
+                     || mCompeteType.equals(mContext.getString(R.string.project_5))||mCompeteType.equals(mContext.getString(R.string.project_9))) {
+                     */
+                    if (!mContext.getString(R.string.project_2).equals(mCompeteType)) {
+                        ViewGroup viewGroup = (ViewGroup) getChildAt(0);// 获取行号
                         viewGroup = (ViewGroup) viewGroup.getChildAt(0);
                         TextView textNumber = (TextView) viewGroup
                                 .getChildAt(0);// 获取行中第几个格子
@@ -213,7 +216,7 @@ public class NumberRememoryLayout extends LinearLayout implements
                         mTextDiffBg = textNumber;
                     }
                     if (callback != null) {
-                       callback.finish();
+                        callback.finish();
                     }
                 } else {
                     mHandler.sendEmptyMessage(NumService.MSG_OPEN_THREAD);
@@ -298,35 +301,39 @@ public class NumberRememoryLayout extends LinearLayout implements
         mTextDiffBg = textNumber;
     }
 
-    public void cleanCursor(){
+    public void cleanCursor() {
         if (mLeftCursorAnim != null && mLeftCursorAnim.isRunning()) {
             mLeftCursorAnim.stop();
         }
 
-        if (mRightCursorAnim != null &&mRightCursorAnim.isRunning()) {
+        if (mRightCursorAnim != null && mRightCursorAnim.isRunning()) {
             mRightCursorAnim.stop();
         }
     }
 
     public void getAnswer(SparseArray<String> answer) {
-            for (int i = 0; i < mLines; i++) {
-                ViewGroup viewGroup = (ViewGroup) getChildAt(i);
-                viewGroup = (ViewGroup) viewGroup.getChildAt(0);
-                StringBuilder answerLine = new StringBuilder();
-                for (int j = 0; j < viewGroup.getChildCount(); j++) {
+        for (int i = 0; i < mLines; i++) {
+            ViewGroup viewGroup = (ViewGroup) getChildAt(i);
+            viewGroup = (ViewGroup) viewGroup.getChildAt(0);
+            StringBuilder answerLine = new StringBuilder();
+            for (int j = 0; j < viewGroup.getChildCount(); j++) {
+                if (viewGroup.getChildAt(j) instanceof TextView) {
                     TextView textNumber = (TextView) viewGroup.getChildAt(j);
                     String userAnswer = textNumber.getText().toString().trim();
                     if (TextUtils.isEmpty(userAnswer)) {
                         userAnswer = "X";
                     }
                     answerLine.append(userAnswer);
+                }else{
+                    break;
                 }
-                LogUtil.e("","answer:"+(i+1)+","+answerLine.toString());
-                answer.put(i+1, answerLine.toString());
             }
+            LogUtil.e("", "answer:" + (i + 1) + "," + answerLine.toString());
+            answer.put(i + 1, answerLine.toString());
+        }
     }
 
-    public void showAnswer(SparseArray<String> data,SparseArray<String> answer) {
+    public void showAnswer(SparseArray<String> data, SparseArray<String> answer) {
         for (int i = 0; i < mLines; i++) {
             String orgin = data.valueAt(i);
             int key = data.keyAt(i);
@@ -335,18 +342,18 @@ public class NumberRememoryLayout extends LinearLayout implements
             StringBuilder answerLine = new StringBuilder();
             for (int j = 0; j < orgin.length(); j++) {
                 TextView textNumber = (TextView) viewGroup.getChildAt(j);
-                String userAnswer  = textNumber.getText().toString().trim();
+                String userAnswer = textNumber.getText().toString().trim();
                 String o = String.valueOf(orgin.charAt(j));
-                if (TextUtils.isEmpty(userAnswer)){
+                if (TextUtils.isEmpty(userAnswer)) {
                     userAnswer = "X";
                 }
                 answerLine.append(userAnswer);
-                textNumber.setText(o+"\n"+userAnswer);
+                textNumber.setText(o + "\n" + userAnswer);
                 if (!o.equals(userAnswer)) {
                     textNumber.setTextColor(getResources().getColor(R.color.red));
                 }
             }
-            answer.put(key,answerLine.toString());
+            answer.put(key, answerLine.toString());
         }
     }
 }

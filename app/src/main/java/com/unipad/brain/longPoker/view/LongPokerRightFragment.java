@@ -62,7 +62,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
     }
     @Override
     public void startMemory() {
-        mViewParent.addView(memoryLayout);
+        //mViewParent.addView(memoryLayout,0);
         shadeView.setVisibility(View.GONE);
     }
 
@@ -270,7 +270,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
         layoutManager.setOrientation(OrientationHelper.HORIZONTAL);
         //设置Adapter
         recyclerView.setAdapter(recycleAdapter);
-        mViewParent.removeView(memoryLayout);
+       // mViewParent.removeView(memoryLayout);
     }
 
     @Override
