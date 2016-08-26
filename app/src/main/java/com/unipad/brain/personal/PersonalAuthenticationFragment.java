@@ -296,6 +296,22 @@ public class PersonalAuthenticationFragment extends PersonalCommonFragment imple
 
         authBean.setName(ed_names);
         authBean.setType(intType);
+
+        if(TextUtils.isEmpty(authBean.getName())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_name));
+            return;
+        }
+
+        if(TextUtils.isEmpty(authBean.getIdentity())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_identity));
+            return;
+        }
+
+        if(TextUtils.isEmpty(authBean.getBirthDate())){
+            ToastUtil.showToast(mActivity.getString(R.string.string_birthdate));
+            return;
+        }
+
         uploadFile();  // 上传文件
     }
 

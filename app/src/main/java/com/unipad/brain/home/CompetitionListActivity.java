@@ -141,7 +141,7 @@ public class CompetitionListActivity extends BaseFragmentActivity implements ICo
 			if(titleTxts[i].getId() == thisTxt.getId()){
 				// 选中
 				titleTxts[i].setTextColor(getResources().getColor(R.color.black));
-				titleTxts[i].setBackgroundColor(getResources().getColor(R.color.white));
+				titleTxts[i].setBackgroundColor(getResources().getColor(R.color.bottom_bt_bg));
 			} else {
 				// 没选中
 				titleTxts[i].setTextColor(getResources().getColor(R.color.white));

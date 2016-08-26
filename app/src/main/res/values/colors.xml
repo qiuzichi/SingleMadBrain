@@ -2,6 +2,7 @@
 <resources>
     <drawable name="blue">#0000FF</drawable>
     <color name="white">#FFFFFF</color>
+    <color name="white_light">#FCFDFB</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
     <color name="main_lf_bg">#323232</color>
@@ -10,6 +11,9 @@
     <color name="blue">#0000FF</color>
     <color name="light_blue">#fff2dc</color>
     <color name="light_blue2">#279AEC</color>
+    <color name="light_blue_item">#92BDFA</color>
+    <color name="blue_bg">#BBD0EB</color>
+    <color name="light_blue_tran">#EFF5FD</color>
     <color name="title_tab_normal_red">#FD4B4B</color>
     <color name="title_tab_select_red">#FF1F1F</color>
 
@@ -18,7 +22,9 @@
     <color name="bg_two">#fedfb6</color>
     <color name="bg_three">#1e5401</color>
     <color name="stroke_color">#ACACAC</color>
+    <color name="jump_over_bg">#5F6839</color>
     <color name="line">#b5bdc4</color>
+    <color name="item_bg_apply">#EAEAE8</color>
     <color name="time_setting">#9a9a9a</color>
 
     <color name="txt_ash">#141414</color>

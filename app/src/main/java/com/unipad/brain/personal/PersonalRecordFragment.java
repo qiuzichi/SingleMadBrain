@@ -567,10 +567,11 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
             RelativeLayout.LayoutParams params = new  RelativeLayout.
                     LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             params.setMargins(0,150,0,0);
+            null_text.setLayoutParams(params);
             null_text.setGravity(Gravity.CENTER);
             null_text.setText(getString(R.string.hostory_null_data));
+            null_text.setTextColor(getResources().getColor(R.color.stroke_color));
             null_text.setTextSize(25);
-            null_text.setLayoutParams(params);
         }
 
         viewParent.removeAllViews();

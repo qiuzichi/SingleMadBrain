@@ -46,7 +46,7 @@
         <!-- http://lbsyun.baidu.com/apiconsole/key -->
 
         <activity
-            android:name=".personal.login.LoginActivity"
+            android:name=".personal.login.WelcomeActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
@@ -55,6 +55,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <activity
+            android:name=".personal.login.LoginActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".personal.PersonalActivity"
             android:screenOrientation="landscape"
