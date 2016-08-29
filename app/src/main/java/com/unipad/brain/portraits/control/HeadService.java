@@ -33,10 +33,6 @@ import java.util.zip.Deflater;
  * Created by gongkan on 2016/4/11.
  */
 public class HeadService extends AbsBaseGameService{
-    /**
-     * 0为记忆模式，1为答题回忆模式
-     */
-    public int mode = 0;
 
     public ArrayList<Person> data = new ArrayList<>();
 
@@ -206,7 +202,6 @@ public class HeadService extends AbsBaseGameService{
     @Override
     public void clear() {
         data.clear();
-        mode = 0;
     }
 
     @Override

@@ -67,11 +67,13 @@ public class WordRightFragment extends BasicCommonFragment {
 
     @Override
     public void pauseGame() {
+        super.pauseGame();
         mStubShade.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void reStartGame() {
+        super.reStartGame();
         mStubShade.setVisibility(View.GONE);
     }
 

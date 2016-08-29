@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Created by gongkan on 2016/4/11.
  */
-public class HeadPortraitFragment extends BasicCommonFragment{
+public class HeadPortraitFragment extends BasicCommonFragment {
     private HeadAdapter adapter;
     private GridView mListView;
     private HeadService service;
@@ -55,7 +55,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
         mData = ((HeadService) service).data;
         adapter = new HeadAdapter(mActivity, mData, R.layout.list_portrait);
         mListView.setAdapter(adapter);
-        mStubShade =  mViewParent.findViewById(R.id.view_shade);
+        mStubShade = mViewParent.findViewById(R.id.view_shade);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     @Override
     public void reStartGame() {
         super.reStartGame();
-        if (service.state == AbsBaseGameService.GO_IN_MATCH_END_MEMORY || service.state == AbsBaseGameService.GO_IN_MATCH_DOWNLOADED){
+        if (service.state == AbsBaseGameService.GO_IN_MATCH_END_MEMORY || service.state == AbsBaseGameService.GO_IN_MATCH_DOWNLOADED) {
             mStubShade.setVisibility(View.VISIBLE);
         } else {
             mStubShade.setVisibility(View.GONE);
@@ -100,7 +100,6 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     }
 
     private void showAnserView() {
-        service.mode = 1;
         ((HeadService) service).shuffData();
         adapter.notifyDataSetChanged();
 
@@ -110,12 +109,18 @@ public class HeadPortraitFragment extends BasicCommonFragment{
     @Override
     public void rememoryTimeToEnd(final int answerTime) {
         super.rememoryTimeToEnd(answerTime);
-        if (isMatchMode()){
+        if (isMatchMode()) {
 
-        }else {
-            service.mode = 2;
+        } else {
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void startRememory() {
+        super.startRememory();
+        mStubShade.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -147,105 +152,114 @@ public class HeadPortraitFragment extends BasicCommonFragment{
             final EditText firstName = (EditText) holder.getView(R.id.first_name);
             final EditText lastName = (EditText) holder.getView(R.id.last_name);
             TextView holeName = (TextView) holder.getView(R.id.name_text);
-            if (service.mode == 1) {
-                holeName.setVisibility(View.GONE);
-                firstName.setVisibility(View.VISIBLE);
-                lastName.setVisibility(View.VISIBLE);
+            switch (service.state) {
+                case AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY:
+                case AbsBaseGameService.GO_IN_MATCH_END_MEMORY:
+                    holeName.setVisibility(View.GONE);
+                    firstName.setVisibility(View.VISIBLE);
+                    lastName.setVisibility(View.VISIBLE);
 
-                Person bean = mData.get(holder.getPosition());
-                firstName.setText(bean.getAnswerFirstName());
-                lastName.setText(bean.getAnswerLastName());
-                firstName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                            lastName.requestFocus();
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-
-                firstName.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        String first_name = firstName.getText().toString().trim();
-                        mData.get(holder.getPosition()).setAnswerFirstName(first_name);
-                    }
-                });
-
-                lastName.addTextChangedListener(new TextWatcher() {
-                    @Override
-
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        String last_name = lastName.getText().toString().trim();
-                        mData.get(holder.getPosition()).setAnswerLastName(last_name);
-                    }
-                });
-                lastName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        int visiblePosition = mListView.getFirstVisiblePosition();
-                        View Preview = mListView.getChildAt(holder.getPosition() + 1 - visiblePosition);
-
-                        if (null != Preview) {
-                            /*  下一个item 的firstName*/
-                            EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
-                            LogUtil.e("", "first:" + firstName.getText().toString());
-                            firstName.requestFocus();
-                            if ((holder.getPosition() + 1) % mListView.getNumColumns() == 0) {
-                                mListView.smoothScrollBy(mListView.getVerticalSpacing() + mListView.getChildAt(0).getHeight(), 0);
+                    Person bean = mData.get(holder.getPosition());
+                    firstName.setText(bean.getAnswerFirstName());
+                    lastName.setText(bean.getAnswerLastName());
+                    firstName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                                lastName.requestFocus();
+                                return true;
                             }
-                            return true;
-
-                        } else if (mDatas.size() - 1 == mListView.getLastVisiblePosition()) {
-                             /*到最后完成一个item  关闭软键盘*/
-                            lastName.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                            closeSofeInputMothed(lastName);
-                            return true;
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
 
-            } else if (service.mode == 0) {
-                firstName.setVisibility(View.GONE);
-                lastName.setVisibility(View.GONE);
-                holeName.setVisibility(View.VISIBLE);
-                holeName.setText(person.getFirstName() + "·" + person.getLastName());
-            } else if (service.mode == 2) {
-                lastName.setVisibility(View.GONE);
-                firstName.setVisibility(View.GONE);
-                holeName.setVisibility(View.VISIBLE);
-                TextView answerHoleName = (TextView) holder.getView(R.id.answer_name_text);
-                if (!person.isAnswerRight()) {
-                    answerHoleName.setTextColor(mContext.getResources().getColor(R.color.red));
+                    firstName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            String first_name = firstName.getText().toString().trim();
+                            mData.get(holder.getPosition()).setAnswerFirstName(first_name);
+                        }
+                    });
+
+                    lastName.addTextChangedListener(new TextWatcher() {
+                        @Override
+
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            String last_name = lastName.getText().toString().trim();
+                            mData.get(holder.getPosition()).setAnswerLastName(last_name);
+                        }
+                    });
+                    lastName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            int visiblePosition = mListView.getFirstVisiblePosition();
+                            View Preview = mListView.getChildAt(holder.getPosition() + 1 - visiblePosition);
+
+                            if (null != Preview) {
+                            /*  下一个item 的firstName*/
+                                EditText firstName = (EditText) Preview.findViewById(R.id.first_name);
+                                LogUtil.e("", "first:" + firstName.getText().toString());
+                                firstName.requestFocus();
+                                if ((holder.getPosition() + 1) % mListView.getNumColumns() == 0) {
+                                    mListView.smoothScrollBy(mListView.getVerticalSpacing() + mListView.getChildAt(0).getHeight(), 0);
+                                }
+                                return true;
+
+                            } else if (mDatas.size() - 1 == mListView.getLastVisiblePosition()) {
+                             /*到最后完成一个item  关闭软键盘*/
+                                lastName.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                                closeSofeInputMothed(lastName);
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+
+
+                    break;
+                case AbsBaseGameService.GO_IN_MATCH_DOWNLOADED :
+                case AbsBaseGameService.GO_IN_MATCH_START_MEMORY :
+                    firstName.setVisibility(View.GONE);
+                    lastName.setVisibility(View.GONE);
+                    holeName.setVisibility(View.VISIBLE);
+                    holeName.setText(person.getFirstName() + "·" + person.getLastName());
+                    break;
+                case AbsBaseGameService.GO_IN_MATCH_END_RE_MEMORY :
+                    lastName.setVisibility(View.GONE);
+                    firstName.setVisibility(View.GONE);
+                    holeName.setVisibility(View.VISIBLE);
+                    TextView answerHoleName = (TextView) holder.getView(R.id.answer_name_text);
+                    if (!person.isAnswerRight()) {
+                        answerHoleName.setTextColor(mContext.getResources().getColor(R.color.red));
+                    }
+                    holeName.setText(person.getFirstName() + "·" + person.getLastName());
+                    answerHoleName.setVisibility(View.VISIBLE);
+                    answerHoleName.setText(person.getAnswerFirstName() + "·" + person.getAnswerLastName());
+                    break;
                 }
-                holeName.setText(person.getFirstName() + "·" + person.getLastName());
-                answerHoleName.setVisibility(View.VISIBLE);
-                answerHoleName.setText(person.getAnswerFirstName() + "·" + person.getAnswerLastName());
             }
-        }
-        private void closeSofeInputMothed(View view){
-            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        private void closeSofeInputMothed(View view) {
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
