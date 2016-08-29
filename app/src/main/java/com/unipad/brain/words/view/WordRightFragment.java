@@ -27,7 +27,6 @@ import com.unipad.common.BasicCommonFragment;
 import com.unipad.common.Constant;
 import com.unipad.utils.LogUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -121,12 +120,15 @@ public class WordRightFragment extends BasicCommonFragment {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.textNum.setText(mData.get(position).getNumber() + "");
+            LogUtil.e("qzc",service.state+"");
             switch (service.state) {
                 case AbsBaseGameService.GO_IN_MATCH_DOWNLOADED:
+                case AbsBaseGameService.GO_IN_MATCH_START_MEMORY:
                     holder.userAnswerEdit.setVisibility(View.GONE);
                     holder.textWord.setText(mData.get(position).getWord());
                     break;
                 case AbsBaseGameService.GO_IN_MATCH_END_MEMORY:
+                case AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY:
                     holder.textWord.setVisibility(View.GONE);
                     holder.userAnswerEdit.setVisibility(View.VISIBLE);
                     holder.myCustomEditTextListener.updatePosition(position);
