@@ -265,7 +265,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
         //设置布局管理器
         recyclerView.setLayoutManager(layoutManager);
         //设置item间隙
-        recyclerView.addItemDecoration(new SpaceItemDecoration(5, -100));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(5, -150,5,3));
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.HORIZONTAL);
         //设置Adapter
