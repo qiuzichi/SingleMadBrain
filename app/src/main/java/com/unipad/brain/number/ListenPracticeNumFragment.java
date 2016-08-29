@@ -68,7 +68,7 @@ public class ListenPracticeNumFragment extends ListenToWriteNumFragment {
         super.initDataFinished();
         answerData = new StringBuilder("a b c ");
         for (int i = 0; i < service.lineNumbers.size(); i++) {
-            answerData.append(service.lineNumbers.valueAt(i).replaceAll("\\d{1}(?!$)", "$0 "));
+            answerData.append(service.lineNumbers.valueAt(i).replaceAll("\\d{1}(?!$)", "$0 ")).append(" ");
         }
         LogUtil.e("qzc", "size = " + service.lineNumbers.size() + "---tostring=" + answerData.toString());
     }
