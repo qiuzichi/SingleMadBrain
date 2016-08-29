@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -53,6 +54,8 @@ public class WordRightFragment extends BasicCommonFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         service = (WordsService) AppContext.instance().getService(Constant.WORDS_SERVICE);
         mStubShade = (ViewStub) mViewParent.findViewById(R.id.view_shade);
         mStubShade.setVisibility(View.VISIBLE);
