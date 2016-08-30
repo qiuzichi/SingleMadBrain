@@ -38,6 +38,22 @@ public class SharepreferenceUtils {
 		editor.apply();
 	}
 
+	public static int getInt(String key,int defaultValue) {
+		SharedPreferences preferences = App.getContext()
+				.getSharedPreferences(SharepreferenceUtils.THEME_NAME,
+						Context.MODE_PRIVATE);
+		return preferences.getInt(key, defaultValue);
+	}
+	public static void writeint(String key, int value) {
+		SharedPreferences preferences = App.getContext()
+				.getSharedPreferences(SharepreferenceUtils.THEME_NAME,
+						Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putInt(key, value);
+		editor.apply();
+	}
+
+
 	public static void writeLong(String key, long value, String sharedFile) {
 		SharedPreferences preferences = App.getContext()
 				.getSharedPreferences(sharedFile, Context.MODE_PRIVATE);

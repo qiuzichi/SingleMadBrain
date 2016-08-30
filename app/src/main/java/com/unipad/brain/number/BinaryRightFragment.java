@@ -36,7 +36,7 @@ public class BinaryRightFragment extends NumberRightFragment{
     @Override
     public void initMemoryView() {
         frameLayout.removeAllViews();
-        frameLayout.addView(new NumberMemoryLayout(getActivity(), service.lineNumbers));
+        frameLayout.addView(new NumberMemoryLayout(getActivity(), service.lineNumbers,5));
     }
 
     @Override

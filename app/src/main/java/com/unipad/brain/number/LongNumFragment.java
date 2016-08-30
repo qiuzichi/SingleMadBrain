@@ -77,7 +77,7 @@ public class LongNumFragment extends NumberRightFragment {
     @Override
     public void initMemoryView() {
         frameLayout.removeAllViews();
-        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers,5));
     }
 
     @Override
