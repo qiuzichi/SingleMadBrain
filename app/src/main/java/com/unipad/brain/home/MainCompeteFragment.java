@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -45,11 +46,11 @@ import java.util.List;
 /**
  * yzj----项目:虚拟事件
  */
-public class MainCompeteFragment extends MainBasicFragment  {
+public class MainCompeteFragment extends MainBasicFragment {
     private RelativeLayout relatlayout;
     private ListView lv_project;
     private FrameLayout fl_project;
-//    private TextView txt_title;
+    //    private TextView txt_title;
 //    private TextView txt_attention_content;
 //    private TextView txt_memory_content;
 //    private TextView txt_recall_content;
@@ -75,22 +76,12 @@ public class MainCompeteFragment extends MainBasicFragment  {
     private String next = "";
     HomeListAdapter homeListAdapter = new HomeListAdapter();
 
-    private TextView set_tital_slidmenu;
-
-    private long binaryAnswerTime, binaryMemoryTime;
-    private TextView binaryMemoryText, binaryAnswerText;
     private ShowDialog showDialog;
-    private RelativeLayout rl_competitionMode;
-    private String mCompetitionMode;
-    private RadioGroup mRadioGroup;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
-
-
-        this.setSidebar();
 
         lv_project = (ListView) mActivity.findViewById(R.id.lv_project);
         fl_project = (FrameLayout) mActivity.findViewById(R.id.fl_project);
@@ -127,8 +118,6 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 projectindex = position;
                 homeListAdapter.notifyDataSetChanged();
                 txt_pname.setText(homeBeans.get(position).projectBean.getName());
-                /*侧滑菜单设置*/
-                set_tital_slidmenu.setText(homeBeans.get(position).projectBean.getName());
 
                 txt_city_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[0]);
                 txt_city_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[0]);
@@ -137,17 +126,9 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 txt_world_memory.setText((homeBeans.get(position).projectBean.getMemorysDate())[2]);
                 txt_world_recall.setText((homeBeans.get(position).projectBean.getRecallsDate())[2]);
 
-                if(position == 1 || position == 2 || position ==4){
-                    rl_competitionMode.setVisibility(View.VISIBLE);
-                }else {
-                    rl_competitionMode.setVisibility(View.GONE);
-                }
-
                 if (position == 6 || position == 9) {
                     return;
                 }
-
-
 
 
             }
@@ -159,11 +140,11 @@ public class MainCompeteFragment extends MainBasicFragment  {
         return R.layout.main_compete_fragment;
     }
 
-    private void initUserName(){
-        ((TextView)mActivity.findViewById(R.id.txt_uese_name)).setText(AppContext.instance().loginUser.getUserName());
-        ((TextView)mActivity.findViewById(R.id.txt_uese_level)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
+    private void initUserName() {
+        ((TextView) mActivity.findViewById(R.id.txt_uese_name)).setText(AppContext.instance().loginUser.getUserName());
+        ((TextView) mActivity.findViewById(R.id.txt_uese_level)).setText(getString(R.string.person_level) + AppContext.instance().loginUser.getLevel());
 
-        final ImageView user_photo = (ImageView)mActivity.findViewById(R.id.iv_user_pic);
+        final ImageView user_photo = (ImageView) mActivity.findViewById(R.id.iv_user_pic);
 
         if (!TextUtils.isEmpty(AppContext.instance().loginUser.getPhoto())) {
             x.image().bind(user_photo, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto(), new Callback.CommonCallback<Drawable>() {
@@ -188,7 +169,7 @@ public class MainCompeteFragment extends MainBasicFragment  {
 
                 }
             });
-        }else {
+        } else {
             user_photo.setImageResource(R.drawable.set_headportrait);
         }
     }
@@ -220,7 +201,7 @@ public class MainCompeteFragment extends MainBasicFragment  {
             case R.id.txt_set_competition_time:
                 setMenuOpen();
                 //设置时间 每次都会读取本地保存的数据
-                setMemoryTime();
+
                 break;
             case R.id.img_close:
                 menu.toggle();
@@ -240,34 +221,34 @@ public class MainCompeteFragment extends MainBasicFragment  {
     private void initData() {
         homeBeans = new ArrayList<>();
         //人名头像记忆
-        ProjectBean npPj = new ProjectBean(mActivity.getString(R.string.project_1), Constant.getProjectId(getString(R.string.project_1)),getString(R.string.project_1_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean npPj = new ProjectBean(mActivity.getString(R.string.project_1), Constant.getProjectId(getString(R.string.project_1)), getString(R.string.project_1_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean npBean = new HomeBean(R.drawable.sel_np, R.drawable.nor_np, npPj, false);
         //二进制数字
-        ProjectBean ejzPj = new ProjectBean(mActivity.getString(R.string.project_2),Constant.getProjectId(getString(R.string.project_2)),getString(R.string.project_2_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean ejzPj = new ProjectBean(mActivity.getString(R.string.project_2), Constant.getProjectId(getString(R.string.project_2)), getString(R.string.project_2_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean ejzBean = new HomeBean(R.drawable.sel_rjz, R.drawable.nor_rjz, ejzPj, false);
         //马拉松数字项目
-        ProjectBean mlsNumPj = new ProjectBean(mActivity.getString(R.string.project_3),Constant.getProjectId(getString(R.string.project_3)),getString(R.string.project_3_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean mlsNumPj = new ProjectBean(mActivity.getString(R.string.project_3), Constant.getProjectId(getString(R.string.project_3)), getString(R.string.project_3_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean mlsNumBean = new HomeBean(R.drawable.sel_mlsnum, R.drawable.nor_mlsnum, mlsNumPj, false);
         //抽象图形
-        ProjectBean cxTxPj = new ProjectBean(mActivity.getString(R.string.project_4),Constant.getProjectId(getString(R.string.project_4)), getString(R.string.project_4_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean cxTxPj = new ProjectBean(mActivity.getString(R.string.project_4), Constant.getProjectId(getString(R.string.project_4)), getString(R.string.project_4_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean cxTxBean = new HomeBean(R.drawable.sel_cx, R.drawable.nor_cx, cxTxPj, false);
         // 快速随机数字
-        ProjectBean kssjPj = new ProjectBean(mActivity.getString(R.string.project_5),Constant.getProjectId(getString(R.string.project_5)), getString(R.string.project_5_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "CDVDVWE", "FBRRYJU", "GWGWG5", "FKBNG");
+        ProjectBean kssjPj = new ProjectBean(mActivity.getString(R.string.project_5), Constant.getProjectId(getString(R.string.project_5)), getString(R.string.project_5_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "CDVDVWE", "FBRRYJU", "GWGWG5", "FKBNG");
         HomeBean kssjBean = new HomeBean(R.drawable.sel_kssj, R.drawable.nor_kssj, kssjPj, false);
         // 虚拟事件和日期
-        ProjectBean xnsjPj = new ProjectBean(mActivity.getString(R.string.project_6),Constant.getProjectId(getString(R.string.project_6)), getString(R.string.project_6_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean xnsjPj = new ProjectBean(mActivity.getString(R.string.project_6), Constant.getProjectId(getString(R.string.project_6)), getString(R.string.project_6_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean xnsjBean = new HomeBean(R.drawable.sel_xlsj, R.drawable.nor_xlsj, xnsjPj, false);
         // 马拉松扑克记忆
-        ProjectBean mlspkPj = new ProjectBean(mActivity.getString(R.string.project_7),Constant.getProjectId(getString(R.string.project_7)), getString(R.string.project_7_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean mlspkPj = new ProjectBean(mActivity.getString(R.string.project_7), Constant.getProjectId(getString(R.string.project_7)), getString(R.string.project_7_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean mlspkBean = new HomeBean(R.drawable.sel_mlspk, R.drawable.nor_mlspk, mlspkPj, false);
         // 随机词语记忆
-        ProjectBean sjcyPj = new ProjectBean(mActivity.getString(R.string.project_8),Constant.getProjectId(getString(R.string.project_8)), getString(R.string.project_8_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean sjcyPj = new ProjectBean(mActivity.getString(R.string.project_8), Constant.getProjectId(getString(R.string.project_8)), getString(R.string.project_8_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean sjcyBean = new HomeBean(R.drawable.sel_sjcy, R.drawable.nor_sjcy, sjcyPj, false);
         //听记数字
-        ProjectBean thnumPj = new ProjectBean(mActivity.getString(R.string.project_9),Constant.getProjectId(getString(R.string.project_9)), getString(R.string.project_9_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean thnumPj = new ProjectBean(mActivity.getString(R.string.project_9), Constant.getProjectId(getString(R.string.project_9)), getString(R.string.project_9_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean thnumBean = new HomeBean(R.drawable.sel_tjnum, R.drawable.nor_tjnum, thnumPj, false);
         // 快速扑克记忆
-        ProjectBean kspkPj = new ProjectBean(mActivity.getString(R.string.project_10),Constant.getProjectId(getString(R.string.project_10)), getString(R.string.project_10_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
+        ProjectBean kspkPj = new ProjectBean(mActivity.getString(R.string.project_10), Constant.getProjectId(getString(R.string.project_10)), getString(R.string.project_10_target), new String[]{"5min", "5min", "5min"}, new String[]{"15min", "15min", "15min"}, new String[]{"1" + next, "2" + next, "2" + next}, "", "", "", "");
         HomeBean kspkBean = new HomeBean(R.drawable.sel_kspk, R.drawable.nor_kspk, kspkPj, false);
         homeBeans.add(npBean);
         homeBeans.add(ejzBean);
@@ -324,19 +305,24 @@ public class MainCompeteFragment extends MainBasicFragment  {
     private SlidingMenu menu;
 
     public void setMenuOpen() {
-        if (null != menu) {
-            if (!menu.isShown()) {
-                menu.showMenu();
-            } else {
-                menu.toggle();
-            }
+        if (menu == null) {
+            setSidebar();
         }
+        if (!menu.isShown()) {
+            menu.showMenu();
+
+        } else {
+            menu.toggle();
+        }
+
     }
+
 
     /*
      * 设置侧边栏
 	 */
-    public View setSidebar() {
+
+    private void setSidebar() {
         menu = new SlidingMenu(mActivity);
         // 设置左侧边栏
         menu.setMode(SlidingMenu.RIGHT);
@@ -355,34 +341,20 @@ public class MainCompeteFragment extends MainBasicFragment  {
         // SlidingMenu滑动时的渐变程度
         menu.setFadeDegree(0.55f);
         menu.attachToActivity(mActivity, SlidingMenu.SLIDING_CONTENT);
-        menu.setMenu(R.layout.sliding_menu_layout);
-        // 得到View对象
-        View view = menu.getMenu();
+        menu.setMenu(R.layout.setting_parent);
 
-        set_tital_slidmenu = (TextView) view.findViewById(R.id.txt_title_project);
-        rl_competitionMode = (RelativeLayout) view.findViewById(R.id.rl_competition_mode_set);
-        mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_group_competition_mode);
-        mCompetitionMode = "0";
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+        View view = (RelativeLayout) menu.getMenu();
 
-                switch (group.getCheckedRadioButtonId()) {
-                    case R.id.btn_default_mode:
-                        mCompetitionMode = "2";
-                        break;
-                    case R.id.btn_default_mode_3:
-                        mCompetitionMode = "3";
-                        break;
-                    case R.id.btn_default_mode_4:
-                        mCompetitionMode = "4";
-                        break;
-                }
-            }
-        });
+        final LinearLayout parent = (LinearLayout) view.findViewById(R.id.parent_setting);
+        final TextView set_tital_slidmenu = (TextView) view.findViewById(R.id.txt_title_project);
+        set_tital_slidmenu.setText(Constant.getProjectName(homeBeans.get(projectindex).projectBean.getProjectId()));
 
-        binaryMemoryText = (TextView) view.findViewById(R.id.binary_memory_set_show);
-        binaryAnswerText = (TextView) view.findViewById(R.id.binary_answer_set_show);
+        final TextView binaryMemoryText = (TextView) view.findViewById(R.id.binary_memory_set_show);
+        final TextView binaryAnswerText = (TextView) view.findViewById(R.id.binary_answer_set_show);
+        binaryMemoryText.setText(Util
+                .dateFormat(SharepreferenceUtils.readLong(homeBeans.get(projectindex).projectBean.getProjectId() + "_memoryTime", 300)));
+        binaryAnswerText.setText(Util
+                .dateFormat(SharepreferenceUtils.readLong(homeBeans.get(projectindex).projectBean.getProjectId() + "_re_memoryTime", 300)));
 
         // 设置点击事件
         view.findViewById(R.id.img_close).setOnClickListener(new View.OnClickListener() {
@@ -397,12 +369,12 @@ public class MainCompeteFragment extends MainBasicFragment  {
             public void onClick(View v) {
                /* 设置记忆比赛时间点击事件*/
                 Util.createSetting(getActivity(),
-                        binaryMemoryTime, new IcoreTimeChange() {
+                        SharepreferenceUtils.readLong(homeBeans.get(projectindex).projectBean.getProjectId() + "_memoryTime", 300), new IcoreTimeChange() {
                             @Override
                             public void callback(long value) {
-                                binaryMemoryTime = value;
+                                SharepreferenceUtils.writeLong(homeBeans.get(projectindex).projectBean.getProjectId() + "_memoryTime", value);
                                 binaryMemoryText.setText(Util
-                                        .dateFormat(binaryMemoryTime));
+                                        .dateFormat(value));
                             }
                         }).show();
 
@@ -414,57 +386,58 @@ public class MainCompeteFragment extends MainBasicFragment  {
             public void onClick(View v) {
                /* 设置答题时间点击事件*/
                 Util.createSetting(getActivity(),
-                        binaryAnswerTime, new IcoreTimeChange() {
+                        SharepreferenceUtils.readLong(homeBeans.get(projectindex).projectBean.getProjectId() + "_re_memoryTime", 300), new IcoreTimeChange() {
                             @Override
                             public void callback(long value) {
-                                binaryAnswerTime = value;
+                                SharepreferenceUtils.writeLong(homeBeans.get(projectindex).projectBean.getProjectId() + "_re_memoryTime", value);
                                 binaryAnswerText.setText(Util
-                                        .dateFormat(binaryAnswerTime));
+                                        .dateFormat(value));
                             }
                         }).show();
             }
         });
+        menu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
+            @Override
+            public void onOpened() {
+                set_tital_slidmenu.setText(Constant.getProjectName(homeBeans.get(projectindex).projectBean.getProjectId()));
+                binaryMemoryText.setText(Util
+                        .dateFormat(SharepreferenceUtils.readLong(homeBeans.get(projectindex).projectBean.getProjectId() + "_memoryTime", 300)));
+                binaryAnswerText.setText(Util
+                        .dateFormat(SharepreferenceUtils.readLong(homeBeans.get(projectindex).projectBean.getProjectId() + "_re_memoryTime", 300)));
+                for (int i = parent.getChildCount(); i > 5; i--) {
+                    parent.removeViewAt(i-1);
+                }
+                if (homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_BINARY_NUM) ||
+                        homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_LISTON_AND_MEMORY_WORDS) ||
+                        homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_LONG_NUM) ||
+                        homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_RANDOM_NUM)) {
 
+                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.line_setting, null);
 
+                    RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_group_competition_mode);
+                    mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-        view.findViewById(R.id.confirm_btn_setting).setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                //当确认修改  保存数据本地  以  _ 分割 2个时间  比赛模式设置
-               String time = binaryMemoryTime + "_" + binaryAnswerTime + "_" + mCompetitionMode;
-               SharepreferenceUtils.writeString(homeBeans.get(projectindex).projectBean.getProjectId(), time);
-               ToastUtil.showToast("设置成功");
-               }
-           }
-        );
-        return view;
-    }
+                            switch (group.getCheckedRadioButtonId()) {
+                                case R.id.btn_default_mode:
+                                    ;
+                                    break;
+                                case R.id.btn_default_mode_3:
 
+                                    break;
+                                case R.id.btn_default_mode_4:
 
-
-    private void setMemoryTime(){
-        String s  = SharepreferenceUtils.getString(
-                homeBeans.get(projectindex).projectBean.getProjectId(), "300_300_0");
-        String[] time = s.split("_");
-        mCompetitionMode = time[2];
-        binaryAnswerTime = Integer.parseInt(time[1]);
-        binaryMemoryTime = Integer.parseInt(time[0]);
-
-        binaryAnswerText.setText(Util
-                .dateFormat(binaryAnswerTime));
-        binaryMemoryText.setText(Util
-                .dateFormat(binaryMemoryTime));
-        if(rl_competitionMode.getVisibility() == View.VISIBLE){
-           if("0".equals(mCompetitionMode)){
-               mRadioGroup.clearCheck();
-           }else if("2".equals(mCompetitionMode)){
-               mRadioGroup.check(R.id.btn_default_mode);
-            }else if("3".equals(mCompetitionMode)){
-               mRadioGroup.check(R.id.btn_default_mode_3);
-            }else if("4".equals(mCompetitionMode)){
-               mRadioGroup.check(R.id.btn_default_mode_4);
+                                    break;
+                            }
+                        }
+                    });
+                    parent.addView(view);
+                }
             }
-        }
+
+        });
     }
+
 
 }

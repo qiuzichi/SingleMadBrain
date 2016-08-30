@@ -29,16 +29,18 @@ public class NumberMemoryLayout extends LinearLayout {
 
     private int mRows;
 
+    private int num_line;
     public NumberMemoryLayout(Context context) {
         super(context);
     }
 
-    public NumberMemoryLayout(Context context, SparseArray<String> lineNumbers) {
+    public NumberMemoryLayout(Context context, SparseArray<String> lineNumbers,int num_line) {
         super(context);
         this.lineNumbers = lineNumbers;
         if (lineNumbers != null){
             mRows = lineNumbers.valueAt(0).length();
         }
+        this.num_line = num_line;
         this.initGridView(context);
     }
 
@@ -102,6 +104,9 @@ public class NumberMemoryLayout extends LinearLayout {
                 textNum.setLayoutParams(params);
                 textNum.setText(String.valueOf(numList.charAt(i)));
                 textNum.setTextSize(26.0f);
+                if (num_line != 0 && (i+1)%num_line == 0){
+                    textNum.setBackgroundResource(R.drawable.line_ver);
+                }
                 textNum.setTextColor(mContext.getResources().getColor(
                         R.color.main_lf_bg));
                 textNum.setGravity(Gravity.CENTER);
