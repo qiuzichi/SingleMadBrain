@@ -93,6 +93,7 @@ public class MainCompeteFragment extends MainBasicFragment {
         initUserName();
 
         txt_pname = (TextView) mActivity.findViewById(R.id.txt_pname);
+        final LinearLayout ll_item_bg = (LinearLayout) mActivity.findViewById(R.id.ll_item_bg);
         txt_city_memory = (TextView) mActivity.findViewById(R.id.txt_city_memory);
         txt_city_recall = (TextView) mActivity.findViewById(R.id.txt_city_recall);
         txt_china_memory = (TextView) mActivity.findViewById(R.id.txt_china_memory);
@@ -107,15 +108,15 @@ public class MainCompeteFragment extends MainBasicFragment {
 
         relatlayout.setVisibility(View.GONE);
         lv_project.setAdapter(homeListAdapter);//(new nvvervi());
-
+        final int[] iconDrawable = new int[]{R.drawable.ic_launcher};
         lv_project.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (relatlayout.getVisibility() == View.GONE) {
                     relatlayout.setVisibility(View.VISIBLE);
                 }
-
                 projectindex = position;
+                ll_item_bg.setBackgroundResource(iconDrawable[projectindex]);
                 homeListAdapter.notifyDataSetChanged();
                 txt_pname.setText(homeBeans.get(position).projectBean.getName());
 

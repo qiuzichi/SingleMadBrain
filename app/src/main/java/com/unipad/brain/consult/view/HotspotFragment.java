@@ -73,18 +73,24 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                 case HttpConstant.NOTIFY_GET_HOTSPOT:
                     if(null == o){
                         //网络访问错误 刷新数据
-                        tv_error.setVisibility(View.VISIBLE);
-                        mSwipeRefreshLayout.setVisibility(View.GONE);
-                        tv_error.setText(getString(R.string.net_error_refrush_data));
+                        if(newsDatas.size() == 0){
+                            tv_error.setVisibility(View.VISIBLE);
+                            mSwipeRefreshLayout.setVisibility(View.GONE);
+                            tv_error.setText(getString(R.string.net_error_refrush_data));
+                        }else {
+                            ToastUtil.showToast(getString(R.string.net_error_refrush_data));
+                        }
                         return;
                     }
                     //获取新闻页面数据
                     List<NewEntity> databean = (List<NewEntity>) o;
                     if(databean.size() == 0){
                         //数据为空 显示默认 刷新数据
-                        tv_error.setVisibility(View.VISIBLE);
-                        mSwipeRefreshLayout.setVisibility(View.GONE);
-                        tv_error.setText(getString(R.string.not_news_data));
+                        if(newsDatas.size() == 0){
+                            tv_error.setVisibility(View.VISIBLE);
+                            mSwipeRefreshLayout.setVisibility(View.GONE);
+                            tv_error.setText(getString(R.string.not_news_data));
+                        }
                         return;
                     }
 
@@ -99,21 +105,38 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                         //始终记录是最后一页的  页数
                         requestPagerNum++;
                     }
-                    newsDatas.addAll(databean);
+                    if (newsDatas.size() != 0) {
+                        for (int i = databean.size()-1; i >= 0; i--) {
+                            for (int j = 0; j < newsDatas.size(); j++) {
+                                if (databean.get(i).equals(newsDatas.get(j))) {
+                                    break;
+                                } else {
+                                    if (j == newsDatas.size() - 1) {
+                                        //不同 则是新数据
+                                        newsDatas.add(0, databean.get(i));
+                                        break;
+                                    }
+                                    continue;
+                                }
+                            }
+                        }
+                    } else {
+                        newsDatas.addAll(databean);
+                    }
                     mRecyclerViewAdapter.notifyDataSetChanged();
                     break;
 
                 case HttpConstant.NOTIFY_GET_HOTADVERT:
                     if(null == o ){
                         //网络访问错误；可以刷新 重新请求数据
-                        startLunPic(R.drawable.error_remind);
+                        startLunPic();
                         return;
                     }
 
                     if(((List<AdPictureBean>)o).size() == 0){
                         //服务器数据为null 没有数据
                         isNoAdvertData = true;
-                        startLunPic(R.drawable.default_advert_pic);
+                        startLunPic();
                         return;
                     }
 
@@ -147,7 +170,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         initData();
         initRecycler();
         //播放轮播广告
-        startLunPic(R.drawable.default_advert_pic);
+        startLunPic();
     }
 
 
@@ -180,7 +203,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        newsDatas.clear();
+//                        newsDatas.clear();
                         requestPagerNum = 1;
                         getNews(ConsultTab.HOTSPOT.getTypeId(), null, requestPagerNum, perPageDataNumber);
                     }
@@ -330,16 +353,16 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
     }
 
     //播放轮播图；
-    private void startLunPic(int loadingDrawableId){
+    private void startLunPic(){
 
         imageOptions = new ImageOptions.Builder()
                 // 加载中或错误图片的ScaleType;
                 //.setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
                 .setImageScaleType(ImageView.ScaleType.FIT_XY)
                         //设置加载过程中的图片
-                .setLoadingDrawableId(loadingDrawableId)
+                .setLoadingDrawableId(R.drawable.default_advert_pic)
                         //设置加载失败后的图片
-                .setFailureDrawableId(loadingDrawableId)
+                .setFailureDrawableId(R.drawable.error_remind)
                         //设置使用缓存
                 .build();
     }

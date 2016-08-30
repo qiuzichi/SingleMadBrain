@@ -78,18 +78,25 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
             case HttpConstant.NOTIFY_GET_COMPETITION:
                 if(null == o){
                     //网络访问错误 刷新数据
-                    tv_error.setVisibility(View.VISIBLE);
-                    mSwipeRefreshLayout.setVisibility(View.GONE);
-                    tv_error.setText(getString(R.string.net_error_refrush_data));
+                    if(newsDatas.size() == 0){
+                        tv_error.setVisibility(View.VISIBLE);
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
+                        tv_error.setText(getString(R.string.net_error_refrush_data));
+                    } else {
+                        ToastUtil.showToast(getString(R.string.net_error_refrush_data));
+                    }
+
                     return;
                 }
                 //获取新闻页面数据
                 List<NewEntity> databean = (List<NewEntity>) o;
                 if(databean.size() == 0){
                     //数据为空 显示默认 刷新数据
-                    tv_error.setVisibility(View.VISIBLE);
-                    mSwipeRefreshLayout.setVisibility(View.GONE);
-                    tv_error.setText(getString(R.string.not_news_data));
+                    if(newsDatas.size() == 0){
+                        tv_error.setVisibility(View.VISIBLE);
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
+                        tv_error.setText(getString(R.string.not_news_data));
+                    }
                     return;
                 }
 
@@ -103,7 +110,25 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
                     //始终记录是最后一页的  页数
                     requestPagerNum++;
                 }
-                newsDatas.addAll(databean);
+
+                if (newsDatas.size() != 0) {
+                    for (int i = databean.size()-1; i >= 0; i--) {
+                        for (int j = 0; j < newsDatas.size(); j++) {
+                            if (databean.get(i).equals(newsDatas.get(j))) {
+                                break;
+                            } else {
+                                if (j == newsDatas.size() - 1) {
+                                    //不同 则是新数据
+                                    newsDatas.add(0, databean.get(i));
+                                    break;
+                                }
+                                continue;
+                            }
+                        }
+                    }
+                } else {
+                    newsDatas.addAll(databean);
+                }
                 mRecyclerViewAdapter.notifyDataSetChanged();
                 break;
 
@@ -168,7 +193,7 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        newsDatas.clear();
+//                        newsDatas.clear();
                         requestPagerNum = 1;
                         getNews(ConsultTab.OCCASIONS.getTypeId(), null, requestPagerNum, perPageDataNumber);
                     }
