@@ -92,10 +92,10 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
         //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}
 
-        memoryTime = SharepreferenceUtils.getInt(
+        memoryTime = (int) SharepreferenceUtils.readLong(
                 mActivity.getProjectId() + "_memoryTime",
                 300);
-        reMemoryTime = SharepreferenceUtils.getInt(
+        reMemoryTime = (int) SharepreferenceUtils.readLong(
                 mActivity.getProjectId() + "_re_memoryTime",
                 300);
     }
