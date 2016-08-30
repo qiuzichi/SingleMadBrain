@@ -81,7 +81,6 @@
                 android:id="@+id/lv_introduction_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/blue"
                 android:layout_below="@id/rl_reminder_version"
                 android:cacheColorHint="@null"
                 android:scrollbars="vertical" />
