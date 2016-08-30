@@ -9,27 +9,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-
-import com.lidroid.xutils.BitmapUtils;
+import com.unipad.AppContext;
 import com.unipad.brain.R;
 import com.unipad.brain.consult.adapter.MyRecyclerAdapter;
+import com.unipad.brain.consult.entity.AdPictureBean;
 import com.unipad.brain.consult.entity.ConsultTab;
 import com.unipad.brain.consult.listener.DividerDecoration;
 import com.unipad.brain.consult.listener.OnLoadMoreListener;
-import com.unipad.brain.home.MainBasicFragment;
-
-import com.unipad.AppContext;
-import com.unipad.brain.R;
-import com.unipad.brain.consult.entity.AdPictureBean;
 import com.unipad.brain.consult.widget.RecommendGallery;
 import com.unipad.brain.consult.widget.RecommendPot;
 import com.unipad.brain.home.MainBasicFragment;
@@ -38,6 +29,7 @@ import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
@@ -76,21 +68,14 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
 
     @Override
     public void update(int key, Object o) {
-        if(null != o){
+        HIDDialog.dismissAll();
             switch (key) {
                 case HttpConstant.NOTIFY_GET_HOTSPOT:
                     if(null == o){
                         //网络访问错误 刷新数据
                         tv_error.setVisibility(View.VISIBLE);
-                        tv_error.setClickable(true);
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
                         tv_error.setText(getString(R.string.net_error_refrush_data));
-                        tv_error.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mSwipeRefreshLayout.setRefreshing(true);
-                                tv_error.setClickable(false);
-                            }
-                        });
                         return;
                     }
                     //获取新闻页面数据
@@ -98,12 +83,13 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                     if(databean.size() == 0){
                         //数据为空 显示默认 刷新数据
                         tv_error.setVisibility(View.VISIBLE);
-                        tv_error.setClickable(false);
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
                         tv_error.setText(getString(R.string.not_news_data));
                         return;
                     }
 
                     tv_error.setVisibility(View.GONE);
+                    mSwipeRefreshLayout.setVisibility(View.VISIBLE);
 
                     if(requestPagerNum == 1 && databean.size() != 0){
                         totalPager = databean.get(0).getTotalPager();
@@ -145,7 +131,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                     break;
             }
         }
-    }
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_introduction;
@@ -176,6 +162,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
     private void initRecycler(){
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
         tv_error = (TextView) getView().findViewById(R.id.tv_load_error_show);
+        tv_error.setOnClickListener(this);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.light_blue2,
@@ -195,7 +182,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                         mSwipeRefreshLayout.setRefreshing(false);
                         newsDatas.clear();
                         requestPagerNum = 1;
-                        service.getNews(ConsultTab.HOTSPOT.getTypeId(), null, requestPagerNum, perPageDataNumber);
+                        getNews(ConsultTab.HOTSPOT.getTypeId(), null, requestPagerNum, perPageDataNumber);
                     }
                 }, 1000);
             }
@@ -216,7 +203,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
             @Override
             public void onLoadMore() {
 
-                if(totalPager == requestPagerNum){
+                if (totalPager == requestPagerNum) {
                    /* 最后一页 直接吐司 不显示下拉加载*/
                     ToastUtil.showToast(getString(R.string.loadmore_null_data));
                     return;
@@ -272,7 +259,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                     mRecyclerViewAdapter.notifyItemRemoved(newsDatas.size());
 
                     if (!(totalPager == requestPagerNum)) {
-                        service.getNews(ConsultTab.HOTSPOT.getTypeId(), null, requestPagerNum, perPageDataNumber);
+                        getNews(ConsultTab.HOTSPOT.getTypeId(), null, requestPagerNum, perPageDataNumber);
                     } else {
                         mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
                         //重新加载adapter 不然不更新数据
@@ -295,12 +282,11 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
             ImageView imageView = holder.getView(R.id.ad_gallery_item);
             x.image().bind(imageView, adPictureBean.getAdvertPath(),imageOptions);
         }
-
     }
-
 
     private void getNews(String contentType,String title,int page,int size ){
         service.getNews(contentType,title,page,size );
+        ToastUtil.createWaitingDlg(getActivity(),null,Constant.LOGIN_WAIT_DLG).show(15);
     }
 
     private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener(){
@@ -378,7 +364,12 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
     }
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.tv_load_error_show:
+                requestPagerNum = 1;
+                getNews(ConsultTab.HOTSPOT.getTypeId(), null, requestPagerNum, perPageDataNumber);
+                break;
+        }
     }
 
 }

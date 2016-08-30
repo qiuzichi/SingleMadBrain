@@ -219,8 +219,7 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 break;
             case R.id.txt_set_competition_time:
                 setMenuOpen();
-                //设置时间 每次都会读取本地保存的数据
-                setMemoryTime();
+
                 break;
             case R.id.img_close:
                 menu.toggle();
@@ -360,7 +359,7 @@ public class MainCompeteFragment extends MainBasicFragment  {
         View view = menu.getMenu();
 
         set_tital_slidmenu = (TextView) view.findViewById(R.id.txt_title_project);
-        rl_competitionMode = (RelativeLayout) view.findViewById(R.id.rl_competition_mode_set);
+//        rl_competitionMode = (RelativeLayout) view.findViewById(R.id.rl_competition_mode_set);
         mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_group_competition_mode);
         mCompetitionMode = "0";
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -433,6 +432,7 @@ public class MainCompeteFragment extends MainBasicFragment  {
                 //当确认修改  保存数据本地  以  _ 分割 2个时间  比赛模式设置
                String time = binaryMemoryTime + "_" + binaryAnswerTime + "_" + mCompetitionMode;
                SharepreferenceUtils.writeString(homeBeans.get(projectindex).projectBean.getProjectId(), time);
+               SharepreferenceUtils.writeString(homeBeans.get(projectindex).projectBean.getProjectId() + "", time);
                ToastUtil.showToast("设置成功");
                }
            }
@@ -442,29 +442,5 @@ public class MainCompeteFragment extends MainBasicFragment  {
 
 
 
-    private void setMemoryTime(){
-        String s  = SharepreferenceUtils.getString(
-                homeBeans.get(projectindex).projectBean.getProjectId(), "300_300_0");
-        String[] time = s.split("_");
-        mCompetitionMode = time[2];
-        binaryAnswerTime = Integer.parseInt(time[1]);
-        binaryMemoryTime = Integer.parseInt(time[0]);
-
-        binaryAnswerText.setText(Util
-                .dateFormat(binaryAnswerTime));
-        binaryMemoryText.setText(Util
-                .dateFormat(binaryMemoryTime));
-        if(rl_competitionMode.getVisibility() == View.VISIBLE){
-           if("0".equals(mCompetitionMode)){
-               mRadioGroup.clearCheck();
-           }else if("2".equals(mCompetitionMode)){
-               mRadioGroup.check(R.id.btn_default_mode);
-            }else if("3".equals(mCompetitionMode)){
-               mRadioGroup.check(R.id.btn_default_mode_3);
-            }else if("4".equals(mCompetitionMode)){
-               mRadioGroup.check(R.id.btn_default_mode_4);
-            }
-        }
-    }
 
 }

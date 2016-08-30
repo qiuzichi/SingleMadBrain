@@ -269,6 +269,7 @@ public class PersonalRecordFragment extends PersonalCommonFragment implements Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.record_text_search:
+                mRecordData.clear();
                 requestRecordPager = 1;
                 if(!isLoadMoreRecordData){
                     this.validateDate();

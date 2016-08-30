@@ -17,6 +17,7 @@ import com.unipad.http.HitopGetRule;
 import com.unipad.http.HitopHistRecord;
 import com.unipad.http.HitopLogin;
 import com.unipad.http.HitopMatchStart;
+import com.unipad.http.HitopQuitLogin;
 import com.unipad.http.HitopTopList;
 import com.unipad.http.HitopUpPhoto;
 import com.unipad.http.HitopUpdataPwd;
@@ -238,7 +239,7 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
     public void getTopList(String matchId){
         HitopTopList hitopTopList = new HitopTopList();
 //        hitopTopList.addBodyParameter("matchId",matchId);
-        hitopTopList.buildRequestParams("matchId",matchId);
+        hitopTopList.buildRequestParams("matchId", matchId);
 //        hitopTopList.setSevice(this);
         hitopTopList.post();
     }
@@ -250,6 +251,11 @@ public class PersonCenterService extends GlobleObserService implements ICoreServ
     public void getRule(String id){
         HitopGetRule httpGetRule = new HitopGetRule(id,null,this);
         httpGetRule.post();
+    }
+
+    public void getQuitApplication(){
+        HitopQuitLogin httpQuit = new HitopQuitLogin();
+        httpQuit.get();
     }
 }
 
