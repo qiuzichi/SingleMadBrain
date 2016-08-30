@@ -91,12 +91,13 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
         //if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
         //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}
-        String s = SharepreferenceUtils.getString(
-                mActivity.getProjectId(),
-                "300_300");
-        String[] time = s.split("_");
-        reMemoryTime = Integer.parseInt(time[1]);
-        memoryTime = Integer.parseInt(time[0]);
+
+        memoryTime = (int) SharepreferenceUtils.readLong(
+                mActivity.getProjectId() + "_memoryTime",
+                300);
+        reMemoryTime = (int) SharepreferenceUtils.readLong(
+                mActivity.getProjectId() + "_re_memoryTime",
+                300);
     }
 
     /**

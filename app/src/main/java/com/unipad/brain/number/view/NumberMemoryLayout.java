@@ -1,6 +1,7 @@
 package com.unipad.brain.number.view;
 
 import android.content.Context;
+import android.support.v4.widget.Space;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,13 +27,20 @@ public class NumberMemoryLayout extends LinearLayout {
      */
     private int mLoadedItem = 0;
 
+    private int mRows;
+
+    private int num_line;
     public NumberMemoryLayout(Context context) {
         super(context);
     }
 
-    public NumberMemoryLayout(Context context, SparseArray<String> lineNumbers) {
+    public NumberMemoryLayout(Context context, SparseArray<String> lineNumbers,int num_line) {
         super(context);
         this.lineNumbers = lineNumbers;
+        if (lineNumbers != null){
+            mRows = lineNumbers.valueAt(0).length();
+        }
+        this.num_line = num_line;
         this.initGridView(context);
     }
 
@@ -81,20 +89,29 @@ public class NumberMemoryLayout extends LinearLayout {
     private void addNumText(LinearLayout parent, int index) {
         String numList = lineNumbers.get(index);
         LayoutParams params;
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT,
+        params = new LayoutParams(0,
                 LayoutParams.WRAP_CONTENT);
         params.weight = 1;
         params.gravity = Gravity.CENTER;
-        for (int i = 0; i < numList.length(); i++) {
-
-            TextView textNum = new TextView(mContext);
-            textNum.setLayoutParams(params);
-            textNum.setText(String.valueOf(numList.charAt(i)));
-            textNum.setTextSize(26.0f);
-            textNum.setTextColor(mContext.getResources().getColor(
-                    R.color.main_lf_bg));
-            textNum.setGravity(Gravity.CENTER);
-            parent.addView(textNum, i);
+        int length = numList.length();
+        for (int i = 0; i < mRows; i++) {
+            if (i >= length) {
+                Space pace = new Space(mContext);
+                pace.setLayoutParams(params);
+                parent.addView(pace, i);
+            } else {
+                TextView textNum = new TextView(mContext);
+                textNum.setLayoutParams(params);
+                textNum.setText(String.valueOf(numList.charAt(i)));
+                textNum.setTextSize(26.0f);
+                if (num_line != 0 && (i+1)%num_line == 0){
+                    textNum.setBackgroundResource(R.drawable.line_ver);
+                }
+                textNum.setTextColor(mContext.getResources().getColor(
+                        R.color.main_lf_bg));
+                textNum.setGravity(Gravity.CENTER);
+                parent.addView(textNum, i);
+            }
         }
     }
 

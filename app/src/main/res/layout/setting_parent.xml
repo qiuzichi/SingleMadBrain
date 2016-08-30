@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/parent_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_30dp">
+
+                <TextView
+                    android:id="@+id/txt_title_project"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/margin_10dip"
+                    android:text="@string/project_1"
+                    android:textColor="@color/main_1"
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
+                    android:id="@+id/img_close"
+                    android:layout_width="@dimen/margin_30dp"
+                    android:layout_height="@dimen/margin_30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_30dp"
+                    android:src="@drawable/close_menu" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txt_title_exercise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_title_project"
+                android:layout_marginTop="@dimen/margin_10dip"
+                android:gravity="center"
+                android:text="@string/exercise_mode_set"
+                android:textColor="@color/main_1"
+                android:textSize="@dimen/text_size_competition" />
+
+
+            <LinearLayout
+                android:id="@+id/binary_memory_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/newlist_height"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/setting_project_height"
+                    android:layout_weight="100"
+                    android:text="@string/set_memorytime"
+                    android:textColor="@color/main_2"
+                    android:textSize="@dimen/common_text_24" />
+
+                <TextView
+                    android:id="@+id/binary_memory_set_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:textColor="@color/time_setting"
+
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:background="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1dp"
+                android:background="@color/view_divide_line"></View>
+
+            <LinearLayout
+                android:id="@+id/binary_answer_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10dip"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/setting_project_height"
+                    android:layout_weight="100"
+                    android:text="@string/set_answertime"
+                    android:textColor="@color/main_2"
+                    android:textSize="@dimen/common_text_24" />
+
+                <TextView
+                    android:id="@+id/binary_answer_set_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:textColor="@color/time_setting"
+
+                    android:textSize="@dimen/text_size_competition" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_10dip"
+                    android:background="@drawable/arrow_right" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

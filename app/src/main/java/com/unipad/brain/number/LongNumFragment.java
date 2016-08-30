@@ -3,6 +3,7 @@ package com.unipad.brain.number;
 import android.view.View;
 import android.widget.ScrollView;
 
+import com.unipad.brain.AbsBaseGameService;
 import com.unipad.brain.R;
 import com.unipad.brain.number.view.KeyboardDialog;
 import com.unipad.brain.number.view.NumberMemoryLayout;
@@ -27,8 +28,12 @@ public class LongNumFragment extends NumberRightFragment {
     @Override
     public void reStartGame() {
         super.reStartGame();
-        if (mKeyboardDialog != null && !mKeyboardDialog.isShowing()) {
+        if (service.state == AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY){
             mKeyboardDialog.show();
+        }else {
+            if (mKeyboardDialog != null){
+                mKeyboardDialog.dismiss();
+            }
         }
     }
 
@@ -72,7 +77,7 @@ public class LongNumFragment extends NumberRightFragment {
     @Override
     public void initMemoryView() {
         frameLayout.removeAllViews();
-        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers,5));
     }
 
     @Override

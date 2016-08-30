@@ -33,7 +33,7 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
     @Override
     public void initMemoryView() {
         frameLayout.removeAllViews();
-        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers));
+        frameLayout.addView(new NumberMemoryLayout(mActivity, service.lineNumbers,5));
     }
 
     @Override
@@ -50,6 +50,10 @@ public class QuickRandomNumFragment extends  NumberRightFragment{
 
         if (service.state == AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY){
             mKeyboardDialog.show();
+        } else {
+            if (mKeyboardDialog != null){
+                mKeyboardDialog.dismiss();
+            }
         }
     }
 
