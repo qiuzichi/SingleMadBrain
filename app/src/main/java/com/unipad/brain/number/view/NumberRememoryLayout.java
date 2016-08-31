@@ -92,12 +92,12 @@ public class NumberRememoryLayout extends LinearLayout implements
         if (mCompeteType.equals(mContext.getString(R.string.project_2))) {
             mRowNumber = "";
             mTextSize = 23.0f;
-        } else {
+        }
             mLeftCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_left_anim);
             mRightCursorBg = mContext.getResources().getDrawable(R.drawable.cursor_right_anim);
             mLeftCursorAnim = (AnimationDrawable) mLeftCursorBg;
             mRightCursorAnim = (AnimationDrawable) mRightCursorBg;
-        }
+
 
         if (callback != null) {
             callback.begin();

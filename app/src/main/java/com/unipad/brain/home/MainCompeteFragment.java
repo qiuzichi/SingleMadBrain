@@ -408,32 +408,85 @@ public class MainCompeteFragment extends MainBasicFragment {
                     parent.removeViewAt(i-1);
                 }
                 if (homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_BINARY_NUM) ||
-                        homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_LISTON_AND_MEMORY_WORDS) ||
+//                        homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_LONG_POCKER) ||
                         homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_LONG_NUM) ||
                         homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_RANDOM_NUM)) {
 
                     View view = LayoutInflater.from(getActivity()).inflate(R.layout.line_setting, null);
 
                     RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_group_competition_mode);
+                    int lineMode = SharepreferenceUtils.getInt(homeBeans.get(projectindex).projectBean.getProjectId() + "_linemode", 0);
+                    switch (lineMode){
+                        case 0:
+                            mRadioGroup.clearCheck();
+                            break;
+                        case 2:
+                            mRadioGroup.check(R.id.btn_default_mode);
+                            break;
+                        case 3:
+                            mRadioGroup.check(R.id.btn_default_mode_3);
+                            break;
+                        case 4:
+                            mRadioGroup.check(R.id.btn_default_mode_4);
+                            break;
+                    }
+
                     mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                             switch (group.getCheckedRadioButtonId()) {
                                 case R.id.btn_default_mode:
-                                    ;
+                                    SharepreferenceUtils.writeint(homeBeans.get(projectindex).projectBean.getProjectId() + "_linemode", 2);
                                     break;
                                 case R.id.btn_default_mode_3:
-
+                                    SharepreferenceUtils.writeint(homeBeans.get(projectindex).projectBean.getProjectId() + "_linemode", 3);
                                     break;
                                 case R.id.btn_default_mode_4:
-
+                                    SharepreferenceUtils.writeint(homeBeans.get(projectindex).projectBean.getProjectId() + "_linemode", 4);
                                     break;
                             }
                         }
                     });
                     parent.addView(view);
                 }
+
+                if(homeBeans.get(projectindex).projectBean.getProjectId().equals(Constant.GAME_LONG_POCKER)){
+                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.line_setting, null);
+                    RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_group_competition_mode);
+                    ((TextView) view.findViewById(R.id.txt_title_competition)).setText(getString(R.string.long_poker_remember_way));
+                    ((RadioButton) view.findViewById(R.id.btn_default_mode)).setVisibility(View.GONE);
+                    ((RadioButton) view.findViewById(R.id.btn_default_mode_3)).setText("3");
+                    ((RadioButton) view.findViewById(R.id.btn_default_mode_4)).setText("5");
+
+                    int lineMode = SharepreferenceUtils.getInt(homeBeans.get(projectindex).projectBean.getProjectId() + "_dividemode", 3);
+                    switch (lineMode){
+                        case 3:
+                            mRadioGroup.check(R.id.btn_default_mode_3);
+                            break;
+                        case 5:
+                            mRadioGroup.check(R.id.btn_default_mode_4);
+                            break;
+                    }
+
+                    mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                            switch (group.getCheckedRadioButtonId()) {
+
+                                case R.id.btn_default_mode_3:
+                                    SharepreferenceUtils.writeint(homeBeans.get(projectindex).projectBean.getProjectId() + "_dividemode", 3);
+                                    break;
+                                case R.id.btn_default_mode_4:
+                                    SharepreferenceUtils.writeint(homeBeans.get(projectindex).projectBean.getProjectId() + "_dividemode", 5);
+                                    break;
+                            }
+                        }
+                    });
+                    parent.addView(view);
+                }
+
             }
 
         });
