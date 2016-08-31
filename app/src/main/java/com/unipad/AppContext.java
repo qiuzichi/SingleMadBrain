@@ -21,7 +21,6 @@ import com.unipad.brain.virtual.dao.VirtualTimeService;
 import com.unipad.brain.words.dao.WordsService;
 import com.unipad.common.Constant;
 import com.unipad.observer.GlobleHandle;
-import com.unipad.observer.IDataObserver;
 
 import org.xutils.DbManager;
 import org.xutils.image.ImageOptions;
@@ -35,6 +34,7 @@ import java.util.Set;
  * 整个应用的全局上下文
  * <p/>
  * Created by gongkan on 2016/3/11
+ *
  */
 public class AppContext {
 
