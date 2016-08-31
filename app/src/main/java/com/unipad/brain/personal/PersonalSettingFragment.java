@@ -10,6 +10,9 @@ import android.widget.EditText;
 
 import com.unipad.AppContext;
 import com.unipad.brain.R;
+import com.unipad.brain.dialog.BaseConfirmDialog;
+import com.unipad.brain.dialog.ConfirmDialog;
+import com.unipad.brain.dialog.ConfirmUpdateDialog;
 import com.unipad.brain.main.MainActivity;
 import com.unipad.brain.personal.bean.Pwd;
 import com.unipad.brain.personal.dao.PersonCenterService;
@@ -34,6 +37,7 @@ public class PersonalSettingFragment extends PersonalCommonFragment implements I
     private int mNormalColor, mRedColor, mTextHint;
 
     private PersonCenterService service;
+    private ConfirmUpdateDialog mExitDialog;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class PersonalSettingFragment extends PersonalCommonFragment implements I
         service = (PersonCenterService) AppContext.instance().getService(Constant.PERSONCENTER);
         service.registerObserver(HttpConstant.UPDATA_LOGIN_PWD, this);
         service.registerObserver(HttpConstant.SUBMIT_FEEDBACK,this);
+        service.registerObserver(HttpConstant.QUIT_APPLICATION,this);
 
         mRedColor = mActivity.getResources().getColor(R.color.red);
         mNormalColor = mActivity.getResources().getColor(R.color.personal_setting_text);
@@ -151,12 +156,9 @@ mActivity.findViewById(R.id.text_system_setting).setVisibility(View.GONE);
                 mSelectedViewId = R.id.text_modify_pay_pwd;
                 break;
             case R.id.text_exit_app:
-                ActivityCollector.finishAllActivity();
-                //返回到桌面
-//                Intent intent = new Intent(Intent.ACTION_MAIN);
-//                intent.addCategory(Intent.CATEGORY_HOME);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                mActivity.startActivity(intent);
+                mExitDialog = new ConfirmUpdateDialog(mActivity, getString(R.string.dlg_title_default), getString(R.string.is_exit_app),
+                        getString(R.string.cancel), getString(R.string.confirm_exit_app), mDialogListener);
+                mExitDialog.show();
                 break;
             case R.id.btn_confirm_modify_login:
                 this.confirmModifyLoginPwd();
@@ -285,6 +287,25 @@ mActivity.findViewById(R.id.text_system_setting).setVisibility(View.GONE);
         service.updataLoginPwd(AppContext.instance().loginUser.getUserId(),pwd.getOriginPwd(),pwd.getRepeatNewPwd());
     }
 
+    private BaseConfirmDialog.OnActionClickListener mDialogListener = new BaseConfirmDialog.OnActionClickListener() {
+
+        @Override
+        public void onActionRight(BaseConfirmDialog dialog) {
+            //确定退出  返回到桌面
+            service.getQuitApplication();
+            ActivityCollector.finishAllActivity();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mActivity.startActivity(intent);
+        }
+
+        @Override
+        public void onActionLeft(BaseConfirmDialog dialog) {
+           mExitDialog.dismiss();
+        }
+    };
+
     @Override
     protected void saveInfoToServer() {
         super.saveInfoToServer();
@@ -324,6 +345,11 @@ mActivity.findViewById(R.id.text_system_setting).setVisibility(View.GONE);
                     ToastUtil.showToast(mActivity.getString(R.string.string_json_error));
                     e.printStackTrace();
                 }
+                break;
+
+            case HttpConstant.QUIT_APPLICATION:
+                break;
+            default:
                 break;
         }
     }

@@ -1,4 +1,7 @@
 package com.unipad.brain.home.bean;
+
+import com.unipad.brain.consult.view.CompititionMainFragment;
+
 /**
  * @描述：  赛事Bean
  * @author gongjiebin
@@ -143,5 +146,20 @@ public class CompetitionBean {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return false;
+		if(this == o) return true;
+		if(getClass() != o.getClass()) return false;
+		if(o instanceof CompetitionBean){
+			CompetitionBean bean = (CompetitionBean)o;
+			if(bean.getId().equals(this.getId())){
+				return true;
+			}
+		}
+		return false;
 	}
 }

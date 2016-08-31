@@ -139,4 +139,18 @@ public class NewEntity {
         this.totalCount = totalCount;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if(this == o) return true;
+        if(getClass() != o.getClass()) return false;
+        if(o instanceof NewEntity){
+            NewEntity bean = (NewEntity)o;
+            if(bean.getId().equals(this.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

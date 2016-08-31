@@ -40,9 +40,9 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
     // 获取定位dao
     private LocationService service;
 
-    List<ProvinceBean> provinceBeans;
-    List<CityBean> cityBeans;
-    List<CompetitionBean> competitionBeans;
+    private List<ProvinceBean> provinceBeans;
+    private List<CityBean> cityBeans;
+    private List<CompetitionBean> competitionBeans;
     private TextView txt_nodata;
 
     @Override
@@ -212,37 +212,41 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
                 }
                 break;
             case HttpConstant.LOCATION_APPLY_GAME:
-                CompetitionBean bean = (CompetitionBean) o;
-                if (null != bean) {
-                    for (int i = 0; i < competitionBeans.size(); i++) {
-                        CompetitionBean compet = competitionBeans.get(i);
-                        if (compet.getComId().equals(bean.getComId())) {
-                            compet.setIsApply(bean.getIsApply());
-                            break;
-                        } else {
-                            continue;
-                        }
-                    }
-                    ((BaseAdapter)lv_com.getAdapter()).notifyDataSetChanged();
-                } else { //用户没有实名认证
-                    if(AppContext.instance().loginUser.getAuth() == 0 || AppContext.instance().loginUser.getAuth() == 3) {
-                        View dialogView = View.inflate(this, R.layout.first_login_dialog, null);
-                        TextView txt_msg = (TextView) dialogView.findViewById(R.id.txt_msg);
-                        txt_msg.setText(AppContext.instance().loginUser.getAuth() == 0 ? this.getString(R.string.auth_hint) : this.getString(R.string.auth_fail_hint));
-                        final ShowDialog showDialog = new ShowDialog(this);
-                        showDialog.showDialog(dialogView, ShowDialog.TYPE_CENTER, this.getWindowManager(), 0.4f, 0.5f);
-
-                        showDialog.setOnShowDialogClick(new ShowDialog.OnShowDialogClick() {
-                            @Override
-                            public void dialogClick(int id) {
-                                if(null != showDialog && showDialog.isShowing()){
-                                    showDialog.dismiss();
-                                }
+                if (o instanceof String) {
+                    ToastUtil.showToast((String) o);
+                } else {
+                    if (null != o) {
+                    CompetitionBean bean = (CompetitionBean) o;
+                        for (int i = 0; i < competitionBeans.size(); i++) {
+                            CompetitionBean compet = competitionBeans.get(i);
+                            if (compet.getComId().equals(bean.getComId())) {
+                                compet.setIsApply(bean.getIsApply());
+                                break;
+                            } else {
+                                continue;
                             }
-                        });
-                        showDialog.bindOnClickListener(dialogView, new int[]{R.id.img_close});
-                    } else {
-                        ToastUtil.showToast(getString(R.string.submit_fail));
+                        }
+                        ((BaseAdapter)lv_com.getAdapter()).notifyDataSetChanged();
+                    } else { //用户没有实名认证
+                        if(AppContext.instance().loginUser.getAuth() == 0 || AppContext.instance().loginUser.getAuth() == 3) {
+                            View dialogView = View.inflate(this, R.layout.first_login_dialog, null);
+                            TextView txt_msg = (TextView) dialogView.findViewById(R.id.txt_msg);
+                            txt_msg.setText(AppContext.instance().loginUser.getAuth() == 0 ? this.getString(R.string.auth_hint) : this.getString(R.string.auth_fail_hint));
+                            final ShowDialog showDialog = new ShowDialog(this);
+                            showDialog.showDialog(dialogView, ShowDialog.TYPE_CENTER, this.getWindowManager(), 0.4f, 0.5f);
+
+                            showDialog.setOnShowDialogClick(new ShowDialog.OnShowDialogClick() {
+                                @Override
+                                public void dialogClick(int id) {
+                                    if(null != showDialog && showDialog.isShowing()){
+                                        showDialog.dismiss();
+                                    }
+                                }
+                            });
+                            showDialog.bindOnClickListener(dialogView, new int[]{R.id.img_close});
+                        } else {
+                            ToastUtil.showToast(getString(R.string.submit_fail));
+                        }
                     }
                 }
                 break;
@@ -272,7 +276,7 @@ public class LocationActivity extends BasicActivity implements IDataObserver, Ad
             case R.id.lv_city:
                 // 根据城市ID 获取比赛列表
                 if(position != 0)
-                ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
+                    ToastUtil.createWaitingDlg(this,null,Constant.LOGIN_WAIT_DLG).show(15);
                 for(int i = 0; i < cityBeans.size() ; i ++ ){
                     if(i == position){
                         cityBeans.get(i).isSel = true;

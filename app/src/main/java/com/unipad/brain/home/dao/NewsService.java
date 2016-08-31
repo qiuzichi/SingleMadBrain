@@ -2,6 +2,7 @@ package com.unipad.brain.home.dao;
 
 import com.unipad.AppContext;
 import com.unipad.ICoreService;
+import com.unipad.common.Constant;
 import com.unipad.http.HitopAdList;
 import com.unipad.http.HitopApplyGame;
 import com.unipad.http.HitopNewsComment;
@@ -10,6 +11,7 @@ import com.unipad.http.HitopNewsOperate;
 import com.unipad.http.HitopNewsVersion;
 import com.unipad.http.HittopGetUserGame;
 import com.unipad.observer.GlobleObserService;
+import com.unipad.utils.ToastUtil;
 
 import org.xutils.common.Callback;
 

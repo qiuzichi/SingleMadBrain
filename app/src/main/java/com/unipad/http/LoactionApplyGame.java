@@ -69,6 +69,8 @@ public class LoactionApplyGame extends HitopRequest<CompetitionBean> {
                         competitionBean.setComId(dataJson.optString("matchId"));
                         competitionBean.setIsApply(1);
                     }
+                }else if(jsObj.getInt("ret_code") == -1){
+                    ((LocationService) AppContext.instance().getService(Constant.LOCATION_SERVICE)).noticeDataChange(applyGameKey, jsObj.optString("ret_msg"));
                 }
             }
         } catch (UnsupportedEncodingException e) {

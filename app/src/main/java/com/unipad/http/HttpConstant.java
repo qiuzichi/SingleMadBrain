@@ -68,6 +68,9 @@ public class HttpConstant {
     public static String ATTENTION_HTTP = "/api/match/operate";
     /**随机获取题目*/
     public static String RANDOM_GET_QUESTION = "/api/practice/getQuestion";
+    //退出应用；
+    public static String USER_QUIT_APPLICATION = "/api/user/quit";
+
 
     public static int JSON_ERREO = -2;
     public static final int LOGIN_UPDATE_UI = 0x10000;
@@ -99,6 +102,9 @@ public class HttpConstant {
     public static final int USER_IN_GAEM = 0x10600;
     // 修改登录密码
     public static final int UPDATA_LOGIN_PWD = 0x10700;
+
+    // 退出应用key
+    public static final int QUIT_APPLICATION = 0x10701;
     // 提交意见
     public static final int SUBMIT_FEEDBACK=0x10800;
     // 上传文件（头像）

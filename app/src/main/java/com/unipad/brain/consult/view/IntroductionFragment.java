@@ -1,6 +1,7 @@
 package com.unipad.brain.consult.view;
 
 
+import android.app.ActionBar;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -42,6 +43,7 @@ import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
@@ -61,7 +63,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private List<AdPictureBean> newsAdvertDatas ;
     //默认加载第一页  的数据 标记为最后一页的页数
     private int requestPagerNum = 1;
-    private final int primaryDataNumber = 10;
+    private int permaryDataNumber = 10;
     private NewsService service;
     private AdViewPagerAdapter adAdapter;
     private RecommendGallery mAdvertLuobo;
@@ -78,7 +80,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private ConfirmUpdateDialog mConfirmDialog;
     private RelativeLayout mRelativeLayoutVersion;
     private TextView tv_error;
-    private Boolean isNoAdvertData;
+    private Boolean isNoAdvertData = false;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     private void initData() {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
         tv_error = (TextView) getView().findViewById(R.id.tv_load_error_show);
+        tv_error.setOnClickListener(this);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
 
         mRelativeLayoutVersion = (RelativeLayout) getView().findViewById(R.id.rl_reminder_version);
@@ -127,13 +130,12 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        newsDatas.clear();
-
+//                        newsDatas.clear();
 //                        if(mRecyclerViewAdapter.getIsVisibility()){
 //                            newsDatas.add(0, new NewEntity("header"));
 //                        }
                         requestPagerNum = 1;
-                        service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+                        getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, permaryDataNumber);
 
                     }
                 }, 1000);
@@ -163,6 +165,8 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 //                }
             }
         });
+
+
         mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -186,7 +190,6 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                 showUpdateVersionDialog(mActivity);
             }
         });
-
     }
 
     private void initLunPic(){
@@ -201,6 +204,11 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
 
         adAdapter = new AdViewPagerAdapter(getActivity(),newsAdvertDatas,R.layout.ad_gallery_item);
         mAdvertLuobo.setAdapter(adAdapter);
+    }
+
+    private void getNews(String contentType,String title,int page,int size ){
+        service.getNews(contentType,title,page,size );
+        ToastUtil.createWaitingDlg(getActivity(),null,Constant.LOGIN_WAIT_DLG).show(15);
     }
 
     private boolean checkVersionIsNew(){
@@ -294,7 +302,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         if ((isVisibleToUser && isResumed())) {
 
             if(!isGetData){
-                service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+                getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, permaryDataNumber);
                 service.getAdverts(ConsultTab.INTRODUCATION.getTypeId());
                 service.getApkVersion();
                 Log.d("introduction visit ", "获取消息 界面可见");
@@ -307,15 +315,15 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     }
 
     private void startLunPic(int loadingDrawableId){
-        //开始播放
+        //加载图片中。。。
         imageOptions = new ImageOptions.Builder()
                 // 加载中或错误图片的ScaleType
                 //.setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
                 .setImageScaleType(ImageView.ScaleType.FIT_XY)
                         //设置加载过程中的图片
-                .setLoadingDrawableId(loadingDrawableId)
+                .setLoadingDrawableId(R.drawable.default_advert_pic)
                         //设置加载失败后的图片
-                .setFailureDrawableId(loadingDrawableId)
+                .setFailureDrawableId(R.drawable.default_advert_pic)
                         //设置使用缓存
                 .build();
     }
@@ -404,7 +412,7 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                         mRecyclerViewAdapter.notifyItemRemoved(newsDatas.size());
 
                         if (requestPagerNum != totalPager) {
-                            service.getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, primaryDataNumber);
+                            getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, permaryDataNumber);
                         } else {
                             mRecyclerViewAdapter.notifyItemChanged(newsDatas.size());
                             //重新加载adapter 不然不更新数据
@@ -423,6 +431,10 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
         switch (v.getId()){
             case R.id.update_version_imgview:
                 showUpdateVersionDialog(mActivity);
+                break;
+            case R.id.tv_load_error_show:
+                requestPagerNum = 1;
+                getNews(ConsultTab.INTRODUCATION.getTypeId(), null, requestPagerNum, permaryDataNumber);
                 break;
             default:
                 break;
@@ -447,33 +459,33 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
     //用于网络请求数据 key 是网页的id   o是解析后的list数据
     @Override
     public void update(int key, Object o) {
-
+        HIDDialog.dismissAll();
             switch (key) {
                 case HttpConstant.NOTIFY_GET_NEWS:
-                    if(null == o){
+                    if(null == o ){
                         //网络访问错误 刷新数据
-                        tv_error.setVisibility(View.VISIBLE);
-                        tv_error.setClickable(true);
-                        tv_error.setText(getString(R.string.net_error_refrush_data));
-                        tv_error.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mSwipeRefreshLayout.setRefreshing(true);
-                                tv_error.setClickable(false);
-                            }
-                        });
+                        if(newsDatas.size() == 0){
+                            tv_error.setVisibility(View.VISIBLE);
+                            mSwipeRefreshLayout.setVisibility(View.GONE);
+                            tv_error.setText(getString(R.string.net_error_refrush_data));
+                        }else {
+                            ToastUtil.showToast(getString(R.string.net_error_refrush_data));
+                        }
                         return;
                     }
                     //获取新闻页面数据
                     List<NewEntity> databean = (List<NewEntity>) o;
                     if(databean.size() == 0){
                         //数据为空 显示默认 刷新数据
-                        tv_error.setVisibility(View.VISIBLE);
-                        tv_error.setClickable(false);
-                        tv_error.setText(getString(R.string.not_news_data));
+                        if(newsDatas.size() == 0){
+                            tv_error.setVisibility(View.VISIBLE);
+                            mSwipeRefreshLayout.setVisibility(View.GONE);
+                            tv_error.setText(getString(R.string.not_news_data));
+                        }
                         return;
                     }
                     tv_error.setVisibility(View.GONE);
+                    mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                     if (requestPagerNum == 1 && databean.size() != 0) {
                         totalPager = databean.get(0).getTotalPager();
                     }
@@ -481,7 +493,25 @@ public class IntroductionFragment extends MainBasicFragment implements IDataObse
                     if (requestPagerNum != totalPager) {
                         requestPagerNum++;
                     }
-                    newsDatas.addAll(databean);
+
+                    if (newsDatas.size() != 0) {
+                        for (int i = databean.size()-1; i >= 0; i--) {
+                            for (int j = 0; j < newsDatas.size(); j++) {
+                                if (databean.get(i).equals(newsDatas.get(j))) {
+                                    break;
+                                } else {
+                                    if (j == newsDatas.size() - 1) {
+                                        //不同 则是新数据
+                                        newsDatas.add(0, databean.get(i));
+                                        break;
+                                    }
+                                    continue;
+                                }
+                            }
+                        }
+                    } else {
+                        newsDatas.addAll(databean);
+                    }
                     mRecyclerViewAdapter.notifyDataSetChanged();
                     break;
 

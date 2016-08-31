@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ import com.unipad.brain.home.dao.NewsService;
 import com.unipad.common.Constant;
 import com.unipad.common.ViewHolder;
 import com.unipad.common.adapter.CommonAdapter;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.observer.IDataObserver;
 import com.unipad.utils.ToastUtil;
@@ -71,34 +73,35 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
 
     @Override
     public void update(int key, Object o) {
-
+        HIDDialog.dismissAll();
         switch (key) {
             case HttpConstant.NOTIFY_GET_COMPETITION:
                 if(null == o){
                     //网络访问错误 刷新数据
-                    tv_error.setVisibility(View.VISIBLE);
-                    tv_error.setClickable(true);
-                    tv_error.setText(getString(R.string.net_error_refrush_data));
-                    tv_error.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mSwipeRefreshLayout.setRefreshing(true);
-                            tv_error.setClickable(false);
-                        }
-                    });
+                    if(newsDatas.size() == 0){
+                        tv_error.setVisibility(View.VISIBLE);
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
+                        tv_error.setText(getString(R.string.net_error_refrush_data));
+                    } else {
+                        ToastUtil.showToast(getString(R.string.net_error_refrush_data));
+                    }
+
                     return;
                 }
                 //获取新闻页面数据
                 List<NewEntity> databean = (List<NewEntity>) o;
                 if(databean.size() == 0){
                     //数据为空 显示默认 刷新数据
-                    tv_error.setVisibility(View.VISIBLE);
-                    tv_error.setText(getString(R.string.not_news_data));
+                    if(newsDatas.size() == 0){
+                        tv_error.setVisibility(View.VISIBLE);
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
+                        tv_error.setText(getString(R.string.not_news_data));
+                    }
                     return;
                 }
 
                 tv_error.setVisibility(View.GONE);
-
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 if (requestPagerNum == 1 && databean.size() != 0) {
                     totalPager = databean.get(0).getTotalPager();
                 }
@@ -107,7 +110,25 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
                     //始终记录是最后一页的  页数
                     requestPagerNum++;
                 }
-                newsDatas.addAll(databean);
+
+                if (newsDatas.size() != 0) {
+                    for (int i = databean.size()-1; i >= 0; i--) {
+                        for (int j = 0; j < newsDatas.size(); j++) {
+                            if (databean.get(i).equals(newsDatas.get(j))) {
+                                break;
+                            } else {
+                                if (j == newsDatas.size() - 1) {
+                                    //不同 则是新数据
+                                    newsDatas.add(0, databean.get(i));
+                                    break;
+                                }
+                                continue;
+                            }
+                        }
+                    }
+                } else {
+                    newsDatas.addAll(databean);
+                }
                 mRecyclerViewAdapter.notifyDataSetChanged();
                 break;
 
@@ -134,8 +155,10 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
         mLunBoPic.setVisibility(View.GONE);
 
         tv_error = (TextView) getView().findViewById(R.id.tv_load_error_show);
+        tv_error.setOnClickListener(this);
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.lv_introduction_recyclerview);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_widget);
+
 
         initData();
         initRecycler();
@@ -170,13 +193,14 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        newsDatas.clear();
+//                        newsDatas.clear();
                         requestPagerNum = 1;
-                        service.getNews(ConsultTab.OCCASIONS.getTypeId(), null, requestPagerNum, perPageDataNumber);
+                        getNews(ConsultTab.OCCASIONS.getTypeId(), null, requestPagerNum, perPageDataNumber);
                     }
                 }, 1000);
             }
         });
+
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -191,7 +215,7 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
         mRecyclerViewAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                if(requestPagerNum == totalPager){
+                if (requestPagerNum == totalPager) {
                    /* 最后一页 直接吐司 不显示下拉加载*/
                     ToastUtil.showToast(getString(R.string.loadmore_null_data));
                     return;
@@ -212,7 +236,7 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
         if ((isVisibleToUser && isResumed())) {
 
             if(!isGetData){
-                service.getNews(ConsultTab.OCCASIONS.getTypeId(), null, requestPagerNum, perPageDataNumber);
+                getNews(ConsultTab.OCCASIONS.getTypeId(), null, requestPagerNum, perPageDataNumber);
                 Log.d("occasion visit ", "获取消息 界面可见");
                 isGetData = true;
             }
@@ -246,6 +270,7 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
 
     private void getNews(String contentType,String title,int page,int size ){
         service.getNews(contentType, title, page, size);
+        ToastUtil.createWaitingDlg(getActivity(),null,Constant.LOGIN_WAIT_DLG).show(15);
     }
 
 
@@ -276,7 +301,12 @@ public class OccasionsFragment extends MainBasicFragment implements IDataObserve
     }
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.tv_load_error_show:
+                requestPagerNum = 1;
+                getNews(ConsultTab.OCCASIONS.getTypeId(), null, requestPagerNum, perPageDataNumber);
+                break;
+        }
     }
 
 }
