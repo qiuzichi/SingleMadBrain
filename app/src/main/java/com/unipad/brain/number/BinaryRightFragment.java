@@ -17,7 +17,7 @@ public class BinaryRightFragment extends NumberRightFragment{
 
     @Override
     public boolean isNeedShowCurrent() {
-        return false;
+        return true;
     }
 
     @Override
