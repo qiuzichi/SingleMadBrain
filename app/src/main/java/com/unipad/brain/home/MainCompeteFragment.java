@@ -116,7 +116,7 @@ public class MainCompeteFragment extends MainBasicFragment {
                     relatlayout.setVisibility(View.VISIBLE);
                 }
                 projectindex = position;
-                ll_item_bg.setBackgroundResource(iconDrawable[projectindex]);
+//                ll_item_bg.setBackgroundResource(iconDrawable[projectindex]);
                 homeListAdapter.notifyDataSetChanged();
                 txt_pname.setText(homeBeans.get(position).projectBean.getName());
 
@@ -130,7 +130,6 @@ public class MainCompeteFragment extends MainBasicFragment {
                 if (position == 6 || position == 9) {
                     return;
                 }
-
 
             }
         });
@@ -202,7 +201,6 @@ public class MainCompeteFragment extends MainBasicFragment {
             case R.id.txt_set_competition_time:
                 setMenuOpen();
                 //设置时间 每次都会读取本地保存的数据
-
                 break;
             case R.id.img_close:
                 menu.toggle();
@@ -284,7 +282,6 @@ public class MainCompeteFragment extends MainBasicFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             convertView = LayoutInflater.from(mActivity).inflate(R.layout.fragment_home_item, null);
-
             TextView name = (TextView) convertView.findViewById(R.id.txt_name);
             ImageView img = (ImageView) convertView.findViewById(R.id.img_photo);
             name.setText(homeBeans.get(position).projectBean.getName());

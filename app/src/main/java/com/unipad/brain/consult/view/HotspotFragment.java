@@ -362,7 +362,7 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
                         //设置加载过程中的图片
                 .setLoadingDrawableId(R.drawable.default_advert_pic)
                         //设置加载失败后的图片
-                .setFailureDrawableId(R.drawable.error_remind)
+                .setFailureDrawableId(R.drawable.default_advert_pic)
                         //设置使用缓存
                 .build();
     }
