@@ -301,6 +301,7 @@
                 android:layout_marginRight="@dimen/margin_10dip"
                 android:background="@drawable/apple"
                 android:text="@string/str_apply"
+                android:visibility="gone"
                 android:textColor="@color/white" />
 
             <Button

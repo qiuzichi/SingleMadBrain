@@ -16,19 +16,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.unipad.AppContext;
 import com.unipad.IOperateGame;
+import com.unipad.common.widget.HIDDialog;
 import com.unipad.singlebrain.AbsBaseGameService;
 import com.unipad.singlebrain.R;
-import com.unipad.common.widget.HIDDialog;
-import com.unipad.http.HttpConstant;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.SharepreferenceUtils;
 
 import org.json.JSONObject;
 import org.xutils.common.Callback;
-import org.xutils.x;
 
 import java.util.Map;
 
@@ -80,9 +77,9 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
         mCountDownTime = new CountDownTime(0, false);
         mCountDownTime.setTimeListener(this);
         mTextTime.setText(mCountDownTime.getTimeString());
-        mTextName.setText(AppContext.instance().loginUser.getUserName());
+        mTextName.setText("qzc");
         mIconImageView = (ImageView) mParentLayout.findViewById(R.id.user_photo);
-        x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
+        //x.image().bind(mIconImageView, HttpConstant.PATH_FILE_URL + AppContext.instance().loginUser.getPhoto());
         //if (CompeteItemEntity.getInstance().getCompeteItem().equals(getString(R.string.project_9))) {
         //  mTextCompeteProcess.setText(R.string.playing_voice);
         //}

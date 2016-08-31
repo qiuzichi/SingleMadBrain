@@ -45,7 +45,7 @@ public abstract class HitopRequest<T> {
 
 
     protected boolean isNeedToken() {
-        return true;
+        return false;
     }
 
     public HitopRequest(String path) {

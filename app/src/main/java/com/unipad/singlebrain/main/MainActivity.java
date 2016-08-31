@@ -46,10 +46,10 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
     public void initData() {
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.add(R.id.c_rfg_container, mHomeFragment);
+        mFragmentTransaction.add(R.id.c_rfg_container, mCompeteFragment);
         mFragmentTransaction.commit();
         mFragmentManager.executePendingTransactions();
-        mCurrentFrg = mHomeFragment;
+        mCurrentFrg = mCompeteFragment;
 
         View view = findViewById(R.id.main_lf_home);
         view.setOnClickListener(this);
@@ -61,15 +61,15 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
         findViewById(R.id.main_lf_compete).setOnClickListener(this);
         findViewById(R.id.main_lf_location).setOnClickListener(this);
 
-        if(AppContext.instance().loginUser.getAuth() == 0 || AppContext.instance().loginUser.getAuth() == 3){
-            View dialogView = View.inflate(this,R.layout.first_login_dialog,null);
-            TextView txt_msg = (TextView)dialogView.findViewById(R.id.txt_msg);
-            txt_msg.setText(AppContext.instance().loginUser.getAuth() == 0 ? this.getString(R.string.auth_hint) : this.getString(R.string.auth_fail_hint));
-            showDialog = new ShowDialog(this);
-            showDialog.showDialog(dialogView, ShowDialog.TYPE_CENTER,getWindowManager(),0.4f,0.5f);
-            showDialog.setOnShowDialogClick(this);
-            showDialog.bindOnClickListener(dialogView,new int[]{R.id.img_close});
-        }
+//        if(AppContext.instance().loginUser.getAuth() == 0 || AppContext.instance().loginUser.getAuth() == 3){
+//            View dialogView = View.inflate(this,R.layout.first_login_dialog,null);
+//            TextView txt_msg = (TextView)dialogView.findViewById(R.id.txt_msg);
+//            txt_msg.setText(AppContext.instance().loginUser.getAuth() == 0 ? this.getString(R.string.auth_hint) : this.getString(R.string.auth_fail_hint));
+//            showDialog = new ShowDialog(this);
+//            showDialog.showDialog(dialogView, ShowDialog.TYPE_CENTER,getWindowManager(),0.4f,0.5f);
+//            showDialog.setOnShowDialogClick(this);
+//            showDialog.bindOnClickListener(dialogView,new int[]{R.id.img_close});
+//        }
 
        // mHandler.sendEmptyMessageDelayed(MSG_LOCATION, 5000);
         LocationUtils locationUtils = new LocationUtils(this);

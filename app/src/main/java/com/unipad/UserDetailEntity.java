@@ -117,7 +117,7 @@ public class UserDetailEntity {
     }
 
     public String getUserName() {
-        return userName;
+        return "qzc";
     }
 
     public void setUserName(String userName) {

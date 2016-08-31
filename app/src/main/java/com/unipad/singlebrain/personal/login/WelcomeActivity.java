@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.os.CountDownTimer;
 import com.unipad.singlebrain.BasicActivity;
 import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.main.MainActivity;
 
 /**欢迎界面
  * Created by Jianglu on 2016/4/14.
@@ -69,7 +70,7 @@ public class WelcomeActivity extends BasicActivity implements View.OnClickListen
     private void closeView() {
         //点击关闭 就会关闭界面 开启登录界面
         isClose = true;
-        Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
