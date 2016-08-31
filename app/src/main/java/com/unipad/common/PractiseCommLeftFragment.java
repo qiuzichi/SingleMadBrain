@@ -18,19 +18,14 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
-import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.R;
-import com.unipad.brain.home.bean.RuleGame;
-import com.unipad.brain.home.dao.HomeGameHandService;
+import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.R;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
-import com.unipad.io.mina.SocketThreadManager;
-import com.unipad.observer.IDataObserver;
 import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.SharepreferenceUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.x;

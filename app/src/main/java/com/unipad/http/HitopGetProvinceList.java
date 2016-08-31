@@ -3,9 +3,9 @@ package com.unipad.http;
 import android.text.TextUtils;
 
 import com.unipad.AppContext;
-import com.unipad.brain.App;
-import com.unipad.brain.R;
-import com.unipad.brain.location.bean.ProvinceBean;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.location.bean.ProvinceBean;
 import com.unipad.observer.GlobleObserService;
 
 import org.json.JSONArray;

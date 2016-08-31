@@ -2,11 +2,8 @@ package com.unipad.http;
 
 import com.unipad.AppContext;
 
-import com.unipad.brain.home.dao.HomeGameHandService;
-import com.unipad.brain.home.dao.NewsService;
-
-import com.unipad.brain.location.bean.CompetitionBean;
-import com.unipad.brain.location.dao.LocationService;
+import com.unipad.singlebrain.location.bean.CompetitionBean;
+import com.unipad.singlebrain.location.dao.LocationService;
 import com.unipad.common.Constant;
 
 import org.json.JSONException;

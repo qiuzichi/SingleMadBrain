@@ -1,8 +1,5 @@
 package com.unipad.io.mina;
 
-import android.widget.Toast;
-
-import com.unipad.brain.App;
 import com.unipad.utils.LogUtil;
 
 import java.net.InetSocketAddress;

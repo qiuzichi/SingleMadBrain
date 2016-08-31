@@ -4,7 +4,6 @@ package com.unipad.common;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -17,10 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.unipad.brain.R;
-
-import java.util.List;
-
+import com.unipad.singlebrain.R;
 
 
 /**

@@ -1,10 +1,7 @@
 package com.unipad.common;
 
 
-import java.util.List;
-
 import android.annotation.TargetApi;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -17,7 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.unipad.brain.R;
+import com.unipad.singlebrain.R;
 
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)

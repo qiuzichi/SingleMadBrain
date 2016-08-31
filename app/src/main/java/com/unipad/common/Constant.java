@@ -2,9 +2,9 @@ package com.unipad.common;
 
 import android.content.Context;
 
-import com.unipad.brain.App;
-import com.unipad.brain.R;
-import com.unipad.brain.home.util.SharedPreferencesUtil;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.home.util.SharedPreferencesUtil;
 
 import java.util.HashMap;
 import java.util.Map;

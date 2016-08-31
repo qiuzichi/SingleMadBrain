@@ -1,6 +1,5 @@
 package com.unipad.common;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,8 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.unipad.IOperateGame;
-import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.App;
+import com.unipad.singlebrain.AbsBaseGameService;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;

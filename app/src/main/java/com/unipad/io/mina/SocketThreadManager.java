@@ -1,7 +1,7 @@
 package com.unipad.io.mina;
 
 import com.unipad.AppContext;
-import com.unipad.brain.AbsBaseGameService;
+import com.unipad.singlebrain.AbsBaseGameService;
 import com.unipad.utils.LogUtil;
 
 import java.util.HashMap;

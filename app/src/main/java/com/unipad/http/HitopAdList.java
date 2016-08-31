@@ -1,11 +1,8 @@
 package com.unipad.http;
 
-import android.util.Log;
-
 import com.unipad.AppContext;
-import com.unipad.brain.consult.entity.AdPictureBean;
-import com.unipad.brain.home.bean.NewEntity;
-import com.unipad.brain.home.dao.NewsService;
+import com.unipad.singlebrain.consult.entity.AdPictureBean;
+import com.unipad.singlebrain.home.dao.NewsService;
 import com.unipad.common.Constant;
 
 import org.json.JSONArray;

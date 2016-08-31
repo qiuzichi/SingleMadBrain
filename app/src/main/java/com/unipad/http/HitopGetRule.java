@@ -1,6 +1,6 @@
 package com.unipad.http;
 
-import com.unipad.brain.home.bean.RuleGame;
+import com.unipad.singlebrain.home.bean.RuleGame;
 import com.unipad.observer.GlobleObserService;
 
 import org.json.JSONObject;

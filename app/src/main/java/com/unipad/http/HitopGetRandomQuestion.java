@@ -1,12 +1,6 @@
 package com.unipad.http;
 
-import android.view.View;
-
-import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.App;
-import com.unipad.common.Constant;
-import com.unipad.common.widget.HIDDialog;
-import com.unipad.utils.ToastUtil;
+import com.unipad.singlebrain.AbsBaseGameService;
 
 import org.json.JSONException;
 import org.json.JSONObject;

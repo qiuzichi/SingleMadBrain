@@ -3,8 +3,8 @@ package com.unipad.http;
 import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.brain.personal.bean.CompetitionBean;
-import com.unipad.brain.personal.dao.PersonCenterService;
+import com.unipad.singlebrain.personal.bean.CompetitionBean;
+import com.unipad.singlebrain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
 import com.unipad.observer.GlobleObserService;
 

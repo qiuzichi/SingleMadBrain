@@ -1,12 +1,10 @@
 package com.unipad.http;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.brain.home.bean.CompetitionBean;
-import com.unipad.brain.home.bean.NewEntity;
-import com.unipad.brain.home.dao.NewsService;
+import com.unipad.singlebrain.home.bean.NewEntity;
+import com.unipad.singlebrain.home.dao.NewsService;
 import com.unipad.common.Constant;
 
 import org.json.JSONArray;

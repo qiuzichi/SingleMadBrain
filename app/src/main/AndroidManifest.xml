@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.unipad.brain"
+    package="com.unipad.singlebrain"
     android:versionCode="1"
     android:versionName="@string/versionName">
 
@@ -18,7 +18,7 @@
 
 
     <application
-        android:name=".App"
+        android:name="com.unipad.singlebrain.App"
         android:allowBackup="true"
         android:icon="@mipmap/photo"
         android:label="@string/app_name"
@@ -33,7 +33,7 @@
             </intent-filter>
         </service>
 
-        <service android:name="com.unipad.brain.home.dao.LoadService">
+        <service android:name="com.unipad.singlebrain.home.dao.LoadService">
             <intent-filter>
                 <action android:name="com.loaddown.application" />
             </intent-filter>
@@ -46,7 +46,7 @@
         <!-- http://lbsyun.baidu.com/apiconsole/key -->
 
         <activity
-            android:name=".personal.login.WelcomeActivity"
+            android:name="com.unipad.singlebrain.personal.login.WelcomeActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
@@ -58,11 +58,11 @@
 
 
         <activity
-            android:name=".personal.login.LoginActivity"
+            android:name="com.unipad.singlebrain.personal.login.LoginActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
-            android:name=".personal.PersonalActivity"
+            android:name="com.unipad.singlebrain.personal.PersonalActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
@@ -72,33 +72,33 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".personal.login.RegisterActivity"
+            android:name="com.unipad.singlebrain.personal.login.RegisterActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".personal.login.ForgetPwdActivity"
+            android:name="com.unipad.singlebrain.personal.login.ForgetPwdActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".home.CompetitionListActivity"
+            android:name="com.unipad.singlebrain.home.CompetitionListActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.unipad.singlebrain.main.MainActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".location.LocationActivity"
+            android:name="com.unipad.singlebrain.location.LocationActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".consult.view.PagerDetailActivity"
+            android:name="com.unipad.singlebrain.consult.view.PagerDetailActivity"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".consult.view.SearchResultActivity"
+            android:name="com.unipad.singlebrain.consult.view.SearchResultActivity"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".personal.PersonalInfoActivty"
+            android:name="com.unipad.singlebrain.personal.PersonalInfoActivty"
             android:screenOrientation="landscape"/>
         <!--   ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.   -->

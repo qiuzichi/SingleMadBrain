@@ -2,8 +2,8 @@ package com.unipad.http;
 import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.brain.home.bean.HisRecord;
-import com.unipad.brain.personal.dao.PersonCenterService;
+import com.unipad.singlebrain.home.bean.HisRecord;
+import com.unipad.singlebrain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
 
 import org.json.JSONArray;

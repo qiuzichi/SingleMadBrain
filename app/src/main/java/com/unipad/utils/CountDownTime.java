@@ -2,7 +2,7 @@ package com.unipad.utils;
 
 import android.os.Message;
 
-import com.unipad.brain.App;
+import com.unipad.singlebrain.App;
 
 
 /**

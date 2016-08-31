@@ -3,7 +3,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.unipad.brain.App;
+import com.unipad.singlebrain.App;
 
 public class SharepreferenceUtils {
 	public static final String THEME_NAME = "timeSetting";

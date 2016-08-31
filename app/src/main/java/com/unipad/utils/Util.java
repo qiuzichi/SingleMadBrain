@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.NumberPicker.Formatter;
 import android.widget.TextView;
 
 import com.unipad.IcoreTimeChange;
-import com.unipad.brain.R;
+import com.unipad.singlebrain.R;
 
 
 public class Util {

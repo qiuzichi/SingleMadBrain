@@ -10,7 +10,7 @@
     	android:layout_height="wrap_content"
     	android:gravity="bottom"
    		android:orientation="horizontal" >
-		<com.unipad.brain.view.WheelView
+		<com.unipad.singlebrain.view.WheelView
 			android:id="@+id/time_year"
 			android:layout_height="wrap_content"
 			android:layout_width="100dp"
@@ -18,23 +18,23 @@
 			android:layout_weight="1"
 			/>
 		
-		<com.unipad.brain.view.WheelView
+		<com.unipad.singlebrain.view.WheelView
 			android:id="@+id/time_month"
 			android:layout_height="wrap_content"
 			android:layout_width="80dp"
 			android:layout_weight="1"/>
-		<com.unipad.brain.view.WheelView
+		<com.unipad.singlebrain.view.WheelView
 			android:id="@+id/time_day"
 			android:layout_height="wrap_content"
 			android:layout_width="80dp"
 			android:layout_weight="1"/>
-		<com.unipad.brain.view.WheelView
+		<com.unipad.singlebrain.view.WheelView
 			android:id="@+id/time_hour"
 			android:layout_height="wrap_content"
 			android:layout_width="80dp"
 			android:visibility="gone"
 			android:layout_weight="1"/>
-		<com.unipad.brain.view.WheelView
+		<com.unipad.singlebrain.view.WheelView
 			android:id="@+id/time_minute"
 			android:layout_height="wrap_content"
 			android:layout_width="80dp"

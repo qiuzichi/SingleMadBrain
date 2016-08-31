@@ -5,17 +5,15 @@ import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.unipad.brain.App;
-import com.unipad.brain.R;
-import com.unipad.brain.home.bean.RuleGame;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.home.bean.RuleGame;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
 

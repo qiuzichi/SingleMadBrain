@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:imageradiobutton="http://schemas.android.com/apk/res/com.unipad.brain"
+    xmlns:imageradiobutton="http://schemas.android.com/apk/res-auto"
     android:id="@+id/radio_group"
     android:layout_width="wrap_content"
     android:layout_height="35dp"
@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:textSize="28sp"
         android:gravity="center"/>
-    <com.unipad.brain.ImageRadioButton
+    <com.unipad.singlebrain.ImageRadioButton
         android:id="@+id/hei_tao"
         android:layout_width="80dp"
         imageradiobutton:drawableWith = "30dp"
@@ -21,7 +21,7 @@
         imageradiobutton:drawableLeft="@drawable/heitao"
         android:layout_height="match_parent" />
 
-    <com.unipad.brain.ImageRadioButton
+    <com.unipad.singlebrain.ImageRadioButton
         android:id="@+id/hong_tao"
         android:layout_width="80dp"
         imageradiobutton:drawableWith = "30dp"
@@ -29,7 +29,7 @@
         imageradiobutton:drawableLeft="@drawable/hongtao"
         android:layout_height="match_parent" />
 
-    <com.unipad.brain.ImageRadioButton
+    <com.unipad.singlebrain.ImageRadioButton
         android:id="@+id/mei_hua"
         android:layout_width="80dp"
         imageradiobutton:drawableWith = "30dp"
@@ -37,7 +37,7 @@
         imageradiobutton:drawableLeft="@drawable/meihua"
         android:layout_height="match_parent" />
 
-    <com.unipad.brain.ImageRadioButton
+    <com.unipad.singlebrain.ImageRadioButton
         android:id="@+id/fang_kuai"
         android:layout_width="80dp"
         imageradiobutton:drawableWith = "30dp"

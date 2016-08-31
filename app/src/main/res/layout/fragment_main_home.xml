@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <fragment
-        class="com.unipad.brain.consult.view.InfoListFragment"
+        class="com.unipad.singlebrain.consult.view.InfoListFragment"
         android:id="@+id/fl_mainpager_left"
         android:layout_width="0dp"
         android:layout_height="match_parent"

@@ -4,11 +4,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.lidroid.xutils.http.ResponseInfo;
-import com.unipad.ICoreService;
-import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.App;
-import com.unipad.brain.R;
+import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.R;
 import com.unipad.common.Constant;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.io.mina.SocketThreadManager;
@@ -17,7 +15,6 @@ import com.unipad.utils.ToastUtil;
 
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
-import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.File;

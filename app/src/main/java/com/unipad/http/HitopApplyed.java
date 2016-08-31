@@ -2,13 +2,11 @@ package com.unipad.http;
 
 import android.util.Log;
 
-import com.unipad.AppContext;
-import com.unipad.brain.App;
-import com.unipad.brain.R;
-import com.unipad.brain.personal.bean.CompetitionBean;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.personal.bean.CompetitionBean;
 import com.unipad.common.Constant;
 import com.unipad.observer.GlobleObserService;
-import com.unipad.utils.ToastUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;

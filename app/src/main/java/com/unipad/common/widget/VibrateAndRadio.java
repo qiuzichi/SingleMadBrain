@@ -4,8 +4,8 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Vibrator;
 
-import com.unipad.brain.App;
-import com.unipad.brain.R;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.R;
 
 /**
  * Created by gongkan on 2016/8/9.

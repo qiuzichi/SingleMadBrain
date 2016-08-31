@@ -3,9 +3,9 @@ package com.unipad.http;
 import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.brain.consult.entity.CommentBean;
+import com.unipad.singlebrain.consult.entity.CommentBean;
 
-import com.unipad.brain.home.dao.NewsService;
+import com.unipad.singlebrain.home.dao.NewsService;
 import com.unipad.common.Constant;
 
 import org.json.JSONArray;

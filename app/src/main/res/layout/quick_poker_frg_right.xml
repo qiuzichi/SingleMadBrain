@@ -89,7 +89,7 @@
             android:orientation="vertical"
             android:padding="6dp" >
 
-            <com.unipad.brain.quickPoker.view.widget.QuickPokerBrowseHorizontalView
+            <com.unipad.singlebrain.quickPoker.view.widget.QuickPokerBrowseHorizontalView
                 android:id="@+id/browse_proker_single_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

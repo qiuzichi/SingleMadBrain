@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">MadBrain</string>
+    <string name="app_name">SingleMadBrain</string>
     <string name="action_settings">Settings</string>
     <string name="memorying">正在记忆中&#8230;</string>
     <string name="playing_voice">正在播音中&#8230;</string>

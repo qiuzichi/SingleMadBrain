@@ -1,12 +1,10 @@
 package com.unipad.baiduservice;
 
 import android.app.Activity;
-import android.content.Context;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.Poi;
-import com.unipad.brain.App;
+import com.unipad.singlebrain.App;
 
 /**
  * Created by gongjiebin on 2016/6/22.

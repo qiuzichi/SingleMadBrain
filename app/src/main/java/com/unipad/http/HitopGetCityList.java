@@ -4,19 +4,16 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.brain.App;
-import com.unipad.brain.R;
-import com.unipad.brain.location.bean.CityBean;
-import com.unipad.brain.location.bean.ProvinceBean;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.location.bean.CityBean;
 import com.unipad.observer.GlobleObserService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by gongjiebin on 2016/6/22.

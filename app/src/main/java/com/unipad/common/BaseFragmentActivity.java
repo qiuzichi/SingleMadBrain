@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.unipad.brain.R;
+import com.unipad.singlebrain.R;
 
 
 

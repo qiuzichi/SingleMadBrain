@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.unipad.brain.App;
+import com.unipad.singlebrain.App;
 
 
 public class NetWorkUtil {

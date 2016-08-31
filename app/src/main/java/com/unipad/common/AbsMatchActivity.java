@@ -1,8 +1,7 @@
 package com.unipad.common;
 
-import com.unipad.ICoreService;
-import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.BasicActivity;
+import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.BasicActivity;
 
 /**
  * Created by gongkan on 2016/8/4.

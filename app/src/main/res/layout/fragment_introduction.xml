@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/adver_lunbo_height">
 
-        <com.unipad.brain.consult.widget.RecommendGallery
+        <com.unipad.singlebrain.consult.widget.RecommendGallery
             android:id="@+id/point_gallery"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -16,7 +16,7 @@
             android:spacing="0dp"
             android:unselectedAlpha="1" />
 
-        <com.unipad.brain.consult.widget.RecommendPot
+        <com.unipad.singlebrain.consult.widget.RecommendPot
             android:id="@+id/ad_pot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

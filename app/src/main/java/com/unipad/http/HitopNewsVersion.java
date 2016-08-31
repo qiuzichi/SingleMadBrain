@@ -1,16 +1,11 @@
 package com.unipad.http;
 
 import com.unipad.AppContext;
-import com.unipad.brain.home.bean.NewEntity;
-import com.unipad.brain.home.bean.VersionBean;
-import com.unipad.brain.home.dao.NewsService;
+import com.unipad.singlebrain.home.bean.VersionBean;
+import com.unipad.singlebrain.home.dao.NewsService;
 import com.unipad.common.Constant;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by gongkan on 2016/6/12.

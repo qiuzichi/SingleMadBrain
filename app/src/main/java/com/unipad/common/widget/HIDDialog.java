@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.unipad.AppContext;
-import com.unipad.brain.R;
+import com.unipad.singlebrain.R;
 import com.unipad.utils.HidRelTimer;
 
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.unipad.brain.quickPoker.view.widget.DragGrid
+    <com.unipad.singlebrain.quickPoker.view.widget.DragGrid
         android:id="@+id/userGridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:textSize="26sp" />
     </LinearLayout>
 
-    <com.unipad.brain.quickPoker.view.widget.OtherGridView
+    <com.unipad.singlebrain.quickPoker.view.widget.OtherGridView
         android:id="@+id/otherGridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

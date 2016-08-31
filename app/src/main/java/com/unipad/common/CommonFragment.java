@@ -1,7 +1,6 @@
 package com.unipad.common;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,10 +17,10 @@ import android.widget.TextView;
 
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
-import com.unipad.brain.AbsBaseGameService;
-import com.unipad.brain.R;
-import com.unipad.brain.home.bean.RuleGame;
-import com.unipad.brain.home.dao.HomeGameHandService;
+import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.home.bean.RuleGame;
+import com.unipad.singlebrain.home.dao.HomeGameHandService;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.http.HttpConstant;
 import com.unipad.io.mina.SocketThreadManager;

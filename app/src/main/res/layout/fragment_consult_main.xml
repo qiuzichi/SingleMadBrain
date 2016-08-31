@@ -45,9 +45,9 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <com.unipad.brain.consult.widget.CustomViewPager
+    <com.unipad.singlebrain.consult.widget.CustomViewPager
         android:id="@+id/viewPager_consult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_top"></com.unipad.brain.consult.widget.CustomViewPager>
+        android:layout_below="@id/layout_top"></com.unipad.singlebrain.consult.widget.CustomViewPager>
 </RelativeLayout>

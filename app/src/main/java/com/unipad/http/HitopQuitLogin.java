@@ -1,16 +1,12 @@
 package com.unipad.http;
 
 import com.unipad.AppContext;
-import com.unipad.brain.App;
-import com.unipad.brain.consult.entity.AdPictureBean;
-import com.unipad.brain.home.dao.NewsService;
-import com.unipad.brain.personal.dao.PersonCenterService;
+import com.unipad.singlebrain.consult.entity.AdPictureBean;
+import com.unipad.singlebrain.personal.dao.PersonCenterService;
 import com.unipad.common.Constant;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

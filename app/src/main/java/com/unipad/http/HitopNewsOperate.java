@@ -3,14 +3,12 @@ package com.unipad.http;
 import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.brain.home.bean.NewsOperateBean;
-import com.unipad.brain.home.dao.NewsService;
+import com.unipad.singlebrain.home.bean.NewsOperateBean;
+import com.unipad.singlebrain.home.dao.NewsService;
 import com.unipad.common.Constant;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

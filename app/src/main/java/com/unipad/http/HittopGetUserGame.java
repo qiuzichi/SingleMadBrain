@@ -1,9 +1,9 @@
 package com.unipad.http;
 
 import com.unipad.AppContext;
-import com.unipad.brain.home.bean.CompetitionBean;
-import com.unipad.brain.home.dao.HomeGameHandService;
-import com.unipad.brain.home.dao.NewsService;
+import com.unipad.singlebrain.home.bean.CompetitionBean;
+import com.unipad.singlebrain.home.dao.HomeGameHandService;
+import com.unipad.singlebrain.home.dao.NewsService;
 import com.unipad.common.Constant;
 
 import org.json.JSONArray;

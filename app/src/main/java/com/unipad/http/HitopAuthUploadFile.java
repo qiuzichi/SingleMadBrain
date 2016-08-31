@@ -1,7 +1,6 @@
 package com.unipad.http;
 
-import com.unipad.UserDetailEntity;
-import com.unipad.brain.personal.bean.UploadFileBean;
+import com.unipad.singlebrain.personal.bean.UploadFileBean;
 import com.unipad.observer.GlobleObserService;
 
 import org.json.JSONObject;

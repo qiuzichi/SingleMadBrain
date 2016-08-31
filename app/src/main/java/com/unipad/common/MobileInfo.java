@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
-import com.unipad.brain.App;
+import com.unipad.singlebrain.App;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

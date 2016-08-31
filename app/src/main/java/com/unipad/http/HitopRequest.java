@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.unipad.AppContext;
-import com.unipad.brain.App;
-import com.unipad.brain.R;
-import com.unipad.brain.personal.login.LoginActivity;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.personal.login.LoginActivity;
 import com.unipad.common.widget.HIDDialog;
 import com.unipad.utils.ActivityCollector;
 import com.unipad.utils.LogUtil;
