@@ -42,21 +42,19 @@ public class NumService extends AbsBaseGameService {
     /**
      * 行数
      */
-    public  int lines = 25;
+    protected   int lines = 25;
     /**
      * 列数
      */
-    public  int rows = 30;
+    protected   int rows = 40;
     /**
      * 以行号为key值保存题目的每一行数字的出现顺序
      */
     public  SparseArray<String> lineNumbers = new SparseArray<>();
-
     private String[] allQuestion;
 
     public SparseArray<String> answer = new SparseArray<>();
-
-    ListView ls;
+    protected  int max = 9;
 
     @Override
     public void downloadingQuestion(Map<String, String> mData) {
@@ -92,6 +90,19 @@ public class NumService extends AbsBaseGameService {
         initDataFinished();
         return true;
     }
+
+    @Override
+    public void parseData() {
+        for (int i = 0; i < lines ; i++) {
+            StringBuilder value = new StringBuilder();
+            for (int j = 0; j < rows; j++) {
+                value.append ((int)(Math.random()*(max+1)));
+            }
+            lineNumbers.put(i+1,value.toString());
+        }
+        initDataFinished();
+    }
+
     @Override
     public double getScore() {
         return getNumberScore(40f,20f,2f,1f,1)[0];
@@ -196,7 +207,12 @@ public class NumService extends AbsBaseGameService {
         int length = answerData.length();
         if (length > 0)
         answerData.deleteCharAt(length-1);
-        LogUtil.e("answer","answer ;"+answerData.toString());
+        LogUtil.e("answer", "answer ;" + answerData.toString());
         return answerData.toString();
+    }
+
+    @Override
+    public String initData() {
+        return null;
     }
 }

@@ -96,4 +96,9 @@ public class WordsService extends AbsBaseGameService {
         LogUtil.e("","随机词语;"+answerData.toString());
         return answerData.toString();
     }
+
+    @Override
+    public String initData() {
+        return null;
+    }
 }

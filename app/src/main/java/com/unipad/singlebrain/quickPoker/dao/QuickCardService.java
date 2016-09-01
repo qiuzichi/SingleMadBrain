@@ -107,6 +107,10 @@ public class QuickCardService extends AbsBaseGameService{
 		return userData;
 	}
 
+	@Override
+	public String initData() {
+		return null;
+	}
 
 
 	public ArrayList<ChannelItem> getBottomCards() {

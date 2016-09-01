@@ -138,6 +138,16 @@ public class FigureService extends AbsBaseGameService{
     }
 
     @Override
+    public String initData() {
+        return null;
+    }
+
+    @Override
+    public void parseData() {
+       // super.parseData();
+    }
+
+    @Override
     public void parseData(String data) {
         super.parseData(data);
 

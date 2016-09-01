@@ -163,4 +163,8 @@ public abstract  class AbsBaseGameService extends GlobleObserService implements 
     }
     public abstract double getScore();
     public abstract String getAnswerData();
+    public abstract String initData();
+    public void parseData() {
+        parseData(initData());
+    }
 }

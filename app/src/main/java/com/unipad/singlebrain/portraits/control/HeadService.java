@@ -301,6 +301,11 @@ public class HeadService extends AbsBaseGameService{
     }
 
     @Override
+    public String initData() {
+        return null;
+    }
+
+    @Override
     public void downloadingQuestion(Map<String, String> data) {
         super.downloadingQuestion(data);
         handDownQuestion(data);

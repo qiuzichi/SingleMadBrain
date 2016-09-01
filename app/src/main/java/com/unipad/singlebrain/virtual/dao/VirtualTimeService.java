@@ -113,4 +113,9 @@ public class VirtualTimeService extends AbsBaseGameService {
         LogUtil.e("",userdate.toString());
         return userdate.toString();
     }
- }
+
+    @Override
+    public String initData() {
+        return null;
+    }
+}

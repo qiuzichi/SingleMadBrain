@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Created by gongkan on 2016/6/27.
  */
-public class PractiseGameActivity extends AbsMatchActivity implements IDataObserver,IOperateGame{
+public class PractiseGameActivity extends AbsMatchActivity implements IDataObserver, IOperateGame {
     /**
      * Created by Wbj on 2016/4/7.
      */
@@ -63,14 +63,13 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
     long startTime;
 
     private static final int DOWNLOAD_QUESTION = 1;
-    private static final int SHOW_WAIT_DLG= 2;
+    private static final int SHOW_WAIT_DLG = 2;
     private static final int RESTAT_GAME = 3;
     private static final int FINISH_GAME = 4;
     private static final int INIT_DATA_FINISH = 5;
     private static final int STRAT_REMEMORY = 6;
     private static final int STRAT_MEMORY = 7;
     private static final int DLG_DELAY_DISMISS = 8;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +79,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
         service = (AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId);
         service.setOperateGame(this);
         service.registerObserver(HttpConstant.GET_RANDOM_QUESTION_ERR, this);
-        service.registerObserver(HttpConstant.GET_RANDOM_QUESTION_OK,this);
+        service.registerObserver(HttpConstant.GET_RANDOM_QUESTION_OK, this);
         handler = new Handler() {
             @Override
             public void dispatchMessage(Message msg) {
@@ -115,12 +114,13 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
                         break;
                     case DLG_DELAY_DISMISS:
                         LogUtil.e("", "DLG_DELAY_DISMISS");
-                            HIDDialog.dismissAll();
+                        HIDDialog.dismissAll();
                         break;
                     case INIT_DATA_FINISH:
                         LogUtil.e("", "INIT_DATA_FINISH");
                         gameFragment.initDataFinished();
                         mCommonFragment.initDataFinished();
+
                         service.startMemory(1);
                         break;
                     case SHOW_WAIT_DLG:
@@ -131,10 +131,18 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
             }
         };
 
-                HitopGetRandomQuestion randomQuestion = new HitopGetRandomQuestion(projectId);
-                randomQuestion.setService(service);
-                randomQuestion.post();
-
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                service.parseData();
+            }
+        }.start();
         handler.sendEmptyMessage(SHOW_WAIT_DLG);
 
         /** handler.post(new Runnable() {
@@ -147,6 +155,8 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
 
 
     }
+
+
 
     public AbsBaseGameService getService() {
         return service;
@@ -183,7 +193,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
             gameFragment = new LongPokerPracticeFragment();
         } else if (Constant.GAME_RANDOM_NUM.equals(projectId)) {
             gameFragment = new PractiseQuickRandomFragment();
-        }else if(Constant.GAME_LISTON_AND_MEMORY_WORDS.equals(projectId)){
+        } else if (Constant.GAME_LISTON_AND_MEMORY_WORDS.equals(projectId)) {
             gameFragment = new ListenPracticeNumFragment();
         }
         fragmentTransaction.replace(R.id.common_rfg_container, gameFragment);
@@ -219,7 +229,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
                 });
                 dialog.show();
                 break;
-            case  HttpConstant.GET_RANDOM_QUESTION_OK:
+            case HttpConstant.GET_RANDOM_QUESTION_OK:
                 questionId = (String) o;
                 break;
             default:
@@ -239,7 +249,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
 
     @Override
     public void startMemory() {
-        handler.sendEmptyMessage(STRAT_MEMORY);
+        handler.sendEmptyMessageDelayed(STRAT_MEMORY,3000);
     }
 
     @Override
@@ -262,7 +272,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
 
     }
 
-    public void sendMsgGetSocre(int memoryTime,int rememory,Callback.CommonCallback<String> callback){
+    public void sendMsgGetSocre(int memoryTime, int rememory, Callback.CommonCallback<String> callback) {
         HitopRequest<String> request = new HitopRequest<String>("/api/practice/save") {
             @Override
             public String buildRequestURL() {
@@ -274,13 +284,13 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
                 return null;
             }
         };
-        request.buildRequestParams("userId",AppContext.instance().loginUser.getUserId());
-        request.buildRequestParams("userName",AppContext.instance().loginUser.getUserName());
-        request.buildRequestParams("projectId",projectId);
-        request.buildRequestParams("questionId",questionId);
-        request.buildRequestParams("memtime",memoryTime+"");
-        request.buildRequestParams("rectime",rememory+"");
-        request.buildRequestParams("content",service.getAnswerData());
+        request.buildRequestParams("userId", AppContext.instance().loginUser.getUserId());
+        request.buildRequestParams("userName", AppContext.instance().loginUser.getUserName());
+        request.buildRequestParams("projectId", projectId);
+        request.buildRequestParams("questionId", questionId);
+        request.buildRequestParams("memtime", memoryTime + "");
+        request.buildRequestParams("rectime", rememory + "");
+        request.buildRequestParams("content", service.getAnswerData());
         request.post(callback);
     }
 }

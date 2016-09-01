@@ -12,6 +12,7 @@ import com.unipad.utils.LogUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +35,11 @@ public class LongPokerService extends AbsBaseGameService {
 
     private ArrayList<ChannelItem> pokers = new ArrayList<>();
 
+    private ArrayList <Integer> num = new ArrayList<>();
+
     public ArrayList<LongPokerEntity> pokersQuestion = new ArrayList<>();
 
-    public int howMany;
+    public int howMany = 5;
 
 
     @Override
@@ -172,6 +175,9 @@ public class LongPokerService extends AbsBaseGameService {
     public boolean init() {
         bindPokerImageRes();
         initCards();
+        for (int i = 1;i<53;i++){
+            num.add(i);
+        }
         // parseData(textDefault);
         return true;
     }
@@ -221,6 +227,25 @@ public class LongPokerService extends AbsBaseGameService {
         answerData.deleteCharAt(answerData.length()-1);
         LogUtil.e("","马拉松扑克牌用户答案："+answerData.toString());
         return answerData.toString();
+    }
+
+    @Override
+    public void parseData() {
+        for (int i = 0; i < howMany; i++) {
+            Collections.shuffle(num);
+            LongPokerEntity nullPoker = new LongPokerEntity();
+            pokersQuestion.add(nullPoker);
+            for (int j = 0; j < num.size(); j++) {
+                pokersQuestion.add(new LongPokerEntity(pokers.get(num.get(j)-1)));
+            }
+        }
+        initDataFinished();
+    }
+
+    @Override
+    public String initData() {
+
+        return null;
     }
 
     private void initCards() {

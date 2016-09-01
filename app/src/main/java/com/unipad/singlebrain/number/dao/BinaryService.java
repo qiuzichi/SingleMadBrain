@@ -5,6 +5,14 @@ package com.unipad.singlebrain.number.dao;
  */
 public class BinaryService extends NumService{
 
+    @Override
+    public boolean init() {
+        rows = 30;
+        max = 1;
+        return super.init();
+
+    }
+
     /**
      *
      *  @描述：  二进制记分方法
