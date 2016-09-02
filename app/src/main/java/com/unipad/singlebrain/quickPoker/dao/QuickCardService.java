@@ -1,17 +1,16 @@
 package com.unipad.singlebrain.quickPoker.dao;
 
+import com.unipad.common.Constant;
+import com.unipad.http.HitopGetQuestion;
+import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.R;
+import com.unipad.singlebrain.quickPoker.entity.ChannelItem;
+import com.unipad.singlebrain.quickPoker.entity.PokerEntity;
+import com.unipad.utils.LogUtil;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
-
-import com.unipad.singlebrain.AbsBaseGameService;
-import com.unipad.singlebrain.R;
-import com.unipad.singlebrain.longPoker.entity.LongPokerEntity;
-import com.unipad.singlebrain.quickPoker.entity.ChannelItem;
-import com.unipad.singlebrain.quickPoker.entity.PokerEntity;
-import com.unipad.common.Constant;
-import com.unipad.http.HitopGetQuestion;
-import com.unipad.utils.LogUtil;
 
 
 /**
@@ -97,13 +96,11 @@ public class QuickCardService extends AbsBaseGameService {
             initCards();
         }
         for (int i = 0; i < num.size(); i++) {
-            orgin.add(bottomCards.get(num.get(i)- 1));
+            orgin.add(bottomCards.get(num.get(i) - 1));
         }
         initDataFinished();
 
     }
-
-
 
 
     @Override
@@ -122,7 +119,15 @@ public class QuickCardService extends AbsBaseGameService {
 
     @Override
     public double getScore() {
-        return 0;
+        LogUtil.e("", "userData == " + userData.toString());
+        String[] data = userData.split("_");
+        for (int i = 0; i < data.length; i++) {
+            LogUtil.e("","num="+String.valueOf(num.get(i)));
+            if(!data[i].equals(String.valueOf(num.get(i)))){
+                return i;
+            }
+        }
+        return data.length;
     }
 
     @Override
