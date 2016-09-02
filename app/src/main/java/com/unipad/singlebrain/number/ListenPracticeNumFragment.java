@@ -72,4 +72,12 @@ public class ListenPracticeNumFragment extends ListenToWriteNumFragment {
         }
         LogUtil.e("qzc", "size = " + service.lineNumbers.size() + "---tostring=" + answerData.toString());
     }
+
+    @Override
+    public void memoryTimeToEnd(int memoryTime) {
+        super.memoryTimeToEnd(memoryTime);
+        if(tts.isSpeaking()){
+            tts.stop();
+        }
+    }
 }
