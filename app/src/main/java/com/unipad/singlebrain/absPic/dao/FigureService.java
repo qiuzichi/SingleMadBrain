@@ -1,6 +1,7 @@
 package com.unipad.singlebrain.absPic.dao;
 
 import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.App;
 import com.unipad.singlebrain.absPic.bean.Figure;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopDownLoad;
@@ -8,6 +9,7 @@ import com.unipad.utils.LogUtil;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,17 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public boolean init() {
-        //getResourse(App.getContext());
+
+        String[] files = null;
+        try {
+            files = App.getContext().getResources().getAssets().list(path);
+        } catch (IOException e) {
+
+        }
+        for (int i = 0; i < files.length; i++) {
+            allFigures.add(new Figure(headResourse+files[i], i % 5 +1));
+        }
+
         return true;
     }
 
@@ -144,7 +156,7 @@ public class FigureService extends AbsBaseGameService{
 
     @Override
     public void parseData() {
-       // super.parseData();
+      initDataFinished();
     }
 
     @Override
