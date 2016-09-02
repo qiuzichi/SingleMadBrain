@@ -9,6 +9,10 @@ import android.view.View;
 
 import com.unipad.AppContext;
 import com.unipad.IOperateGame;
+import com.unipad.common.widget.HIDDialog;
+import com.unipad.http.HitopRequest;
+import com.unipad.http.HttpConstant;
+import com.unipad.observer.IDataObserver;
 import com.unipad.singlebrain.AbsBaseGameService;
 import com.unipad.singlebrain.R;
 import com.unipad.singlebrain.absPic.view.PractiseFigureFragment;
@@ -21,11 +25,6 @@ import com.unipad.singlebrain.portraits.view.HeadPracticeFragment;
 import com.unipad.singlebrain.quickPoker.view.PrictisePokerFragment;
 import com.unipad.singlebrain.virtual.VirtualPracticeFragment;
 import com.unipad.singlebrain.words.view.WordPracticeFragment;
-import com.unipad.common.widget.HIDDialog;
-import com.unipad.http.HitopGetRandomQuestion;
-import com.unipad.http.HitopRequest;
-import com.unipad.http.HttpConstant;
-import com.unipad.observer.IDataObserver;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -292,6 +291,10 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
         request.buildRequestParams("rectime", rememory + "");
         request.buildRequestParams("content", service.getAnswerData());
         request.post(callback);
+    }
+
+    public double sendMsgGetSocre() {
+        return service.getScore();
     }
 }
 

@@ -310,7 +310,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10dip"
                 android:background="@drawable/exercise"
-                android:text="@string/str_exercise"
+                android:text="@string/start"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>

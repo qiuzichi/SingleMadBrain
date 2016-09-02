@@ -72,9 +72,9 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
 //        }
 
        // mHandler.sendEmptyMessageDelayed(MSG_LOCATION, 5000);
-        LocationUtils locationUtils = new LocationUtils(this);
-        locationUtils.setOnLocationListener(this);
-        locationUtils.startLocation();
+//        LocationUtils locationUtils = new LocationUtils(this);
+//        locationUtils.setOnLocationListener(this);
+//        locationUtils.startLocation();
     }
 
     @Override

@@ -24,9 +24,6 @@ import com.unipad.utils.CountDownTime;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.SharepreferenceUtils;
 
-import org.json.JSONObject;
-import org.xutils.common.Callback;
-
 import java.util.Map;
 
 /**
@@ -201,49 +198,52 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
 
             win.setAttributes(lp);
             WaitingDialog.show();
-            mActivity.sendMsgGetSocre(memoryTime, rememoryTime, new Callback.CommonCallback<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            LogUtil.e("",Constant.getProjectName(mActivity.getProjectId())+result);
-                            String content = "";
-
-                            JSONObject jsObj = null;
-                            try {
-                                jsObj = new JSONObject(result);
-
-                                if (jsObj != null && jsObj.toString().length() != 0) {
-                                    if (jsObj.optInt("ret_code", -1) == 0) {
-                                        content = mActivity.getResources().getString(R.string.memory_score, memoryTime, rememoryTime, jsObj.getString("data"));
-                                    }else{
-                                        content = jsObj.getString("ret_msg");
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            contentView.setText(content);
-                            WaitingDialog.findViewById(R.id.wait_progress).setVisibility(View.GONE);
-                        }
-
-
-                        @Override
-                        public void onError(Throwable ex, boolean isOnCallback) {
-                            new Exception(ex).printStackTrace();
-                            WaitingDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onCancelled(CancelledException cex) {
-                            WaitingDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onFinished() {
-
-                        }
-                    }
-
-            );
+            String content = mActivity.getResources().getString(R.string.memory_score, memoryTime, rememoryTime, mActivity.sendMsgGetSocre());
+            contentView.setText(content);
+            WaitingDialog.findViewById(R.id.wait_progress).setVisibility(View.GONE);
+//            mActivity.sendMsgGetSocre(memoryTime, rememoryTime, new Callback.CommonCallback<String>() {
+//                        @Override
+//                        public void onSuccess(String result) {
+//                            LogUtil.e("",Constant.getProjectName(mActivity.getProjectId())+result);
+//                            String content = "";
+//
+//                            JSONObject jsObj = null;
+//                            try {
+//                                jsObj = new JSONObject(result);
+//
+//                                if (jsObj != null && jsObj.toString().length() != 0) {
+//                                    if (jsObj.optInt("ret_code", -1) == 0) {
+//                                        content = mActivity.getResources().getString(R.string.memory_score, memoryTime, rememoryTime, jsObj.getString("data"));
+//                                    }else{
+//                                        content = jsObj.getString("ret_msg");
+//                                    }
+//                                }
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                            contentView.setText(content);
+//                            WaitingDialog.findViewById(R.id.wait_progress).setVisibility(View.GONE);
+//                        }
+//
+//
+//                        @Override
+//                        public void onError(Throwable ex, boolean isOnCallback) {
+//                            new Exception(ex).printStackTrace();
+//                            WaitingDialog.dismiss();
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(CancelledException cex) {
+//                            WaitingDialog.dismiss();
+//                        }
+//
+//                        @Override
+//                        public void onFinished() {
+//
+//                        }
+//                    }
+//
+//            );
         }
     }
 

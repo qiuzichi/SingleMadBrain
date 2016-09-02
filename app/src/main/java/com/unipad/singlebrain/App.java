@@ -8,7 +8,6 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.unipad.baiduservice.LocationService;
 
 import org.xutils.x;
@@ -38,9 +37,9 @@ public class App extends Application {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
         // 初始化 百度定位
-        locationService = new LocationService(getApplicationContext());
+        //locationService = new LocationService(getApplicationContext());
         mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
-        SDKInitializer.initialize(getApplicationContext());
+        //SDKInitializer.initialize(getApplicationContext());
         this.createDirs();
     }
 
