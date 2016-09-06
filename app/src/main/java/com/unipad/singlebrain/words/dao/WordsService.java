@@ -7,6 +7,7 @@ import com.unipad.singlebrain.AbsBaseGameService;
 import com.unipad.singlebrain.App;
 import com.unipad.singlebrain.words.bean.WordEntity;
 import com.unipad.utils.LogUtil;
+import com.unipad.utils.Util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,7 +63,12 @@ public class WordsService extends AbsBaseGameService {
         BufferedReader bufferReader = null;
         try
         {
-            InputStream inputStream = App.getContext().getResources().getAssets().open("words/worde.txt");
+            InputStream inputStream;
+            if(Util.isZh()){
+                inputStream = App.getContext().getResources().getAssets().open("words/wordc.txt");
+            }else{
+                inputStream = App.getContext().getResources().getAssets().open("words/worde.txt");
+            }
             inputReader = new InputStreamReader(inputStream,"UTF-8");
             bufferReader = new BufferedReader(new UnicodeReader(inputStream,"utf-8"));
 
