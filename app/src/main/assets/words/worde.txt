@@ -1,0 +1,10 @@
+﻿1^Shandong,2^Linyi,3^girl,4^xuyuyu,5^receive,6^a notice,7^talk to her,8^Send a stipend,9^171Dnseg,10^telephone,
+11^sumption,12^result,13^swindled,14^tuition fee,15^realize,16^ families,17^ pinch and scrape,18^Save up,19^satire,20^cat's paw,
+21^After cheating,22^inconsolable,23^with,24^local police station,25^report a case,26^come back,27^on the road,28^this one,29^upcoming,30^step in,
+31^university,32^heart,33^quick stoppage,34^at last,35^rescue,36^invalidation,37^death,38^make one,39^distressed,40^tragedy,
+41^shocked,42^nationwide,43^one after another,44^pass away,45^Sighed with regret ,46^alse,47^cheater,48^hate,49^humanity,50^to the marrow,
+51^recently,52^Guizhou,53^Light Industry,54^career,55^technique,56^college,57^wangxiaomei,58^simply,59^pretend,60^dupe,
+61^social sciences,62^journey,63^professional,64^junior,65^just,66^dance,67^train,68^hesitate,69^for a moment,70^excuse me,
+71^You are,72^stranger,73^connected sequence,74^short message,75^quick,76^take with,77^north,78^accent,79^speak out,80^identity,
+81^information,82^name,83^family address,84^notify,85^previously,86^apply for,87^National Scholarship,88^Batch of down,89^financial department,90^Director Wang,
+91^contact,92^conclude,93^be no different,94^though,95^know,96^opposite side,97^inquisitive,98^decision,99^Things along,100^arrangement

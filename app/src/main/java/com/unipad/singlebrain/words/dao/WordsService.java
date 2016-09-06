@@ -4,9 +4,14 @@ import android.text.TextUtils;
 
 import com.unipad.http.HitopGetQuestion;
 import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.App;
 import com.unipad.singlebrain.words.bean.WordEntity;
 import com.unipad.utils.LogUtil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +53,66 @@ public class WordsService extends AbsBaseGameService {
         httpGetQuestion.buildRequestParams("questionId", data.get("QUESTIONID"));
         httpGetQuestion.setService(this);
         httpGetQuestion.post();
+    }
+
+    @Override
+    public void parseData() {
+        StringBuilder stringBuilder = new StringBuilder();
+        InputStreamReader inputReader = null;
+        BufferedReader bufferReader = null;
+        try
+        {
+            InputStream inputStream = App.getContext().getResources().getAssets().open("words/worde.txt");
+            inputReader = new InputStreamReader(inputStream,"UTF-8");
+            bufferReader = new BufferedReader(new UnicodeReader(inputStream,"utf-8"));
+
+            // 读取一行
+            String line = null;
+
+            while ((line = bufferReader.readLine()) != null)
+            {
+                stringBuilder.append(line);
+            }
+
+        }
+        catch (IOException e)
+        {
+
+        }
+        finally
+        {
+            try {
+                if(bufferReader!=null){
+                    bufferReader.close();
+                }
+                if(inputReader!=null){
+                    inputReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String string = "1^第三方,21^程序,41^水电费,61^饿法,81^问,101^太," +
+                "2^爱的色放,22^规范化,42^得分,62^周星驰,82^儿童,102^的萨芬," +
+                "3^梵蒂冈,23^环境,43^梵蒂冈,63^撒点粉,83^儿童,103^风格," +
+                "4^风格,24^乳突炎,44^梵蒂冈,64^士大夫,84^体育,104^乳突炎," +
+                "5^爱的色放,25^问,45^后台,65^想,85^天后宫,105^乳突炎," +
+                "6^水电费,26^阿斯顿,46^一天要,66^用户,86^乳突炎,106^vb," +
+                "7^太,27^愉快,47^放假,67^风格,87^体育,107^讽德诵功," +
+                "8^想,28^隐居,48^好基友,68^如同,88^风格,108^范德萨," +
+                "9^热狗,29^儿女,49^一体机,69^问题,89^放到,109^关乎," +
+                "10^而,30^问法,50^体育,70^娥,90^大风歌,110^一条语句," +
+                "11^大风歌,31^梵蒂冈,51^体育,71^风格,91^谁的风格,111^体育," +
+                "12^阿斯顿,32^二,52^环境,72^try,92^人员,112^与," +
+                "13^大风歌,33^太,53^图,73^一天,93^与,113^风格," +
+                "14^虽然个人,34^er,54^体育,74^3穷人,94^鳄鱼,114^安慰人," +
+                "15^任天行,35^er,55^体育,75^问,95^荣誉,115^娃," +
+                "16^突然,36^er,56^而我,76^儿童,96^u,116^撒点粉," +
+                "17^大蓉和,37^er,57^前儿童,77^4他V,97^体育,117^儿童," +
+                "18^vb,38^而,58^问,78^第三方,98^二,118^二," +
+                "19^双方的,39^儿童,59^而我,79^小从V,99^梵蒂冈,119^日游," +
+                "20^谁的风格,40^而,60^梵蒂冈,80^体育,100^风格,120^风格";
+        parseData(stringBuilder.toString());
     }
 
     @Override
