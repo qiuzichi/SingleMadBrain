@@ -122,6 +122,7 @@ public class QuickCardService extends AbsBaseGameService {
 
     @Override
     public double getScore() {
+
         return 0;
     }
 
