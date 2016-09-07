@@ -14,124 +14,134 @@ import android.widget.NumberPicker.Formatter;
 import android.widget.TextView;
 
 import com.unipad.IcoreTimeChange;
+import com.unipad.singlebrain.App;
 import com.unipad.singlebrain.R;
+
+import java.util.Locale;
 
 
 public class Util {
-	
-	public static AlertDialog createSetting(final Context context,
-			final long value) {
-		return createSetting(context, value, null);
-	}
 
-	public static AlertDialog createSetting(final Context context,
-			final long value, final IcoreTimeChange callback) {
+    public static AlertDialog createSetting(final Context context,
+                                            final long value) {
+        return createSetting(context, value, null);
+    }
 
-		Builder build = new Builder(context);
-		build.setCancelable(false);
-		final AlertDialog dialog = build.create();
+    public static AlertDialog createSetting(final Context context,
+                                            final long value, final IcoreTimeChange callback) {
 
-
-		View contentView = LayoutInflater.from(context).inflate(
-				R.layout.num_picker, null);
-
-		Display d = ((Activity)context).getWindow().getWindowManager().getDefaultDisplay();  //为获取屏幕宽、高
-		WindowManager.LayoutParams p = dialog.getWindow().getAttributes();  //获取对话框当前的参数值
-		p.height = (int) (d.getHeight() * 0.5);   //高度设置为屏幕的
-		p.width = (int) (d.getWidth() * 0.5 );    //宽度设置为屏幕的
-		dialog.getWindow().setAttributes(p);     //设置生效
-
-		final NumberPicker hourPicker = (NumberPicker) contentView
-				.findViewById(R.id.hour_picker);
-		final NumberPicker minutePicker = (NumberPicker) contentView
-				.findViewById(R.id.minute_picker);
-		final NumberPicker secondPicker = (NumberPicker) contentView
-				.findViewById(R.id.second_icker);
+        Builder build = new Builder(context);
+        build.setCancelable(false);
+        final AlertDialog dialog = build.create();
 
 
-		contentView.findViewById(R.id.btn_ok).setOnClickListener(
-				new OnClickListener() {
+        View contentView = LayoutInflater.from(context).inflate(
+                R.layout.num_picker, null);
 
-					@Override
-					public void onClick(View arg0) {
-						long value = secondPicker.getValue() + 60
-								* minutePicker.getValue() + 3600
-								* hourPicker.getValue();
+        Display d = ((Activity) context).getWindow().getWindowManager().getDefaultDisplay();  //为获取屏幕宽、高
+        WindowManager.LayoutParams p = dialog.getWindow().getAttributes();  //获取对话框当前的参数值
+        p.height = (int) (d.getHeight() * 0.5);   //高度设置为屏幕的
+        p.width = (int) (d.getWidth() * 0.5);    //宽度设置为屏幕的
+        dialog.getWindow().setAttributes(p);     //设置生效
+
+        final NumberPicker hourPicker = (NumberPicker) contentView
+                .findViewById(R.id.hour_picker);
+        final NumberPicker minutePicker = (NumberPicker) contentView
+                .findViewById(R.id.minute_picker);
+        final NumberPicker secondPicker = (NumberPicker) contentView
+                .findViewById(R.id.second_icker);
+
+
+        contentView.findViewById(R.id.btn_ok).setOnClickListener(
+                new OnClickListener() {
+
+                    @Override
+                    public void onClick(View arg0) {
+                        long value = secondPicker.getValue() + 60
+                                * minutePicker.getValue() + 3600
+                                * hourPicker.getValue();
 //						SharepreferenceUtils.writeLong(key, value);
-						dialog.dismiss();
-						if (callback != null) {
-							callback.callback(value);
-						}
-					}
-				});
-		contentView.findViewById(R.id.btn_cancel).setOnClickListener(
-				new OnClickListener() {
+                        dialog.dismiss();
+                        if (callback != null) {
+                            callback.callback(value);
+                        }
+                    }
+                });
+        contentView.findViewById(R.id.btn_cancel).setOnClickListener(
+                new OnClickListener() {
 
-					@Override
-					public void onClick(View arg0) {
-						dialog.dismiss();
-					}
-				});
+                    @Override
+                    public void onClick(View arg0) {
+                        dialog.dismiss();
+                    }
+                });
 
-		Formatter formatter = new Formatter() {
+        Formatter formatter = new Formatter() {
 
-			@Override
-			public String format(int value) {
-				String tmpStr = String.valueOf(value);
-				if (value < 10) {
-					tmpStr = "0" + tmpStr;
-				}
-				return tmpStr;
-			}
-		};
+            @Override
+            public String format(int value) {
+                String tmpStr = String.valueOf(value);
+                if (value < 10) {
+                    tmpStr = "0" + tmpStr;
+                }
+                return tmpStr;
+            }
+        };
 //		long value = timeValue;//SharepreferenceUtils.readLong(key, 300L);
 
 //		Log.e("gongkan", "value:" + value);
-		hourPicker.setFormatter(formatter);
-		hourPicker.setMaxValue(23);
-		hourPicker.setMinValue(0);
-		int hour = (int) (value / 3600);
-		hourPicker.setValue(hour);
-		minutePicker.setFormatter(formatter);
-		minutePicker.setMaxValue(59);
-		minutePicker.setMinValue(0);
-		int minute = (int) value % 3600 / 60;
-		minutePicker.setValue(minute);
-		secondPicker.setFormatter(formatter);
-		secondPicker.setMaxValue(59);
-		secondPicker.setMinValue(0);
-		int second = (int) value % 3600 % 60;
-		secondPicker.setValue(second);
-		((TextView) contentView.findViewById(R.id.time))
-				.setText(dateFormat(hour) + ":" + dateFormat(minute) + ":"
-						+ dateFormat(second));
-		dialog.setView(contentView);
+        hourPicker.setFormatter(formatter);
+        hourPicker.setMaxValue(23);
+        hourPicker.setMinValue(0);
+        int hour = (int) (value / 3600);
+        hourPicker.setValue(hour);
+        minutePicker.setFormatter(formatter);
+        minutePicker.setMaxValue(59);
+        minutePicker.setMinValue(0);
+        int minute = (int) value % 3600 / 60;
+        minutePicker.setValue(minute);
+        secondPicker.setFormatter(formatter);
+        secondPicker.setMaxValue(59);
+        secondPicker.setMinValue(0);
+        int second = (int) value % 3600 % 60;
+        secondPicker.setValue(second);
+        ((TextView) contentView.findViewById(R.id.time))
+                .setText(dateFormat(hour) + ":" + dateFormat(minute) + ":"
+                        + dateFormat(second));
+        dialog.setView(contentView);
 
-		return dialog;
-	}
+        return dialog;
+    }
 
-	public static String dateFormat(long value) {
-		int hour = (int) (value / 3600);
-		int minute = (int) value % 3600 / 60;
-		int second = (int) value % 3600 % 60;
-		return dateFormat(hour) + ":" + dateFormat(minute) + ":"
-				+ dateFormat(second);
-	}
+    public static String dateFormat(long value) {
+        int hour = (int) (value / 3600);
+        int minute = (int) value % 3600 / 60;
+        int second = (int) value % 3600 % 60;
+        return dateFormat(hour) + ":" + dateFormat(minute) + ":"
+                + dateFormat(second);
+    }
 
 
-	/**
-	 * 格式化时间变量
-	 *
-	 * @param
-	 * //传递过来的时间变量
-	 *            (String类型)yyyyMMddHHmmss
-	 * @return 返回指定的类型.yyyy.MM.dd HH:mm
-	 */
-	public static String dateFormat(int value) {
-		String tmpStr = String.valueOf(value);
-		if (value < 10) {
-			tmpStr = "0" + tmpStr;
-		}
-		return tmpStr;
-	}
+    /**
+     * 格式化时间变量
+     *
+     * @param //传递过来的时间变量 (String类型)yyyyMMddHHmmss
+     * @return 返回指定的类型.yyyy.MM.dd HH:mm
+     */
+    public static String dateFormat(int value) {
+        String tmpStr = String.valueOf(value);
+        if (value < 10) {
+            tmpStr = "0" + tmpStr;
+        }
+        return tmpStr;
+    }
+
+    public static boolean isZh() {
+        Locale locale = App.getContext().getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+        if (language.endsWith("zh"))
+            return true;
+        else
+            return false;
+    }
 }

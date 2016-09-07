@@ -4,15 +4,22 @@ package com.unipad.singlebrain.portraits.control;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.unipad.singlebrain.AbsBaseGameService;
-import com.unipad.singlebrain.portraits.bean.Person;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopDownLoad;
 import com.unipad.http.HitopGetQuestion;
+import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.App;
+import com.unipad.singlebrain.portraits.bean.Person;
+import com.unipad.singlebrain.words.dao.UnicodeReader;
 import com.unipad.utils.LogUtil;
+import com.unipad.utils.Util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -195,10 +202,68 @@ public class HeadService extends AbsBaseGameService{
     public void clear() {
         data.clear();
     }
+    @Override
+    public void parseData() {
+        StringBuilder stringBuilder = new StringBuilder();
+        InputStreamReader inputReader = null;
+        BufferedReader bufferReader = null;
+        try
+        {
+            InputStream inputStream;
+            if(Util.isZh()){
+                inputStream = App.getContext().getResources().getAssets().open("headc.txt");
+            }else{
+                inputStream = App.getContext().getResources().getAssets().open("heade.txt");
+            }
+            inputReader = new InputStreamReader(inputStream,"UTF-8");
+            bufferReader = new BufferedReader(new UnicodeReader(inputStream,"utf-8"));
+
+            // 读取一行
+            String line = null;
+
+            while ((line = bufferReader.readLine()) != null)
+            {
+                stringBuilder.append(line);
+            }
+
+        }
+        catch (IOException e)
+        {
+
+        }
+        finally
+        {
+            try {
+                if(bufferReader!=null){
+                    bufferReader.close();
+                }
+                if(inputReader!=null){
+                    inputReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        LogUtil.e("HeadService", "data ==" + stringBuilder.toString());
+        String [] persData = stringBuilder.toString().split(",");
+        Person person;
+        for (int i = 0; i <persData.length ; i++) {
+            person = new Person();
+            String[] detail = persData[i].split("\\^");
+            person.setFirstName(detail[1]);
+            person.setLastName(detail[2]);
+            person.setId(Integer.valueOf(detail[0]));
+            person.setHeadPortraitPath(headResourse+detail[0]+".png");
+            LogUtil.e("HeadService","路径为:=="+headResourse+detail[0]+".png");
+            this.data.add(person);
+        }
+        shuffData();
+        initDataFinished();
+    }
 
     @Override
     public void parseData(String data) {
-        LogUtil.e("", data);
+        LogUtil.e("HeadService", "data ==" + data);
         super.parseData(data);
         String [] persData = data.split(",");
         for (int i = 0; i <persData.length ; i++) {

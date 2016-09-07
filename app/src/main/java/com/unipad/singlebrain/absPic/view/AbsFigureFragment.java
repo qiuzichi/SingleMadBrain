@@ -226,6 +226,8 @@ public class AbsFigureFragment extends BasicCommonFragment {
                     });
                     orginNum.setVisibility(View.GONE);
                     answerNum.setVisibility(View.VISIBLE);
+                    String num = figure.getAnswerId()==0?"":figure.getAnswerId()+"";
+                    answerNum.setText(num);
                     if (holder.getPosition() == current) {
                         answerNum.setBackgroundColor(getResources().getColor(R.color.blue));
                     } else {
@@ -236,6 +238,7 @@ public class AbsFigureFragment extends BasicCommonFragment {
                     orginNum.setVisibility(View.VISIBLE);
                     answerNum.setVisibility(View.VISIBLE);
                     orginNum.setText("" + figure.getRawId());
+                    answerNum.setText(figure.getAnswerId()==0?"":figure.getAnswerId()+"");
                     holder.getConvertView().setOnClickListener(null);
                     answerNum.setBackgroundColor(getResources().getColor(R.color.white));
                     if (figure.getRawId() == figure.getAnswerId()) {
