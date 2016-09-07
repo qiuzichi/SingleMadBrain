@@ -2,6 +2,10 @@ package com.unipad.common;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -69,10 +73,16 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
     private static final int STRAT_REMEMORY = 6;
     private static final int STRAT_MEMORY = 7;
     private static final int DLG_DELAY_DISMISS = 8;
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_aty);
+        mContext = this;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_LOCALE_CHANGED);
+        mContext.registerReceiver(mReceiver, filter);
         startTime = System.currentTimeMillis();
         projectId = getIntent().getStringExtra("projectId");
         service = (AbsBaseGameService) AppContext.instance().getGameServiceByProject(projectId);
@@ -156,6 +166,15 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
     }
 
 
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)) {
+                //此处做你的处理
+                finish();
+            }
+        }
+    };
 
     public AbsBaseGameService getService() {
         return service;
@@ -208,6 +227,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
         service.unRegisterObserve(HttpConstant.GET_RANDOM_QUESTION_ERR, this);
         service.unRegisterObserve(HttpConstant.GET_RANDOM_QUESTION_OK, this);
         AppContext.instance().clearService(service);
+        mContext.unregisterReceiver(mReceiver);
     }
 
     public PractiseCommLeftFragment getCommonFragment() {
@@ -296,5 +316,6 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
     public double sendMsgGetSocre() {
         return service.getScore();
     }
+
 }
 

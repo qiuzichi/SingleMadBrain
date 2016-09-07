@@ -1,6 +1,9 @@
 package com.unipad.singlebrain.main;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
@@ -12,7 +15,6 @@ import com.baidu.location.BDLocation;
 import com.unipad.AppContext;
 import com.unipad.baiduservice.LocationUtils;
 import com.unipad.singlebrain.BasicActivity;
-
 import com.unipad.singlebrain.R;
 import com.unipad.singlebrain.dialog.ShowDialog;
 import com.unipad.singlebrain.home.MainBasicFragment;
@@ -35,12 +37,27 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
     private MainBasicFragment mCurrentFrg;
     private View mCurrentView;
     private ShowDialog showDialog;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_aty);
+        mContext = this;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_LOCALE_CHANGED);
+        mContext.registerReceiver(mReceiver, filter);
     }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)) {
+                //此处做你的处理
+                finish();
+            }
+        }
+    };
 
     @Override
     public void initData() {
@@ -167,5 +184,9 @@ public class MainActivity extends BasicActivity implements  ShowDialog.OnShowDia
         mTextLocation.setSelected(true);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mContext.unregisterReceiver(mReceiver);
+    }
 }
