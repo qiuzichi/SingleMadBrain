@@ -308,8 +308,9 @@
                 android:id="@+id/btn_exercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_10dip"
-                android:background="@drawable/exercise"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:background="@color/main_1"
                 android:text="@string/start"
                 android:textColor="@color/white" />
         </LinearLayout>
