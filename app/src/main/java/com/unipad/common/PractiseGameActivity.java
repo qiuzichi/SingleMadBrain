@@ -34,6 +34,7 @@ import com.unipad.utils.ToastUtil;
 
 import org.json.JSONException;
 import org.xutils.common.Callback;
+import org.xutils.x;
 
 import java.util.Map;
 
@@ -226,6 +227,8 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
         mCommonFragment = null;
         service.unRegisterObserve(HttpConstant.GET_RANDOM_QUESTION_ERR, this);
         service.unRegisterObserve(HttpConstant.GET_RANDOM_QUESTION_OK, this);
+        x.image().clearCacheFiles();
+        x.image().clearMemCache();
         AppContext.instance().clearService(service);
         mContext.unregisterReceiver(mReceiver);
     }
