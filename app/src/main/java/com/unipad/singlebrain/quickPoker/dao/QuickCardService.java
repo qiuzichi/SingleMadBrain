@@ -3,6 +3,7 @@ package com.unipad.singlebrain.quickPoker.dao;
 import com.unipad.common.Constant;
 import com.unipad.http.HitopGetQuestion;
 import com.unipad.singlebrain.AbsBaseGameService;
+import com.unipad.singlebrain.App;
 import com.unipad.singlebrain.R;
 import com.unipad.singlebrain.quickPoker.entity.ChannelItem;
 import com.unipad.singlebrain.quickPoker.entity.PokerEntity;
@@ -151,7 +152,7 @@ public class QuickCardService extends AbsBaseGameService {
 
         for (int i = 0; i < Constant.POKER_NUM; i++) {
 
-            bottomCards.add(new ChannelItem(i + 1, R.drawable.poker_fangkuai_01 + i, huaSe[i / 13] + dian[i % 13]));
+            bottomCards.add(new ChannelItem(i + 1, R.drawable.poker_fangkuai_01 + i, huaSe[i / 13] + dian[i % 13], App.getContext().getResources().getDrawable(R.drawable.poker_fangkuai_01 + i)));
 
         }
         LogUtil.e("", "bottom size = " + bottomCards.size());
