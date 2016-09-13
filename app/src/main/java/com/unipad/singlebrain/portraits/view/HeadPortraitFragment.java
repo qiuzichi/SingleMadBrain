@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -30,8 +31,6 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
-
-;
 
 /**
  * Created by gongkan on 2016/4/11.
@@ -91,6 +90,7 @@ public class HeadPortraitFragment extends BasicCommonFragment {
         return R.layout.portrait_fragment;
     }
 
+
     @Override
     public void memoryTimeToEnd(int memoryTime) {
         super.memoryTimeToEnd(memoryTime);
@@ -135,6 +135,7 @@ public class HeadPortraitFragment extends BasicCommonFragment {
     }
 
     private class HeadAdapter extends CommonAdapter<Person> {
+        private  GridView parentView;
         public HeadAdapter(Context context, List<Person> datas, int layoutId) {
             super(context, datas, layoutId);
             Log.e("", "size=" + mDatas.size());
@@ -146,12 +147,12 @@ public class HeadPortraitFragment extends BasicCommonFragment {
          */
         @Override
         public void convert(final ViewHolder holder, final Person person) {
-            ImageView headView = (ImageView) holder.getView(R.id.icon_head);
-
+            final ImageView headView = (ImageView) holder.getView(R.id.icon_head);
             x.image().bind(headView, person.getHeadPortraitPath());
             final EditText firstName = (EditText) holder.getView(R.id.first_name);
             final EditText lastName = (EditText) holder.getView(R.id.last_name);
             TextView holeName = (TextView) holder.getView(R.id.name_text);
+
             switch (service.state) {
                 case AbsBaseGameService.GO_IN_MATCH_START_RE_MEMORY:
                 case AbsBaseGameService.GO_IN_MATCH_END_MEMORY:

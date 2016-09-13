@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="@dimen/portraits_image_width"
+    android:paddingBottom="@dimen/margin_edge"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/icon_head"

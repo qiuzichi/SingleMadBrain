@@ -1,0 +1,306 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">SingleMadBrain</string>
+    <string name="action_settings">Settings</string>
+    <string name="memorying">正在记忆中&#8230;</string>
+    <string name="playing_voice">正在播音中&#8230;</string>
+    <string name="rememorying">正在回忆中&#8230;</string>
+    <string name="exit_competition">退出比赛</string>
+    <string name="end_memory">结束\n记忆</string>
+    <string name="commit_answer">提交\n答案</string>
+    <string name="change_bg">更换背景颜色</string>
+    <string name="time_end">时间到！</string>
+    <string name="fillout_gird_end">您已填满所有空白！</string>
+    <string name="keyboard_vibrate">键盘震动</string>
+    <string name="delete">删除</string>
+    <string name="goto_top">返回顶部</string>
+    <string name="delete_all_number">您已删除所有数字！</string>
+    <string name="listen_first_round">第一轮</string>
+    <string name="listen_number_describe">试题为每秒播放一个英语数字的录音文件。在开始念数字前，先会播放A—B—C。当A—B—C播放结束后，开始正式念数字。例如，1、5、4、8等。</string>
+    <string name="last_line">已经是最后一行了！</string>
+    <string name="first_line">已经是第一行了！</string>
+    <string name="login_title">疯狂大脑，再次让你的脑洞大开</string>
+    <string name="input_name">请输入姓名</string>
+    <string name="input_pwd">请输入密码</string>
+    <string name="new_user_str">新用户注册</string>
+    <string name="forget_password_str">忘记密码</string>
+    <string name="select_nationality">请选择国籍</string>
+    <string name="select_birth_date">选择出生日期</string>
+    <string name="contact_way">联系方式</string>
+    <string name="set_pwd">设置密码</string>
+    <string name="set_new_pwd">确定新密码</string>
+    <string name="confirm_modify">确认修改</string>
+    <string name="register_sex">请选择性别</string>
+    <string name="name">昵称:</string>
+    <string name="address">地址:</string>
+    <string name="phone">手机:</string>
+    <string name="school">学校:</string>
+    <string name="nationality">国籍:</string>
+    <string name="email">邮箱:</string>
+    <string name="address_hint">广东省广州市</string>
+    <string name="school_hint">广州育华中学</string>
+    <string name="nationality_hint">中国</string>
+    <string name="phone_hint">13142547841</string>
+    <string name="email_hint">13142547841@qq.com</string>
+    <string name="personal_info">个人资料</string>
+    <string name="personal_authentication">实名认证</string>
+    <string name="personal_record">历史战绩</string>
+    <string name="personal_favorite">我的关注</string>
+    <string name="personal_wallet">我的钱包</string>
+    <string name="personal_msg">我的报名</string>
+    <string name="personal_setting">设置中心</string>
+    <string name="save">保存</string>
+    <string name="personal_center">个人中心</string>
+    <string name="game_center">赛事中心</string>
+    <string name="back">返回</string>
+    <string name="next_step">下一步</string>
+    <string name="personal_select_identity">身份选择</string>
+    <string name="personal_authentication_info">实名资料</string>
+    <string name="personal_info_upload">证件上传</string>
+    <string name="personal_info_commit">提交认证</string>
+    <string name="confirm_commit">确认提交</string>
+    <string name="broken_line_graph">折线图</string>
+    <string name="table_graph">比赛模式</string>
+    <string name="clear">清空</string>
+    <string name="my_follow">关注列表</string>
+    <string name="confirm">确认</string>
+    <string name="men">男</string>
+    <string name="women">女</string>
+    <string name="player">选手</string>
+    <string name="coach">教练</string>
+    <string name="judge">裁判</string>
+    <string name="select_sex">选择性别:</string>
+    <string name="user_type">用户类别:</string>
+    <string name="read_name">真实姓名:</string>
+    <string name="read_name_hint">刘丽莎</string>
+    <string name="identity_number">身份证号:</string>
+    <string name="identity_number_hint">445154199512205471</string>
+    <string name="date_birth">出生日期:</string>
+    <string name="date_birth_hint">1995-12-20</string>
+    <string name="grade_certificate">%s等级证书:</string>
+    <string name="identity_picture">身份证照片:</string>
+    <string name="positive_photo">正面照片</string>
+    <string name="negative_photo">反面照片</string>
+    <string name="confirm_sure">确认\n提交</string>
+    <string name="system_setting">系统设置</string>
+    <string name="about_us">关于我们</string>
+    <string name="suggestion_feedback">意见反馈</string>
+    <string name="exit_app">退出登录</string>
+    <string name="pay_pwd">支付密码</string>
+    <string name="login_pwd">登录密码</string>
+    <string name="set_answertime">设置比赛答题时间</string>
+    <string name="set_memorytime">设置比赛记忆时间</string>
+    <string name="set_rule">规则设置</string>
+    <string name="set_time">设置</string>
+    <string name="ranking_list">排行榜</string>
+
+    <string name="commit">提交</string>
+    <string name="mad_crazy_describe">\t\t\t 世界记忆力锦标赛（World Memory Championships）是由“世界记忆之父” 托尼·博赞于1991年发起，
+        由世界记忆力运动委员会（WMSC）组织的世界最高级别的记忆力赛事。\n\t\t\t 世界脑力锦标赛颁发国际认可并世界通用的“世界记忆大师”证书，
+        大赛的世界纪录直接记入世界吉尼斯纪录而无需审核。 该赛事由英国王子导师“世界大脑先生”托尼·博赞和雷蒙德·基恩发起，已在英国、美国、
+        德国、墨西哥、新加坡和中国等国家成功举办了23届，有力地推动了世界脑力运动事业的发展，促进了脑力运动成果在世界各国的交流推广。
+        经世界脑力运动理事会授权，2015第二十四届世界脑力锦标赛举办权已落户中国。\n赛事发起人
+        \n\t\t\t 托尼·博赞1942年生于英国伦敦，毕业于英属哥伦比亚大学，拥有心理学,英语语言学、数学和普通科学等多种学位。他是迄今为止“门萨高智商协会”的“创造力智商”
+        最高纪录保持者；所出版的二十多种大脑方面的图书已被翻译成几十种语言，在全球五大洲的五十多个国家出版，并成为世界顶尖级公司进行高级培训的必选教材。
+        另外，他还出任一些政府部门，大学和研究院及大跨国集团公司的咨询专家，包括国际商用机器公司(IBM)、巴克莱国际公司、数字设备公司、HP公司等。
+        他主持的大脑知识讲座已成为西方家喻户晓的节目，在无线广播，卫星电视及包括录象节目在内的各种媒体上大受欢迎。业内人士皆尊称他为“大脑先生”。</string>
+    <string name="suggest_hint">请填写您的宝贵意见</string>
+    <string name="suggest_content_empty">意见内容为空！！</string>
+    <string name="modify_login_pwd">修改登录密码</string>
+    <string name="origin_pwd">原密码</string>
+    <string name="set_new_login_pwd">设置新密码</string>
+    <string name="modify_pay_pwd">修改支付密码</string>
+    <string name="please_fill_full_info">请完整填写信息！！</string>
+    <string name="origin_pwd_nomatch">原始密码不匹配！！</string>
+    <string name="different_pwd">两次密码输入不一致！！</string>
+    <string name="text_record">历史战绩</string>
+    <string name="city_game">城市赛</string>
+    <string name="world_game">世界赛</string>
+    <string name="china_game">中国赛</string>
+    <string name="search">查找</string>
+    <string name="hint_end_data">2016/06/21</string>
+    <string name="hint_begin_data">2016/05/22</string>
+    <string name="time">时间:</string>
+    <string name="record_data_empty_note">请填写查找日期！</string>
+    <string name="record_data_format_note">请正确填写日期！\n格式：2016/06/21</string>
+    <string name="end_date_error">结束日期要大于开始日期！</string>
+    <string name="competition_date">\t比赛日期</string>
+    <string name="competition_date1">比赛日期</string>
+    <string name="competition_time">\t比赛时间</string>
+    <string name="competition_time1">比赛时间</string>
+    <string name="apply_cost">\t报名费用</string>
+    <string name="apply_cost1">报名费用</string>
+    <string name="my_apply">我要报名</string>
+    <string name="applied">已报名</string>
+    <string name="project_1">人名头像记忆</string>
+    <string name="project_2">二进制数字</string>
+    <string name="project_3">马拉松数字</string>
+    <string name="project_4">抽象图形</string>
+    <string name="project_5">快速随机数字</string>
+    <string name="project_6">虚拟事件和日期</string>
+    <string name="project_7">马拉松扑克记忆</string>
+    <string name="project_8">随机词语记忆</string>
+    <string name="project_9">听记数字</string>
+    <string name="project_10">快速扑克记忆</string>
+    <string name="message_city">城市赛</string>
+    <string name="message_china">中国赛</string>
+    <string name="message_world">世界赛</string>
+    <string name="str_back">返回</string>
+    <string name="jump_over"> 跳过</string>
+    <string name="action_rule">比赛项目规则</string>
+    <string name="str_apply">比赛报名</string>
+    <string name="str_exercise">练习模式</string>
+    <string name="memory">记忆：</string>
+    <string name="recall">回忆：</string>
+    <string name="num">次数：</string>
+    <string name="target">目标：</string>
+    <string name="recalling">正在回忆中...</string>
+    <string name="jf_function">记分方法</string>
+    <string name="memory_part">记忆部分</string>
+    <string name="recall_part">回忆部分</string>
+    <string name="attention">注意：</string>
+    <string name="next">次</string>
+    <string name="project_1_target">目标：在规定时间内记忆人名和头像，并于回忆时将人名跟头 像正确搭配，记得越多越好</string>
+    <string name="project_2_target">目标：尽量记下更多的二进制数字（例：01101)</string>
+    <string name="project_3_target">目标：尽量记忆越多的随机数字 （1、3、5、8、2、5 等）（以 每行 40 位数字）并正确地回忆起来。</string>
+    <string name="project_4_target">目标：尽量多的记忆，并于回忆时将每行的正确次序标注出来。</string>
+    <string name="project_5_target">目标：尽量以最短时间记忆更多的随机数字（1、3、5、2、9等）（以每行40位数字）并正确的回忆起来，有两次比赛机会。</string>
+    <string name="project_6_target">目标：尽量多的记忆的历史／未来事件的年份，并于回忆时将其 写在相关的事件的前面。</string>
+    <string name="project_7_target">目标：尽量记忆和回忆多副扑克牌的顺序。</string>
+    <string name="project_8_target">目标：尽可能记忆越多的随机词语（例：狗、花瓶、吉他等）并 正确地回忆出来。</string>
+    <string name="project_9_target">目标：尽量记忆和回忆听到的数字。</string>
+    <string name="project_10_target">目标：尽量以最短的时间记忆一副 52 张的扑克牌。</string>
+
+    <string name="project_5_attention_content">于第一轮过后将有短暂休息以方便计分。分数将于第二轮开始前公布给选手。</string>
+    <string name="project_5_memory_content">1、计算机产生的数字，以每行 40 位排列。\n2、问卷数字的数目为现时世界纪录加上百分之二十。选手如果可以超出世界记录的百分之二十的数量，可以向组委会提出申请增加的数量，但须于比赛一个月前提出要求.</string>
+    <string name="project_5_recall_content">1、参赛选手应使用组委会提供的答卷。\n2、参赛选手必须将记忆好的数字以每行 40 个写出来。</string>
+    <string name="project_5_jf_function_content">
+1、完全写满并正确的一行得 40 分。\n
+2、完全写满但有一个错处（或漏空）的一行得 20 分。\n
+3、完全写满但超过两个及以上错处(或漏空)的一行得0分。\n
+4、空白行数不会扣分。\n
+5、对于最后一行：如最后的一行没有完成（例：只有写上 29 个数字），且所有数字皆为正确，其所得分数为该行作答数字的数目（即29 分于该例）。
+如最后的一行没有完成，但有一个错处（或中间漏空），其所得分数为该行作答数字的数目的一半。如有小数点则四舍五入。例：如作答了 29 个数字但有一错处，分数将除 2，即 29/2 = 14.5，分数调高至 15 分。
+如最后一行有二个及以上的错处（或中间漏空），则将以 0 分计。该项目成绩如有相同的最高得分，则取另外一轮得分较高的一位。如另外一轮的得分皆为相等，裁判将参考每位选手的最佳那轮的额外行数（即作答了但得 0 分的行数）。每个正确作答的数字将获 1分决定分，决定分较高者胜.
+    </string>
+    <string name="pay_apply_cost">支付报名费</string>
+    <string name="str_apply_pay_time">亲，您正进行</string>
+    <string name="str_sel_apply">请选择支付方式</string>
+    <string name="pay_b_pay">\t支付宝支付</string>
+    <string name="wei_pay">\t微信支付</string>
+    <string name="str_ex_apply">不想报名</string>
+    <string name="str_pay_confirm">支付费用</string>
+    <string name="search_country">搜索你的国家</string>
+    <string name="dlg_title_default">提示</string>
+    <string name="cancel">取消</string>
+    <string name="ui_please_wait">请稍候……</string>
+    <string name="please_info_fill_full">请将信息填写完整然后提交</string>
+    <string name="string_front">请拍摄身份证正面照</string>
+    <string name="string_reverse">请拍摄身份证反面照</string>
+    <string name="string_qc">请拍摄资格证书照</string>
+    <string name="string_name">请填写真实姓名</string>
+    <string name="string_identity">请填写身份证件号</string>
+    <string name="string_birthdate">请填写出生日期</string>
+    <string name="string_ps">请拍摄完成所需照片</string>
+    <string name="string_upload_fail">上传文件失败</string>
+    <string name="sex">请选择性别</string>
+    <string name="nation">请选择国际</string>
+    <string name="date">请选择出生日期</string>
+
+
+    <string name="string_json_error">json 格式错误</string>
+    <string name="updata_userinfo">资料上传成功</string>
+    <string name="submit_sussue">"提交成功</string>
+    <string name="submit_fail">提交失败</string>
+    <string name="say_somethting">我也说两句...</string>
+
+    <string name="util_camera_not_enable">相机不可用</string>
+    <string name="util_hint">提示</string>
+    <string name="util_sdcard_not_enable">sd卡不可用,请您装载sd卡后重试</string>
+    <string name="util_pic_notuse_hint">您选择的不是有效的图片</string>
+    <string name="util_affirm">确认</string>
+    <string name="util_getpicfile_failed">未得到相片路径</string>
+    <string name="tailor_fail">裁剪失败</string>
+    <string name="input_day">请选择生日</string>
+    <string name="input_nation">请选择国家</string>
+    <string name="in_game">进入比赛</string>
+    <string name="competition_project">比赛项目</string>
+    <string name="competition_addr">比赛地点</string>
+    <string name="error_apply">您没有报名任何赛事</string>
+    <string name="not_game">离比赛开始还有30分钟以上，暂时无法进入比赛</string>
+    <string name="gameed">赛事已过期，无法进去比赛</string>
+    <string name="error_follow">您没有关注任何赛事</string>
+    <string name="is_exit_app">是否退出应用</string>
+    <string name="confirm_exit_app">确认退出</string>
+
+    <string name="news_title">新闻标题</string>
+    <string name="check_detail">查看详情</string>
+    <string name="current_time">11:44am</string>
+    <string name="input_comment">请输入评论内容          </string>
+    <string name="button_commit">提交</string>
+    <string name="button_report">发表</string>
+    <string name="detail_commont">评论</string>
+    <string name="project_name">项目名称</string>
+    <string name="race_mode">比赛模式</string>
+    <string name="exercise_mode">练习模式</string>
+    <string name="race_date">比赛日期</string>
+    <string name="race_time">比赛时间</string>
+    <string name="race_pay">比赛费用</string>
+    <string name="person_entry_fee">选手报名</string>
+    <string name="person_level">等级·</string>
+    <string name="search_conment">输入关键字搜索</string>
+    <string name="listitem_empty">搜索不到内容</string>
+    <string name="info_result">资讯搜索结果</string>
+    <string name="competetion_result">赛事搜索结果</string>
+    <string name="hotspot_result">热点搜索结果</string>
+    <string name="update_version_info">优化更多细节，提升客户体验 尝鲜版不容错过</string>
+    <string name="update_version_title">更新版本号：</string>
+    <string name="confirm_update">确认更新</string>
+    <string name="exercise_not_open">练习模式暂未开通</string>
+    <string name="exercise_mode_set">时间设置</string>
+    <string name="competition_mode_set">记忆方式（划线）设置</string>
+    <string name="remember_mode_set">记忆方式（分隔）设置</string>
+    <string name="null_data">无</string>
+    <!-- apk版本号；-->
+    <string name="versionName">1.0.0</string>
+    <string name="check_version">检查到最新版本 :</string>
+
+    <string name="loadmore_data">正在加载数据......</string>
+    <string name="loadmore_null_data">最后一页  已经没有新的数据了</string>
+    <string name="no_new_data">没有新数据了</string>
+    <string name="not_news_data">暂无数据 ... 点击加载</string>
+    <string name="no_available">暂无数据</string>
+    <string name="net_error_refrush_data">访问网络失败 重新刷新数据 </string>
+    <string name="hostory_null_data">没有历史战绩数据</string>
+
+
+    <string name="pager_detail">详情</string>
+    <string name="start_search">搜索</string>
+
+    <string name="auth_hint">您还未进行实名认证，请在个人中心里进行实名认证。认证之后才能进行比赛报名,谢谢！</string>
+    <string name="auth_fail_hint">您提交的实名认证信息未通过，请重新提交！</string>
+
+    <string name="site_name">项目名称</string>
+    <string name="site_mode">模式</string>
+    <string name="site_num">比赛时间</string>
+    <string name="site_time">记忆时间</string>
+    <string name="recall_time">回忆时间</string>
+    <string name="score">得分</string>
+    <string name="ranking">我的排名：</string>
+    <string name="icon">人名头像记忆</string>
+
+    <string name="consult_present">最新资讯</string>
+    <string name="competition_present">最新赛事</string>
+    <string name="memory_order">记忆顺序</string>发
+    <string name="remain_pokers_left">还剩</string>
+    <string name="remain_pokers_right">张扑克牌</string>
+    <string name="com_name">赛事名称</string>
+    <string name="single_browse_note">单行浏览</string>
+    <string name="memory_score">记忆用时：<xliff:g id="NUM">%1d</xliff:g>秒，回忆用时：<xliff:g id="NUM">%2d</xliff:g>，得分：<xliff:g id="STRING">%3s</xliff:g></string>
+    <string name="commit_score">提交答案中，请稍后！</string>
+    <string name="login_in_other_place">您的账号在其它地方登录，请修改密码！</string>
+    <string name="login_in_by_sever">服务器更新，请重新登录！</string>
+    <string name="long_poker_answer_tip">第<xliff:g id="NUM">%1d</xliff:g>牌最后一个已填完！</string>
+    <string name="long_poker_answer_num_tip">第<xliff:g id="NUM">%1d</xliff:g>张</string>
+    <string name="long_poker_remember_way">记忆方式</string>
+    <string name="start">开始比赛</string>
+</resources>
