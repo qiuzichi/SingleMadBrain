@@ -123,8 +123,8 @@ public class QuickPokerBrowseVerticalView extends LinearLayout {
 
 					for (int i = 0; i < childCount; i++) {
 						imageView = (ImageView) rLayout.getChildAt(i);
-						imageView.setImageBitmap(PokerEntity.getInstance().getBitmap(pokerSortArray.get(i
-								+ LayoutedTotal).resId));
+						imageView.setImageDrawable(pokerSortArray.get(i
+								+ LayoutedTotal).drawable);
 					}
 
 					LayoutedTotal += childCount;
