@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.unipad.IOperateGame;
 import com.unipad.singlebrain.AbsBaseGameService;
 import com.unipad.common.widget.HIDDialog;
+import com.unipad.singlebrain.R;
 import com.unipad.utils.LogUtil;
 import com.unipad.utils.ToastUtil;
 
@@ -106,7 +107,7 @@ public abstract class BasicCommonFragment extends Fragment implements
     public void reStartGame() {
         if (isMatchMode()) {
             if (isNeedStartGame) {
-                ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
+                ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, getActivity().getString(R.string.wait_referee_start)).show();
                 return;
             }
 
@@ -117,7 +118,7 @@ public abstract class BasicCommonFragment extends Fragment implements
                     break;
                 case AbsBaseGameService.GO_IN_MATCH_DOWNLOADED:
                 case AbsBaseGameService.GO_IN_MATCH_END_MEMORY:
-                    ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, "等待裁判开始答题").show();
+                    ToastUtil.createTipDialog(getActivity(), Constant.SHOW_GAME_PAUSE, getActivity().getString(R.string.wait_referee_start)).show();
                     break;
             }
         }

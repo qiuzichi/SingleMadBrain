@@ -109,7 +109,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
                         break;
                     case DOWNLOAD_QUESTION:
                         LogUtil.e(TAG, "DOWNLOAD_QUESTION");
-                        ToastUtil.createTipDialog(PractiseGameActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
+                        ToastUtil.createTipDialog(PractiseGameActivity.this, Constant.SHOW_GAME_PAUSE, PractiseGameActivity.this.getString(R.string.download_question) ).show();
                         break;
                     case RESTAT_GAME:
                         LogUtil.e(TAG, "RESTAT_GAME");
@@ -135,7 +135,7 @@ public class PractiseGameActivity extends AbsMatchActivity implements IDataObser
                         break;
                     case SHOW_WAIT_DLG:
                         LogUtil.e(TAG, "SHOW_WAIT_DLG");
-                        ToastUtil.createTipDialog(PractiseGameActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
+                        ToastUtil.createTipDialog(PractiseGameActivity.this, Constant.SHOW_GAME_PAUSE, PractiseGameActivity.this.getString(R.string.download_question)).show();
                         break;
                 }
             }

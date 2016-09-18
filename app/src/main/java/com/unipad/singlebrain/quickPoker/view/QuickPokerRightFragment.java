@@ -13,6 +13,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     private static final String TAG = QuickPokerRightFragment.class
             .getSimpleName();
 
-    private ImageButton mIBtnBrowseMode;
+    private Button mIBtnBrowseMode;
     private View mRightLayout, mHorizontalLayout, mBrowseLayout;
     private ViewStub mStubMutiBrowse, mStubAnswer;
     private View mStubAnswerShade;
@@ -96,7 +97,7 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mIBtnBrowseMode = (ImageButton) mViewParent
+        mIBtnBrowseMode = (Button) mViewParent
                 .findViewById(R.id.ibtn_browse_mode);
         mIBtnBrowseMode.setOnClickListener(this);
         mRightLayout = mViewParent.findViewById(R.id.right_layout);
@@ -283,8 +284,9 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
      * 单行浏览模式
      */
     private void singleLineBrowseMode() {
-        mIBtnBrowseMode.setImageDrawable(null);
-        mIBtnBrowseMode.setImageResource(R.drawable.ibtn_browse_muti_line);
+//        mIBtnBrowseMode.setImageDrawable(null);
+//        mIBtnBrowseMode.setImageResource(R.drawable.ibtn_browse_muti_line);
+        mIBtnBrowseMode.setText(getString(R.string.switch_to_multi_line));
         if (isInMemoryMode) {
             mSingleLineLayout.showPokerFace();
         }
@@ -297,8 +299,9 @@ public class QuickPokerRightFragment extends BasicCommonFragment implements
      * 多行浏览模式
      */
     private void mutiLineBrowseMode() {
-        mIBtnBrowseMode.setImageDrawable(null);
-        mIBtnBrowseMode.setImageResource(R.drawable.ibtn_browse_one_line);
+//        mIBtnBrowseMode.setImageDrawable(null);
+//        mIBtnBrowseMode.setImageResource(R.drawable.ibtn_browse_one_line);
+        mIBtnBrowseMode.setText(getString(R.string.switch_to_single_line));
         mHorizontalLayout.setVisibility(View.GONE);
 
         if (mMUtiLineLayout == null) {

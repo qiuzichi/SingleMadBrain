@@ -175,12 +175,11 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
                 for(int i =0;i<rememoryPokerRecycle.length;i++){
                     RecyclerView v = rememoryPokerRecycle[i];
                     OnePokerRecycleAdapter recycleAdapter = (OnePokerRecycleAdapter) v.getAdapter();
-                    if (recycleAdapter == null){
-                        recycleAdapter= new OnePokerRecycleAdapter(getActivity(), service.pokersQuestion, position * 53, 53,numTextView);
+
+                    if (position == i && recycleAdapter == null){
+                        recycleAdapter = new OnePokerRecycleAdapter(getActivity(), service.pokersQuestion, position * 53, 53, numTextView);
                         recycleAdapter.setProgress(LongPokerRightFragment.this);
                         v.setAdapter(recycleAdapter);
-                    }
-                    if (position == i){
                         recycleAdapter.setIsCurrentPage(true);
                         int current = recycleAdapter.getCurrent();
                         OnePokerRecycleAdapter.APokerViewHolder viewholderCurrent = (OnePokerRecycleAdapter.APokerViewHolder) v.findViewHolderForAdapterPosition(current);
@@ -188,7 +187,7 @@ public class LongPokerRightFragment extends BasicCommonFragment implements IProg
                             viewholderCurrent.view.findViewById(R.id.tv_value).requestFocus();
                         }
                         numTextView.setText(mActivity.getResources().getString(R.string.long_poker_answer_num_tip,current));
-                    }else{
+                    }else if(recycleAdapter != null){
                         recycleAdapter.setIsCurrentPage(false);
                     }
                 }

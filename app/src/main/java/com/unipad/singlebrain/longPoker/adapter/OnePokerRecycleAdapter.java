@@ -91,7 +91,7 @@ public class OnePokerRecycleAdapter extends RecyclerView.Adapter<OnePokerRecycle
         LogUtil.e("", "adapter postion = " + (start + position));
         if (getItemViewType(position) == 0) {
             TextView tv = (TextView) holder.view;
-            tv.setText("第" + (start / 53 + 1) + "副");
+            tv.setText(mContext.getString(R.string.seqening) +" " + (start / 53 + 1) + " " + mContext.getString(R.string.round_poker) + " "+ mContext.getString(R.string.round_poker_2));
             tv.setGravity(Gravity.CENTER);
             tv.setTextSize(30);
         } else {

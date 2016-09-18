@@ -39,15 +39,18 @@
                 android:layout_toRightOf="@id/tv_browse"
                 android:background="@drawable/lone_line_hori" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/ibtn_browse_mode"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/quick_poker_top_h"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
-                android:background="@null"
-                android:src="@drawable/ibtn_browse_muti_line" />
+                android:background="@color/transparent"
+                android:drawableStart="@drawable/ibtn_browse_muti_line_2"
+                android:gravity="center"
+                android:text="@string/switch_to_multi_line"
+                android:textColor="@color/memory_order"
+                android:textSize="@dimen/common_text_24" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -65,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/quick_poker_right_w"
                 android:ems="1"
                 android:text="@string/memory_order"
                 android:textColor="@color/memory_order"

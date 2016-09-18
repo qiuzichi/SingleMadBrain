@@ -102,14 +102,14 @@ public class CommonActivity extends AbsMatchActivity implements IOperateGame {
                         break;
                     case DOWNLOAD_QUESTION:
                         LogUtil.e(TAG, "DOWNLOAD_QUESTION");
-                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "下载试题中").show();
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, getString(R.string.download_question)).show();
                         break;
                     case PAUSE_GAME:
                         LogUtil.e(TAG, "PAUSE_GAME");
                         HIDDialog.dismissAll();
                         gameFragment.pauseGame();
                         mCommonFragment.pauseGame();
-                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, "比赛暂停").show();
+                        ToastUtil.createTipDialog(CommonActivity.this, Constant.SHOW_GAME_PAUSE, getString(R.string.match_pause)).show();
                         break;
                     case RESTAT_GAME:
                         LogUtil.e(TAG, "RESTAT_GAME");
