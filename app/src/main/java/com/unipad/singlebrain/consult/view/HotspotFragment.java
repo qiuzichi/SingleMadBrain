@@ -254,7 +254,10 @@ public class HotspotFragment extends MainBasicFragment implements IDataObserver 
         mAdvertLuobo.setAdapter(adAdapter);
     }
 
-    //对于用户不可见 与 不可见  会被调用；
+    /**
+     * 对于用户不可见 与 不可见  会被调用；
+     * @param isVisibleToUser  判断是否界面可见;
+     */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
