@@ -32,7 +32,7 @@ import java.util.Map;
 public class PractiseCommLeftFragment extends Fragment implements View.OnClickListener, CountDownTime.TimeListener, IOperateGame {
     private static final int[] COLORS = {R.color.bg_one, R.color.bg_two, R.color.bg_three};
     private PractiseGameActivity mActivity;
-    private RelativeLayout mParentLayout;
+    private View mParentLayout;
     private TextView mTextName, mTextAgeAds, mTextTime, mTextCompeteProcess;
     private Button mBtnCompeteMode;
     private CountDownTime mCountDownTime;
@@ -49,7 +49,7 @@ public class PractiseCommLeftFragment extends Fragment implements View.OnClickLi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mParentLayout = (RelativeLayout) inflater.inflate(R.layout.common_frg_left, container, false);
+        mParentLayout = inflater.inflate(R.layout.common_frg_left, container, false);
         return mParentLayout;
     }
 
