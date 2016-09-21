@@ -5,17 +5,15 @@
     >
     <TextView
         android:id="@+id/id_num"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/virtual_item_num"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingLeft="5dp"
         android:textColor="@color/black"
-        android:paddingBottom="15dp"
         android:textSize="20dp"
         />
     <TextView
         android:id="@+id/id_datetxt"
-        android:layout_width="80dp"
+        android:layout_width="@dimen/virtual_item_date"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_toRightOf="@+id/id_num"
@@ -24,7 +22,7 @@
         />
     <EditText
         android:id="@+id/id_text_num"
-        android:layout_width="80dp"
+        android:layout_width="@dimen/virtual_item_date"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_toRightOf="@+id/id_num"
@@ -35,13 +33,13 @@
         />
     <TextView
         android:id="@+id/event_text"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="130dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         />
 
     <ImageView
