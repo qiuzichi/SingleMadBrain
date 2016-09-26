@@ -15,6 +15,8 @@
     <string name="goto_top">返回顶部</string>
     <string name="delete_all_number">您已删除所有数字！</string>
     <string name="listen_first_round">第一轮</string>
+    <string name="listen_second_round">第二轮</string>
+    <string name="listen_third_round">第三轮</string>
     <string name="listen_number_describe">试题为每秒播放一个英语数字的录音文件。在开始念数字前，先会播放A—B—C。当A—B—C播放结束后，开始正式念数字。例如，1、5、4、8等。</string>
     <string name="last_line">已经是最后一行了！</string>
     <string name="first_line">已经是第一行了！</string>
@@ -312,4 +314,7 @@
     <string name="round_poker_2"> </string>
     <string name="switch_to_multi_line">切换为多行浏览</string>
     <string name="switch_to_single_line">切换为单行浏览</string>
+    <string name="virtual_data">日期</string>
+    <string name="virtual_no">序号</string>
+    <string name="virtual_practice">时间</string>
 </resources>

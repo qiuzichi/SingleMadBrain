@@ -62,13 +62,13 @@ public class ListenToWriteNumFragment extends NumberRightFragment {
     public void startMemory() {
         super.startMemory();
         mMemoryLayout.setVisibility(View.VISIBLE);
-        String str = "第一轮";
+        String str = getString(R.string.listen_first_round);
         if (service.round == 1) {
-            str = "第一轮";
+            str = getString(R.string.listen_first_round);
         } else if (service.round == 2) {
-            str = "第二轮";
+            str =getString(R.string.listen_second_round);
         } else if (service.round == 3) {
-            str = "第三轮";
+            str = getString(R.string.listen_third_round);
         }
         musicName.setText(str);
     }

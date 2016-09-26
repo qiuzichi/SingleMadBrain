@@ -7,7 +7,7 @@
     <string name="exit_competition">Quit the game</string>
     <string name="end_memory">end\nmemory</string>
     <string name="commit_answer">commit\nanswer</string>
-    <string name="change_bg">change the background color</string>
+    <string name="change_bg">change background color</string>
     <string name="time_end">time is end！</string>
     <string name="fillout_gird_end">You already fill all the questions！</string>
     <string name="keyboard_vibrate">Keyboard shock</string>
@@ -15,6 +15,8 @@
     <string name="goto_top">back to top</string>
     <string name="delete_all_number">You already remove all number！</string>
     <string name="listen_first_round">the first round</string>
+    <string name="listen_second_round">the second round</string>
+    <string name="listen_third_round">the third round</string>
     <string name="listen_number_describe">Questions for the second English player a digital audio file. Before starting to read question, will first play A-B-C. After the end of the A-B-C play, I began to read the official figures. For example, 1,5,4,8 and so on.</string>
     <string name="last_line">This is the last line！</string>
     <string name="first_line">This is the first line！</string>
@@ -311,4 +313,7 @@ As the last line has two or more of the fault (or middle left blank), then to 0 
     <string name="round_poker_2">poker</string>
     <string name="switch_to_multi_line">Switch to multi-line browsing</string>
     <string name="switch_to_single_line">Switch to single-line browsing</string>
+    <string name="virtual_data">data</string>
+    <string name="virtual_no">No</string>
+    <string name="virtual_practice">practice</string>
 </resources>
