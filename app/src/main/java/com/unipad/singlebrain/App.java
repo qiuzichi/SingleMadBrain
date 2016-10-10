@@ -8,6 +8,7 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
 
+import com.tencent.bugly.crashreport.CrashReport;
 import com.unipad.baiduservice.LocationService;
 
 import org.xutils.x;
@@ -40,6 +41,9 @@ public class App extends Application {
         //locationService = new LocationService(getApplicationContext());
         mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         //SDKInitializer.initialize(getApplicationContext());
+
+        CrashReport.initCrashReport(getApplicationContext(), "31a8102803", false);
+
         this.createDirs();
     }
 

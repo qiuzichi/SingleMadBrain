@@ -30,6 +30,7 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:cardview-v7:23.2.1'
+    compile 'com.tencent.bugly:crashreport:latest.release'
     compile files('src/main/libs/baidumapapi_v3_5_0.jar')
     compile files('src/main/libs/locSDK_6.23.jar')
     compile files('src/main/libs/tts.jar')
